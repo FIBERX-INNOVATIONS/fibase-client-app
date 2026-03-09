@@ -1,0 +1,3 @@
+<template>
+    dash place
+</template>

@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@source "../node_modules/flowbite";
+@source "/Users/ojooh/Documents/Projects/fi-ui-toolkit";
+
+
+footer, main {
+    background-color: #f0f4f8;
+}
+
+.column-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.column-item.dragging {
+  opacity: 0.8;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  cursor: grabbing;
+}
+
+.column-item.drag-over {
+  border-top: 2px solid #041c2c; /* shows where it will drop */
+  background-color: #2f77a7
+}
+
+.drag-handle {
+  @apply cursor-grab select-none;
+}

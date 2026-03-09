@@ -1,0 +1,71 @@
+{
+    "name": "fibase-client-app",
+    "version": "1.0.0",
+    "description": "Fibase Admin App – A modern, responsive dashboard for managing applications, roles, permissions, and members within the FiberX ecosystem. Built for performance and flexibility.",
+    "private": true,
+    "scripts": {
+        "dev": "vite --config ./vite.config.mjs",
+        "devcss": "npx @tailwindcss/cli -i ./public/assets/css/input.css -o ./public/assets/css/output.css --watch",
+        "build": "vite build --config ./vite.config.mjs",
+        "preview": "vite preview --config ./vite.config.mjs",
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+        "format": "prettier --write src/"
+    },
+    "author": "David Matt-Ojo",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fiberx-innovations/fiberx-dbms-client-app-client-app.git"
+    },
+    "homepage": "https://github.com/fiberx-innovations/fiberx-dbms-client-app-client-app#readme",
+    "bugs": {
+        "url": "https://github.com/fiberx-innovations/fiberx-dbms-client-app-client-app/issues"
+    },
+    "keywords": [
+        "Fibase",
+        "Admin Panel",
+        "Application Management",
+        "Role-Based Access Control",
+        "Permissions Dashboard",
+        "User Management",
+        "Feature Flags",
+        "Web App Admin",
+        "Admin Dashboard",
+        "Access Control System",
+        "App Permissions Manager",
+        "Member Management",
+        "Role Management",
+        "Secure Admin Interface",
+        "Enterprise Admin Panel",
+        "SaaS Dashboard",
+        "FiberX Admin",
+        "Developer Tools",
+        "App Infrastructure Management"
+    ],
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.11",
+        "@tailwindcss/postcss": "^4.1.8",
+        "@tailwindcss/vite": "^4.1.8",
+        "axios": "^1.6.7",
+        "dayjs": "^1.11.18",
+        "flowbite": "^2.5.2",
+        "flowbite-datepicker": "^1.2.6",
+        "js-cookie": "^3.0.5",
+        "mitt": "^3.0.1",
+        "qrcode": "^1.5.4",
+        "vue": "^3.5.17",
+        "vue-router": "^4.3.0",
+        "vue3-tel-input": "^1.0.4"
+    },
+    "devDependencies": {
+        "@types/node": "^20.19.2",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "postcss": "^8.5.4",
+        "tailwindcss": "^4.1.11",
+        "tsc-alias": "^1.8.16",
+        "tsconfig-paths": "^4.2.0",
+        "tsx": "^4.20.6",
+        "typescript": "^5.8.3",
+        "vite": "^7.1.7"
+    }
+}
