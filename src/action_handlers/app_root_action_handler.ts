@@ -17,7 +17,7 @@ import {
 } from "@/types/app_root_type";
 
 import StatusAlertPropsBuilder from "@ui/version_3/props_builder/status_alert_ui_props_builder";
-import AppRootClassStyles from "@/class_tyles/app_root_class_styles";
+import AppRootClassStyles from "@/class_styles/app_root_class_styles";
 
 
 class AppRootActionHandler {

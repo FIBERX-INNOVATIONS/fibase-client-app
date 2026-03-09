@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import AuthLayoutClassStyles from "@/class_tyles/auth_layout_class_styles";
+import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
 import AuthLayoutController from "@/controllers/auth_layout_controller";
 
 const props         = defineProps({});

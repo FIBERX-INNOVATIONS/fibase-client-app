@@ -10,7 +10,7 @@ import {
     AppRootComponentsInterface
 } from "@/types/app_root_type";
 
-import AppRootClassStyles from "@/class_tyles/app_root_class_styles";
+import AppRootClassStyles from "@/class_styles/app_root_class_styles";
 
 import ScreenLoaderUI from "@ui/version_3/components/ScreenLoaderUI.vue";
 import StatusAlertUI from "@ui/version_3/components/StatusAlertUI.vue";
