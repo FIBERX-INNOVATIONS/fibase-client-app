@@ -23,11 +23,8 @@ import AppRootClassStyles from "@/class_styles/app_root_class_styles";
 class AppRootActionHandler {
     public readonly name = "app_root_action_handler";
 
-    // Singleton instance
-    private static instance: AppRootActionHandler | null = null;
-
     // Make controller static so it’s shared across all usage
-    private static controller: BaseController<
+    private controller: BaseController<
         AppRootPropsInterface, 
         AppRootStateDataInterface, 
         AppRootComputedDataInterface, 
@@ -36,24 +33,17 @@ class AppRootActionHandler {
 
     private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
 
-    /** Private constructor */
-    private constructor() {}
-
-    /** Singleton accessor + set static controller once */
-    public static getInstance(
+    constructor(
         controller: BaseController<
             AppRootPropsInterface,
             AppRootStateDataInterface,
             AppRootComputedDataInterface,
             AppRootComponentsInterface
         >
-    ): AppRootActionHandler {
-        if (!AppRootActionHandler.instance) {
-            AppRootActionHandler.instance = new AppRootActionHandler();
-            AppRootActionHandler.controller = controller;
-        }
-        return AppRootActionHandler.instance;
+    ) {
+        this.controller = controller;
     }
+
 
     // Method to get status icon 
     private static getStatusIcon (alert_status: string): SVGIconKey {
@@ -107,8 +97,7 @@ class AppRootActionHandler {
 
     // Method to handle close status click
     public handleOnCloseStatusClick = (event?: MouseEvent) => {
-        const controller                = AppRootActionHandler.controller;
-        const { status_alert_props }    = controller.state_refs;
+        const { status_alert_props }    = this.controller.state_refs;
         const alert_box_id              = status_alert_props?.value?.alert_box_id ?? "";
         const alert_box_el              = document.getElementById(alert_box_id);
 
@@ -127,8 +116,7 @@ class AppRootActionHandler {
     // Method to handle closing modal
     public handleCloseModal (payload: CloseModalEventInterface): boolean {
         let { modal_index = 0 }         = payload;
-        const controller                = AppRootActionHandler.controller;
-        const { modals }                = controller.state_refs;
+        const { modals }                = this.controller.state_refs;
         const modal_count               = modals.value.length;
         let index_to_close              = (modal_count - 1);
 
@@ -140,17 +128,16 @@ class AppRootActionHandler {
             index_to_close = modal_index
         }
 
-        controller.state_refs.modals?.value.splice(index_to_close, 1)[0];
+        this.controller.state_refs.modals?.value.splice(index_to_close, 1)[0];
         return true;
     }
 
 
     // Method to handle is loading event so show screen loader
     public handleIsLoading = (value: boolean) => {
-        const controller                = AppRootActionHandler.controller;
-        const { screen_loader_props }   = controller.state_refs;
+        const { screen_loader_props }   = this.controller.state_refs;
 
-        screen_loader_props.value.visible = value;
+        this.controller.state_refs.screen_loader_props.value.visible = value;
     };
 
     // Method to handle alert status changed event
@@ -164,11 +151,10 @@ class AppRootActionHandler {
             close_modal = false 
         } = options;
 
-        const controller                = AppRootActionHandler.controller;
         const status_icon               = AppRootActionHandler.getStatusIcon(status);
         const new_status_alert_props    = StatusAlertPropsBuilder.getReactivePropsObject(status, message, status_icon);
 
-        Object.assign(controller.state_refs.status_alert_props, new_status_alert_props);
+        Object.assign(this.controller.state_refs.status_alert_props, new_status_alert_props);
 
         // Optional: close any open modal immediately
         if (close_modal) { this.handleCloseModal({}); }
@@ -177,15 +163,21 @@ class AppRootActionHandler {
         if (duration > 0) { 
             await new Promise((resolve) => setTimeout(resolve, duration)); 
             // Hide alert after duration
-            controller.state_refs.status_alert_props.value.visible = false;
+            this.controller.state_refs.status_alert_props.value.visible = false;
         }
 
         // Handle post-alert actions
-        if(!controller.router) { return }
+        if(!this.controller.router) { 
+            return 
+        }
 
-        if (should_reload) { controller.router.go(0); } 
+        if (should_reload) { 
+            this.controller.router.go(0); 
+        } 
 
-        else if (redirect_url && redirect_url.length > 0) { await controller.router.push(redirect_url); }
+        else if (redirect_url && redirect_url.length > 0) { 
+            await this.controller.router.push(redirect_url); 
+        }
     };
 }
 

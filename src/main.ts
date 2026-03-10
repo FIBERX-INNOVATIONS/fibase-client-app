@@ -26,7 +26,7 @@ class FibaseClientApp {
     // Method to get app content_data
     private async getAppContentData(): Promise<void> {
         await this.content_manager.load(APP_CONTENT_DATA_URL, "content_resource"); 
-        // this.content_manager.mergeAllAPIResponsesObjects();
+        this.content_manager.mergeAllAPIResponsesObjects();
     }
 
     // Method to mount root app component

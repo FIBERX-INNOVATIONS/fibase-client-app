@@ -1,5 +1,5 @@
-import {  ScreenLoaderClassStylesInterface } from "@ui/version_3/types/screen_loader_ui_type";
-import {  StatusAlertUIClassStylesInterface } from "@ui/version_3/types/status_alert_ui_type";
+import {  ScreenLoaderClassStylesInterface } from "@ui/version_3/ui_types/screen_loader_ui_type";
+import {  StatusAlertUIClassStylesInterface } from "@ui/version_3/ui_types/status_alert_ui_type";
 
 import { 
     AppRootClassStylesInterface 

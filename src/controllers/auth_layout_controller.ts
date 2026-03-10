@@ -8,10 +8,11 @@ import {
     AuthLayoutStateDataInterface,
     AuthLayoutComputedDataInterface,
     AuthLayoutComponentsInterface
-} from "@/types/auth_layout_type";
+} from "@/ui_types/auth_layout_type";
 
 import CopyRightUI from "@ui/version_3/components/CopyRightUI.vue";
 import CopyRightUIPropsBuilder from "@ui/version_3/props_builder/copy_right_ui_props_builder";
+import CopyRightUIClassStyles from "@/class_styles/copy_right_ui_class_styles";
 
 
 class AuthLayoutController extends BaseController <
@@ -35,6 +36,8 @@ class AuthLayoutController extends BaseController <
 
     // Method to get state data
     protected getUIStateData(): AuthLayoutStateDataInterface {
+        CopyRightUIPropsBuilder.configure(CopyRightUIClassStyles);
+        
         return {
             copyright_props: CopyRightUIPropsBuilder.getReactivePropsObject(),
         } as AuthLayoutStateDataInterface;

@@ -19,7 +19,8 @@
     "types": ["Node", "vite/client", "vue"],
     "paths": {
       "@/*": ["src/*"],
-      "@ui/*": ["../../fi-ui-toolkit/*"]
+      "@ui/*": ["../../fi-ui-toolkit/*"],
+      "@ui_v3/*": ["../../fi-ui-toolkit/version_3/*"]
     },
   },
   // "vueCompilerOptions": {

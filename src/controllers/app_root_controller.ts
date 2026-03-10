@@ -30,7 +30,7 @@ class AppRootController extends BaseController <
 > {
     private readonly event_bus = EventBus;
 
-    public action_handler: AppRootActionHandler = AppRootActionHandler.getInstance(this);
+    public action_handler: AppRootActionHandler = new AppRootActionHandler(this);
 
     constructor(props: AppRootPropsInterface) {
         super("app_root", props);

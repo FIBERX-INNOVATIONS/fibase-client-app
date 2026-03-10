@@ -1,5 +1,3 @@
-please update below action ahdnler no need for hthe singleton instance we would call the action ahndlers instances new ....
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 import LoggerUtil from "@ui/version_3/utils/logger_util";
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
@@ -18,7 +16,7 @@ class BaseFormActionHandler<
     State extends Record<string, any> = {},
     Computed extends Record<string, any> = {},
     Components extends Record<string, any> = {}
->{
+> {
 
     public readonly name: string;
 
@@ -30,17 +28,10 @@ class BaseFormActionHandler<
 
     protected form_data: FormDataInterface = {};
 
-    private redirect_timer: ReturnType<typeof setTimeout> | null = null;
+    protected redirect_timer: ReturnType<typeof setTimeout> | null = null;
 
 
-    /* ---------------------------------- */
-    /* Singleton Storage                  */
-    /* ---------------------------------- */
-
-    private static instances = new Map<any, any>();
-
-
-    protected constructor(
+    constructor(
         controller: BaseController<Props, State, Computed, Components>,
         name: string = "base_form_action_handler"
     ) {
@@ -53,28 +44,6 @@ class BaseFormActionHandler<
             prefix: name,
             show_timestamp: false
         });
-
-    }
-
-
-    /* ---------------------------------- */
-    /* Singleton Accessor                 */
-    /* ---------------------------------- */
-
-    public static getInstance<T>(
-        this: any,
-        controller: BaseController<any, any, any, any>
-    ): T {
-
-        if (!BaseFormActionHandler.instances.has(this)) {
-
-            const instance = new this(controller);
-
-            BaseFormActionHandler.instances.set(this, instance);
-
-        }
-
-        return BaseFormActionHandler.instances.get(this);
 
     }
 
@@ -93,7 +62,6 @@ class BaseFormActionHandler<
     /* ---------------------------------- */
     /* Input Change Handler               */
     /* ---------------------------------- */
-
     public handleOnInputChanged = async (
         event?: Event,
         input_value?: string | number | boolean | Array<any> | File | null,
@@ -122,27 +90,18 @@ class BaseFormActionHandler<
 
         this.form_data[formatted_key] = value;
 
-        return { status: false, msg: "error text testing" };
+        return {
+            status: true,
+            msg: ""
+        };
 
     };
 
+    // Method to get form data
+    public getFormData(): FormDataInterface { return this.form_data; }
 
-    /* ---------------------------------- */
-    /* Form Data                          */
-    /* ---------------------------------- */
-
-    public getFormData(): FormDataInterface {
-
-        return this.form_data;
-
-    }
-
-
-    public resetFormData(): void {
-
-        this.form_data = {};
-
-    }
+    
+    public resetFormData(): void { this.form_data = {};}
 
 
     /* ---------------------------------- */
@@ -160,40 +119,3 @@ class BaseFormActionHandler<
 }
 
 export default BaseFormActionHandler;
-
-
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
-import {
-    LoginViewPropsInterface,
-    LoginViewStateDataInterface,
-    LoginViewComputedDataInterface,
-    LoginViewComponentsInterface
-} from "@/ui_types/login_view_type";
-
-import BaseFormActionHandler from "./base_form_action_hanler";
-
-
-class LoginViewActionHandler extends BaseFormActionHandler<
-    LoginViewPropsInterface,
-    LoginViewStateDataInterface,
-    LoginViewComputedDataInterface,
-    LoginViewComponentsInterface
->{
-
-    protected constructor(
-        controller: BaseController<
-            LoginViewPropsInterface,
-            LoginViewStateDataInterface,
-            LoginViewComputedDataInterface,
-            LoginViewComponentsInterface
-        >
-    ) {
-
-        super(controller, "login_view_action_handler");
-
-    }
-
-}
-
-export default LoginViewActionHandler;

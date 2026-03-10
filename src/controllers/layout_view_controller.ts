@@ -12,7 +12,7 @@ import {
     LayoutViewStateDataInterface,
     LayoutViewComputedDataInterface,
     LayoutViewComponentsInterface
-} from "@/types/layout_view_type";
+} from "@/ui_types/layout_view_type";
 
 import AuthLayout from "@/layout/AuthLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";

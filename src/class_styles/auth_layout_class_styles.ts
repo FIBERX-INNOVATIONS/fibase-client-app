@@ -1,5 +1,5 @@
 
-import { AuthLayoutClassStylesInterface  } from "@/types/auth_layout_type";
+import { AuthLayoutClassStylesInterface  } from "@/ui_types/auth_layout_type";
 
 
 const AuthLayoutClassStyles: AuthLayoutClassStylesInterface = {
