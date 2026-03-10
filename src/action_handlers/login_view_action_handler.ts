@@ -1,6 +1,11 @@
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { FieldValidator, LoginFormDataInterface } from "@/types/form_data_type";
+
+import { ButtonActionMethodReturnInterface } from "@ui/version_3/ui_types/button_ui_type";
+
+import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+
 import {
     LoginViewPropsInterface,
     LoginViewStateDataInterface,
@@ -10,6 +15,7 @@ import {
 
 import BaseFormActionHandler from "./base_form_action_hanler";
 import LoginValidator from "@/validators/login_validator";
+
 
 
 class LoginViewActionHandler extends BaseFormActionHandler<
@@ -43,6 +49,13 @@ class LoginViewActionHandler extends BaseFormActionHandler<
 
             password: LoginValidator.validatePasswordField
         }
+    }
+
+    public handleOnBtnClick = async (
+        event?: MouseEvent,
+        config?: { props: ButtonUIPropsInterface }
+    ): Promise<ButtonActionMethodReturnInterface> =>  {
+        return { status: true, msg: "" };
     }
 
 }

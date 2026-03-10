@@ -18,6 +18,7 @@ import {
     ActionMethodRetruninterface
 } from "@ui/version_3/ui_types/input_ui_type";
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
+import { ButtonActionMethodReturnInterface, ButtonUIActionPropsInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 
 
@@ -175,9 +176,16 @@ class BaseFormActionHandler<
         return validation_result;
     };
 
+    public handleOnBtnClick = async (
+        event?: MouseEvent,
+        config?: { props: ButtonUIPropsInterface }
+    ): Promise<ButtonActionMethodReturnInterface> =>  {
+        return { status: true, msg: "" };
+    }
+
 
     /* ---------------------------------- */
-    /* Input Handler Config               */
+    /* Input and button Handler Config    */
     /* ---------------------------------- */
     public getInputActionHandlersConfig = (): InputUIActionPropsInterface => {
 
@@ -186,6 +194,16 @@ class BaseFormActionHandler<
         };
 
     }
+
+    public getBtnActionHandlerConfig = (): ButtonUIActionPropsInterface => {
+
+        return {
+            on_click: this.handleOnBtnClick
+        };
+
+    }
+
+    
 
 }
 

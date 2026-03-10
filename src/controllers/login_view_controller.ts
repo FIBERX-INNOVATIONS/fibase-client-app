@@ -16,12 +16,14 @@ import LoginViewClassStyles from "@/class_styles/login_view_class_styles";
 import HeaderTextUI from "@ui/version_3/components/HeaderTextUI.vue";
 import InputGroupUI from "@ui/version_3/components/InputGroupUI.vue";
 import ToasterUI from "@ui/version_3/components/ToasterUI.vue";
+import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
 
 import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
 import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
 import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 import LoginViewActionHandler from "@/action_handlers/login_view_action_handler";
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
+import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 
 
 
@@ -48,7 +50,8 @@ class LoginViewController extends BaseController <
         return  { 
             HeaderTextUI, 
             InputGroupUI, 
-            ToasterUI 
+            ToasterUI,
+            ButtonUI
         }; 
     }
 
@@ -57,18 +60,23 @@ class LoginViewController extends BaseController <
         const {
             header_text_class_style,
             input_ui_class_styles,
-            toaster_ui_class_styles
+            toaster_ui_class_styles,
+            btn_class_styles
         } = LoginViewClassStyles;
 
         const input_action_config   = this.action_handler.getInputActionHandlersConfig();
+        const btn_action_config     = this.action_handler.getBtnActionHandlerConfig();
         const username_content_key  = "content_resource.login_view_ui.fieldset.username_field";
         const password_content_key  = "content_resource.login_view_ui.fieldset.password_field";
+        const btn_content_key       = "content_resource.login_view_ui.fieldset.btn_text";
 
         HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
 
         InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
 
         ToasterUIPropsBuilder.configure("login_toaster", toaster_ui_class_styles);
+
+        ButtonUIPropsBuilder.configure(btn_class_styles, btn_action_config, { disabled: true })
 
         const user_name_input_props = InputUIPropsBuilder.getReactivePropsObject("username", "text", username_content_key);
 
@@ -83,7 +91,7 @@ class LoginViewController extends BaseController <
 
             toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
 
-            btn_props: null,
+            btn_props: ButtonUIPropsBuilder.getReactivePropsObject("login_submit", btn_content_key, "paper_airplane_send_svg_icon"),
         } as LoginViewStateDataInterface;
     }
 

@@ -1,157 +1,751 @@
-in my base form action handler i want to include a hideErrorAlert and showErrorAlert which is meant to set and rest the toast alert props of a form but from the base class it cannot see yet that the controller has toaster alert props is there a way to set that all forms would ahve the toaster alert props in state refs
+below is context on how components are build each component requires
+- a type file
+- a props definiton file
+- a class styles file 
+- a controller file
+- a vue file
+- a props builder file
 
 
-import BaseController from "@ui/version_3/base_classes/base_controller";
-import LoggerUtil from "@ui/version_3/utils/logger_util";
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-import { FormDataInterface } from "@/types/form_action_type";
-import { FieldValidator } from "@/types/form_data_type";
+import { Component, Ref } from "vue";
 
-import {
-    InputUIPropsInterface,
-    InputUIActionPropsInterface,
-    ActionMethodRetruninterface
-} from "@ui/version_3/ui_types/input_ui_type";
-import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
+export interface InputUIContentOptionsInterface {
+    loader_html_content?: string;
 
+    caret_html_contewnt?: string;
 
-class BaseFormActionHandler<
-    FormData extends Record<string, any> = {},
-    Props extends Record<string, any> = {},
-    State extends Record<string, any> = { },
-    Computed extends Record<string, any> = {},
-    Components extends Record<string, any> = {}
-> {
+    no_options_html_content?: string;
+}
 
-    public readonly name: string;
+export interface InputUIBooleanPropsInterface {
+    read_only?: boolean;
 
-    protected controller: BaseController<Props, State, Computed, Components>;
+    is_checked?: boolean;
 
-    protected logger: LoggerUtil;
+    is_loading?: boolean;
 
-    protected content_manager = ContentManagerUtil.getInstance();
+    cache_enabled?: boolean;
 
-    protected form_data: Partial<FormData> = {};
+    required?: boolean;
 
-    protected redirect_timer: ReturnType<typeof setTimeout> | null = null;
+    disabled?: boolean;
+}
 
-    protected validators: Partial<Record<keyof FormData, FieldValidator<FormData>>> = {};
+export interface InputUINumberPropsInterface {
+    min?: number;
 
+    max?: number;
 
-    constructor(
-        controller: BaseController<Props, State, Computed, Components>,
-        name: string = "base_form_action_handler",
-        default_form_data?: Partial<FormData>
-    ) {
+    length?: number;
 
-        this.name = name;
+    rows?: number;
 
-        this.controller = controller;
+    step?: number
+}
 
-        this.form_data = default_form_data ?? {};
+export interface ActionMethodRetruninterface {
+    status: boolean;
+    msg: string;
+    data?: Record<string, any>;
+}
 
-        this.logger = new LoggerUtil({
-            prefix: name,
-            show_timestamp: false
-        });
+export interface InputUIActionPropsInterface {
+    on_key_up?: (
+        event?: KeyboardEvent, 
+        input_value?: string | number | boolean | Array<any> | File | null,
+        input_config?: { props: InputUIPropsInterface }
+    ) => Promise<ActionMethodRetruninterface>;
 
-    }
+    on_key_down?: (
+        event?: KeyboardEvent,
+        input_value?: string | number | boolean | Array<any> | File | null,
+        input_config?: { props: InputUIPropsInterface }
+    ) => Promise<ActionMethodRetruninterface>;
 
-    // Method to get content message
-    protected getContentMessage = (message_key: string): string => {
-
-        return this.content_manager.getAPIResponseValue(message_key);
-
-    }
-
-    // Method to run validators
-    protected runValidator = async (
-        key: keyof FormData,
-        value: any
-    ): Promise<ActionMethodRetruninterface>  => {
-
-        const validator = this.validators[key];
-
-        if (!validator) {
-            return { status: true, msg: "" };
-        }
-
-        return await validator(value, this.form_data);
-    }
-
-    // Method to hide error alert
-    public hideErrorAlert = (): void => {
-        if(!this.controller.state_refs.toast_alert_props) { return }
-
-        this.controller.state_refs.toast_alert_props = ToasterUIPropsBuilder.getReactivePropsObject();
-    }
-
-    // Method to show error alert
-    private showErrorAlert(status: string, message: string) {
-        const new_toast_alert_props = AuthPropsBuilder.getToastAlertProps(this, status, message);
-        Object.assign(this.controller.state_refs.toast_alert_props, new_toast_alert_props)
-    }
-
-    // Method to get form data
-    public getFormData = (): FormDataInterface => { return this.form_data; }
-
-    // Method to reset form data
-    public resetFormData = (): void => { this.form_data = {}; }
-
-    // Method to handle on input and record in form data
-    public handleOnInputChanged = async (
+    on_change?: (
         event?: Event,
         input_value?: string | number | boolean | Array<any> | File | null,
         input_config?: { props: InputUIPropsInterface }
-    ): Promise<ActionMethodRetruninterface> => {
+    ) => Promise<ActionMethodRetruninterface>;
 
-        const input_props = input_config?.props;
+    on_click?: (
+        event?: MouseEvent,
+        input_value?: string | number | boolean | Array<any> | File | null,
+        input_config?: { props: InputUIPropsInterface }
+    ) => Promise<ActionMethodRetruninterface>;
 
-        const target =
-            event?.target as HTMLInputElement | HTMLTextAreaElement | null;
+    set_error_text?: (error_text: string) => void;
 
-        const value = input_value ?? target?.value;
+    render_option_label?: (option: SelectOptionInterface) => string;
 
-        const input_id = input_props?.id;
+    get_option_value?: (option: SelectOptionInterface) => string | number;
 
-        if (!input_id) {
+    fetch_data_method?: (
+        params: { page: number; search: string | null }
+    ) => Promise<{ records: SelectOptionInterface[], total_pages: number }>;
 
-            return {
-                status: false,
-                msg: this.getContentMessage("invalid_input_config")
-            };
+}
 
-        }
+export interface InputUIFilePropsInterface {
+    accept?: string;
+    
+    multiple?: boolean;
+}
 
-        const formatted_key = input_id.replace(/_\d+$/, "");
+export interface PhoneNumberCountryInfoInterface {
+  name: string;
+  iso2: string;
+  dialCode: string;
+  priority: number;
+  areaCodes: string[] | null;
+}
 
-        (this.form_data as any)[formatted_key] = value;
+export interface PhoneNumberResultInterface {
+  countryCallingCode: string;
+  nationalNumber: string;
+  number: string;
+  country: PhoneNumberCountryInfoInterface;
+  countryCode: string;
+  valid: boolean;
+  formatted: string;
+}
 
-        /* ---------------------------------- */
-        /* Run Validator if Exists            */
-        /* ---------------------------------- */
+/* ---------------------------------- */
+/* Input Type                         */
+/* ---------------------------------- */
 
-        const validation_result = await this.runValidator(
-            formatted_key,
-            value
-        );
+export type InputType =
+    | "text"
+    | "textarea"
+    | "number"
+    | "checkbox"
+    | "switch"
+    | "select"
+    | "select_search"
+    | "phone_number"
+    | "otp"
+    | "file"
+    | "password";
 
-        return validation_result;
-    };
+
+/* ---------------------------------- */
+/* Select Option                      */
+/* ---------------------------------- */
+
+export interface SelectOptionInterface {
+    label_text: string;
+    value: string | number;
+}
 
 
-    /* ---------------------------------- */
-    /* Input Handler Config               */
-    /* ---------------------------------- */
-    public getInputActionHandlersConfig = (): InputUIActionPropsInterface => {
+/* ---------------------------------- */
+/* Class Styles                       */
+/* ---------------------------------- */
+
+export interface InputUIClassStylesInterface {
+    input_class_style: string;
+
+    wrapper_class_style: string;
+
+    loader_class_style: string;
+
+    switch_btn_class_style: string;
+
+    knob_class_style: string;
+
+    label_text_class_style: string;
+
+    active_class_style: string;
+
+    inactive_class_style: string;
+
+    caret_icon_class: string;
+
+    dropdown_wrapper_class_style: string;
+
+    options_wrapper_class_style: string;
+
+    option_class_style: string;
+
+    option_content_class_style: string;
+
+    input_readonly_class_style: string;
+
+    helper_text_class_style: string;
+
+    error_text_class_style: string;
+}
+
+
+/* ---------------------------------- */
+/* Props Interface                    */
+/* ---------------------------------- */
+
+export interface InputUIPropsInterface {
+
+    id?: string;
+
+    switch_btn_id?: string;
+
+    type: InputType;
+
+    model_value?: string | number | boolean | Array<any> | File | null;
+
+    placeholder_text?: string;
+
+    content_props?: InputUIContentOptionsInterface;
+
+    boolean_props?: InputUIBooleanPropsInterface;
+
+    option_props?: SelectOptionInterface[];
+
+    number_props?: InputUINumberPropsInterface;
+
+    file_props?: InputUIFilePropsInterface;
+
+    action_props?: InputUIActionPropsInterface;
+
+    helper_text?: string;
+
+    class_styles?: InputUIClassStylesInterface;
+
+}
+
+
+export interface InputUIStateDataInterface {
+    input_value: string | number | boolean | Array<any> | File | null;
+
+    error_text: string | null;
+
+    is_loading: boolean;
+
+    is_dropdown_open: boolean;
+
+    record_options: SelectOptionInterface[],
+
+    search_value: string | null;
+
+    current_page: number;
+
+    total_pages: number;
+}
+
+export interface InputUIComputedDataInterface {
+    has_error: boolean;
+}
+
+export interface InputUIComponentsInterface {
+    TextInputUI: Component;
+
+    TextAreaInputUI: Component;
+
+    CheckboxInputUI: Component;
+
+    NumberInputUI: Component;
+
+    SelectInputUI: Component;
+
+    SelectSearchInputUI: Component;
+
+    SwitchInputUI: Component;
+
+    OtpInputUI: Component;
+
+    FileInputUI: Component;
+
+    PhoneNumberInputUI: Component;
+
+}
+
+export interface InputUIContentPayloadInterface {
+    label_text?: string;
+
+    placeholder_text?: string;
+
+    helper_text?: string;
+
+    options_list?: SelectOptionInterface[];
+
+    required_text?: string;
+}
+
+import { PropType } from "vue";
+
+import InputUIClassStyles from "../class_styles/input_ui_class_styles"
+import {
+    InputType,
+    InputUIClassStylesInterface,
+    InputUIContentOptionsInterface,
+    InputUIBooleanPropsInterface,
+    SelectOptionInterface,
+    InputUINumberPropsInterface,
+    InputUIActionPropsInterface,
+    InputUIFilePropsInterface
+} from "../ui_types/input_ui_type";
+
+
+const InputUIProps = {
+
+    id: { 
+        type: String, 
+        required: true,
+    },
+
+    switch_btn_id: { 
+        type: String, 
+        require: false 
+    },
+
+    type: { 
+        type: String as PropType<InputType>,
+        default: "text"
+    },
+
+    model_value: {
+        type: [String, Number, Boolean, Array, Object] as PropType<string | number | boolean | Array<any> | File | null>,
+        default: null,
+        require: false
+    },
+
+    placeholder_text: { 
+        type: String, 
+        default: "", 
+        require: false 
+    },
+
+    content_props: {
+        type: Object as PropType<InputUIContentOptionsInterface>,
+        default: () => ({})
+    },
+
+    boolean_props: {
+        type: Object as PropType<InputUIBooleanPropsInterface>,
+        default: () => ({})
+    },
+
+    option_props: {
+        type: Array as PropType<Array<SelectOptionInterface>>,
+        default: () => []
+    },
+
+    number_props: {
+        type: Object as PropType<InputUINumberPropsInterface>,
+        default: () => ({}) 
+    },
+
+    file_props: {
+        type: Object as PropType<InputUIFilePropsInterface>,
+        default: () => ({}) 
+    },
+
+    action_props: {
+        type: Object as PropType<InputUIActionPropsInterface>,
+        default: () => ({}) 
+    },
+
+    helper_text: { 
+        type: String, 
+        require: false,
+        default: ""
+    },
+
+    error_text: { 
+        type: String, 
+        require: false,
+        default: ""
+    },
+
+
+
+    class_styles: {
+        type: Object as PropType<InputUIClassStylesInterface>,
+        default: () => (InputUIClassStyles)
+    }
+
+};
+
+export default InputUIProps;
+
+
+import { InputUIClassStylesInterface } from "../ui_types/input_ui_type"
+
+const InputUIClassStyles: InputUIClassStylesInterface = {
+    input_class_style: "w-full py-2 px-1",
+    wrapper_class_style: "flex gap-2 justify-center",
+    loader_class_style: "",
+    switch_btn_class_style: "group inline-flex h-6 w-11 transition",
+    knob_class_style: "size-4 rounded-full transition transform",
+    label_text_class_style: "ms-3",
+    active_class_style: "bg-blue-300",
+    inactive_class_style: "bg-gray-900",
+    caret_icon_class: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer",
+    dropdown_wrapper_class_style: "absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto",
+    options_wrapper_class_style: "",
+    option_class_style: "px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm",
+    option_content_class_style: "",
+    input_readonly_class_style: "bg-gray-100 cursor-not-allowed",
+    helper_text_class_style: "",
+    error_text_class_style: "",
+}
+
+
+export default InputUIClassStyles;
+
+
+class InputUIController extends BaseController<
+    InputUIPropsInterface,
+    InputUIStateDataInterface,
+    InputUIComputedDataInterface,
+    InputUIComponentsInterface
+> {
+
+    public action_handler: InputUIActionHandler = new InputUIActionHandler(this);
+
+    constructor(props: InputUIPropsInterface) {
+        super("input_ui", props);
+        this.getComponentDefinition();
+    }
+
+    protected getUIComponents(): InputUIComponentsInterface {
+        return {
+            TextInputUI,
+            TextAreaInputUI,
+            CheckboxInputUI,
+            NumberInputUI,
+            SelectInputUI,
+            SelectSearchInputUI,
+            SwitchInputUI,
+            PhoneNumberInputUI,
+            OtpInputUI,
+            FileInputUI
+        } as InputUIComponentsInterface;
+    }
+
+    protected getUIStateData(): InputUIStateDataInterface {
 
         return {
-            on_change: this.handleOnInputChanged
+            input_value: this.props.model_value ?? "",
+
+            error_text: null,
+
+            is_loading: false,
+
+            is_dropdown_open: false,
+
+            record_options: [],
+
+            search_value: null,
+
+            current_page: 1,
+
+            total_pages: 0,
+        };
+
+    }
+
+    protected getUIComputedData(): ComputedDefinitionType<InputUIComputedDataInterface> {
+
+        return {
+
+            has_error: () => !!this.state_refs.error_text
+
         };
 
     }
 
 }
 
-export default BaseFormActionHandler;
+<template>
+    <div :class="class_styles.wrapper_class_style">
+        <input
+            :id="id"
+            :name="id"
+            :type="type"
+            :class="input_class_style"
+            v-model="input_value"
+            :placeholder="placeholder_text"
+            :required="boolean_props.required"
+            :readonly="boolean_props.read_only"
+            :maxlength="number_props.length"
+            :disabled="boolean_props.disabled"
+            @input="action_handler?.handleOnInpuChange?.($event)"
+            @keyup="action_handler?.handleOnKeyup?.($event)"
+            @keydown="action_handler?.handleOnKeydown?.($event)"
+            @click="action_handler?.handleOnClick?.($event)"
+        />
+
+        <span 
+            v-if="helper_text"
+            :class="class_styles.helper_text_class_style"
+            v-html="helper_text"
+        ></span>
+        <span 
+            v-if="error_text"xs
+            :class="class_styles.error_text_class_style"
+            v-html="error_text"
+        ></span>
+    </div>
+
+</template>
+
+<script setup lang="ts">
+import InputUIProps      from "../../props/input_ui_props";
+import InputUIController from "../../controllers/input_ui_controller";
+
+const props         = defineProps(InputUIProps);
+const controller    = new InputUIController(props);
+
+const {
+    id,
+    type,
+    placeholder_text,
+    helper_text,
+    class_styles,
+    number_props,
+    boolean_props
+} = props
+
+const {
+    state_refs,
+    action_handler
+} = controller;
+
+const {
+    input_value,
+    error_text
+} = state_refs
+
+const input_class_style = `
+${class_styles.input_class_style}  
+${boolean_props.read_only ? class_styles.input_readonly_class_style : ''}
+`
+
+</script>
+
+import { reactive } from "vue";
+
+import LoggerUtil from "../utils/logger_util";
+import ContentManagerUtil from "../utils/content_manager_util";
+import InputUIClassStyles from "../class_styles/input_ui_class_styles";
+
+import {
+    InputUIPropsInterface,
+    InputUIClassStylesInterface,
+    InputType,
+    InputUIBooleanPropsInterface,
+    InputUINumberPropsInterface,
+    InputUIFilePropsInterface,
+    InputUIActionPropsInterface,
+    SelectOptionInterface,
+    InputUIContentPayloadInterface
+} from "../ui_types/input_ui_type";
+
+class InputUIPropsBuilder {
+
+    private static readonly name = "input_ui_props_builder";
+
+    private static readonly logger = new LoggerUtil({
+        prefix: InputUIPropsBuilder.name,
+        show_timestamp: false
+    });
+
+    private static readonly content_manager =
+        ContentManagerUtil.getInstance();
+
+
+    /* ---------------------------------- */
+    /* Global Configuration               */
+    /* ---------------------------------- */
+
+    public static class_styles?: InputUIClassStylesInterface;
+
+    public static default_content_props?: InputUIContentPayloadInterface;
+
+    public static default_boolean_props?: InputUIBooleanPropsInterface;
+
+    public static default_number_props?: InputUINumberPropsInterface;
+
+    public static default_file_props?: InputUIFilePropsInterface;
+
+    public static default_action_props?: InputUIActionPropsInterface;
+
+
+    /* ---------------------------------- */
+    /* Setup                              */
+    /* ---------------------------------- */
+
+    public static configure(
+        class_styles?: InputUIClassStylesInterface,
+        action_props?: InputUIActionPropsInterface,
+        content_props?: InputUIContentPayloadInterface,
+        boolean_props?: InputUIBooleanPropsInterface,
+        number_props?: InputUINumberPropsInterface,
+        file_props?: InputUIFilePropsInterface,
+    ): void {
+
+        InputUIPropsBuilder.class_styles =
+            class_styles || InputUIClassStyles;
+
+        InputUIPropsBuilder.default_content_props =
+            content_props || {};
+
+        InputUIPropsBuilder.default_boolean_props =
+            boolean_props || {};
+
+        InputUIPropsBuilder.default_number_props =
+            number_props || {};
+
+        InputUIPropsBuilder.default_file_props =
+            file_props || {};
+
+        InputUIPropsBuilder.default_action_props =
+            action_props || {};
+    }
+
+
+    /* ---------------------------------- */
+    /* Content Fetch                      */
+    /* ---------------------------------- */
+
+    private static getContentProps(content_key?: string) {
+
+        if (!content_key) return {};
+
+        return (
+            InputUIPropsBuilder.content_manager
+                ?.get<InputUIContentPayloadInterface>(content_key) ?? {}
+        );
+
+    }
+
+
+    /* ---------------------------------- */
+    /* Build Props                        */
+    /* ---------------------------------- */
+
+    private static buildPropsObject(
+
+        id: string,
+
+        type: InputType = "text",
+
+        content_key?: string,
+
+        overrides: Partial<InputUIPropsInterface> = {}
+
+    ): InputUIPropsInterface {
+
+        const content_data =
+            InputUIPropsBuilder.getContentProps(content_key);
+
+        const placeholder_text =
+            overrides.placeholder_text ??
+            content_data?.placeholder_text ??
+            "";
+
+        const helper_text =
+            overrides.helper_text ??
+            content_data?.helper_text ??
+            "";
+
+        const option_props =
+            overrides.option_props ??
+            content_data?.options_list ??
+            [];
+
+        return {
+
+            id,
+
+            type,
+
+            switch_btn_id:
+                overrides.switch_btn_id ??
+                `${id}_switch`,
+
+            model_value:
+                overrides.model_value ?? null,
+
+            placeholder_text,
+
+            helper_text,
+
+            option_props,
+
+            content_props: {
+                ...InputUIPropsBuilder.default_content_props,
+                ...overrides.content_props
+            },
+
+            boolean_props: {
+                ...InputUIPropsBuilder.default_boolean_props,
+                ...overrides.boolean_props
+            },
+
+            number_props: {
+                ...InputUIPropsBuilder.default_number_props,
+                ...overrides.number_props
+            },
+
+            file_props: {
+                ...InputUIPropsBuilder.default_file_props,
+                ...overrides.file_props
+            },
+
+            action_props: {
+                ...InputUIPropsBuilder.default_action_props,
+                ...overrides.action_props
+            },
+
+            class_styles:
+                overrides.class_styles ??
+                InputUIPropsBuilder.class_styles ??
+                InputUIClassStyles
+
+        };
+
+    }
+
+
+    /* ---------------------------------- */
+    /* Public Builder                     */
+    /* ---------------------------------- */
+
+    public static getReactivePropsObject(
+
+        id: string,
+
+        type: InputType = "text",
+
+        content_key?: string,
+
+        overrides: Partial<InputUIPropsInterface> = {}
+
+    ): InputUIPropsInterface {
+
+        const props =
+            InputUIPropsBuilder.buildPropsObject(
+                id,
+                type,
+                content_key,
+                overrides
+            );
+
+        return reactive<InputUIPropsInterface>(props);
+
+    }
+
+}
+
+export default InputUIPropsBuilder;
+
+i want you to use the above information to create a button componnt for me a button  can
+- has a text / html content
+- has a type
+- has an id
+- can be disbaled (disbaled class style)
+- be clicked on
+- be hovered on
+- on click set the butto state ref is loading to true
+- on is loading true can show loading content instead of normal btn text/html content

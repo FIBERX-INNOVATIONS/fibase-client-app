@@ -12,6 +12,8 @@
                     <InputGroupUI v-bind="password_input_group_props" />
 
                     <ToasterUI v-bind="toast_alert_props" />
+
+                    <ButtonUI v-bind="btn_props" />
                 
                 </form>
 
@@ -36,14 +38,16 @@ const {
 const {
     HeaderTextUI,
     InputGroupUI,
-    ToasterUI
+    ToasterUI,
+    ButtonUI
 } = components;
 
 const {
     header_text_props,
     username_input_group_props,
     password_input_group_props,
-    toast_alert_props
+    toast_alert_props,
+    btn_props
 } = state_refs;
 
 </script>

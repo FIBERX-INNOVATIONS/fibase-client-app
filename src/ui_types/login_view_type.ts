@@ -1,4 +1,5 @@
 
+import { ButtonUIClassStylesInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
 import { InputGroupUIClassStylesInterface, InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
@@ -19,7 +20,7 @@ export interface LoginViewStateDataInterface {
 
     toast_alert_props: ToasterUIPropsInterface;
 
-    btn_props: null;
+    btn_props: ButtonUIPropsInterface;
 }
 
 export interface LoginViewComputedDataInterface {
@@ -30,7 +31,7 @@ export interface LoginViewComponentsInterface {
     HeaderTextUI: Component;
     InputGroupUI: Component;
     ToasterUI: Component;
-    // ButtonUI: Component;
+    ButtonUI: Component;
 }
 
 export interface LoginViewClassStylesInterface {
@@ -49,4 +50,6 @@ export interface LoginViewClassStylesInterface {
     input_ui_class_styles: InputUIClassStylesInterface;
 
     toaster_ui_class_styles: ToasterUIClassStylesInterface;
+
+    btn_class_styles: ButtonUIClassStylesInterface
 }

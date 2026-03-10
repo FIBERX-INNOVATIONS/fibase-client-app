@@ -3,6 +3,7 @@ import { LoginViewClassStylesInterface  } from "@/ui_types/login_view_type";
 import input_group_class_style from "./input_group_ui_class_styles";
 import input_ui_class_styles from "./input_ui_class_styles";
 import ToasterUIClassStyles from "./toaster_ui_class_styles";
+import ButtonUIClassStyles from "./button_ui_class_styles";
 
 
 const LoginViewClassStyles: LoginViewClassStylesInterface = {
@@ -13,7 +14,8 @@ const LoginViewClassStyles: LoginViewClassStylesInterface = {
     fieldset_class_style: "space-y-6 py-4",
     input_group_class_style,
     input_ui_class_styles,
-    toaster_ui_class_styles: ToasterUIClassStyles
+    toaster_ui_class_styles: ToasterUIClassStyles,
+    btn_class_styles: ButtonUIClassStyles
 }
 
 export default LoginViewClassStyles;
