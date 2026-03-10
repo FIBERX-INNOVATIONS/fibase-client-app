@@ -15,12 +15,14 @@ import LoginViewClassStyles from "@/class_styles/login_view_class_styles";
 
 import HeaderTextUI from "@ui/version_3/components/HeaderTextUI.vue";
 import InputGroupUI from "@ui/version_3/components/InputGroupUI.vue";
+import ToasterUI from "@ui/version_3/components/ToasterUI.vue";
 
 import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
 import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
 import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 import LoginViewActionHandler from "@/action_handlers/login_view_action_handler";
-import BaseFormActionHandler from "@/action_handlers/base_form_action_hanler";
+import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
+
 
 
 class LoginViewController extends BaseController <
@@ -43,34 +45,43 @@ class LoginViewController extends BaseController <
 
     // Method to get ui components
     protected getUIComponents(): LoginViewComponentsInterface { 
-        return  { HeaderTextUI, InputGroupUI }; 
+        return  { 
+            HeaderTextUI, 
+            InputGroupUI, 
+            ToasterUI 
+        }; 
     }
 
     // Method to get state data
     protected getUIStateData(): LoginViewStateDataInterface {
-        HeaderTextUIPropsBuilder.configure({ text_class_style: LoginViewClassStyles.header_text_class_style });
+        const {
+            header_text_class_style,
+            input_ui_class_styles,
+            toaster_ui_class_styles
+        } = LoginViewClassStyles;
 
-        InputUIPropsBuilder.configure(
-            LoginViewClassStyles.input_ui_class_styles,
-            this.action_handler.getInputActionHandlersConfig()  
-        )
-
+        const input_action_config   = this.action_handler.getInputActionHandlersConfig();
         const username_content_key  = "content_resource.login_view_ui.fieldset.username_field";
         const password_content_key  = "content_resource.login_view_ui.fieldset.password_field";
 
+        HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
+
+        InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
+
+        ToasterUIPropsBuilder.configure("login_toaster", toaster_ui_class_styles);
+
         const user_name_input_props = InputUIPropsBuilder.getReactivePropsObject("username", "text", username_content_key);
+
         const password_input_props  = InputUIPropsBuilder.getReactivePropsObject("password", "password", password_content_key)
         
         return {
-            csrf_token: null,
-
             header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.login_view_ui.sign_in_text"),
 
             username_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(user_name_input_props, username_content_key),
 
             password_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(password_input_props, username_content_key),
 
-            toast_alert_props: null,
+            toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
 
             btn_props: null,
         } as LoginViewStateDataInterface;

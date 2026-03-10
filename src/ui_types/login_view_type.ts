@@ -2,6 +2,7 @@
 import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
 import { InputGroupUIClassStylesInterface, InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
+import { ToasterUIClassStylesInterface, ToasterUIPropsInterface } from "@ui/version_3/ui_types/toaster_ui_type";
 import { Component, Ref } from "vue";
 
 
@@ -10,15 +11,13 @@ export interface LoginViewPropsInterface {
 }
 
 export interface LoginViewStateDataInterface {
-    csrf_token: string | null;
-
     header_text_props: HeaderTextUIPropsInterface;
 
     username_input_group_props: InputGroupUIPropsInterface;
 
     password_input_group_props: InputGroupUIPropsInterface;
 
-    toast_alert_props: null;
+    toast_alert_props: ToasterUIPropsInterface;
 
     btn_props: null;
 }
@@ -30,7 +29,7 @@ export interface LoginViewComputedDataInterface {
 export interface LoginViewComponentsInterface {
     HeaderTextUI: Component;
     InputGroupUI: Component;
-    // ToastAlertUI: Component;
+    ToasterUI: Component;
     // ButtonUI: Component;
 }
 
@@ -45,7 +44,9 @@ export interface LoginViewClassStylesInterface {
 
     fieldset_class_style: string;
 
-    input_group_class_style: InputGroupUIClassStylesInterface,
+    input_group_class_style: InputGroupUIClassStylesInterface;
 
-    input_ui_class_styles: InputUIClassStylesInterface
+    input_ui_class_styles: InputUIClassStylesInterface;
+
+    toaster_ui_class_styles: ToasterUIClassStylesInterface;
 }
