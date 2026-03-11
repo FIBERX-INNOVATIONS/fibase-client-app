@@ -7,6 +7,7 @@ import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 import { 
     AlertStatusChangedEventInterface,
     CloseModalEventInterface,
+    GlobalEventTypes,
 } from "@/types/global_events_type";
 
 import {
@@ -28,7 +29,8 @@ class AppRootActionHandler {
         AppRootPropsInterface, 
         AppRootStateDataInterface, 
         AppRootComputedDataInterface, 
-        AppRootComponentsInterface
+        AppRootComponentsInterface,
+        GlobalEventTypes
     >;
 
     private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
@@ -38,7 +40,8 @@ class AppRootActionHandler {
             AppRootPropsInterface,
             AppRootStateDataInterface,
             AppRootComputedDataInterface,
-            AppRootComponentsInterface
+            AppRootComponentsInterface,
+            GlobalEventTypes
         >
     ) {
         this.controller = controller;
@@ -47,7 +50,7 @@ class AppRootActionHandler {
 
     // Method to get status icon 
     private static getStatusIcon (alert_status: string): SVGIconKey {
-        const status = alert_status.toLowerCase() || "info";
+        const status = alert_status?.toLowerCase() || "info";
 
         switch (status) {
             case "success":
@@ -64,13 +67,15 @@ class AppRootActionHandler {
     public static getStatusBgClassStyle = (
         alert_status: string | null
     ): string => {
-        switch (alert_status?.toLowerCase() || "info") {
+        switch (alert_status?.toLowerCase()) {
             case "success":
                 return AppRootClassStyles?.status_alert_ui_class_style?.sucess_bg_class_style
             case "error":
                 return AppRootClassStyles?.status_alert_ui_class_style?.error_bg_class_style;
-            default:
+            case "info":
                 return AppRootClassStyles?.status_alert_ui_class_style?.info_bg_class_style;
+            default:
+                return ""
         }
     }
 
@@ -78,13 +83,15 @@ class AppRootActionHandler {
     public static getStatusTextClassStyle = (
         alert_status: string | null
     ): string => {
-        switch (alert_status?.toLowerCase() || "info") {
+        switch (alert_status?.toLowerCase()) {
             case "success":
                 return AppRootClassStyles.status_alert_ui_class_style?.sucess_text_class_style;
             case "error":
                 return AppRootClassStyles.status_alert_ui_class_style?.error_text_class_style
+            case "info":
+                return AppRootClassStyles.status_alert_ui_class_style?.info_text_class_style;
             default:
-                return AppRootClassStyles.status_alert_ui_class_style?.info_text_class_style
+                return ""
         }
     }
 
@@ -142,7 +149,7 @@ class AppRootActionHandler {
 
     // Method to handle alert status changed event
     public handleStatusChanged = async (payload: AlertStatusChangedEventInterface) => {
-        const { status, message, options = {} } = payload;
+        const { status, msg, options = {} } = payload;
 
         const { 
             duration = 2000, 
@@ -152,9 +159,9 @@ class AppRootActionHandler {
         } = options;
 
         const status_icon               = AppRootActionHandler.getStatusIcon(status);
-        const new_status_alert_props    = StatusAlertPropsBuilder.getReactivePropsObject(status, message, status_icon);
+        const new_status_alert_props    = StatusAlertPropsBuilder.getReactivePropsObject(status, msg, status_icon);
 
-        Object.assign(this.controller.state_refs.status_alert_props, new_status_alert_props);
+        Object.assign(this.controller.state_refs.status_alert_props.value, new_status_alert_props);
 
         // Optional: close any open modal immediately
         if (close_modal) { this.handleCloseModal({}); }
@@ -163,7 +170,7 @@ class AppRootActionHandler {
         if (duration > 0) { 
             await new Promise((resolve) => setTimeout(resolve, duration)); 
             // Hide alert after duration
-            this.controller.state_refs.status_alert_props.value.visible = false;
+            // this.controller.state_refs.status_alert_props.value.visible = false;
         }
 
         // Handle post-alert actions

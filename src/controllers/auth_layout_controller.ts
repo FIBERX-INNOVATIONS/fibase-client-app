@@ -1,7 +1,9 @@
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
-import EventBus from "@/utils/global_event_bus_util";
+import { EventBus } from "@/utils/global_event_bus_util";
+
+import { GlobalEventTypes } from "@/types/global_events_type";
 
 import {
     AuthLayoutPropsInterface,
@@ -19,12 +21,12 @@ class AuthLayoutController extends BaseController <
     AuthLayoutPropsInterface,
     AuthLayoutStateDataInterface,
     AuthLayoutComputedDataInterface,
-    AuthLayoutComponentsInterface
+    AuthLayoutComponentsInterface,
+    GlobalEventTypes
 > {
-    private readonly event_bus = EventBus;
 
     constructor(props: AuthLayoutPropsInterface) {
-        super("auth_layout", props);
+        super("auth_layout", props, EventBus);
 
         this.getComponentDefinition();
     }

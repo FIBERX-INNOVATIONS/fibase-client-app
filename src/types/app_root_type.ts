@@ -3,12 +3,12 @@ import { Component, Ref } from "vue";
 import { 
     ScreenLoaderClassStylesInterface,
     ScreenLoaderUIPropsInterface
-} from "@ui/version_3/types/screen_loader_ui_type";
+} from "@ui/version_3/ui_types/screen_loader_ui_type";
 
 import { 
     StatusAlertUIClassStylesInterface, 
     StatusAlertUIPropsInterface 
-} from "@ui/version_3/types/status_alert_ui_type";
+} from "@ui/version_3/ui_types/status_alert_ui_type";
 
 
 export interface AppRootPropsInterface {

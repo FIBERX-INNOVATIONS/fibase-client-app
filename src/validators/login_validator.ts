@@ -1,5 +1,8 @@
 
-import { ActionMethodRetruninterface } from "@ui/version_3/ui_types/input_ui_type";
+import { LoginFormDataInterface } from "@/types/form_data_type";
+import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
+import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
+
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
@@ -15,7 +18,7 @@ class LoginValidator {
 
     public static validateUsernameField = (
         username_value: string | null
-    ): ActionMethodRetruninterface => {
+    ): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(username_value)) {
             return {
                 status: false,
@@ -35,7 +38,7 @@ class LoginValidator {
 
     public static validatePasswordField = (
         password_value: string | null
-    ): ActionMethodRetruninterface => {
+    ): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(password_value)) {
             return {
                 status: false,
@@ -51,6 +54,27 @@ class LoginValidator {
         }
 
         return { status: true, msg: "" };
+    }
+
+    /** Validate login input */
+    public static validateLoginInput(
+        form_data: LoginFormDataInterface
+    ): ValidationResultInterface {
+        const { csrf_token, username, password } = form_data;
+
+        if (InputValidatorUtil.isEmpty(csrf_token)) {
+            return { v_state: false, v_msg: "invalid_csrf_token" };
+        }
+
+        if (InputValidatorUtil.isEmpty(username)) {
+            return { v_state: false, v_msg: "invalid_input_username" };
+        }
+
+        if (InputValidatorUtil.isEmpty(password)) {
+            return { v_state: false, v_msg: "invalid_input_password" };
+        }
+
+        return { v_state: true, v_msg: "valid_input" };
     }
 }
 

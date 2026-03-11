@@ -1,11 +1,23 @@
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
+
 import LoggerUtil from "@ui/version_3/utils/logger_util";
+
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import { FieldValidator } from "@/types/form_data_type";
+
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
-import { ToastStatusType } from "@ui/version_3/ui_types/toaster_ui_type";
+
+import { ToasterUIActionPropsInterface, ToasterUIPropsInterface, ToastStatusType } from "@ui/version_3/ui_types/toaster_ui_type";
+
+import { CSRFTokenForType } from "@/configs/constants";
+
+import { 
+    ButtonActionMethodReturnInterface, 
+    ButtonUIActionPropsInterface, 
+    ButtonUIPropsInterface 
+} from "@ui/version_3/ui_types/button_ui_type";
 
 import { 
     BaseFormStateInterface, 
@@ -15,12 +27,11 @@ import {
 import {
     InputUIPropsInterface,
     InputUIActionPropsInterface,
-    ActionMethodRetruninterface
+    ActionMethodRetrunInterface
 } from "@ui/version_3/ui_types/input_ui_type";
+
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
-import { ButtonActionMethodReturnInterface, ButtonUIActionPropsInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-
-
+import AuthAPIService from "@/api_services/auth_api_service";
 
 
 class BaseFormActionHandler<
@@ -28,12 +39,13 @@ class BaseFormActionHandler<
     Props extends Record<string, any> = {},
     State extends BaseFormStateInterface = BaseFormStateInterface,
     Computed extends Record<string, any> = {},
-    Components extends Record<string, any> = {}
+    Components extends Record<string, any> = {},
+    Events extends Record<string, any> = {}
 > {
 
     public readonly name: string;
 
-    protected controller: BaseController<Props, State, Computed, Components>;
+    protected controller: BaseController<Props, State, Computed, Components, Events>;
 
     protected logger: LoggerUtil;
 
@@ -41,13 +53,13 @@ class BaseFormActionHandler<
 
     protected form_data: Partial<FormData> = {};
 
-    protected redirect_timer: ReturnType<typeof setTimeout> | null = null;
+    private csrf_refresh_timer: ReturnType<typeof setTimeout> | null = null;
 
     protected validators: Partial<Record<keyof FormData, FieldValidator<FormData>>> = {};
 
 
     constructor(
-        controller: BaseController<Props, State, Computed, Components>,
+        controller: BaseController<Props, State, Computed, Components, Events>,
         name: string = "base_form_action_handler",
         default_form_data?: Partial<FormData>
     ) {
@@ -76,7 +88,7 @@ class BaseFormActionHandler<
     protected runValidator = async (
         key: keyof FormData,
         value: any
-    ): Promise<ActionMethodRetruninterface>  => {
+    ): Promise<ActionMethodRetrunInterface>  => {
 
         const validator = this.validators[key];
 
@@ -109,24 +121,32 @@ class BaseFormActionHandler<
     }
 
     // Method to hide error alert
-    protected hideErrorAlert = (): void => {
+    public hideErrorAlert = (): void => {
         const empty_props = ToasterUIPropsBuilder.getReactivePropsObject();
 
         Object.assign(
-            this.controller.state_refs.toast_alert_props,
+            this.controller.state_refs.toast_alert_props.value,
             empty_props
         );
+        return;
     }
 
     // Method to show error alert
-    protected showErrorAlert = (status: ToastStatusType, message: string): void => {
+    public showErrorAlert = (
+        status: ToastStatusType, 
+        message_key: string,
+        duration?: number
+    ): void => {
+        const to_ms         = duration ? (duration * 1000) : undefined;
         const status_icon   = this.getStatusIcon(status);
-        const new_props     = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon);
+        const message       = this.getContentMessage(message_key);
+        const new_props     = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon, to_ms);
 
         Object.assign(
-            this.controller.state_refs.toast_alert_props,
+            this.controller.state_refs.toast_alert_props.value, 
             new_props
         );
+        return;
     }
 
     // Method to get form data
@@ -135,12 +155,82 @@ class BaseFormActionHandler<
     // Method to reset form data
     public resetFormData = (): void => { this.form_data = {}; }
 
+
+    // Method to schedule csrf refresh
+    private scheduleCsrfRefresh = (
+        expires_at: string, 
+        token_for: CSRFTokenForType | null
+    ): void => {
+        if (!expires_at) { return; }
+
+        // Clear any existing timer
+        this.clearScheduledTimers();
+
+        const expiration_time   = new Date(expires_at).getTime();
+        const now               = Date.now()
+        const delay             = expiration_time - now
+
+        this.csrf_refresh_timer = setTimeout(async () => {
+            this.logger.debug("Refreshing CSRF Token Now");
+            await this.setCSRFToken(token_for);
+        }, delay);
+    }
+
+    // Method to clear scheduled timers
+    public clearScheduledTimers = (): boolean => {
+        if (this.csrf_refresh_timer) {
+            clearTimeout(this.csrf_refresh_timer);
+            this.csrf_refresh_timer = null;
+        }
+
+        return true;
+    }
+
+    // Method to set csrf_token in form data
+    public setCSRFToken = async (
+        token_for: CSRFTokenForType | null
+    ): Promise<boolean> => {
+
+        if(!token_for) { return false }
+
+        const result = await AuthAPIService.getFormCSRFToken(token_for);
+
+        if(!result || result.status !== "success" || !result?.data) { return false }
+
+        const { expires_at, token } = result.data;
+
+        (this.form_data as any)["csrf_token"] = token ?? null;
+
+        if(this.controller.state_refs.btn_props.value?.boolean_props) {
+            this.controller.state_refs.btn_props.value.boolean_props.disabled = token ? false : true;
+        }
+
+
+        // Schedule next refresh
+        this.scheduleCsrfRefresh(expires_at, token_for);
+
+        return true;
+    }
+
+    // Method to handle on toaster hide
+    public handleOnToasterHide = async (
+        event?: MouseEvent,
+        visible?: boolean,
+        input_config?: { props: ToasterUIPropsInterface }
+    ): Promise<ActionMethodRetrunInterface> => {
+        if(visible === false) { 
+            this.hideErrorAlert(); 
+        }
+
+        return { status: true, msg: "" };
+    }
+
     // Method to handle on input and record in form data
     public handleOnInputChanged = async (
         event?: Event,
         input_value?: string | number | boolean | Array<any> | File | null,
         input_config?: { props: InputUIPropsInterface }
-    ): Promise<ActionMethodRetruninterface> => {
+    ): Promise<ActionMethodRetrunInterface> => {
 
         const input_props = input_config?.props;
 
@@ -176,6 +266,7 @@ class BaseFormActionHandler<
         return validation_result;
     };
 
+    // Method to handle on btn clicked
     public handleOnBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
@@ -198,12 +289,21 @@ class BaseFormActionHandler<
     public getBtnActionHandlerConfig = (): ButtonUIActionPropsInterface => {
 
         return {
-            on_click: this.handleOnBtnClick
+            on_click: this.handleOnBtnClick.bind(this),
         };
 
     }
 
-    
+    public getToasterActionHandlerConfig = (): ToasterUIActionPropsInterface => {
+
+        return {
+            on_click: this.handleOnToasterHide.bind(this),
+
+            on_hide: this.handleOnToasterHide.bind(this)
+        };
+
+    }
+
 
 }
 

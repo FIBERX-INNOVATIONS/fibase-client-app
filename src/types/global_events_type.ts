@@ -1,4 +1,14 @@
 
+export type GlobalEventTypes = {
+    is_loading: boolean;
+    
+    alert_status_updated: AlertStatusChangedEventInterface;
+
+    close_modal: CloseModalEventInterface;
+
+};
+
+
 export interface AlertStatusOptionsInterface { 
     duration?: number; 
     should_reload?: boolean; 
@@ -8,19 +18,10 @@ export interface AlertStatusOptionsInterface {
 
 export interface AlertStatusChangedEventInterface {
     status: string;
-    message: string;
+    msg: string;
     options?: AlertStatusOptionsInterface
 }
 
 export interface CloseModalEventInterface {
     modal_index?: number
 }
-
-export type GlobalEventTypes = {
-    is_loading: boolean;
-    
-    alert_status_updated: AlertStatusChangedEventInterface;
-
-    close_modal: CloseModalEventInterface;
-
-};

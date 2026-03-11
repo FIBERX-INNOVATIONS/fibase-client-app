@@ -1,7 +1,11 @@
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
-import EventBus from "@/utils/global_event_bus_util";
+import { EventBus } from "@/utils/global_event_bus_util";
+
+import { GlobalEventTypes } from "@/types/global_events_type";
+
+import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
 import {
     LoginViewPropsInterface,
@@ -27,20 +31,21 @@ import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_bu
 
 
 
+
 class LoginViewController extends BaseController <
     LoginViewPropsInterface,
     LoginViewStateDataInterface,
     LoginViewComputedDataInterface,
-    LoginViewComponentsInterface
+    LoginViewComponentsInterface,
+    GlobalEventTypes
 > {
-    private readonly event_bus = EventBus;
 
     public readonly class_styles: LoginViewClassStylesInterface = LoginViewClassStyles;
 
     public readonly action_handler: LoginViewActionHandler = new LoginViewActionHandler(this);
 
     constructor(props: LoginViewPropsInterface) {
-        super("auth_layout", props);
+        super("auth_layout", props, EventBus);
 
         this.getComponentDefinition();
     }
@@ -66,6 +71,7 @@ class LoginViewController extends BaseController <
 
         const input_action_config   = this.action_handler.getInputActionHandlersConfig();
         const btn_action_config     = this.action_handler.getBtnActionHandlerConfig();
+        const toaster_action_config = this.action_handler.getToasterActionHandlerConfig()
         const username_content_key  = "content_resource.login_view_ui.fieldset.username_field";
         const password_content_key  = "content_resource.login_view_ui.fieldset.password_field";
         const btn_content_key       = "content_resource.login_view_ui.fieldset.btn_text";
@@ -74,7 +80,7 @@ class LoginViewController extends BaseController <
 
         InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
 
-        ToasterUIPropsBuilder.configure("login_toaster", toaster_ui_class_styles);
+        ToasterUIPropsBuilder.configure("login_toaster", toaster_ui_class_styles, toaster_action_config);
 
         ButtonUIPropsBuilder.configure(btn_class_styles, btn_action_config, { disabled: true })
 
@@ -93,6 +99,16 @@ class LoginViewController extends BaseController <
 
             btn_props: ButtonUIPropsBuilder.getReactivePropsObject("login_submit", btn_content_key, "paper_airplane_send_svg_icon"),
         } as LoginViewStateDataInterface;
+    }
+
+    protected async handleOnMountedLogic(): Promise<void> {
+        // set csrf token
+        await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.LOGIN);
+    }
+
+    protected async handleBeforeUnmountedLogic(): Promise<void> {
+        // clear scheduled timers
+        this.action_handler.clearScheduledTimers()
     }
 
 }

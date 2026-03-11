@@ -1,6 +1,6 @@
-import mitt, { Emitter } from "mitt";
+// app/event_bus.ts
+
+import { createEventBus } from "@ui/version_3/utils/event_bus_util";
 import { GlobalEventTypes } from "@/types/global_events_type";
 
-const EventBus: Emitter<GlobalEventTypes> = mitt<GlobalEventTypes>();
-
-export default EventBus
+export const EventBus = createEventBus<GlobalEventTypes>();
