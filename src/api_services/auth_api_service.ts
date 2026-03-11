@@ -16,6 +16,7 @@ import {
 } from "@/types/form_data_type";
 
 import { CSRFTokenForType } from "@/configs/constants";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 class AuthAPIService extends BaseAPIService {
 
@@ -35,39 +36,77 @@ class AuthAPIService extends BaseAPIService {
     public static logIn = async (
         data: LoginFormDataInterface
     ): Promise<APIResponseInterface<AuthenticatedMemberRecordInterface>> => {
-        return await this.queryAPI<AuthenticatedMemberRecordInterface>({
+        const result = await this.queryAPI<AuthenticatedMemberRecordInterface>({
             url: `/auth/login`,
             data, 
             method: "POST"
         });
+
+        if(result?.data) {
+            const {  current_member, access_token, expires_in_mins} = result.data;
+            MemberAuthenticatorUtil.onLoginSuccess(current_member, access_token, expires_in_mins);
+        }
+
+        return result
     }
 
     // Service method to query two factor endpoint
     public static twoFactorLogin = async  (
         data: TwoFactorFormDataInterface
     ) : Promise<APIResponseInterface<TwoFactorAuthenticatedMemberRecordInterface>> => {
-        return await this.queryAPI<TwoFactorAuthenticatedMemberRecordInterface>({
+        const result = await this.queryAPI<TwoFactorAuthenticatedMemberRecordInterface>({
             url: `/auth/two-factor-login`,
             data, 
             method: "POST"
         });
+
+        if(result?.data) {
+            const {  
+                current_member, 
+                access_token, 
+                expires_in_mins, 
+                permissions
+            } = result.data;
+
+            MemberAuthenticatorUtil.onTwoFactorLoginSuccess(
+                current_member, 
+                permissions,
+                access_token, 
+                expires_in_mins
+            );
+        }
+
+        return result
     }
 
     // Service method to query logout endpoint
     public static refreshAccessToen = async  (): Promise<APIResponseInterface<AuthAccessRecordInterface>> => {
-        return await this.queryAPI<AuthAccessRecordInterface>({
+        const result = await this.queryAPI<AuthAccessRecordInterface>({
             url: `/auth/refresh`,
             method: "POST",
             disable_retry: true
         });
+
+        if (result.data) {
+            const { access_token, expires_in_mins } = result?.data;
+            MemberAuthenticatorUtil.onAccessRefreshSuccess(access_token, expires_in_mins);
+        }
+
+        return result;
     }
 
     // Service method to query logout endpoint
     public static logOut = async  (): Promise<APIResponseInterface<boolean>> => {
-        return await this.queryAPI<boolean>({
+        const result = await this.queryAPI<boolean>({
             url: `/auth/logout`,
             method: "POST"
         });
+
+        if (result.data) {
+            MemberAuthenticatorUtil.onlogoutSuccess();
+        }
+
+        return result
     } 
 
     // Service method to handle refresh retry

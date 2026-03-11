@@ -20,6 +20,7 @@ import LoginValidator from "@/validators/login_validator";
 import AuthAPIService from "@/api_services/auth_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
+
 class LoginViewActionHandler extends BaseFormActionHandler<
     LoginFormDataInterface,
     LoginViewPropsInterface,
@@ -28,7 +29,7 @@ class LoginViewActionHandler extends BaseFormActionHandler<
     LoginViewComponentsInterface,
     GlobalEventTypes
 >{
-
+    
     constructor(
         controller: BaseController<
             LoginViewPropsInterface,
@@ -74,7 +75,7 @@ class LoginViewActionHandler extends BaseFormActionHandler<
 
             const { status, msg, data } = await AuthAPIService.logIn(form_data);
 
-            if(status !== "success") {
+            if(status !== "success" || !data) {
                 this.showErrorAlert("error", msg, 5);
                 return { status: false, msg: v_msg };
             }

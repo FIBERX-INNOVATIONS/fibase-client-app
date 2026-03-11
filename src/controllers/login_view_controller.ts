@@ -28,6 +28,7 @@ import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_buil
 import LoginViewActionHandler from "@/action_handlers/login_view_action_handler";
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 
 
@@ -102,6 +103,15 @@ class LoginViewController extends BaseController <
     }
 
     protected async handleOnMountedLogic(): Promise<void> {
+        const is_logged_in              = MemberAuthenticatorUtil.isLoggedIn()
+        const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
+
+        if(is_fully_authenticated) { await this.router.push("/dashboard") }
+
+        if(is_logged_in) { await this.router.push("/two-factor-login") }
+
+        MemberAuthenticatorUtil.onlogoutSuccess();
+        
         // set csrf token
         await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.LOGIN);
     }

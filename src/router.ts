@@ -5,8 +5,10 @@ import {
   RouteRecordRaw,
   RouteMeta
 } from "vue-router";
+import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
 const LoginView                         = () => import("@/views/LoginView.vue");
+const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginView.vue");
 
 class RouterManager {
     public readonly name = "router_manager";
@@ -35,6 +37,25 @@ class RouterManager {
                 return next(from.fullPath);
             }
 
+            const {
+                title_key,
+                permission_name = "" as string,
+            } = (route.meta || {}) as RouteMeta;
+
+            const is_logged_in              = MemberAuthenticatorUtil.isLoggedIn()
+            const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
+            const has_permission            = permission_name ? MemberAuthenticatorUtil.memberHasPermissionTo((permission_name as string)) : true;
+
+            if (!is_logged_in && route.name !== "Login") {
+                return next("/login");
+            }
+            else if ((is_logged_in && !is_fully_authenticated) && route.name !== "TwoFactorLogin") {
+                return next("/two-factor-login");
+            }
+            else if(is_fully_authenticated && !has_permission) {
+                return next("/dashboard"); // change to 404 page later
+            }
+
             return next();
         });
     }
@@ -50,9 +71,28 @@ class RouterManager {
                     title_key: "home-page",
                     permission_name: "", 
                     is_auth_page: true,
-                    requires_no_auth: true
                 }
-            }
+            },
+            { 
+                path: "/login", 
+                name: "Login", 
+                component: LoginView,
+                meta: {
+                    title_key: "login-page",
+                    permission_name: "member_login", 
+                    is_auth_page: true,
+                }
+            },
+            { 
+                path: "/two-factor-login", 
+                name: "TwoFactorLogin", 
+                component: TwoFactorLoginView,
+                meta: {
+                    title_key: "two-factor-login-page", 
+                    permission_name: "member_2fa_login", 
+                    is_auth_page: true,
+                }
+            },
         ];
     }
 

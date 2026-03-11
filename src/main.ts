@@ -8,11 +8,17 @@ import RouterManager                from "@/router";
 import APIClient                    from "@ui/version_3/api_utils/api_client_util";
 import RetryManagerUtil             from "@ui/version_3/api_utils/retry_manager_util";
 import AuthAPIService               from "@/api_services/auth_api_service";
+import EncryptorDecryptorUtil       from "@ui/version_3/utils/encryptor_decryptor_util";
+import LocalStorageManagerUtil      from "@ui/version_3/utils/local_storage_manager_util";
 
 import {
     API_CLIENT_CONFIG,
-    APP_CONTENT_DATA_URL
-} from "@/configs/constants"
+    APP_CONTENT_DATA_URL,
+    CHAR_CORPUS,
+    DATA_SHIFT_KEY,
+    STORAGE_SCHEMA
+} from "@/configs/constants";
+
 
 
 class FibaseClientApp {
@@ -34,6 +40,16 @@ class FibaseClientApp {
         this.content_manager.mergeAllAPIResponsesObjects();
     }
 
+    // Method to initialize Utils
+    private async initUtils (): Promise<void> {
+        EncryptorDecryptorUtil.init({
+            corpus: CHAR_CORPUS,
+            shift_key: DATA_SHIFT_KEY
+        });
+
+        LocalStorageManagerUtil.init(STORAGE_SCHEMA);
+    }
+
     // Method to initialize axios api client
     private async initApiClient (): Promise<void> {
         APIClient.init(API_CLIENT_CONFIG);
@@ -46,6 +62,8 @@ class FibaseClientApp {
     // Method to mount root app component
     public  async mountApp (selector: string): Promise<void> {
         await this.getAppContentData();
+
+        await this.initUtils();
 
         await this.initApiClient();
 

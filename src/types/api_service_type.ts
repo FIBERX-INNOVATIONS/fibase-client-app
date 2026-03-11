@@ -41,19 +41,21 @@ export interface MemberRecordInterface {
     is_verified: boolean;
 
     roles: MemberRoleInterface[];
-}
 
-export interface AuthenticatedMemberRecordInterface {
-    current_member: MemberRecordInterface;
-
-    expires_in_mins: number;
+    is_fully_authenticated: boolean;
 }
 
 export interface AuthAccessRecordInterface {
     access_token: string;
 
-    access_token_expires_in_mins: number;
+    expires_in_mins: number;
 }
+
+export interface AuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
+    current_member: MemberRecordInterface;
+}
+
+
 
 export interface TwoFactorAuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
     current_member: MemberRecordInterface;

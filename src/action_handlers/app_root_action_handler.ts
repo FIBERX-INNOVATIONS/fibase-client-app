@@ -170,7 +170,7 @@ class AppRootActionHandler {
         if (duration > 0) { 
             await new Promise((resolve) => setTimeout(resolve, duration)); 
             // Hide alert after duration
-            // this.controller.state_refs.status_alert_props.value.visible = false;
+            this.controller.state_refs.status_alert_props.value.visible = false;
         }
 
         // Handle post-alert actions
