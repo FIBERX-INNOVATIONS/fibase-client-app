@@ -1,3 +1,3 @@
 <template>
-    Dash baord
+    Dahsboard
 </template>

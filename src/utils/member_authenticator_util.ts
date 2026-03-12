@@ -27,6 +27,16 @@ class MemberAuthenticatorUtil {
         return MemberAuthenticatorUtil.storage.get("current_member")
     }
 
+    // Get logged in member access token
+    public static getLoggedInMemberAccessToekn = (): string | null => {
+        return MemberAuthenticatorUtil.storage.get("current_member_access_token") ?? "";
+    }
+
+    // Get logged in member access token
+    public static getLoggedInMemberChallengeToekn = (): string | null => {
+        return MemberAuthenticatorUtil.storage.get("current_member_challenge_token") ?? "";
+    }
+
     // Get logged in member permissions
     public static getLoggedInMemberPermissions = (): string[] => {
         return MemberAuthenticatorUtil.storage.get("current_member_permissions") ?? [];
@@ -71,13 +81,15 @@ class MemberAuthenticatorUtil {
     public static onLoginSuccess = (
         current_member: MemberRecordInterface,
         access_token: string,
-        expires_in_mins: number
+        expires_in_mins: number,
+        login_challenge_token: string
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
         current_member.is_fully_authenticated = false;
 
         MemberAuthenticatorUtil.storage.set("current_member", current_member);
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
+        MemberAuthenticatorUtil.storage.set("current_member_challenge_token", login_challenge_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
 
         return true
@@ -97,6 +109,8 @@ class MemberAuthenticatorUtil {
         MemberAuthenticatorUtil.storage.set("current_member_permissions", permissions);
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
+        MemberAuthenticatorUtil.storage.remove("current_member_challenge_token");
+
 
         return true
     }

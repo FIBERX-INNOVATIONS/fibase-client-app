@@ -18,6 +18,7 @@ import {
 
 import AuthLayout from "@/layout/AuthLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 
 
@@ -46,11 +47,8 @@ class LayoutViewController extends BaseController <
     // Method to get ui computed data
     protected getUIComputedData(): ComputedDefinitionType<LayoutViewComputedDataInterface> {
         return {
-            is_auth_route: (): boolean => {
-                if (this.route?.meta?.is_auth_page) { return true; }
-
-                const route_name = this.route?.name?.toString() ?? "";
-                return AUTH_ROUTE_NAMES.includes(route_name);
+            is_authenticated: (): boolean => {
+                return MemberAuthenticatorUtil.isFullyLoggedIn()
             }
         } 
     }

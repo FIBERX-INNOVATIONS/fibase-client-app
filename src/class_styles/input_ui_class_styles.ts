@@ -33,6 +33,8 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
     helper_text_class_style: "text-sm font-semibold text-gray-300 text-left",
 
     error_text_class_style: "text-xs text-red-700 font-bold capitalize w-full text-left",
+
+    otp_wrapper_class_style: "flex gap-2 justify-center",
 }
 
 export default input_ui_class_styles;

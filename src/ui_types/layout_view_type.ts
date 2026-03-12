@@ -8,7 +8,7 @@ export interface LayoutViewStateDataInterface {
 }
 
 export interface LayoutViewComputedDataInterface {
-    is_auth_route: boolean;
+    is_authenticated: boolean;
 }
 
 export interface LayoutViewComponentsInterface {

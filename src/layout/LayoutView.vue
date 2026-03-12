@@ -1,7 +1,7 @@
 <template>
     <template v-if="route.name">
-        {{ is_auth_route }}
-        <AuthLayout v-if="is_auth_route" />
+        {{ is_authenticated }}
+        <AuthLayout v-if="!is_authenticated" />
 
         <DashboardLayout v-else />
     </template>
@@ -19,7 +19,7 @@ const {
     route
 } = controller;
 
-const { is_auth_route } = computed_refs
+const { is_authenticated } = computed_refs
 
 const { 
     AuthLayout,

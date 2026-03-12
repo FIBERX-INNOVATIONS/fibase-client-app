@@ -39,12 +39,17 @@ class AuthAPIService extends BaseAPIService {
         const result = await this.queryAPI<AuthenticatedMemberRecordInterface>({
             url: `/auth/login`,
             data, 
-            method: "POST"
+            method: "POST",
+            disable_retry: true
         });
+
+        const headers = result?.full_response?.headers;
 
         if(result?.data) {
             const {  current_member, access_token, expires_in_mins} = result.data;
-            MemberAuthenticatorUtil.onLoginSuccess(current_member, access_token, expires_in_mins);
+            const login_challenge_token = headers?.["x-login-challenge-token"]
+
+            MemberAuthenticatorUtil.onLoginSuccess(current_member, access_token, expires_in_mins, login_challenge_token);
         }
 
         return result
@@ -57,7 +62,8 @@ class AuthAPIService extends BaseAPIService {
         const result = await this.queryAPI<TwoFactorAuthenticatedMemberRecordInterface>({
             url: `/auth/two-factor-login`,
             data, 
-            method: "POST"
+            method: "POST",
+            disable_retry: true
         });
 
         if(result?.data) {
@@ -76,6 +82,10 @@ class AuthAPIService extends BaseAPIService {
             );
         }
 
+        else if (result.full_response?.status === 401) {
+            MemberAuthenticatorUtil.onlogoutSuccess();
+        }
+
         return result
     }
 
@@ -90,6 +100,9 @@ class AuthAPIService extends BaseAPIService {
         if (result.data) {
             const { access_token, expires_in_mins } = result?.data;
             MemberAuthenticatorUtil.onAccessRefreshSuccess(access_token, expires_in_mins);
+        }
+        else if (result.full_response?.status === 401) {
+            MemberAuthenticatorUtil.onlogoutSuccess();
         }
 
         return result;

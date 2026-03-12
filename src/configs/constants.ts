@@ -2,7 +2,10 @@
 import { MemberRecordInterface } from "@/types/api_service_type";
 import { APIClientConfigInterface } from "@ui/version_3/types/api_util_type";
 import { StorageFieldType, StorageSchemaType } from "@ui/version_3/types/util_type";
+
 import DeviceFingerprintUtil from "@ui/version_3/utils/device_fingerprint_util";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+import { AxiosHeaders } from "axios";
 
 export const APP_CONTENT_DATA_URL = (
     "https://raw.githubusercontent.com/FIBERX-INNOVATIONS/fibase-public-content/development/app_content/en-GB.json"
@@ -19,8 +22,13 @@ export const API_CLIENT_CONFIG: APIClientConfigInterface = {
     base_url: "http://localhost:2000/api",
     with_credentials: true,
     request_timeout: 100_00,
-    custom_headers: {
-        "X-Device-Name": DeviceFingerprintUtil.getDeviceName(),
+    custom_headers: (): Record<string, any> | AxiosHeaders => {
+        console.log("reach here")
+        return {
+            "X-Device-Name": DeviceFingerprintUtil.getDeviceName(),
+            "Authorization": `Bearer ${MemberAuthenticatorUtil.getLoggedInMemberAccessToekn()}`,
+            "X-Login-Challenge-Token": `${MemberAuthenticatorUtil.getLoggedInMemberChallengeToekn()}`
+        }
     }
 } as const;
 
@@ -56,6 +64,11 @@ export const STORAGE_SCHEMA = {
 
     current_member_access_token: {
         encrypted_key: "xraGdTwRT4G",
+        default_value: null
+    } as StorageFieldType<string | null>,
+
+    current_member_challenge_token: {
+        encrypted_key: "xraGdWkjfo",
         default_value: null
     } as StorageFieldType<string | null>,
 

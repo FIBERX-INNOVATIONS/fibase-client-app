@@ -9,27 +9,25 @@ import { AuthsViewClassStylesInterface } from "./auth_layout_type";
 
 
 
-export interface LoginViewPropsInterface {
+export interface TwoFactorLoginViewPropsInterface {
     class_styles?: AuthsViewClassStylesInterface
 }
 
-export interface LoginViewStateDataInterface {
+export interface TwoFactorLoginViewStateDataInterface {
     header_text_props: HeaderTextUIPropsInterface;
 
-    username_input_group_props: InputGroupUIPropsInterface;
-
-    password_input_group_props: InputGroupUIPropsInterface;
+    otp_input_group_props: InputGroupUIPropsInterface;
 
     toast_alert_props: ToasterUIPropsInterface;
 
     btn_props: ButtonUIPropsInterface;
 }
 
-export interface LoginViewComputedDataInterface {
+export interface TwoFactorLoginViewComputedDataInterface {
     
 }
 
-export interface LoginViewComponentsInterface {
+export interface TwoFactorLoginViewComponentsInterface {
     HeaderTextUI: Component;
     InputGroupUI: Component;
     ToasterUI: Component;

@@ -9,6 +9,7 @@ import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
 const LoginView                         = () => import("@/views/LoginView.vue");
 const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginView.vue");
+const DashboardView                     = () => import("@/views/DashboardView.vue");
 
 class RouterManager {
     public readonly name = "router_manager";
@@ -91,6 +92,16 @@ class RouterManager {
                     title_key: "two-factor-login-page", 
                     permission_name: "member_2fa_login", 
                     is_auth_page: true,
+                }
+            },
+            { 
+                path: "/dashboard", 
+                name: "Dashboard", 
+                component: DashboardView,
+                meta: {
+                    title_key: "dashboard-page", 
+                    permission_name: "", 
+                    is_auth_page: false
                 }
             },
         ];
