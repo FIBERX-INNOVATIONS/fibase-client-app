@@ -10,7 +10,7 @@ import {
     AppRootStateDataInterface,
     AppRootComputedDataInterface,
     AppRootComponentsInterface
-} from "@/types/app_root_type";
+} from "@/ui_types/app_root_type";
 
 import AppRootClassStyles from "@/class_styles/app_root_class_styles";
 
@@ -21,6 +21,7 @@ import LayoutView from "@/layout/LayoutView.vue";
 import ScreenLoaderUIPropsBuilder from "@ui/version_3/props_builder/screen_loader_ui_props_builder";
 import StatusAlertPropsBuilder from "@ui/version_3/props_builder/status_alert_ui_props_builder";
 import AppRootActionHandler from "@/action_handlers/app_root_action_handler";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 
 
@@ -78,6 +79,12 @@ class AppRootController extends BaseController <
         this.event_bus?.on("alert_status_updated", this.action_handler.handleStatusChanged);
 
         this.event_bus?.on("close_modal", this.action_handler.handleCloseModal);
+
+        const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn()
+
+        if(is_fully_authenticated) {
+            this.action_handler.scheduleAccessTokenRefresh();
+        }
 
         // if(is_fully_authenticated || is_partially_authenticated) {
         //     this.action_handler.startInactivityTracking();

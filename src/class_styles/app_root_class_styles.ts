@@ -3,7 +3,7 @@ import {  StatusAlertUIClassStylesInterface } from "@ui/version_3/ui_types/statu
 
 import { 
     AppRootClassStylesInterface 
-} from "@/types/app_root_type";
+} from "@/ui_types/app_root_type";
 
 const ScreenLoaderClassStyles: ScreenLoaderClassStylesInterface = {
     wrapper_class_style: "fixed inset-0 flex items-center justify-center overflow-hidden w-screen h-screen z-[900]",

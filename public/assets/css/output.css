@@ -254,6 +254,9 @@
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
+  .start {
+    inset-inline-start: var(--spacing);
+  }
   .-top-3 {
     top: calc(var(--spacing) * -3);
   }
@@ -275,6 +278,9 @@
   .right-6 {
     right: calc(var(--spacing) * 6);
   }
+  .bottom-0 {
+    bottom: calc(var(--spacing) * 0);
+  }
   .-left-3 {
     left: calc(var(--spacing) * -3);
   }
@@ -283,6 +289,9 @@
   }
   .z-50 {
     z-index: 50;
+  }
+  .z-\[80\] {
+    z-index: 80;
   }
   .z-\[90\] {
     z-index: 90;
@@ -372,6 +381,9 @@
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
+  .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
@@ -398,6 +410,9 @@
   }
   .h-\[48px\] {
     height: 48px;
+  }
+  .h-\[70px\] {
+    height: 70px;
   }
   .h-\[85\%\] {
     height: 85%;
@@ -450,6 +465,9 @@
   .w-4\/12 {
     width: calc(4 / 12 * 100%);
   }
+  .w-5 {
+    width: calc(var(--spacing) * 5);
+  }
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
@@ -497,6 +515,9 @@
   }
   .max-w-sm {
     max-width: var(--container-sm);
+  }
+  .min-w-\[200px\] {
+    min-width: 200px;
   }
   .min-w-\[250px\] {
     min-width: 250px;
@@ -650,6 +671,9 @@
   .overflow-hidden {
     overflow: hidden;
   }
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
   .overflow-y-auto {
     overflow-y: auto;
   }
@@ -695,6 +719,14 @@
   .border-b {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
+  }
+  .border-b-1 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+  }
+  .border-b-2 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
   }
   .border-b-4 {
     border-bottom-style: var(--tw-border-style);
@@ -818,6 +850,9 @@
   .bg-no-repeat {
     background-repeat: no-repeat;
   }
+  .object-contain {
+    object-fit: contain;
+  }
   .object-cover {
     object-fit: cover;
   }
@@ -872,8 +907,14 @@
   .py-\[5\%\] {
     padding-block: 5%;
   }
+  .pt-\[92px\] {
+    padding-top: 92px;
+  }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
+  }
+  .pb-\[60px\] {
+    padding-bottom: 60px;
   }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util"
@@ -15,10 +17,12 @@ import {
     AppRootStateDataInterface,
     AppRootComputedDataInterface,
     AppRootComponentsInterface
-} from "@/types/app_root_type";
+} from "@/ui_types/app_root_type";
 
 import StatusAlertPropsBuilder from "@ui/version_3/props_builder/status_alert_ui_props_builder";
 import AppRootClassStyles from "@/class_styles/app_root_class_styles";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+import AuthAPIService from "@/api_services/auth_api_service";
 
 
 class AppRootActionHandler {
@@ -186,6 +190,30 @@ class AppRootActionHandler {
             await this.controller.router.push(redirect_url); 
         }
     };
+
+    // Method to handle refresh access on fully logged in
+    public scheduleAccessTokenRefresh = async (): Promise<void> => {
+
+        const expiry_date = MemberAuthenticatorUtil.getLoggedInMemberAccessExpiryDate();
+
+        if (!expiry_date) { return; }
+
+        const expiry        = dayjs(expiry_date);
+        const now           = dayjs();
+        const refresh_time  = expiry.subtract(1, "minute");
+        const delay         = refresh_time.diff(now);
+
+        if (delay <= 0) {
+            // already near expiry
+            AuthAPIService.refreshAccessToen();
+            return;
+        }
+
+        setTimeout(() => {
+            console.log(`Refresh Access Scheduled`)
+            AuthAPIService.refreshAccessToen();
+        }, delay);
+    }
 }
 
 export default AppRootActionHandler;

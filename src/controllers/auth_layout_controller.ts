@@ -15,6 +15,7 @@ import {
 import CopyRightUI from "@ui/version_3/components/CopyRightUI.vue";
 import CopyRightUIPropsBuilder from "@ui/version_3/props_builder/copy_right_ui_props_builder";
 import CopyRightUIClassStyles from "@/class_styles/copy_right_ui_class_styles";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 
 class AuthLayoutController extends BaseController <
@@ -43,6 +44,12 @@ class AuthLayoutController extends BaseController <
         return {
             copyright_props: CopyRightUIPropsBuilder.getReactivePropsObject(),
         } as AuthLayoutStateDataInterface;
+    }
+
+    protected async handleOnMountedLogic(): Promise<void> {
+        const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
+
+        if(is_fully_authenticated) { await this.router.push("/dashboard") }
     }
 
 }
