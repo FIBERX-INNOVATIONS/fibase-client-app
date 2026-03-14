@@ -6,7 +6,6 @@ import { DropdownMenuUIClassStylesInterface } from "@ui/version_3/ui_types/dropd
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
 import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/layout_sections_ui_type";
 import { NavLinkUIClassStylesInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
-import { C } from "vue-router/dist/router-CWoNjPRp.mjs";
 
 
 const TopBarClassStyles: LayoutSectionsUIClassStylesInterface = {
@@ -117,7 +116,7 @@ const SideBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
     error_class_style: "",
 }
 
-const SideBarMenuListClassstyle: DropdownMenuUIClassStylesInterface = {
+const SideBarMenuListClassStyle: DropdownMenuUIClassStylesInterface = {
 
     wrapper_class_style: "w-full p-0 m-0 flex flex-col items-center justify-start",
 
@@ -142,23 +141,32 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 
 
 // const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
-const DashboardLayoutClassstyles = {
+const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
     header_class_style: "fixed top-0 left-0 w-screen p-0 m-0 bg-white shadow-md z-[5] border-gray-100 border-b h-auto",
+
     main_class_style: "pt-[92px] pb-[60px] h-screen overflow-y-auto overflow-x-hidden",
+
     top_bar_class_style: TopBarClassStyles,
+
     hamburger_btn_class_style: HamburgerBtnClassStyle,
+
     topbar_logo_class_style: TopBarLogoClassstyle,
+
     member_avatar_class_style: MemberAvatarClassStyle,
-    content_class_style: ContentClassstyle,
+
+    // content_class_style: ContentClassstyle,
+
     member_avatar_drodpwn_class_style: MemberAvatarDropdownClassStyle,
+
     member_avatar_dropdown_menu_list_class_style: MemberAvatarDropdownMenuListClassStyle,
+
     side_bar_class_style: SideBarUIClassStyle,
+
     side_bar_logo_class_style: SideBarLogoClassstyle,
-    side_bar_menu_list_class_style: SideBarMenuListClassstyle,
-    side_bar_menu_item_class_style: SideBarNavMenuClassstyle
 
+    side_bar_menu_list_class_style: SideBarMenuListClassStyle,
 
-
+    side_bar_menu_item_class_style: SideBarNavMenuClassstyle,
 }
 
 export default DashboardLayoutClassstyles;
