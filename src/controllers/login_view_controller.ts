@@ -92,7 +92,7 @@ class LoginViewController extends BaseController <
         const password_input_props  = InputUIPropsBuilder.getReactivePropsObject("password", "password", password_content_key)
         
         return {
-            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.login_view_ui.sign_in_text"),
+            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.login_view_ui.header_text"),
 
             username_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(user_name_input_props, username_content_key),
 
@@ -108,9 +108,15 @@ class LoginViewController extends BaseController <
         const is_logged_in              = MemberAuthenticatorUtil.isLoggedIn()
         const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
 
-        if(is_fully_authenticated) { await this.router.push("/dashboard") }
+        if(is_fully_authenticated) { 
+            await this.router.push("/dashboard");
+            return;
+        }
 
-        if(is_logged_in) { await this.router.push("/two-factor-login") }
+        if(is_logged_in) { 
+            await this.router.push("/two-factor-login");
+            return;
+        }
 
         MemberAuthenticatorUtil.onlogoutSuccess();
         

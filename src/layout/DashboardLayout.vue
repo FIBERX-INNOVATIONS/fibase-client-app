@@ -1,9 +1,11 @@
 <template>
     <template v-if="true">
-       <header :class="class_styles.header_class_style">
+        <header :class="class_styles.header_class_style">
             <TopBarUI />
-       </header>
-       <main></main>
+        </header>
+        <main :class="class_styles.main_class_style">
+            <RouterView />
+        </main>
     </template>
 </template>
 

@@ -9,7 +9,10 @@ import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
 const LoginView                         = () => import("@/views/LoginView.vue");
 const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginView.vue");
+const LogoutView                        = () => import("@/views/LogoutView.vue");
 const DashboardView                     = () => import("@/views/DashboardView.vue");
+
+const MyProfileView                     = () => import("@/views/MyProfileView.vue");
 
 class RouterManager {
     public readonly name = "router_manager";
@@ -80,7 +83,7 @@ class RouterManager {
                 component: LoginView,
                 meta: {
                     title_key: "login-page",
-                    permission_name: "member_login", 
+                    permission_name: "", 
                     is_auth_page: true,
                 }
             },
@@ -90,7 +93,17 @@ class RouterManager {
                 component: TwoFactorLoginView,
                 meta: {
                     title_key: "two-factor-login-page", 
-                    permission_name: "member_2fa_login", 
+                    permission_name: "", 
+                    is_auth_page: true,
+                }
+            },
+            { 
+                path: "/logout", 
+                name: "Logout", 
+                component: LogoutView,
+                meta: {
+                    title_key: "logout-page", 
+                    permission_name: "", 
                     is_auth_page: true,
                 }
             },
@@ -100,6 +113,16 @@ class RouterManager {
                 component: DashboardView,
                 meta: {
                     title_key: "dashboard-page", 
+                    permission_name: "", 
+                    is_auth_page: false
+                }
+            },
+            { 
+                path: "/my-profile", 
+                name: "MyProfile", 
+                component: MyProfileView,
+                meta: {
+                    title_key: "my-profile-page", 
                     permission_name: "", 
                     is_auth_page: false
                 }

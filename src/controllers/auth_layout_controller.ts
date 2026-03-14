@@ -49,7 +49,10 @@ class AuthLayoutController extends BaseController <
     protected async handleOnMountedLogic(): Promise<void> {
         const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
 
-        if(is_fully_authenticated) { await this.router.push("/dashboard") }
+        if(
+            is_fully_authenticated &&
+            this.route.name !== "Logout"
+        ) { await this.router.push("/dashboard") }
     }
 
 }

@@ -23,7 +23,6 @@ export const API_CLIENT_CONFIG: APIClientConfigInterface = {
     with_credentials: true,
     request_timeout: 100_00,
     custom_headers: (): Record<string, any> | AxiosHeaders => {
-        console.log("reach here")
         return {
             "X-Device-Name": DeviceFingerprintUtil.getDeviceName(),
             "Authorization": `Bearer ${MemberAuthenticatorUtil.getLoggedInMemberAccessToekn()}`,

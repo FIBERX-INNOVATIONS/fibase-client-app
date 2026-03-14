@@ -39,11 +39,14 @@ export interface AuthsViewClassStylesInterface {
 
     toaster_ui_class_styles: ToasterUIClassStylesInterface;
 
-    btn_class_styles: ButtonUIClassStylesInterface
+    btn_class_styles: ButtonUIClassStylesInterface;
+
+    spinner_class_style: string;
 }
 
 export interface AuthLayoutClassStylesInterface {
     main_bg_class_style: string;
     footer_class_style: string;
-    auth_view_class_style: AuthsViewClassStylesInterface
+    auth_view_class_style: AuthsViewClassStylesInterface;
+    
 }

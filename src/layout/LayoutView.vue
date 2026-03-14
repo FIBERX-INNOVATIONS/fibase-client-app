@@ -1,8 +1,10 @@
 <template>
     <template v-if="route.name">
+        {{ route.name  }}
         {{ is_authenticated }}
         {{ MemberAuthenticatorUtil.isFullyLoggedIn() }}
-        <AuthLayout v-if="!is_authenticated" />
+        {{ route.meta.is_auth_page }}
+        <AuthLayout v-if="route.meta.is_auth_page" />
 
         <DashboardLayout v-else />
     </template>

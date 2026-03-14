@@ -86,7 +86,7 @@ class TwoFactorLoginViewController extends BaseController <
         const otp_input_props = InputUIPropsBuilder.getReactivePropsObject("otp_code", "otp", username_content_key);
         
         return {
-            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.two_factor_login_view_ui.sign_in_text"),
+            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.two_factor_login_view_ui.header_text"),
 
             otp_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(otp_input_props, username_content_key),
 
@@ -100,9 +100,15 @@ class TwoFactorLoginViewController extends BaseController <
         const is_logged_in              = MemberAuthenticatorUtil.isLoggedIn()
         const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
 
-        if(is_fully_authenticated) { await this.router.push("/dashboard") }
+        if(is_fully_authenticated) { 
+            await this.router.push("/dashboard");
+            return;
+        }
 
-        if(!is_logged_in) { await this.router.push("/login") }
+        if(!is_logged_in) { 
+            await this.router.push("/login");
+            return;
+        }
         
         // set csrf token
         await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.TWO_FACTOR);
