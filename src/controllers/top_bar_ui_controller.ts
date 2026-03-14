@@ -2,6 +2,8 @@
 
 import BaseController  from "@ui/version_3/base_classes/base_controller";
 
+import { EventBus } from "@/utils/global_event_bus_util";
+
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import {  GlobalEventTypes } from "@/types/global_events_type";
@@ -43,7 +45,7 @@ class TopBarUIController extends BaseController<
 
     constructor(props: TopBarUIPropsInterface) {
 
-        super("top_bar_ui", props);
+        super("top_bar_ui", props, EventBus);
 
         this.getComponentDefinition();
 
@@ -75,9 +77,9 @@ class TopBarUIController extends BaseController<
                 }
             ),
 
-            nav_logo_props: ImageRenderUIPropsBuilder.getReactivePropsObject(
+            nav_logo_props: ImageRenderUIPropsBuilder.getReactivePropsObjectFromContent(
                 "TopBarLogo", 
-                "/assets/img/fibase-logo-transparent-bg.png",
+                "content_resource.dashboard_layout_ui.top_bar_ui.logo",
                 {
                     class_styles: DashboardLayoutClassstyles.topbar_logo_class_style,
                     action_props: { on_click: this.action_handler.toHomePage }
@@ -100,10 +102,8 @@ class TopBarUIController extends BaseController<
                 {
                     class_styles: DashboardLayoutClassstyles.member_avatar_drodpwn_class_style,
 
-                    // menu_items: []
-
                     menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
-                        "content_resource.dashboard_layout_ui.member_menu_list",
+                        "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
                         DashboardLayoutClassstyles.member_avatar_dropdown_menu_list_class_style,
                     )
                 }

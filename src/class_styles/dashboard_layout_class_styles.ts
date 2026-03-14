@@ -1,5 +1,6 @@
 
 import { DashboardLayoutClassStylesInterface } from "@/ui_types/dashboard_layout_type";
+import { SideBarUIClassStyleInterface } from "@/ui_types/side_bar_ui_type";
 import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { DropdownMenuUIClassStylesInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
@@ -35,7 +36,7 @@ const HamburgerBtnClassStyle: ButtonUIClassStylesInterface = {
 const TopBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
     wrapper_class_style: "flex items-center cursor-pointer w-10/12 h-full",
 
-    image_class_style: "h-[54px] object-contain",
+    image_class_style: "h-[48px] object-contain",
 
     content_wrapper_class_style: "hidden",
 
@@ -73,9 +74,9 @@ const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
 }
 
 const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer px-4 py-2 flex justify-between items-center group/link w-full hover:bg-[#6f7e8d6e]",
+    wrapper_class_style: "flex items-center cursor-pointer px-4 py-2 flex justify-between items-center group/link w-full hover:bg-[#f0f4f8]",
 
-    active_menu_class_style: "bg-[#6f7e8d6e]",
+    active_menu_class_style: "bg-[#f0f4f8]",
 
     icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
 
@@ -83,6 +84,62 @@ const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
 
     content_class_style: "flex items-center justify-start text-black text-[16px] text-start w-full"
 }
+
+const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
+    overlay_class_style: {
+        wrapper_class_style: "fixed inset-0 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[40]",
+
+        overlay_class_style: "absolute w-full h-full bg-[#000000cc] cursor-pointer z-[41]",
+
+        content_wrapper_class_style: "absolute w-full h-full p-0 m-0 flex items-start justify-start",
+    },
+    layout_section_class_style: {
+
+        wrapper_class_style: "h-screen bg-[#02182e] shadow-lg w-48 z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
+
+        section_1_wrapper_class_style:  "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",
+
+        section_2_wrapper_class_style: "h-[85%] overflow-x-hidden overflow-y-auto w-full p-0",
+
+        section_3_wrapper_class_style: ""
+    }
+}
+
+const SideBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
+    wrapper_class_style: "flex items-center justify-center cursor-pointer w-full h-full",
+
+    image_class_style: "object-contain h-[56px]",
+
+    content_wrapper_class_style: "hidden",
+
+    loading_class_style: "",
+
+    error_class_style: "",
+}
+
+const SideBarMenuListClassstyle: DropdownMenuUIClassStylesInterface = {
+
+    wrapper_class_style: "w-full p-0 m-0 flex flex-col items-center justify-start",
+
+    menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
+
+    menu_item_wrapper_class_style: "w-full p-0 m-0",
+
+    visible_class_style: "",
+}
+
+const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
+    wrapper_class_style: "flex items-center cursor-pointer px-4 py-2 flex justify-between items-center group/link w-full h-[50px] hover:bg-[#6f7e8d6e] my-2",
+
+    active_menu_class_style: "bg-[#6f7e8d6e]",
+
+    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden  w-3/12 h-full p-2",
+
+    icon_img_class_style: "w-[24px] h-[24px] text-white",
+
+    content_class_style: "flex items-center justify-start text-white text-[16px] text-start w-full"
+}
+
 
 // const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
 const DashboardLayoutClassstyles = {
@@ -95,6 +152,10 @@ const DashboardLayoutClassstyles = {
     content_class_style: ContentClassstyle,
     member_avatar_drodpwn_class_style: MemberAvatarDropdownClassStyle,
     member_avatar_dropdown_menu_list_class_style: MemberAvatarDropdownMenuListClassStyle,
+    side_bar_class_style: SideBarUIClassStyle,
+    side_bar_logo_class_style: SideBarLogoClassstyle,
+    side_bar_menu_list_class_style: SideBarMenuListClassstyle,
+    side_bar_menu_item_class_style: SideBarNavMenuClassstyle
 
 
 

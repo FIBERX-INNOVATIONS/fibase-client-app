@@ -15,6 +15,8 @@ import {
 import DashboardLayoutClassstyles from "@/class_styles/dashboard_layout_class_styles";
 
 import TopBarUI from "@/components/TopBarUI.vue";
+import SideBarUI from "@/components/SideBarUI.vue";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 
@@ -37,9 +39,7 @@ class DashboardLayoutController extends BaseController<
 
     protected getUIComponents(): DashboardLayoutComponentsInterface {
 
-        return { 
-            TopBarUI
-        };
+        return { TopBarUI, SideBarUI };
 
     }
 

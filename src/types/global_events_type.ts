@@ -6,6 +6,8 @@ export type GlobalEventTypes = {
 
     close_modal: CloseModalEventInterface;
 
+    toggle_sidebar: ToggleSidebarEventInterface;
+
 };
 
 
@@ -24,4 +26,8 @@ export interface AlertStatusChangedEventInterface {
 
 export interface CloseModalEventInterface {
     modal_index?: number
+}
+
+export interface ToggleSidebarEventInterface {
+    toggle_state?: boolean;
 }

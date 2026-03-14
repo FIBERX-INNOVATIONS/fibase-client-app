@@ -18,7 +18,8 @@ export interface DashboardLayoutComputedDataInterface {
 }
 
 export interface DashboardLayoutComponentsInterface {
-   TopBarUI: Component
+   TopBarUI: Component;
+   SideBarUI: Component
 }
 
 export interface DashboardLayoutClassStylesInterface {

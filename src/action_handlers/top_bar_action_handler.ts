@@ -48,7 +48,11 @@ class TopBarUIActionHandler {
     public toggleSideBar = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<void> => {}
+    ): Promise<void> => {
+        
+        this.controller.event_bus?.emit("toggle_sidebar", {});
+        return;
+    }
 
     // Method to redirect to dahsboard home page
     public toHomePage = async (

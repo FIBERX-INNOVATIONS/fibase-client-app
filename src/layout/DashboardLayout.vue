@@ -3,6 +3,7 @@
         <header :class="class_styles.header_class_style">
             <TopBarUI />
         </header>
+        <SideBarUI />
         <main :class="class_styles.main_class_style">
             <RouterView />
         </main>
@@ -21,7 +22,8 @@ const {
 } = controller;
 
 const { 
-    TopBarUI 
+    TopBarUI,
+    SideBarUI
 } = components
 
 </script>
