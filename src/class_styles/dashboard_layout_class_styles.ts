@@ -68,13 +68,13 @@ const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 
-    menu_item_wrapper_class_style: "w-full p-0 m-0",
+    menu_item_wrapper_class_style: "w-full px-1 m-0",
 
     visible_class_style: "",
 }
 
 const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer px-4 py-2 flex justify-between items-center group/link w-full hover:bg-[#f0f4f8]",
+    wrapper_class_style: "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8]",
 
     active_menu_class_style: "bg-[#f0f4f8]",
 
@@ -123,13 +123,13 @@ const SideBarMenuListClassstyle: DropdownMenuUIClassStylesInterface = {
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 
-    menu_item_wrapper_class_style: "w-full p-0 m-0",
+    menu_item_wrapper_class_style: "w-full px-1 m-0",
 
     visible_class_style: "",
 }
 
 const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer px-4 py-2 flex justify-between items-center group/link w-full h-[50px] hover:bg-[#6f7e8d6e] my-2",
+    wrapper_class_style: "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full h-[50px] hover:bg-[#6f7e8d6e] my-1",
 
     active_menu_class_style: "bg-[#6f7e8d6e]",
 
