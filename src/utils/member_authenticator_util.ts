@@ -121,6 +121,7 @@ class MemberAuthenticatorUtil {
         expires_in_mins: number
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
+        console.log({ expiry_date, expires_in_mins })
 
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);

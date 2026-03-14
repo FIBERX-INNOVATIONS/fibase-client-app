@@ -14,6 +14,7 @@ import {
 } from "@/ui_types/top_bar_ui_type";
 import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { ImageRenderUIPropsInterface } from "@ui/version_3/ui_types/image_render_ui_type";
+import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 
 
@@ -49,12 +50,22 @@ class TopBarUIActionHandler {
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {}
 
+    // Method to redirect to dahsboard home page
     public toHomePage = async (
         event?: MouseEvent,
         config?: { props: ImageRenderUIPropsInterface }
     ): Promise<void> => {
         this.controller.router.push("/dashboard");
         return;
+    }
+
+    // Method to toggle member avatar drodpown
+    public toggleMemeberAvatarDrodpwn =  async (
+        event?: MouseEvent,
+        config?: { props: ImageRenderUIPropsInterface }
+    ): Promise<void> => {
+        DropdownMenuUIPropsBuilder.toggleDropdownMenu("MemberAvatar", "MemberAvatarDropdown");
+        return
     }
 
 

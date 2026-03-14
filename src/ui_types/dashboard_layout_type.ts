@@ -26,5 +26,6 @@ export interface DashboardLayoutClassStylesInterface {
     main_class_style: string;
     top_bar_class_style: LayoutSectionsUIClassStylesInterface;
     hamburger_btn_class_style: ButtonUIClassStylesInterface;
-    topbar_logo_class_style: ImageRenderUIClassStylesInterface
+    topbar_logo_class_style: ImageRenderUIClassStylesInterface;
+    member_avatar_class_style: ImageRenderUIClassStylesInterface;
 }

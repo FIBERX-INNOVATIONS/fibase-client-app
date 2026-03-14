@@ -206,11 +206,10 @@ class AppRootActionHandler {
         if (delay <= 0) {
             // already near expiry
             AuthAPIService.refreshAccessToen();
-            return;
         }
 
         setTimeout(() => {
-            console.log(`Refresh Access Scheduled`)
+            console.log(`Refresh Access Scheduled ${delay}`)
             AuthAPIService.refreshAccessToen();
         }, delay);
     }

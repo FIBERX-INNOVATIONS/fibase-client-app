@@ -1,16 +1,24 @@
 <template>
-    <LayoutSectionsUI
-        id="TopBar"
-        element_type="nav"
-        :class_styles="class_styles"
-    >
-        <template #section_1>
-            <ButtonUI v-bind="hamburger_btn_props" />
-            <ImageRenderUI v-bind="nav_logo_props" />
-        </template>
+    <template v-if="true">
+        <LayoutSectionsUI
+            id="TopBar"
+            element_type="nav"
+            :class_styles="class_styles"
+        >
+            <template #section_1>
+                <ButtonUI v-bind="hamburger_btn_props" />
+                <ImageRenderUI v-bind="nav_logo_props" />
+            </template>
 
-    
-    </LayoutSectionsUI>    
+            <template #section_3>
+                <ImageRenderUI v-bind="member_avatar_props" />
+            </template>
+
+            
+        </LayoutSectionsUI>    
+
+        <DropdownMenuUI v-bind="member_avatar_dropdown_props" />
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -29,12 +37,15 @@ const {
 const {
     LayoutSectionsUI,
     ButtonUI,
-    ImageRenderUI
+    ImageRenderUI,
+    DropdownMenuUI
 } = components;
 
 const {
     hamburger_btn_props,
-    nav_logo_props
+    nav_logo_props,
+    member_avatar_props,
+    member_avatar_dropdown_props
 } = state_refs
 
 
