@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 
-import TwoFactorLoginViewController  from "@/controllers/two_factor_login_view_controller";
+import TwoFactorLoginViewController  from "@/controllers/auth/two_factor_login_view_controller";
 
 const props            = defineProps({});
 const controller       = new TwoFactorLoginViewController(props);

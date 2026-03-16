@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import DashboardLayoutController from "@/controllers/dashboard_layout_controller";
+import DashboardLayoutController from "@/controllers/layout/dashboard_layout_controller";
 
 const props         = defineProps({});
 const controller    = new DashboardLayoutController(props);

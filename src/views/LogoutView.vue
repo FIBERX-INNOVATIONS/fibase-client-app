@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 
-import LogoutViewController  from "@/controllers/logout_view_controller";
+import LogoutViewController  from "@/controllers/auth/logout_view_controller";
 
 const props            = defineProps({});
 const controller       = new LogoutViewController(props);

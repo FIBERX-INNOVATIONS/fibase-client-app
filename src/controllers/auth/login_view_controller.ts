@@ -26,12 +26,10 @@ import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
 import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
 import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
 import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
-import LoginViewActionHandler from "@/action_handlers/login_view_action_handler";
+import LoginViewActionHandler from "@/action_handlers/auth/login_view_action_handler";
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
-
-
 
 
 

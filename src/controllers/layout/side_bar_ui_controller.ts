@@ -4,9 +4,9 @@ import BaseController  from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
 
-import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
-
 import {  GlobalEventTypes } from "@/types/global_events_type";
+
+import { WatchersType } from "@ui/version_3/types/base_type";
 
 import DashboardLayoutClassstyles from "@/class_styles/dashboard_layout_class_styles";
 
@@ -25,12 +25,12 @@ import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
 import ImageRenderUI from "@ui/version_3/components/ImageRenderUI.vue";
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
-import SideBarUIActionHandler from "@/action_handlers/side_bar_action_handler";
+
+import SideBarUIActionHandler from "@/action_handlers/layout/side_bar_action_handler";
 import ImageRenderUIPropsBuilder from "@ui/version_3/props_builder/image_render_ui_props_builder";
-import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 import OverlayUIPropsBuilder from "@ui/version_3/props_builder/overlay_ui_props_builder";
+
 
 
 
@@ -106,15 +106,16 @@ class SideBarUIController extends BaseController<
 
     }
 
-    protected getUIComputedData(): ComputedDefinitionType<SideBarUIComputedDataInterface> {
-
-        return {};
-
-    }
+    protected getUIWatchers(): WatchersType<SideBarUIPropsInterface, SideBarUIStateDataInterface> {
+            return {
+                route: () => {
+                    this.action_handler.handleToggleSideBar({ toggle_state: false });
+                    return;
+                }
+            };
+        }
 
     protected async handleOnMountedLogic(): Promise<void> {
-        // Bridge mitt events to Vue template handlers
-        console.log(" mounted ")
         this.event_bus?.on("toggle_sidebar", this.action_handler.handleToggleSideBar);
     }
 

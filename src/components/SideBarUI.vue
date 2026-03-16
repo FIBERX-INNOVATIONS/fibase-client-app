@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import SideBarUIController from "@/controllers/side_bar_ui_controller";
+import SideBarUIController from "@/controllers/layout/side_bar_ui_controller";
 
 const props = defineProps({});
 

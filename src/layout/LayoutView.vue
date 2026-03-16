@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import LayoutViewController from "@/controllers/layout_view_controller";
+import LayoutViewController from "@/controllers/layout/layout_view_controller";
 
 const props         = defineProps({});
 const controller    = new LayoutViewController(props)

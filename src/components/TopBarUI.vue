@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import TopBarUIController from "@/controllers/top_bar_ui_controller";
+import TopBarUIController from "@/controllers/layout/top_bar_ui_controller";
 
 const props = defineProps({});
 

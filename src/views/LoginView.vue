@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 
-import LoginViewController  from "@/controllers/login_view_controller";
+import LoginViewController  from "@/controllers/auth/login_view_controller";
 
 const props            = defineProps({});
 const controller       = new LoginViewController(props);

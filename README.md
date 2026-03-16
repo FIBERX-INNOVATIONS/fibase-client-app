@@ -1,13 +1,4 @@
-the next component i want to work on is a ModalUi component which makes use of the overlay component we just previosuly designed.
-Please note the way i use components in apps is that i can layer them untop each other, so i can have multiple modal open.
-Other things to note:
-1. Modals are please inside overlays, and have contents
-2. contents can be postioned to the extreme right or extreme left or center horizontally, they can also be left, reigh or centered vertically (this should be more up the to the class styles)
-3. the content display can be animated to slide in or out or appear and disspaar.
-4. inside a content we have 3 sections header body footer. the header and footer usually have fixed heights while the body is scrollable
-(you can use the Section ui we designed previoulsy for htis).
-5. body and footer are laways customisable by passing slots but the header can have a default or by passing slot.
-6. header default is made up of a title text(can include an icon or img to at the start of it) to the left and an ex-close icon to the right
+the next compoennt i want to work on is a breadcrumb component i would like it to make use of the existing navlink component i have atatched the  props an dvue file for the nav link, the breadcrumb would receive a list of nav links
 
 with the above info can you help generate code for the below files for the component
 - a type file 
@@ -17,46 +8,169 @@ with the above info can you help generate code for the below files for the compo
 - a vue file 
 - a props builder file
 
-previous old modal code you can use as a guide and only a guide for new modal ui design
 <template>
-    <!-- Overlay -->
-    <div v-if="props.is_open" 
-        :style="{ zIndex: 100 + props.layer }"
-        :class="overlay_class_style"
-        @click.self="event_handler?.handleOnModalCloseClick?.($event)"
+    <component
+        :is="computed_refs.component_type.value"
+        :to="computed_refs.route_link.value"
+        :href="computed_refs.anchor_link.value"
+        :target="computed_refs.anchor_target.value"
+        :class="[
+            class_styles.wrapper_class_style,
+            computed_refs.is_active_computed.value
+                ? class_styles.active_menu_class_style
+                : ''
+        ]"
+        @click="action_handler?.handleOnClick?.($event)"
     >
-        <!-- Modal box -->
-        <transition :name="modal_transition_name" appear>
-            <div
-                v-if="is_open"
-                :class="[modal_position_class_style, modal_size_class_style, props.modal_box_class_style ]"
-            >
-                <!-- Modal Header -->
-                <div :class="props.header_wrapper_class_style">
-                    <div :class="props.header_title_content_class_style">
-                        <h3 :class="props.header_title_class_style" v-html="props.title_content"></h3>
-                    </div>
-                    <div :class="props.header_close_btn_content_class_style">
-                        <button 
-                            type="button" 
-                            :class="props.close_btn_class_style"
-                            @click="event_handler?.handleOnModalCloseClick?.($event)"
-                            v-html="btn_content ?? props?.close_btn_content"
-                        ></button>
-                    </div>
-                </div>
 
-                <!-- ModalBody -->
-                 <div :class="props.body_class_style">
-                    <component 
-                        v-if="body_component && body_props && Object.keys(body_props).length"  
-                        :is="body_component" 
-                        v-bind="body_props" 
-                    />
-                 </div>
-            </div>
-        </transition>
-    </div>
+        <div
+            v-if="img_src || icon"
+            :class="class_styles.icon_img_wrapper_class_style"
+        >
 
+        <img
+            v-if="img_src"
+            :src="img_src"
+            :alt="img_alt_text"
+            :class="class_styles.icon_img_class_style"
+        />
+
+        <span
+            v-else-if="icon"
+            v-html="computed_refs.icon_svg.value"
+            :class="class_styles.icon_img_class_style"
+        />
+
+        </div>
+
+        <div
+            v-if="content"
+            :class="class_styles.content_class_style"
+            v-html="content"
+        ></div>
+
+    </component>
 </template>
+
+import { Component } from "vue";
+import { SVGIconKey, SVGIconValue } from "../resources/svg_icon_resource";
+
+/* ---------------------------------- */
+/* Link Types                         */
+/* ---------------------------------- */
+
+export type NavLinkType =
+    | "router"
+    | "external"
+    | "action";
+
+
+/* ---------------------------------- */
+/* Action Return                      */
+/* ---------------------------------- */
+
+export interface NavLinkActionReturnInterface {
+    status: boolean;
+    msg: string;
+    data?: Record<string, any>;
+}
+
+
+/* ---------------------------------- */
+/* Action Props                       */
+/* ---------------------------------- */
+
+export interface NavLinkUIActionPropsInterface {
+
+    on_click?: (
+        event?: MouseEvent,
+        config?: { props: NavLinkUIPropsInterface }
+    ) => Promise<NavLinkActionReturnInterface>;
+
+}
+
+
+/* ---------------------------------- */
+/* Class Styles                       */
+/* ---------------------------------- */
+
+export interface NavLinkUIClassStylesInterface {
+
+    wrapper_class_style: string;
+
+    active_menu_class_style: string;
+
+    icon_img_wrapper_class_style: string;
+
+    icon_img_class_style: string;
+
+    content_class_style: string;
+
+}
+
+
+/* ---------------------------------- */
+/* Props Interface                    */
+/* ---------------------------------- */
+
+export interface NavLinkUIPropsInterface {
+
+    id?: string;
+
+    link?: string;
+
+    icon?: SVGIconKey | null;
+
+    img_src?: string;
+
+    img_alt_text?: string;
+
+    content?: string;
+
+    action_props?: NavLinkUIActionPropsInterface;
+
+    class_styles?: NavLinkUIClassStylesInterface;
+
+}
+
+
+/* ---------------------------------- */
+/* State                              */
+/* ---------------------------------- */
+
+export interface NavLinkUIStateDataInterface {
+
+    is_loading: boolean;
+
+}
+
+
+/* ---------------------------------- */
+/* Computed                           */
+/* ---------------------------------- */
+
+export interface NavLinkUIComputedDataInterface {
+
+    component_type: any;
+
+    route_link: string | null;
+
+    anchor_link: string | null;
+
+    anchor_target: string | null;
+
+    is_active_computed: boolean;
+
+    icon_svg: SVGIconValue;
+
+}
+
+
+/* ---------------------------------- */
+/* Components                         */
+/* ---------------------------------- */
+
+export interface NavLinkUIComponentsInterface {
+    RouterLink: Component;
+}
 

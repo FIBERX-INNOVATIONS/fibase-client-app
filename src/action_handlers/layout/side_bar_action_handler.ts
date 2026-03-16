@@ -4,7 +4,7 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util"
 
-import {  GlobalEventTypes } from "@/types/global_events_type";
+import {  GlobalEventTypes, ToggleSidebarEventInterface } from "@/types/global_events_type";
 
 import {
     SideBarUIPropsInterface,
@@ -13,9 +13,6 @@ import {
     SideBarUIComponentsInterface
 } from "@/ui_types/side_bar_ui_type";
 
-import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-import { ImageRenderUIPropsInterface } from "@ui/version_3/ui_types/image_render_ui_type";
-import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 import { OverlayUIPropsInterface } from "@ui/version_3/ui_types/overlay_ui_type";
 
 
@@ -53,11 +50,13 @@ class SideBarUIActionHandler {
         this.controller.state_refs.sidebar_overlay_props.value.model_value = false;
     }
 
-    // Method to ahndle toggle sidebar
-    public handleToggleSideBar = (params = {}) => {
+    // Method to handle toggle sidebar
+    public handleToggleSideBar = (params: ToggleSidebarEventInterface = {}) => {
         const current_toggle_state = this.controller.state_refs.sidebar_overlay_props.value.model_value;
+        const new_toggle_state      = params.toggle_state !== undefined ? params.toggle_state : !current_toggle_state;
 
-        this.controller.state_refs.sidebar_overlay_props.value.model_value = !current_toggle_state;
+        this.controller.state_refs.sidebar_overlay_props.value.model_value = new_toggle_state;
+        return
     
     }
 }

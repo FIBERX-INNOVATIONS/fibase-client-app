@@ -19,7 +19,7 @@ import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
 import HeaderTextUI from "@ui/version_3/components/HeaderTextUI.vue";
 
 import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
-import LogoutViewActionHandler from "@/action_handlers/logout_view_action_handler";
+import LogoutViewActionHandler from "@/action_handlers/auth/logout_view_action_handler";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 

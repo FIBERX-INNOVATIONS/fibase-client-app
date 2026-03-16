@@ -25,7 +25,7 @@ import ImageRenderUI from "@ui/version_3/components/ImageRenderUI.vue";
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
-import TopBarUIActionHandler from "@/action_handlers/top_bar_action_handler";
+import TopBarUIActionHandler from "@/action_handlers/layout/top_bar_action_handler";
 import ImageRenderUIPropsBuilder from "@ui/version_3/props_builder/image_render_ui_props_builder";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";

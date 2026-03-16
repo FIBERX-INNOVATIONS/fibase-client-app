@@ -15,7 +15,7 @@ import {
     TwoFactorLoginViewComponentsInterface
 } from "@/ui_types/two_factor_login_view_type";
 
-import BaseFormActionHandler from "./base_form_action_hanler";
+import BaseFormActionHandler from "../base_classes/base_form_action_hanler";
 import TwoFactorLoginValidator from "@/validators/two_factor_login_validator";
 import AuthAPIService from "@/api_services/auth_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";

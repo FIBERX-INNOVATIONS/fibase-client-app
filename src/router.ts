@@ -11,6 +11,7 @@ const LoginView                         = () => import("@/views/LoginView.vue");
 const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginView.vue");
 const LogoutView                        = () => import("@/views/LogoutView.vue");
 const DashboardView                     = () => import("@/views/DashboardView.vue");
+const RegisteredAppListView             = () => import("@/views/registered_app/ListView.vue");
 
 const MyProfileView                     = () => import("@/views/MyProfileView.vue");
 
@@ -113,6 +114,16 @@ class RouterManager {
                 component: DashboardView,
                 meta: {
                     title_key: "dashboard-page", 
+                    permission_name: "", 
+                    is_auth_page: false
+                }
+            },
+            { 
+                path: "/registered-apps", 
+                name: "RegisteredAppLis", 
+                component: RegisteredAppListView,
+                meta: {
+                    title_key: "registered-app-list-page", 
                     permission_name: "", 
                     is_auth_page: false
                 }
