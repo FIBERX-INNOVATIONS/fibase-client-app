@@ -209,7 +209,7 @@ class AppRootActionHandler {
         }
 
         setTimeout(() => {
-            console.log(`Refresh Access Scheduled ${delay}`)
+            console.log(`Refresh Access Scheduled ${delay} date ${expiry_date}`)
             AuthAPIService.refreshAccessToen();
         }, delay);
     }

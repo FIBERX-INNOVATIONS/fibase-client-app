@@ -15,7 +15,7 @@ import {
     LoginViewComponentsInterface
 } from "@/ui_types/login_view_type";
 
-import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_hanler";
+import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
 import LoginValidator from "@/validators/login_validator";
 import AuthAPIService from "@/api_services/auth_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";

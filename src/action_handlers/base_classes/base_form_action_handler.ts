@@ -27,7 +27,8 @@ import {
 import {
     InputUIPropsInterface,
     InputUIActionPropsInterface,
-    ActionMethodRetrunInterface
+    ActionMethodRetrunInterface,
+    InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
@@ -228,7 +229,7 @@ class BaseFormActionHandler<
     // Method to handle on input and record in form data
     public handleOnInputChanged = async (
         event?: Event,
-        input_value?: string | number | boolean | Array<any> | File | null,
+        input_value?: InputValue,
         input_config?: { props: InputUIPropsInterface }
     ): Promise<ActionMethodRetrunInterface> => {
 

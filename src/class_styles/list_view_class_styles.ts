@@ -1,6 +1,12 @@
 
 import { ListViewClassStylesInterface } from "@/ui_types/list_view_type";
 import { BreadcrumbUIClassStylesInterface } from "@ui/version_3/ui_types/breadcrumb_ui_type";
+import { FiltersPanelUIClassStylesInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
+import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
+import { PageHeaderUIClassStylesInterface } from "@ui/version_3/ui_types/page_header_ui_type";
+import input_group_class_style from "./input_group_ui_class_styles";
+import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
+import input_ui_class_styles from "./input_ui_class_styles";
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
@@ -24,10 +30,98 @@ const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
     }
 };
 
+const page_header_class_styles: PageHeaderUIClassStylesInterface = {
+    wrapper_class_style: "w-full py-4 px-[4%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
+    
+    top_row_class_style: "flex flex-col md:flex-row md:items-center md:justify-between gap-3",
+
+    header_wrapper_class_style:  "flex flex-col gap-1",
+
+    description_class_style: "text-sm text-gray-500 mt-8",
+
+    action_buttons_wrapper_class_style: "flex flex-wrap gap-2",
+
+    header_text_class_styles: {
+        text_class_style: "font-bold text-start capitalize text-2xl flex w-full items-center justify-start",
+    },
+
+    action_button_class_styles: {
+        wrapper_class_style: "w-auto flex",
+
+        button_class_style: "w-auto cursor-pointer inline-flex items-center justify-center rounded-full ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed text-md text-white font-semibold tracking-wider py-3",
+
+        disabled_class_style: "opacity-50 cursor-not-allowed",
+
+        loading_class_style: "opacity-80",
+
+        icon_class_style: "w-4 h-4 mr-2 flex items-center",
+
+        text_class_style: "flex items-center justify-center"
+    }
+}
+
+const filters_class_styles: FiltersPanelUIClassStylesInterface = {
+    wrapper_class_style: "w-full mt-4 mb-2 flex flex-col item-center justify-start py-2",
+
+    toggle_btn_wrapper_class_style: "w-full flex items-center justify-start py-2",
+
+    toggle_btn_class_style: "w-auto cursor-pointer inline-flex items-center justify-center rounded-full ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed text-md text-white font-semibold tracking-wider py-2",
+
+    toggle_btn_icon_class_style: "w-6 h-6 flex items-center mr-2",
+
+    toggle_btn_content_wrapper_class_style: "flex item-center justify-center",
+
+    panel_wrapper_class_style: "w-full flex flex-col items-center justify-center py-2 overflow-hidden transition-all duration-500",
+
+    filters_grid_class_style: "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full px-4",
+
+    actions_wrapper_class_style: "w-full flex flex-wrap gap-3 pt-2 items-center justify-end",
+
+    clear_filters_btn_class_style: {
+        wrapper_class_style: "w-auto flex",
+
+        button_class_style: "w-auto cursor-pointer inline-flex items-center justify-center underline  px-4 text-blue-500 hover:text-blue-500 disabled:text-gray-600 disabled:cursor-not-allowed text-md font-semibold tracking-wider py-3",
+
+        disabled_class_style: "opacity-50 cursor-not-allowed",
+
+        loading_class_style: "opacity-80",
+
+        icon_class_style: "w-6 h-6 mr-2 flex items-center",
+
+        text_class_style: "flex items-center justify-center"
+    },
+
+    apply_filters_btn_class_style: {
+        wrapper_class_style: "w-auto flex",
+
+        button_class_style: "w-auto cursor-pointer inline-flex items-center justify-center rounded-full ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed text-md text-white font-semibold tracking-wider py-3",
+
+        disabled_class_style: "opacity-50 cursor-not-allowed",
+
+        loading_class_style: "opacity-80",
+
+        icon_class_style: "w-6 h-6 mr-2 flex items-center",
+
+        text_class_style: "flex items-center justify-center"
+    }
+}
+
+const filters_input_group_class_styles: InputGroupUIClassStylesInterface = {
+    ...input_group_class_style,
+}
+
+const filters_input_ui_class_styles: InputUIClassStylesInterface = {
+    ...input_ui_class_styles,
+}
+
 
 const ListViewClassStyles: ListViewClassStylesInterface = { 
     wrapper_class_style: "w-full px-[5%]",
     list_view_breadcrumb_class_styles,
+    page_header_class_styles,
+    filters_class_styles,
+    filters_input_group_class_styles,
+    filters_input_ui_class_styles
 
 }
 

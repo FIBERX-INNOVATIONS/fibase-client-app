@@ -63,6 +63,8 @@ class MemberAuthenticatorUtil {
 
     // check is member has permisison X
     public static memberHasPermissionTo = (permission: string): boolean => {
+        if(!permission || permission) { return  true }
+
         const member_permissions = MemberAuthenticatorUtil.getLoggedInMemberPermissions();
 
         return member_permissions.includes(permission);

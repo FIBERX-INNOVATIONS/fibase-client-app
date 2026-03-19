@@ -3,6 +3,10 @@
 
         <BreadcrumbUI v-bind="breadcrumb_props" />
 
+        <PageHeaderUI v-bind="page_header_props">
+            <FiltersPanelUI  v-bind="filters_panel_props" />
+        </PageHeaderUI>
+
     </section>
 </template>
 
@@ -20,11 +24,15 @@ const {
 } = controller;
 
 const {
-    BreadcrumbUI
+    BreadcrumbUI,
+    PageHeaderUI,
+    FiltersPanelUI
 } = components;
 
 const {
-    breadcrumb_props
+    breadcrumb_props,
+    page_header_props,
+    filters_panel_props
 } = state_refs;
 
 </script>
