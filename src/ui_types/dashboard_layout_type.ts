@@ -7,6 +7,7 @@ import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/lay
 import { NavLinkUIClassStylesInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 import { Component, Ref } from "vue";
 import { SideBarUIClassStyleInterface } from "./side_bar_ui_type";
+import { ModalUIClassStylesInterface, ModalUIPropsExtendedInterface } from "@ui/version_3/ui_types/modal_ui_type";
 
 
 export interface DashboardLayoutPropsInterface {
@@ -14,6 +15,7 @@ export interface DashboardLayoutPropsInterface {
 }
 
 export interface DashboardLayoutStateDataInterface {
+    modals: ModalUIPropsExtendedInterface[]
 
 }
 
@@ -22,7 +24,8 @@ export interface DashboardLayoutComputedDataInterface {
 
 export interface DashboardLayoutComponentsInterface {
    TopBarUI: Component;
-   SideBarUI: Component
+   SideBarUI: Component;
+   ModalUI: Component;
 }
 
 export interface DashboardLayoutClassStylesInterface {
@@ -50,4 +53,6 @@ export interface DashboardLayoutClassStylesInterface {
     side_bar_menu_list_class_style: DropdownMenuUIClassStylesInterface;
 
     side_bar_menu_item_class_style: NavLinkUIClassStylesInterface;
+
+    modal_class_style: ModalUIClassStylesInterface;
 }

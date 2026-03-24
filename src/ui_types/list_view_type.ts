@@ -6,6 +6,7 @@ import { PageHeaderUIClassStylesInterface, PageHeaderUIPropsInterface } from "@u
 import { FiltersPanelUIClassStylesInterface, FiltersPanelUIPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
 import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
+import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 
 

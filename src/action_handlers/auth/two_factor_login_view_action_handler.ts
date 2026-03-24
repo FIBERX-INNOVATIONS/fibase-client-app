@@ -64,6 +64,7 @@ class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
 
         try {
             const form_data             = (this.form_data) as TwoFactorFormDataInterface;
+            form_data.otp_code          = Array.isArray(form_data.otp_code) ? form_data.otp_code?.join("") : form_data.otp_code;
             const { v_state, v_msg }    = TwoFactorLoginValidator.validateTwoFactorLoginInput(form_data);
 
             if(!v_state) {

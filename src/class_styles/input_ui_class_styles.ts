@@ -2,7 +2,7 @@
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 
 const input_ui_class_styles: InputUIClassStylesInterface = {
-    input_class_style: "w-full min-h-10 flex rounded-md border px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2  bg-gray-200 border-blue-600/70 text-black placeholder-gray-400 focus:ring-sky-500",
+    input_class_style: "!w-full !min-h-10 !flex !rounded-md !border px-3 !py-2 !text-sm !ring-offset-background !placeholder:text-muted-foreground !focus-visible:outline-none !focus-visible:ring-2 !focus-visible:ring-ring !focus-visible:ring-offset-2  !bg-gray-200 !border-blue-600/70 !text-black !placeholder-gray-400 !focus:ring-sky-500",
 
     wrapper_class_style: "w-full flex flex-col items-center gap-2 justify-center relative",
 

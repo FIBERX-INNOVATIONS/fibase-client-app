@@ -23,6 +23,7 @@ export default defineConfig({
         alias: { 
             "@": fileURLToPath(new URL("./src", import.meta.url)),
             "@ui": fileURLToPath(new URL("../../fi-ui-toolkit", import.meta.url)),
+            "vue": path.resolve(__dirname, 'node_modules/vue')
         }
     },
     appType: "spa",

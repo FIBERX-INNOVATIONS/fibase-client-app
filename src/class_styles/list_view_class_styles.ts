@@ -7,6 +7,8 @@ import { PageHeaderUIClassStylesInterface } from "@ui/version_3/ui_types/page_he
 import input_group_class_style from "./input_group_ui_class_styles";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 import input_ui_class_styles from "./input_ui_class_styles";
+import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
+import ButtonUIClassStyles from "./button_ui_class_styles";
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
@@ -71,7 +73,7 @@ const filters_class_styles: FiltersPanelUIClassStylesInterface = {
 
     toggle_btn_content_wrapper_class_style: "flex item-center justify-center",
 
-    panel_wrapper_class_style: "w-full flex flex-col items-center justify-center py-2 overflow-hidden transition-all duration-500",
+    panel_wrapper_class_style: "w-full flex flex-col items-center justify-center py-2 transition-all duration-500",
 
     filters_grid_class_style: "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full px-4",
 
@@ -115,13 +117,14 @@ const filters_input_ui_class_styles: InputUIClassStylesInterface = {
 }
 
 
+
 const ListViewClassStyles: ListViewClassStylesInterface = { 
     wrapper_class_style: "w-full px-[5%]",
     list_view_breadcrumb_class_styles,
     page_header_class_styles,
     filters_class_styles,
     filters_input_group_class_styles,
-    filters_input_ui_class_styles
+    filters_input_ui_class_styles,
 
 }
 

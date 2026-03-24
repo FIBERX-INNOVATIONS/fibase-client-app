@@ -8,7 +8,7 @@ import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import {  GlobalEventTypes } from "@/types/global_events_type";
 
-import DashboardLayoutClassstyles from "@/class_styles/dashboard_layout_class_styles";
+import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 
 import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/layout_sections_ui_type";
 
@@ -39,7 +39,7 @@ class TopBarUIController extends BaseController<
     TopBarUIComponentsInterface,
     GlobalEventTypes
 >{
-    public class_styles: LayoutSectionsUIClassStylesInterface = DashboardLayoutClassstyles.top_bar_class_style;
+    public class_styles: LayoutSectionsUIClassStylesInterface = DashboardLayoutClassStyles.top_bar_class_style;
 
     public action_handler: TopBarUIActionHandler = new TopBarUIActionHandler(this);
 
@@ -72,7 +72,7 @@ class TopBarUIController extends BaseController<
                 "hamburger_svg_icon", 
                 "button",
                 {
-                    class_styles: DashboardLayoutClassstyles.hamburger_btn_class_style,
+                    class_styles: DashboardLayoutClassStyles.hamburger_btn_class_style,
                     action_props: { on_click: this.action_handler.toggleSideBar }
                 }
             ),
@@ -81,7 +81,7 @@ class TopBarUIController extends BaseController<
                 "TopBarLogo", 
                 "content_resource.dashboard_layout_ui.top_bar_ui.logo",
                 {
-                    class_styles: DashboardLayoutClassstyles.topbar_logo_class_style,
+                    class_styles: DashboardLayoutClassStyles.topbar_logo_class_style,
                     action_props: { on_click: this.action_handler.toHomePage }
                 }
             ),
@@ -90,7 +90,7 @@ class TopBarUIController extends BaseController<
                 "MemberAvatar", 
                 member?.profile_photo_link ?? "",
                 {
-                    class_styles: DashboardLayoutClassstyles.member_avatar_class_style,
+                    class_styles: DashboardLayoutClassStyles.member_avatar_class_style,
                     action_props: { 
                         on_click: this.action_handler.toggleMemeberAvatarDrodpwn 
                     },
@@ -100,11 +100,11 @@ class TopBarUIController extends BaseController<
             member_avatar_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
                 "MemberAvatarDropdown", 
                 {
-                    class_styles: DashboardLayoutClassstyles.member_avatar_drodpwn_class_style,
+                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
                     menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
                         "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
-                        DashboardLayoutClassstyles.member_avatar_dropdown_menu_list_class_style,
+                        DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                     )
                 }
             )

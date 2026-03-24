@@ -5,7 +5,14 @@ export interface CSRFTokenRecordInterface {
     csrf_token_for: string;
 }
 
-export interface MemberRoleInterface {
+export interface PaginatedResponseResultInterface<T> {
+    total_items: number;
+    total_pages: number;
+    current_page: number;
+    records: T
+}
+
+export interface ActorRoleInterface {
     id: string;
     name: string;
     symbol: string;
@@ -40,7 +47,7 @@ export interface MemberRecordInterface {
 
     is_verified: boolean;
 
-    roles: MemberRoleInterface[];
+    roles: ActorRoleInterface[];
 
     is_fully_authenticated: boolean;
 }
@@ -55,10 +62,56 @@ export interface AuthenticatedMemberRecordInterface extends AuthAccessRecordInte
     current_member: MemberRecordInterface;
 }
 
-
-
 export interface TwoFactorAuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
     current_member: MemberRecordInterface;
 
     permissions: string[];
+}
+
+export interface CreatorUpdatorMemberinterface {
+    public_id: string;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    is_active: boolean;
+    is_verified: boolean;
+    roles?: ActorRoleInterface[];
+}
+
+export interface RegisteredAppAuthInterface {
+    id: string;
+    key_algorithm: string; // e.g. "rsa"
+    key_version: number;
+    last_key_rotated_at: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface RegisteredAppRecordInterface {
+    public_id: string;
+    prefix: string;
+    name: string;
+
+    description?: string;
+
+    base_url: string;
+    logo_url: string;
+
+    social_links?: Record<string, string | null> | null;
+
+    urls?: string[] | null;
+
+    is_active: boolean;
+
+    created_at?: string | null;
+    updated_at?: string | null;
+
+    creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+
+    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+
+    roles?: ActorRoleInterface[];
+
+    auth?:  RegisteredAppAuthInterface | null;
 }

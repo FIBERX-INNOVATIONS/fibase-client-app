@@ -7,9 +7,11 @@ import DeviceFingerprintUtil from "@ui/version_3/utils/device_fingerprint_util";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import { AxiosHeaders } from "axios";
 
-export const APP_CONTENT_DATA_URL = (
-    "https://raw.githubusercontent.com/FIBERX-INNOVATIONS/fibase-public-content/development/app_content/en-GB.json"
-) as const;
+// export const APP_CONTENT_DATA_URL = (
+//     "https://raw.githubusercontent.com/FIBERX-INNOVATIONS/fibase-public-content/development/app_content/en-GB.json"
+// ) as const;
+
+export const APP_CONTENT_DATA_URL = ("http://localhost:2000/assets/app_content/en-GB.json") as const;
 
 export const AUTH_ROUTE_NAMES: string[] = [
     "Home", 

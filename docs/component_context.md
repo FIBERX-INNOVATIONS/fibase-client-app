@@ -1,218 +1,264 @@
+i am workin on the modal component and i am not sure how to dynamixally set the modal body and footet with slots, the way modals work is that 1 or more modals can be open and i need to dynamixally pass in the component that would be the body or footer.
+
 <template>
-    <div :class="class_styles.wrapper_class_style">
-        <select
-            :id="id"
-            :name="id"
-            :class="input_class_style"
-            v-model="input_value"
-            :placeholder="placeholder_text"
-            :required="boolean_props.required"
-            :readonly="boolean_props.read_only"
-            :disabled="boolean_props.disabled"
-            @change="action_handler?.handleOnInpuChange?.($event)"
-            @keyup="action_handler?.handleOnKeyup?.($event)"
-            @keydown="action_handler?.handleOnKeydown?.($event)"
-            @click="action_handler?.handleOnClick?.($event)"
+    <OverlayUI :id="overlay_id">
+
+        <div
+            :class="class_styles.wrapper_class_style"
+            :style="computed_refs.z_index_style.value"
         >
-            <option v-if="placeholder_text" disabled value="">
-                {{ placeholder_text }}
-            </option>
-            <option v-for="option in option_props" :key="option.value" :value="option.value">
-                {{ option.label_text }}
-            </option>
-        </select>
 
-        <span 
-            v-if="helper_text"
-            :class="class_styles.helper_text_class_style"
-            v-html="helper_text"
-        ></span>
+            <transition
+                :name="computed_refs.transition_name.value"
+                appear
+            >
 
-        <span 
-            v-if="error_text"
-            :class="class_styles.error_text_class_style"
-            v-html="error_text"
-        ></span>
-    </div>
+                <div
+                    v-if="state_refs.is_visible"
+                    :class="class_styles.modal_class_style"
+                >
 
+                    <!-- Header -->
+                    <div :class="class_styles.header_class_style">
+
+                        <slot name="header">
+
+                            <div :class="class_styles.header_title_wrapper_class_style">
+
+                            <img
+                                v-if="title_img"
+                                :src="title_img"
+                            />
+
+                            <span
+                                v-else-if="title_icon"
+                                v-html="getSVGIconValue(title_icon)"
+                            ></span>
+
+                            <h3
+                                :class="class_styles.header_title_class_style"
+                                v-html="title_text"
+                            ></h3>
+
+                            </div>
+
+                            <div :class="class_styles.header_close_btn_wrapper_class_style">
+
+                                <button
+                                    type="button"
+                                    :class="class_styles.close_btn_class_style"
+                                    @click="action_handler?.handleClose?.($event)"
+                                    v-html="content_props?.close_btn_content ?? getSVGIconValue(content_props?.close_btn_icon_key)"
+                                >
+                                </button>
+
+                            </div>
+
+                        </slot>
+
+                    </div>
+
+
+                    <!-- Body -->
+                    <div :class="class_styles.body_class_style">
+                        <slot name="body" />
+                    </div>
+
+
+                    <!-- Footer -->
+                    <div :class="class_styles.footer_class_style">
+                        <slot name="footer" />
+                    </div>
+
+                </div>
+
+            </transition>
+
+        </div>
+
+    </OverlayUI>
 </template>
 
 <script setup lang="ts">
-import InputUIProps      from "../../props/input_ui_props";
-import InputUIController from "../../controllers/input_ui_controller";
 
-const props         = defineProps(InputUIProps);
-const controller    = new InputUIController(props);
+import ModalUIProps from "../props/modal_ui_props";
+import ModalUIController from "../controllers/modal_ui_controller";
+
+import { getSVGIconValue } from "../resources/svg_icon_resource";
+
+const props = defineProps(ModalUIProps);
+
+const controller = new ModalUIController(props);
 
 const {
-    id,
-    type,
-    placeholder_text,
-    helper_text,
+    overlay_id,
+    title_text,
+    title_icon,
+    title_img,
     class_styles,
-    number_props,
-    boolean_props,
-    option_props
-} = props
+} = props;
 
 const {
     state_refs,
-    action_handler
+    computed_refs,
+    action_handler,
+    components
 } = controller;
 
 const {
-    input_value,
-    error_text
-} = state_refs
+    LayoutSectionsUI,
+    OverlayUI
+} = components
 
-const input_class_style = `
-${class_styles.input_class_style}  
-${boolean_props.read_only ? class_styles.input_readonly_class_style : ''}
-`
 
 </script>
 
-<template>
-    <div :class="class_styles.wrapper_class_style">
-        <input
-            :id="id"
-            :name="id"
-            :type="type"
-            :class="input_class_style"
-            v-model="input_value"
-            :placeholder="placeholder_text"
-            :required="boolean_props.required"
-            :readonly="boolean_props.read_only"
-            :maxlength="number_props.length"
-            :disabled="boolean_props.disabled"
-            @input="action_handler?.handleOnInpuChange?.($event)"
-            @keyup="action_handler?.handleOnKeyup?.($event)"
-            @keydown="action_handler?.handleOnKeydown?.($event)"
-            @click="action_handler?.handleOnClick?.($event)"
-        />
+import { Component } from "vue";
+import { SVGIconKey } from "../resources/svg_icon_resource";
 
-        <span 
-            v-if="helper_text"
-            :class="class_styles.helper_text_class_style"
-            v-html="helper_text"
-        ></span>
-        <span 
-            v-if="error_text"xs
-            :class="class_styles.error_text_class_style"
-            v-html="error_text"
-        ></span>
-    </div>
+/* ---------------------------------- */
+/* Modal Animation                    */
+/* ---------------------------------- */
 
-</template>
-
-<script setup lang="ts">
-import InputUIProps      from "../../props/input_ui_props";
-import InputUIController from "../../controllers/input_ui_controller";
-
-const props         = defineProps(InputUIProps);
-const controller    = new InputUIController(props);
-
-const {
-    id,
-    type,
-    placeholder_text,
-    helper_text,
-    class_styles,
-    number_props,
-    boolean_props
-} = props
-
-const {
-    state_refs,
-    action_handler
-} = controller;
-
-const {
-    input_value,
-    error_text
-} = state_refs
-
-const input_class_style = `
-${class_styles.input_class_style}  
-${boolean_props.read_only ? class_styles.input_readonly_class_style : ''}
-`
-
-</script>
-
-<template>
-    <div :class="class_styles.wrapper_class_style">
-        <input
-            :id="id"
-            :name="id"
-            type="number"
-            :class="input_class_style"
-            v-model="input_value"
-            :placeholder="placeholder_text"
-            :required="boolean_props.required"
-            :readonly="boolean_props.read_only"
-            :maxlength="number_props.length"
-            :min="number_props.min"
-            :max="number_props.max"
-            :step="number_props.step"
-            @input="action_handler?.handleOnInpuChange?.($event)"
-            @keyup="action_handler?.handleOnKeyup?.($event)"
-            @keydown="action_handler?.handleOnKeydown?.($event)"
-            @click="action_handler?.handleOnClick?.($event)"
-        />
-
-        <span 
-            v-if="helper_text"
-            :class="class_styles.helper_text_class_style"
-            v-html="helper_text"
-        ></span>
-
-        <span 
-            v-if="error_text"
-            :class="class_styles.error_text_class_style"
-            v-html="error_text"
-        ></span>
-    </div>
-
-</template>
-
-<script setup lang="ts">
-import InputUIProps      from "../../props/input_ui_props";
-import InputUIController from "../../controllers/input_ui_controller";
-
-const props         = defineProps(InputUIProps);
-const controller    = new InputUIController(props);
-
-const {
-    id,
-    type,
-    placeholder_text,
-    helper_text,
-    class_styles,
-    number_props,
-    boolean_props
-} = props
-
-const {
-    state_refs,
-    action_handler
-} = controller;
-
-const {
-    input_value,
-    error_text
-} = state_refs
-
-const input_class_style = `
-${class_styles.input_class_style}  
-${boolean_props.read_only ? class_styles.input_readonly_class_style : ''}
-`
-
-</script>
+export type ModalAnimationType =
+    | "fade"
+    | "slide_left"
+    | "slide_right"
+    | "slide_top"
+    | "slide_bottom"
+    | "scale";
 
 
-above are exmaples of some of the variants of input i have i want to add some more 
-1. search input variant
-2. date input variant (can use flow bite date picker)
-3. date range input variant with from and to (if you can use flow bite date picker)
+/* ---------------------------------- */
+/* Class Styles                       */
+/* ---------------------------------- */
 
-for the search input variant it out to be like the text input ui but with type search and would also include a search btn with search icon which can be at the front of the input or at the back or within the input depending on how it styles with class styles
+export interface ModalUIClassStylesInterface {
+
+    wrapper_class_style: string;
+
+    modal_class_style: string;
+
+    header_class_style: string;
+
+    header_title_wrapper_class_style: string;
+
+    header_title_class_style: string;
+
+    header_close_btn_wrapper_class_style: string;
+
+    close_btn_class_style: string;
+
+    body_class_style: string;
+
+    footer_class_style: string;
+
+}
+
+
+/* ---------------------------------- */
+/* Action Return                      */
+/* ---------------------------------- */
+
+export interface ModalUIActionReturnInterface {
+
+    status: boolean;
+
+    msg: string;
+
+    data?: Record<string, any>;
+
+}
+
+/* ---------------------------------- */
+/* Content Props                      */
+/* ---------------------------------- */
+export interface ModalUIContentPropsInterface {
+    close_btn_content?: string;
+
+    close_btn_icon_key?: SVGIconKey;
+
+}
+
+
+/* ---------------------------------- */
+/* Action Props                       */
+/* ---------------------------------- */
+
+export interface ModalUIActionPropsInterface {
+
+    on_close?: (
+        event?: MouseEvent,
+        config?: { props: ModalUIPropsInterface }
+    ) => Promise<ModalUIActionReturnInterface>;
+
+}
+
+
+
+/* ---------------------------------- */
+/* Props Interface                    */
+/* ---------------------------------- */
+
+export interface ModalUIPropsInterface {
+
+    id?: string;
+
+    overlay_id?: string;
+
+    title_text?: string;
+
+    title_icon?: SVGIconKey | null;
+
+    title_img?: string;
+
+    animation_type?: ModalAnimationType;
+
+    layer?: number;
+
+    content_props?: ModalUIContentPropsInterface;
+
+    action_props?: ModalUIActionPropsInterface;
+
+    class_styles?: ModalUIClassStylesInterface;
+
+}
+
+
+/* ---------------------------------- */
+/* State                              */
+/* ---------------------------------- */
+
+export interface ModalUIStateDataInterface {
+
+    is_visible: boolean;
+
+}
+
+
+/* ---------------------------------- */
+/* Computed                           */
+/* ---------------------------------- */
+
+export interface ModalUIComputedDataInterface {
+
+    transition_name: string;
+
+    z_index_style: Record<string, string>;
+
+}
+
+
+/* ---------------------------------- */
+/* Components                         */
+/* ---------------------------------- */
+
+export interface ModalUIComponentsInterface {
+
+    LayoutSectionsUI: Component;
+
+    OverlayUI: Component;
+
+}
+
+usually i would register it in the app root and link it to a modals array and then update that modal array to render the body or footer

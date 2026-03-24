@@ -7,8 +7,8 @@ import LoggerUtil from "@ui/version_3/utils/logger_util"
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
 import { 
-    AlertStatusChangedEventInterface,
-    CloseModalEventInterface,
+    AlertStatusChangedEventPayloadInterface,
+    CloseModalEventPayloadInterface,
     GlobalEventTypes,
 } from "@/types/global_events_type";
 
@@ -125,21 +125,8 @@ class AppRootActionHandler {
     };
 
     // Method to handle closing modal
-    public handleCloseModal (payload: CloseModalEventInterface): boolean {
-        let { modal_index = 0 }         = payload;
-        const { modals }                = this.controller.state_refs;
-        const modal_count               = modals.value.length;
-        let index_to_close              = (modal_count - 1);
-
-        if(
-            modal_index && 
-            modal_index > 0 && 
-            modal_index < modal_count
-        ) {
-            index_to_close = modal_index
-        }
-
-        this.controller.state_refs.modals?.value.splice(index_to_close, 1)[0];
+    public handleCloseModal (payload: CloseModalEventPayloadInterface): boolean {
+        this.controller.event_bus?.emit("close_modal", payload);
         return true;
     }
 
@@ -152,7 +139,7 @@ class AppRootActionHandler {
     };
 
     // Method to handle alert status changed event
-    public handleStatusChanged = async (payload: AlertStatusChangedEventInterface) => {
+    public handleStatusChanged = async (payload: AlertStatusChangedEventPayloadInterface) => {
         const { status, msg, options = {} } = payload;
 
         const { 

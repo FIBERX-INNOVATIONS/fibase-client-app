@@ -1,13 +1,23 @@
+import { Component } from "vue";
+import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
+import { 
+    ModalAnimationType, 
+    ModalUIActionPropsInterface, 
+    ModalUIClassStylesInterface, 
+    ModalUIContentPropsInterface 
+} from "@ui/version_3/ui_types/modal_ui_type";
+
 
 export type GlobalEventTypes = {
     is_loading: boolean;
     
-    alert_status_updated: AlertStatusChangedEventInterface;
+    alert_status_updated: AlertStatusChangedEventPayloadInterface;
 
-    close_modal: CloseModalEventInterface;
+    close_modal: CloseModalEventPayloadInterface;
 
-    toggle_sidebar: ToggleSidebarEventInterface;
+    toggle_sidebar: ToggleSidebarEventPayloadInterface;
 
+    open_modal: OpenModalEventPayloadInterface;
 };
 
 
@@ -18,16 +28,34 @@ export interface AlertStatusOptionsInterface {
     close_modal?: boolean; 
 }; 
 
-export interface AlertStatusChangedEventInterface {
+export interface AlertStatusChangedEventPayloadInterface {
     status: string;
     msg: string;
     options?: AlertStatusOptionsInterface
 }
 
-export interface CloseModalEventInterface {
+export interface CloseModalEventPayloadInterface {
     modal_index?: number
 }
 
-export interface ToggleSidebarEventInterface {
+export interface ToggleSidebarEventPayloadInterface {
     toggle_state?: boolean;
+}
+
+export interface OpenModalEventPayloadInterface<
+    BodyProps extends Record<string, any> = Record<string, any>,
+    FooterProps extends Record<string, any> = Record<string, any>
+> {
+    content_key: string,
+
+    animation_type?: ModalAnimationType;
+
+    body_component?: Component;
+
+    footer_component?: Component;
+
+    body_props?: BodyProps;
+
+    footer_props?: FooterProps;
+
 }

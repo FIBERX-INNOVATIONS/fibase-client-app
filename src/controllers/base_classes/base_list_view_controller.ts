@@ -136,7 +136,7 @@ class BaseListViewController extends BaseController<
             create_btn_icon,
             "button",
             {
-                action_props: {},
+                action_props: this.action_handler?.getActionBtnActionHandlerConfig?.(),
                 class_styles: page_header_class_styles.action_button_class_styles
             }
         );

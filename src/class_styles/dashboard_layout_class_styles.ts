@@ -5,6 +5,7 @@ import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_t
 import { DropdownMenuUIClassStylesInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
 import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/layout_sections_ui_type";
+import { ModalUIClassStylesInterface } from "@ui/version_3/ui_types/modal_ui_type";
 import { NavLinkUIClassStylesInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 
@@ -139,9 +140,31 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
     content_class_style: "flex items-center justify-start text-white text-[16px] text-start w-full"
 }
 
+const ModalClassStyle: ModalUIClassStylesInterface = {
+    wrapper_class_style: "w-full h-full flex justify-center items-center bg-black/70 relative mx-auto my-auto",
 
-// const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
-const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
+    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-auto max-w-[50%] min-w-[35%]",
+
+    header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
+
+    header_title_wrapper_class_style: "flex items-center justify-start w-10/12 h-full py-2 px-2 overflow-hidden",
+
+    header_title_class_style:  "font-black uppercase w-full truncate",
+
+    header_title_img_icon_class_style: "w-[36px] h-[36px] flex items-center justify-center mr-2",
+
+    header_close_btn_wrapper_class_style: "flex items-center justify-center w-2/12 h-full p-2 overflow-hidden",
+
+    close_btn_class_style: "w-[34px] h-[34px] text-[24px] cursor-pointer font-bold rounded-full hover:shadow-2xl flex items-center justify-center bg-gray-200",
+
+    body_class_style: "flex-1 w-full h-full items-center justify-center",
+
+    footer_class_style: "",
+}
+
+
+// const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
+const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
     header_class_style: "fixed top-0 left-0 w-screen p-0 m-0 bg-white shadow-md z-[5] border-gray-100 border-b h-auto",
 
     main_class_style: "pt-[92px] pb-[60px] h-screen overflow-y-auto overflow-x-hidden",
@@ -167,6 +190,8 @@ const DashboardLayoutClassstyles: DashboardLayoutClassStylesInterface = {
     side_bar_menu_list_class_style: SideBarMenuListClassStyle,
 
     side_bar_menu_item_class_style: SideBarNavMenuClassstyle,
+
+    modal_class_style: ModalClassStyle
 }
 
-export default DashboardLayoutClassstyles;
+export default DashboardLayoutClassStyles;

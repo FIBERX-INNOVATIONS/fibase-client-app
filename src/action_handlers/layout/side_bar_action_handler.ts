@@ -4,7 +4,7 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util"
 
-import {  GlobalEventTypes, ToggleSidebarEventInterface } from "@/types/global_events_type";
+import {  GlobalEventTypes, ToggleSidebarEventPayloadInterface } from "@/types/global_events_type";
 
 import {
     SideBarUIPropsInterface,
@@ -51,7 +51,7 @@ class SideBarUIActionHandler {
     }
 
     // Method to handle toggle sidebar
-    public handleToggleSideBar = (params: ToggleSidebarEventInterface = {}) => {
+    public handleToggleSideBar = (params: ToggleSidebarEventPayloadInterface = {}) => {
         const current_toggle_state = this.controller.state_refs.sidebar_overlay_props.value.model_value;
         const new_toggle_state      = params.toggle_state !== undefined ? params.toggle_state : !current_toggle_state;
 

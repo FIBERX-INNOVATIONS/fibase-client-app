@@ -23,6 +23,7 @@ import {
 } from "@ui/version_3/ui_types/input_ui_type";
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
 import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
+import { ButtonUIActionPropsInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 
 class BaseListViewActionHandler<
@@ -70,6 +71,12 @@ class BaseListViewActionHandler<
         return this.content_manager.getAPIResponseValue(message_key);
 
     }
+
+    // Method to handle header button clicked
+    protected handleHeaderBtnClicked = async (
+        event?: MouseEvent,
+        config?: { props: ButtonUIPropsInterface }
+    ): Promise<void> =>  { }
 
     // Method to handle on filter input change
     public handleOnInputChanged = async (
@@ -130,6 +137,13 @@ class BaseListViewActionHandler<
             
         }
     }
+
+    // Method to get action button action handlers config
+    public getActionBtnActionHandlerConfig = (): ButtonUIActionPropsInterface => {
+        return {
+            on_click: this.handleHeaderBtnClicked
+        }
+    } 
 
     // Method to handle filter input action handlers    
     public getFilterInputActionHandlersConfig = (): InputUIActionPropsInterface => {
