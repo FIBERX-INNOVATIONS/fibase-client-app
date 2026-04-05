@@ -12,7 +12,9 @@ import {
     ListViewStateDataInterface,
     ListViewComputedDataInterface,
     ListViewComponentsInterface,
-    ListViewClassStylesInterface
+    ListViewClassStylesInterface,
+    FetchListMethod,
+    ListStateInterface
 } from "@/ui_types/list_view_type";
 
 import { 
@@ -21,12 +23,20 @@ import {
     InputUIPropsInterface, 
     InputValue 
 } from "@ui/version_3/ui_types/input_ui_type";
+
+import { 
+    ButtonUIActionPropsInterface, 
+    ButtonUIPropsInterface 
+} from "@ui/version_3/ui_types/button_ui_type";
+
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
 import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
-import { ButtonUIActionPropsInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+import { debounceMethod } from "@ui/version_3/utils/debounce_util";
 
 
 class BaseListViewActionHandler<
+    T,
     Props extends ListViewPropsInterface,
     State extends ListViewStateDataInterface,
     Computed extends ListViewComputedDataInterface,
@@ -37,7 +47,7 @@ class BaseListViewActionHandler<
 
     public readonly name: string;
 
-    protected controller: BaseController<Props, State, Computed, Components, Events>;
+    protected controller: BaseListViewController<T>;
 
     protected logger: LoggerUtil;
 
@@ -45,18 +55,23 @@ class BaseListViewActionHandler<
 
     public filter_values: Partial<FilterValues> = {};
 
+    protected fetch_list_method?: FetchListMethod<FilterValues, any>;
+
 
     constructor(
-        controller: BaseController<Props, State, Computed, Components, Events>,
+        controller: BaseListViewController<T>,
         name: string = "base_list_view_action_handler",
-        default_filter_values?: Partial<FilterValues>
+        default_filter_values?: Partial<FilterValues>,
+        fetch_list_method?: FetchListMethod<FilterValues, any>
     ) {
 
         this.name = name;
 
         this.controller = controller;
 
-         this.filter_values = default_filter_values ?? {};
+        this.filter_values = default_filter_values ?? {};
+
+        this.fetch_list_method = fetch_list_method;
 
         this.logger = new LoggerUtil({
             prefix: name,
@@ -131,11 +146,19 @@ class BaseListViewActionHandler<
 
         for (let i = 0; i < filter_fields.length; i++) {
             let filter_field_props = filter_fields?.[i]?.input_group_props?.input_props?.model_value
+
             if(filter_field_props) {
                 filter_field_props = null
             }
-            
         }
+
+
+        await debounceMethod(this.fetchRecords, 500)();
+    }
+
+    // Method to handle on apply filters
+    public handleOnApplyFilters = async () => {
+        await debounceMethod(this.fetchRecords, 500)();
     }
 
     // Method to get action button action handlers config
@@ -159,6 +182,80 @@ class BaseListViewActionHandler<
         return {
             on_clear_filters: this.handleOnClearFilters
         }
+    }
+
+    // Method to fetch records from API
+    public fetchRecords = async (): Promise<void> => {
+        this.controller.setListState({
+            is_loading: true
+        });
+
+        console.log({ filter_values: this.filter_values})
+
+        try {
+            if (!this.fetch_list_method) {
+                throw new Error("fetch_list_method not defined");
+            }
+
+            const {
+                current_page,
+                limit,
+                sort_by,
+                sort_direction
+            } = this.controller.getListState();
+
+            const response = await this.fetch_list_method({
+                page: current_page,
+                limit,
+                sort_by: sort_by ?? undefined,
+                sort_direction: sort_direction ?? undefined,
+                filters: this.filter_values as FilterValues
+            });
+
+            if(!response || response.status === "logout") {
+                this.controller.router.push("/logout");
+                return;
+            }
+
+            if(response.data) {
+                const {
+                    records = [],
+                    total_pages,
+                    total_items,
+                    current_page
+                } = response.data;
+
+                this.controller.setListState({
+                    records,
+                    total_pages,
+                    total_items,
+                    current_page
+                });
+                return;
+            }
+        }
+        catch (error: unknown) {
+            this.logger.error("Error fetching records:", error);
+        }
+        finally {
+           this.controller.setListState({
+                is_loading: false
+            }); 
+        }
+
+    }
+
+    //  Method to handle list state changed watcher
+    public handleListStateChangedWatcher = (new_val: ListStateInterface): void => {
+        console.log("List state changed:", new_val);
+
+        const {
+            is_loading = false,
+            records = []
+        } = new_val
+
+        this.controller.state_refs.table_props.value.is_loading     = is_loading;
+        this.controller.state_refs.table_props.value.data           = records;
     }
 
 

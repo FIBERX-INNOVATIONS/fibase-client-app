@@ -78,8 +78,6 @@ class AppRootController extends BaseController <
 
         this.event_bus?.on("alert_status_updated", this.action_handler.handleStatusChanged);
 
-        this.event_bus?.on("close_modal", this.action_handler.handleCloseModal);
-
         const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn()
 
         if(is_fully_authenticated) {

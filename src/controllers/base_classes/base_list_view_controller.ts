@@ -1,3 +1,5 @@
+import { Ref, ref } from "vue";
+
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -9,17 +11,20 @@ import {
     ListViewStateDataInterface,
     ListViewComputedDataInterface,
     ListViewComponentsInterface,
-    ListViewClassStylesInterface
+    ListViewClassStylesInterface,
+    ListStateInterface
 } from "@/ui_types/list_view_type";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
 import ListViewClassStyles from "@/class_styles/list_view_class_styles";
 
 import BreadcrumbUI from "@ui/version_3/components/BreadcrumbUI.vue";
 import PageHeaderUI from "@ui/version_3/components/PageHeaderUI.vue";
 import FiltersPanelUI from "@ui/version_3/components/FiltersPanelUI.vue";
+import DataTableUI from "@ui/version_3/components/DataTableUI.vue";
 
 import BreadcrumbUIPropsBuilder from "@ui/version_3/props_builder/breadcrumb_ui_props_builder";
 import PageHeaderUIPropsBuilder from "@ui/version_3/props_builder/page_header_ui_props_builder";
@@ -30,18 +35,24 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import FilterConfigBuilderUtil from "@ui/version_3/utils/filter_config_builder_util";
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
 import BaseListViewActionHandler from "@/action_handlers/base_classes/base_list_view_action_handler";
+import DataTableUIPropsBuilder from "@ui/version_3/props_builder/data_table_ui_props_builder";
+import { WatchersType } from "@ui/version_3/types/base_type";
 
 
-class BaseListViewController extends BaseController<
+
+
+class BaseListViewController<T = any>  extends BaseController<
     ListViewPropsInterface,
-    ListViewStateDataInterface,
+    ListViewStateDataInterface<T>,
     ListViewComputedDataInterface,
     ListViewComponentsInterface,
     GlobalEventTypes
 > {
     public readonly list_view_class_styles: ListViewClassStylesInterface = ListViewClassStyles;
 
+
     public action_handler: BaseListViewActionHandler<
+        T,
         ListViewPropsInterface, 
         ListViewStateDataInterface,
         ListViewComputedDataInterface,
@@ -65,6 +76,52 @@ class BaseListViewController extends BaseController<
         return [];
     }
 
+    protected getTableRowKey(): keyof T {
+        return "id" as keyof T; // child overrides
+    }
+
+    protected getTableRenderConfig(): DataTableColumnRenderType<T>[] {
+        return []; // child MUST override
+    }
+
+    protected getDefaultListState(): ListStateInterface<T> {
+        return {
+            is_loading: false,
+            records: [],
+            current_page: 1,
+            total_pages: 0,
+            total_items: 0,
+            limit: 12,
+            sort_by: null,
+            sort_direction: null
+        };
+    }
+
+    public getListState(): ListStateInterface<T> {
+
+        if (!this.state_refs.list_state) {
+            this.state_refs.list_state = ref(
+                this.getDefaultListState()
+            ) as Ref<ListStateInterface<T>>;
+        }
+
+        return this.state_refs.list_state.value;
+    }
+
+    public setListState(patch: Partial<ListStateInterface<T>>): void {
+
+        if (!this.state_refs.list_state) {
+            this.state_refs.list_state = ref(
+                this.getDefaultListState()
+            ) as Ref<ListStateInterface<T>>;
+        }
+
+        this.state_refs.list_state.value = {
+            ...this.state_refs.list_state.value,
+            ...patch
+        };
+    }
+
     /**
      * Base UI Components
      */
@@ -74,7 +131,9 @@ class BaseListViewController extends BaseController<
 
             PageHeaderUI,
 
-            FiltersPanelUI
+            FiltersPanelUI,
+
+            DataTableUI,
         };
     }
 
@@ -105,7 +164,8 @@ class BaseListViewController extends BaseController<
             page_header_class_styles,
             filters_class_styles,
             filters_input_group_class_styles: input_group_class_style,
-            filters_input_ui_class_styles: input_ui_class_style
+            filters_input_ui_class_styles: input_ui_class_style,
+            table_class_styles
         } = ListViewClassStyles
 
         const page_key                          = this.getPageContentKey();
@@ -117,6 +177,8 @@ class BaseListViewController extends BaseController<
         const filters_toggle_btn_icon_key       = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.toggle_btn.btn_icon`;
         const clear_filters_btn_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.clear_filters_btn.btn_text`;
         const apply_filters_btn_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.apply_filters_btn.btn_text`;
+        const loader_html_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.table.loading_section.loader_text`;
+        const empty_data_html_content_key       = `content_resource.${page_key}_view_ui.list_view_ui.table.empty_state_section.header_text`;
         const create_btn_icon                   = "plus_circle_svg_icon";
         const clear_filters_btn_icon            = "x_circile_svg_icon";
         const apply_filters_btn_icon            = "arrow_right_circle_svg_icon";
@@ -156,7 +218,9 @@ class BaseListViewController extends BaseController<
             apply_filters_btn_icon,
             "button",
             {
-                action_props: {},
+                action_props: {
+                    on_click: this.action_handler?.handleOnApplyFilters
+                },
                 class_styles: filters_class_styles.apply_filters_btn_class_style
             }
         );
@@ -167,7 +231,9 @@ class BaseListViewController extends BaseController<
             clear_filters_btn_icon,
             "button",
             {
-                action_props: {},
+                action_props: {
+                    on_click: this.action_handler?.handleOnClearFilters
+                },
                 class_styles: filters_class_styles.clear_filters_btn_class_style
             }
         );
@@ -176,7 +242,17 @@ class BaseListViewController extends BaseController<
             (btn: ButtonUIPropsInterface) => {
                 return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "")
             }
-        )
+        );
+
+        const configured_table = DataTableUIPropsBuilder.configure({
+            section_id: `${page_key}TableSection`,
+            table_id: `${page_key}Table`,
+            class_styles: table_class_styles,
+            loader_html_content_key,
+            empty_data_html_content_key
+        });
+
+
 
         return {
             breadcrumb_props: BreadcrumbUIPropsBuilder.getReactivePropsObjectFromContent(
@@ -208,6 +284,14 @@ class BaseListViewController extends BaseController<
                 }
             ),
 
+            table_props: DataTableUIPropsBuilder.getReactivePropsObject<T>(
+                this.getTableRowKey(),
+                this.getTableRenderConfig(),
+                [],
+            ),
+
+            list_state: this.getListState(),
+
         } as ListViewStateDataInterface;
     }
 
@@ -235,12 +319,23 @@ class BaseListViewController extends BaseController<
         await this.handleChildMountedLogic();
 
         this.action_handler?.hydrateFiltersFromRoute?.();
+
+        await this.action_handler?.fetchRecords();
     }
 
     /**
      * Child mounted logic
      */
     protected async handleChildMountedLogic(): Promise<void> {}
+
+    /**
+     * Base Mounted logic
+     */
+    protected getUIWatchers(): WatchersType<ListViewPropsInterface, ListViewStateDataInterface> {
+        return {
+            list_state: this.action_handler?.handleListStateChangedWatcher
+        };
+    }
 }
 
 export default BaseListViewController;

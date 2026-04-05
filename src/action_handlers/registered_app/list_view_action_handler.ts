@@ -1,7 +1,7 @@
 
 import { markRaw } from "vue";
 
-import BaseController from "@ui/version_3/base_classes/base_controller";
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
 
@@ -17,12 +17,17 @@ import {
     ListViewComponentsInterface
 } from "@/ui_types/list_view_type";
 
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import FormView from "@/views/registered_app/FormView.vue";
+import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
+
+
 
 
 class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
+    RegisteredAppRecordInterface,
     ListViewPropsInterface,
     ListViewStateDataInterface,
     ListViewComputedDataInterface,
@@ -32,15 +37,14 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
 >{
     
     constructor(
-        controller: BaseController<
-            ListViewPropsInterface,
-            ListViewStateDataInterface,
-            ListViewComputedDataInterface,
-            ListViewComponentsInterface,
-            GlobalEventTypes
-        >
+        controller: BaseListViewController<RegisteredAppRecordInterface>,
     ) {
-        super(controller, "registered_app_list_view_action_handler");
+        super(
+            controller, 
+            "registered_app_list_view_action_handler",
+            {},
+            RegisteredAppAPIService.getRegisteredAppList
+        );
 
     }
 

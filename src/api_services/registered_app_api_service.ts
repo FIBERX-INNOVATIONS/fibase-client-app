@@ -11,6 +11,7 @@ import {
     RegisteredAppRecordInterface,
     PaginatedResponseResultInterface
 } from "@/types/api_service_type";
+import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 
 class RegisteredAppAPIService extends BaseAPIService {
 
@@ -23,18 +24,21 @@ class RegisteredAppAPIService extends BaseAPIService {
             limit?: number;
             sort_by?: string;
             sort_direction?: string;
-            search?: string | null;
-            preview_only?: string;
-            is_active?: string | null;
-            created_by?: string | null;
-            date_range?: string | null;
-            key_version?: number | null;
+            filters?: Partial<RegisteredAppListViewFiltersInterface>;
         }
     ): Promise<APIResponseInterface<PaginatedResponseResultInterface<RegisteredAppRecordInterface[]>>> => {
+        const { page = 1, limit = 10, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
+
         return await this.queryAPI<PaginatedResponseResultInterface<RegisteredAppRecordInterface[]>>({
             url: `/registered-app/list`,
             method: "GET",
-            params
+            params: { 
+                page, 
+                limit, 
+                sort_by, 
+                sort_direction,
+                ...filters
+            }
         });
     };
 

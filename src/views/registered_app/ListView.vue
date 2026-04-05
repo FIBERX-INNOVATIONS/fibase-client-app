@@ -7,6 +7,8 @@
             <FiltersPanelUI  v-bind="filters_panel_props" />
         </PageHeaderUI>
 
+        <DataTableUI v-bind="table_props" />
+
     </section>
 </template>
 
@@ -26,13 +28,15 @@ const {
 const {
     BreadcrumbUI,
     PageHeaderUI,
-    FiltersPanelUI
+    FiltersPanelUI,
+    DataTableUI
 } = components;
 
 const {
     breadcrumb_props,
     page_header_props,
-    filters_panel_props
+    filters_panel_props,
+    table_props
 } = state_refs;
 
 </script>

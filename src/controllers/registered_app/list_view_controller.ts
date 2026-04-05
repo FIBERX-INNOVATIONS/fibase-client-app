@@ -1,12 +1,22 @@
 
-import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
-import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-class RegisteredAppListViewController extends BaseListViewController {
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import { ListViewPropsInterface } from "@/ui_types/list_view_type";
+
+import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
+
+import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
+import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
+import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
+
+class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface> {
 
     public action_handler: RegisteredAppListViewActionHandler;
 
@@ -91,17 +101,122 @@ class RegisteredAppListViewController extends BaseListViewController {
         ];
     }
 
-    protected getChildUIComponents() {
-        return { };
+    protected getTableRowKey(): keyof RegisteredAppRecordInterface {
+        return "public_id" as keyof RegisteredAppRecordInterface;
     }
 
-    protected getChildUIStateData() {
-        return { };
+    protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
+        return [
+            {
+                key: "public_id",
+                sortable: false,
+                width: "w-[5%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text",
+                },
+                cell: {
+                    render: (_row, index) => { return DataTableSerialCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                }
+            },
+
+            {
+                key: "name",
+                sortable: true,
+                width: "w-[25%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text",
+                },
+                cell: {
+                    render: (row) => { return DataTableAvatarInfoCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                }
+            },
+
+            {
+                key: "base_url",
+                sortable: true,
+                width: "w-[15%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text",
+                },
+                cell: {
+                    render: (row) => { return DataTableLinkCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                }
+            },
+
+            {
+                key: "creator",
+                sortable: true,
+                width: "w-[15%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text",
+                },
+                cell: {
+                    render: (row) => row.creator?.username || "-"
+                }
+            },
+
+            {
+                key: "is_active",
+                sortable: true,
+                width: "w-[10%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text",
+                },
+                cell: {
+                    render: (row) => `${row.is_active}` // later switch component
+                }
+            },
+
+            {
+                key: "created_at",
+                sortable: true,
+                width: "w-[22%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text",
+                },
+                cell: {
+                    render: (row) => {
+                        if (!row.created_at) return "-";
+
+                        return InputTransformerUtil.formatReadableDateTime(row.created_at);
+                    }
+                }
+            },
+
+            {
+                key: "public_id",
+                sortable: false,
+                width: "w-[8%]",
+                header: {
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text",
+                },
+                cell: {
+                    render: () => "..." // ellipsis icon later
+                }
+            }
+        ];
     }
 
-    protected async handleChildMountedLogic(): Promise<void> {
+    // protected getChildUIComponents() {
+    //     return { };
+    // }
+
+    // protected getChildUIStateData() {
+    //     return { };
+    // }
+
+    // protected async handleChildMountedLogic(): Promise<void> {
        
-    }
+    // }
 
 }
 

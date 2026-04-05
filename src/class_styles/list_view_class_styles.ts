@@ -7,8 +7,8 @@ import { PageHeaderUIClassStylesInterface } from "@ui/version_3/ui_types/page_he
 import input_group_class_style from "./input_group_ui_class_styles";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 import input_ui_class_styles from "./input_ui_class_styles";
-import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
-import ButtonUIClassStyles from "./button_ui_class_styles";
+import { DataTableUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_ui_type";
+import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
@@ -116,6 +116,50 @@ const filters_input_ui_class_styles: InputUIClassStylesInterface = {
     ...input_ui_class_styles,
 }
 
+const table_class_styles: DataTableUIClassStylesInterface = {
+    wrapper_class_style: "w-full py-4 px-[4%] overflow-x-auto relative h-auto min-h-[400px] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
+    table_class_style: "w-full border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
+    thead_class_style: "text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default group/head",
+    th_class_style: "first:rounded-tl-lg last:rounded-tr-lg p-2 font-bold uppercase align-middle border-b border-gray-300",
+    th_cell_wrapper_class_style: "flex items-center justify-center gap-2 w-full",
+    th_sort_icon_class_style: "",
+    tbody_class_style: "",
+    tr_class_style: "",
+    td_class_style: "p-2 align-middle border-b-2 border-gray-200 w-full",
+    sortable_header_wrapper_class_style: "flex flex-col leading-none", 
+    sortable_header_icon_class_style: "w-3 h-3 cursor-pointer flex",
+    loading_section_wrapper_class_style: "text-center py-6 animate-pulse relative",
+    loader_text_wrapper_class_style: "flex justify-center items-center gap-2 absolute w-full h-full ",
+    loader_text_icon_class_style: "animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full",
+    loader_skeleton_bar_class_style: "w-full h-12 my-4 bg-gray-300 rounded-lg shadow",
+    empty_data_wrapper_class_style: "text-center py-6 opacity-70",
+    empty_data_class_style: "",
+}
+
+const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInterface = {
+    wrapper_class_style: "w-full flex items-center justify-center p-2 text-center",
+    text_class_style: "text-sm text-gray-900",
+    sub_text_class_style: "bg-green-900 truncate font-black uppercase rounded-full shadow px-2 py-1 text-xs text-white",
+    img_render_ui_class_style: {
+        wrapper_class_style: "w-full flex items-center justify-center gap-2",
+
+        image_class_style: "w-[50px] h-[50px] bg-gray-200 object-contain rounded-full border-[#001f3f] border-2 overflow-hidden",
+
+        content_wrapper_class_style: "flex flex-col items-start justify-center w-7/12 h-full",
+
+        content_class_style: "font-bold text-sm text-gray-900 break-all",
+
+        loading_class_style: "",
+
+        error_class_style: "",
+    },
+    url_link_class_style: {
+        wrapper_class_style: "w-full flex items-center justify-center break-word text-sm text-blue-600 underline hover:text-blue-800 gap-2",
+
+        icon_class_style: "w-4 h-4 flex items-center",
+    }
+}
+
 
 
 const ListViewClassStyles: ListViewClassStylesInterface = { 
@@ -125,6 +169,8 @@ const ListViewClassStyles: ListViewClassStylesInterface = {
     filters_class_styles,
     filters_input_group_class_styles,
     filters_input_ui_class_styles,
+    table_class_styles,
+    table_cell_components_class_styles,
 
 }
 

@@ -107,13 +107,13 @@ class SideBarUIController extends BaseController<
     }
 
     protected getUIWatchers(): WatchersType<SideBarUIPropsInterface, SideBarUIStateDataInterface> {
-            return {
-                route: () => {
-                    this.action_handler.handleToggleSideBar({ toggle_state: false });
-                    return;
-                }
-            };
-        }
+        return {
+            route: () => {
+                this.action_handler.handleToggleSideBar({ toggle_state: false });
+                return;
+            }
+        };
+    }
 
     protected async handleOnMountedLogic(): Promise<void> {
         this.event_bus?.on("toggle_sidebar", this.action_handler.handleToggleSideBar);

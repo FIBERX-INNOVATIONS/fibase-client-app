@@ -125,7 +125,7 @@ class AppRootActionHandler {
     };
 
     // Method to handle closing modal
-    public handleCloseModal (payload: CloseModalEventPayloadInterface): boolean {
+    public handleCloseModal =  (payload: CloseModalEventPayloadInterface): boolean => {
         this.controller.event_bus?.emit("close_modal", payload);
         return true;
     }
@@ -193,6 +193,7 @@ class AppRootActionHandler {
         if (delay <= 0) {
             // already near expiry
             AuthAPIService.refreshAccessToen();
+            return;
         }
 
         setTimeout(() => {
