@@ -154,9 +154,33 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
         error_class_style: "",
     },
     url_link_class_style: {
-        wrapper_class_style: "w-full flex items-center justify-center break-word text-sm text-blue-600 underline hover:text-blue-800 gap-2",
+        wrapper_class_style: "w-full flex items-start justify-center gap-2 text-sm text-blue-600 underline hover:text-blue-800 min-w-0",
 
-        icon_class_style: "w-4 h-4 flex items-center",
+        icon_class_style: "w-4 h-4 flex-shrink-0 mt-1",
+
+        text_class_style: "break-words whitespace-normal min-w-0 text-left"
+    },
+    input_ui_class_style: {
+        input_class_style: "w-full py-2 px-1",
+
+        wrapper_class_style: "flex flex-col gap-2 justify-center items-center",
+
+        loader_class_style: "w-6 h-6 ml-2 flex items-center",
+
+        switch_btn_class_style: "group inline-flex h-6 w-11 transition items-center rounded-full cursor-pointer",
+
+        knob_class_style: "size-4 rounded-full transition transform bg-white",
+
+        label_text_class_style: "",
+
+        error_text_class_style: "text-xs text-red-500 mt-1 font bold",
+
+        active_class_style: "bg-blue-500",
+
+        inactive_class_style: "bg-gray-500",
+    },
+    text_content_class_style: {
+        text_class_style: "",
     }
 }
 

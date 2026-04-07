@@ -76,6 +76,7 @@ export interface CreatorUpdatorMemberinterface {
     last_name: string;
     is_active: boolean;
     is_verified: boolean;
+    profile_photo_link: string;
     roles?: ActorRoleInterface[];
 }
 
@@ -115,3 +116,13 @@ export interface RegisteredAppRecordInterface {
 
     auth?:  RegisteredAppAuthInterface | null;
 }
+
+export const getMemberFullName = (member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null): string => {
+    if(!member) { return "" }
+
+    const {
+        first_name,
+        last_name
+    } = member
+    return first_name && last_name ? `${first_name} ${last_name}` : "";
+};

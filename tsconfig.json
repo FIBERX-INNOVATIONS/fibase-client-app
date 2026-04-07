@@ -9,19 +9,23 @@
     "skipLibCheck": true,
     "allowJs": true,
     "experimentalDecorators": true,
-    "baseUrl": ".",
+
     "target": "ES2022",
     "module": "ESNext", // safer than ES2022 for Vite + Vue
-    "moduleResolution": "Node",
-    "outDir": "./dist",
+
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
-    "types": ["Node", "vite/client", "vue"],
+
+    "types": ["node", "vite/client", "vue"],
+
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./src/*"],
       "@ui/*": ["../../fi-ui-toolkit/*"],
       "@ui_v3/*": ["../../fi-ui-toolkit/version_3/*"]
     },
+
+    "noEmit": true,    
+    "moduleResolution": "bundler"   
   },
   // "vueCompilerOptions": {
   //   "globalTypesPath": "./src/types/shims-vue.d.ts"

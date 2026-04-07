@@ -20,9 +20,10 @@ import {
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
+
 import FormView from "@/views/registered_app/FormView.vue";
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
-
 
 
 
@@ -66,6 +67,57 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         };
         
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    }
+
+    // Method to handle row status chnage toglle
+    public handleStatusToggleChange = async (
+        record: RegisteredAppRecordInterface,
+        input_value?: InputValue,
+    ): Promise<ActionMethodRetrunInterface> => {
+        try {
+            const public_id = record.public_id;
+
+            if(!public_id) {
+                return {
+                    status: false,
+                    msg: this.getContentMessage("record_not_found")
+                };
+            }
+
+            const result = await RegisteredAppAPIService.updateRegisteredAppStatus(public_id);
+
+            if (!result || result?.status === "error") {
+                return {
+                    status: false,
+                    msg: this.getContentMessage(result?.msg ?? "error_occurred" )
+                };
+            }
+            else if (result.status === "logout") {
+                this.controller.router.push("/logout");
+                return {
+                    status: false,
+                    msg: this.getContentMessage("session_expired")
+                }
+            }
+            else if (result.status === "success") {
+                return {
+                    status: true,
+                    msg: this.getContentMessage(result?.msg)
+                }
+            }
+
+            return {
+                status: false,
+                msg: this.getContentMessage("error_occurred")
+            }
+        }
+        catch (error: unknown) {
+            this.logger.error("Error changing status toggle: ", { error });
+            return {
+                status: false,
+                msg: this.getContentMessage("error_occurred")
+            }
+        }
     }
 
 }

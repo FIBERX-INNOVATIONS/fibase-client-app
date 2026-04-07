@@ -55,6 +55,8 @@ class SideBarUIActionHandler {
         const current_toggle_state = this.controller.state_refs.sidebar_overlay_props.value.model_value;
         const new_toggle_state      = params.toggle_state !== undefined ? params.toggle_state : !current_toggle_state;
 
+        console.log("Toggling sidebar, new toggle state: ", new_toggle_state);
+
         this.controller.state_refs.sidebar_overlay_props.value.model_value = new_toggle_state;
         return
     

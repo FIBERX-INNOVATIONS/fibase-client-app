@@ -3,18 +3,37 @@ import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import { 
+    getMemberFullName, 
+    RegisteredAppRecordInterface 
+} from "@/types/api_service_type";
+
+import { 
+    ActionMethodRetrunInterface,
+    InputUIActionPropsInterface, 
+    InputUIBooleanPropsInterface, 
+    InputUIContentOptionsInterface, 
+    InputUIPropsInterface, 
+    InputValue
+} from "@ui/version_3/ui_types/input_ui_type";
+
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
 import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
 import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
+import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
+import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+
+
+
 
 class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface> {
 
@@ -106,7 +125,9 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
     }
 
     protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
-        return [
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app_status");
+        
+        const columns: DataTableColumnRenderType<RegisteredAppRecordInterface>[] = [
             {
                 key: "public_id",
                 sortable: false,
@@ -133,7 +154,11 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     render: (row) => { return DataTableAvatarInfoCellUI }
                 },
                 props: {
-                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+                    getImgSrc: (record: RegisteredAppRecordInterface) => record.logo_url ?? "",
+                    getImgAltText: (record: RegisteredAppRecordInterface) => record.name,
+                    getImgSubText: (record: RegisteredAppRecordInterface) => record.public_id ?? "-",
+                    getImgContent: (record: RegisteredAppRecordInterface) => record.name
                 }
             },
 
@@ -160,7 +185,21 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text",
                 },
                 cell: {
-                    render: (row) => row.creator?.username || "-"
+                    render: (row) => { return DataTableLinkCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+
+                    icon_key: "member_icon",
+
+                    // getImgSrc: (record: RegisteredAppRecordInterface) => record?.creator?.profile_photo_link ?? "",
+
+                    getImgAltText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? "",
+
+                    getLinkURL: (record: RegisteredAppRecordInterface) => record?.creator?.public_id ? `?member-profile=${record?.creator?.public_id}` : "",
+
+                    getLinkText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? ""
+
                 }
             },
 
@@ -172,7 +211,43 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text",
                 },
                 cell: {
-                    render: (row) => `${row.is_active}` // later switch component
+                    render: (row) => { return DataTableToggleCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+
+                    input_model_value: (record: RegisteredAppRecordInterface): InputValue => {
+                        return InputTransformerUtil.resolveTypedValue(record.is_active);
+                    },
+
+                    input_content_props: (record: RegisteredAppRecordInterface): InputUIContentOptionsInterface => {
+                        return {
+                            loader_html_content: RenderHtmlUtil.renderLoaderHtml()
+                        }
+                    },
+
+                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                        return {
+                            is_checked: record.is_active,
+
+                            required: true,
+
+                            disabled: false,
+                        }
+                    },
+
+                    input_action_props: (record: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                return this.action_handler.handleStatusToggleChange(record, input_value);
+                            }
+                        }
+                    },
+
                 }
             },
 
@@ -184,11 +259,19 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text",
                 },
                 cell: {
-                    render: (row) => {
-                        if (!row.created_at) return "-";
+                    render: (row) => { return DataTableTextContentCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                        return InputTransformerUtil.formatReadableDateTime(row.created_at);
-                    }
+                    getDateTextContent: (record: RegisteredAppRecordInterface) => {
+                        const raw_date = record?.created_at;
+                        
+                        if(raw_date) { 
+                            return InputTransformerUtil.formatReadableDateTime(raw_date) 
+                        }
+                        else { return "-" }
+                    },
                 }
             },
 
@@ -204,6 +287,14 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
             }
         ];
+
+        // ✅ Remove column if no permission
+        return columns.filter(col => {
+            if (!can_change_status && col.key === "is_active") {
+                return false;
+            }
+            return true;
+        });
     }
 
     // protected getChildUIComponents() {

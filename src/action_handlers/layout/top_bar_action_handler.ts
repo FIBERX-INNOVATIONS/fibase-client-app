@@ -51,7 +51,7 @@ class TopBarUIActionHandler {
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {
-        
+        console.log("Hamburger icon clicked");
         this.controller.event_bus?.emit("toggle_sidebar", {});
         return;
     }

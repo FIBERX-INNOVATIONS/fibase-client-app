@@ -174,7 +174,8 @@ class AppRootActionHandler {
         } 
 
         else if (redirect_url && redirect_url.length > 0) { 
-            await this.controller.router.push(redirect_url); 
+            window.location.href = redirect_url;
+            // await this.controller.router.push(redirect_url); 
         }
     };
 
