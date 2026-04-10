@@ -17,6 +17,12 @@ import {
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
+import { 
+    ButtonUIActionPropsInterface,
+    ButtonUIContentOptionsInterface, 
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
+
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
 import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
@@ -31,6 +37,7 @@ import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellCom
 import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
 import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
 
 
@@ -283,7 +290,40 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text",
                 },
                 cell: {
-                    render: () => "..." // ellipsis icon later
+                    render: (row) => { return DataTableActionIconCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+
+                    button_content_props: (record: RegisteredAppRecordInterface): ButtonUIContentOptionsInterface => {
+                        return {
+                            button_html_content: RenderHtmlUtil.renderHtml({
+                                icon: "vertical_elipsis_svg_icon",
+                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.content_class_style,
+                                icon_class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                            }),
+
+                            loading_html_content: RenderHtmlUtil.renderLoaderHtml({
+                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                            })
+                        }
+                    },
+
+
+                    button_action_props: (
+                        record: RegisteredAppRecordInterface,
+                        record_index?: number
+                    ): ButtonUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: MouseEvent,
+                                config?: { props: ButtonUIPropsInterface }
+                            ): Promise<void> => {
+                                this.action_handler.toggleActionMenu(record, record_index)
+                            }
+                            
+                        }
+                    },
                 }
             }
         ];

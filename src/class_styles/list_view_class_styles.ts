@@ -58,7 +58,9 @@ const page_header_class_styles: PageHeaderUIClassStylesInterface = {
 
         icon_class_style: "w-4 h-4 mr-2 flex items-center",
 
-        text_class_style: "flex items-center justify-center"
+        text_class_style: "flex items-center justify-center",
+
+        content_class_style: "flex items-center justify-center",
     }
 }
 
@@ -90,7 +92,9 @@ const filters_class_styles: FiltersPanelUIClassStylesInterface = {
 
         icon_class_style: "w-6 h-6 mr-2 flex items-center",
 
-        text_class_style: "flex items-center justify-center"
+        text_class_style: "flex items-center justify-center",
+
+        content_class_style: "flex items-center justify-center",
     },
 
     apply_filters_btn_class_style: {
@@ -104,7 +108,9 @@ const filters_class_styles: FiltersPanelUIClassStylesInterface = {
 
         icon_class_style: "w-6 h-6 mr-2 flex items-center",
 
-        text_class_style: "flex items-center justify-center"
+        text_class_style: "flex items-center justify-center",
+
+        content_class_style: "flex items-center justify-center",
     }
 }
 
@@ -180,7 +186,22 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
         inactive_class_style: "bg-gray-500",
     },
     text_content_class_style: {
+        text_class_style: "text-sm font-bold text-gray-900",
+    },
+    button_ui_class_style: {
+        button_class_style: "w-[40px] h-[40px] flex items-center justify-center hover:shadow hover:bg-gray-300 rounded-full p-2 cursor-pointer",
+
+        disabled_class_style: "",
+
+        loading_class_style: "w-full h-full flex items-center justify-center",
+
+        wrapper_class_style: "w-full h-full flex items-center justify-center",
+
+        icon_class_style: "flex items-center justify-center w-full h-full",
+
         text_class_style: "",
+
+        content_class_style: "w-full h-full flex items-center",
     }
 }
 

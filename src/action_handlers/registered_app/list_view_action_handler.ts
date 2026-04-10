@@ -24,6 +24,8 @@ import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/
 
 import FormView from "@/views/registered_app/FormView.vue";
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
+import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
+import RegisteredAppActionMenu from "@/action_menus/registered_app_action_menu";
 
 
 
@@ -100,6 +102,12 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 }
             }
             else if (result.status === "success") {
+                this.updateListStateRecord(
+                    public_id, 
+                    { is_active: !record.is_active }, 
+                    "public_id"
+                );
+
                 return {
                     status: true,
                     msg: this.getContentMessage(result?.msg)
@@ -118,6 +126,26 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 msg: this.getContentMessage("error_occurred")
             }
         }
+    }
+
+    // Method to toogle data table action menu
+    public toggleActionMenu = (
+        record: RegisteredAppRecordInterface,
+        record_index?: number
+    ): void => {
+
+        const updated_menu = RegisteredAppActionMenu.getMenus(record, this);
+
+        this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
+
+        setTimeout(() => {
+            DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+                `ActionBtn${record_index?.toString()}`,
+                "TableActionMeuDropdown",
+                true
+            )
+        }, 10)
+        
     }
 
 }

@@ -10,6 +10,7 @@ import { DataTableUIClassStylesInterface, DataTableUIPropsInterface } from "@ui/
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { PaginatedResponseResultInterface } from "@/types/api_service_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
+import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 
 
 
@@ -44,6 +45,8 @@ export interface ListViewStateDataInterface<T = any> {
     table_props: DataTableUIPropsInterface<T>;
 
     list_state: ListStateInterface<T>;
+
+    action_menu_dropdown_props: DropdownMenuUIPropsInterface;
     
 }
 
@@ -59,6 +62,8 @@ export interface ListViewComponentsInterface {
     FiltersPanelUI: Component;
 
     DataTableUI: Component;
+
+    DropdownMenuUI: Component;
 }
 
 export interface ListViewClassStylesInterface {

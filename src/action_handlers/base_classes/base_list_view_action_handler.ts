@@ -190,8 +190,6 @@ class BaseListViewActionHandler<
             is_loading: true
         });
 
-        console.log({ filter_values: this.filter_values})
-
         try {
             if (!this.fetch_list_method) {
                 throw new Error("fetch_list_method not defined");
@@ -256,6 +254,40 @@ class BaseListViewActionHandler<
 
         this.controller.state_refs.table_props.value.is_loading     = is_loading;
         this.controller.state_refs.table_props.value.data           = records;
+    }
+
+    // Method to update a specific list state record
+    public updateListStateRecord = (
+        record_id: string | number,
+        fields_updated: Partial<T>,
+        record_id_key: keyof T
+    ): void => {
+        const { records = [] } = this.controller.getListState();
+
+        const record_index_to_update = records.findIndex(
+            (record: T): boolean => {
+                return record[record_id_key]?.toString() === record_id?.toString();
+            }
+        );
+
+        // ❌ If not found → exit
+        if (record_index_to_update === -1) return;
+
+        // ✅ Create new updated record
+        const updated_record: T = {
+            ...records[record_index_to_update],
+            ...fields_updated
+        };
+
+        // ✅ Create new records array (immutability)
+        const updated_records: T[] = [...records];
+
+        updated_records[record_index_to_update] = updated_record;
+
+        // ✅ Push back to state
+        this.controller.setListState({
+            records: updated_records
+        });
     }
 
 

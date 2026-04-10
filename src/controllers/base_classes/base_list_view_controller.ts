@@ -15,9 +15,11 @@ import {
     ListStateInterface
 } from "@/ui_types/list_view_type";
 
+import { WatchersType } from "@ui/version_3/types/base_type";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
+
 
 import ListViewClassStyles from "@/class_styles/list_view_class_styles";
 
@@ -25,6 +27,7 @@ import BreadcrumbUI from "@ui/version_3/components/BreadcrumbUI.vue";
 import PageHeaderUI from "@ui/version_3/components/PageHeaderUI.vue";
 import FiltersPanelUI from "@ui/version_3/components/FiltersPanelUI.vue";
 import DataTableUI from "@ui/version_3/components/DataTableUI.vue";
+import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 
 import BreadcrumbUIPropsBuilder from "@ui/version_3/props_builder/breadcrumb_ui_props_builder";
 import PageHeaderUIPropsBuilder from "@ui/version_3/props_builder/page_header_ui_props_builder";
@@ -36,7 +39,9 @@ import FilterConfigBuilderUtil from "@ui/version_3/utils/filter_config_builder_u
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
 import BaseListViewActionHandler from "@/action_handlers/base_classes/base_list_view_action_handler";
 import DataTableUIPropsBuilder from "@ui/version_3/props_builder/data_table_ui_props_builder";
-import { WatchersType } from "@ui/version_3/types/base_type";
+import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
+import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
+
 
 
 
@@ -134,6 +139,8 @@ class BaseListViewController<T = any>  extends BaseController<
             FiltersPanelUI,
 
             DataTableUI,
+
+            DropdownMenuUI
         };
     }
 
@@ -291,6 +298,15 @@ class BaseListViewController<T = any>  extends BaseController<
             ),
 
             list_state: this.getListState(),
+
+            action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
+                "TableActionMeuDropdown", 
+                {
+                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+
+                    menu_items: []
+                }
+            )
 
         } as ListViewStateDataInterface;
     }

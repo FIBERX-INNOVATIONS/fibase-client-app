@@ -9,6 +9,8 @@
 
         <DataTableUI v-bind="table_props" />
 
+        <DropdownMenuUI v-bind="action_menu_dropdown_props" />
+
     </section>
 </template>
 
@@ -29,14 +31,16 @@ const {
     BreadcrumbUI,
     PageHeaderUI,
     FiltersPanelUI,
-    DataTableUI
+    DataTableUI,
+    DropdownMenuUI
 } = components;
 
 const {
     breadcrumb_props,
     page_header_props,
     filters_panel_props,
-    table_props
+    table_props,
+    action_menu_dropdown_props
 } = state_refs;
 
 </script>

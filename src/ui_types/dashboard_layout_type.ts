@@ -44,6 +44,8 @@ export interface DashboardLayoutClassStylesInterface {
     // content_class_style: ContentClassstyle,
     member_avatar_drodpwn_class_style: DropdownMenuUIClassStylesInterface;
 
+    delete_dropdown_menu_list_class_style: NavLinkUIClassStylesInterface;
+
     member_avatar_dropdown_menu_list_class_style: NavLinkUIClassStylesInterface;
 
     side_bar_class_style: SideBarUIClassStyleInterface;

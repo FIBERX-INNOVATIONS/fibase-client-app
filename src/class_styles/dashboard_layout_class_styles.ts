@@ -30,7 +30,9 @@ const HamburgerBtnClassStyle: ButtonUIClassStylesInterface = {
 
     icon_class_style: "w-6 h-6 flex items-center mr-2",
 
-    text_class_style: ""
+    text_class_style: "",
+
+    content_class_style: "",
 }
 
 const TopBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
@@ -83,6 +85,18 @@ const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
     icon_img_class_style: "w-full h-auto text-black",
 
     content_class_style: "flex items-center justify-start text-black text-[16px] text-start w-full"
+}
+
+const DeleteDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
+    wrapper_class_style: "flex items-center cursor-pointer p-2 my-2 hover:rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8] border-t border-gray-300",
+
+    active_menu_class_style: "bg-[#f0f4f8] hover:rounded-lg",
+
+    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
+
+    icon_img_class_style: "w-full h-auto text-red-700",
+
+    content_class_style: "flex items-center justify-start text-red-700 text-[16px] text-start w-full"
 }
 
 const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
@@ -182,6 +196,8 @@ const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
     member_avatar_drodpwn_class_style: MemberAvatarDropdownClassStyle,
 
     member_avatar_dropdown_menu_list_class_style: MemberAvatarDropdownMenuListClassStyle,
+
+    delete_dropdown_menu_list_class_style: DeleteDropdownMenuListClassStyle,
 
     side_bar_class_style: SideBarUIClassStyle,
 
