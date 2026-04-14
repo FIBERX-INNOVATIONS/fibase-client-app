@@ -11,6 +11,7 @@ import {
     RegisteredAppRecordInterface,
     PaginatedResponseResultInterface
 } from "@/types/api_service_type";
+
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 
 class RegisteredAppAPIService extends BaseAPIService {

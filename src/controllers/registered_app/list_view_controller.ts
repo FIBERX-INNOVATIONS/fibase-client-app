@@ -23,6 +23,8 @@ import {
     ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
+import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
+
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
 import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
@@ -38,6 +40,7 @@ import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponent
 import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
+
 
 
 
@@ -162,10 +165,19 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgSrc: (record: RegisteredAppRecordInterface) => record.logo_url ?? "",
                     getImgAltText: (record: RegisteredAppRecordInterface) => record.name,
+
                     getImgSubText: (record: RegisteredAppRecordInterface) => record.public_id ?? "-",
-                    getImgContent: (record: RegisteredAppRecordInterface) => record.name
+
+                    getImgContent: (record: RegisteredAppRecordInterface) => record.name,
+
+                    getImgSrc: (record: RegisteredAppRecordInterface) => {
+                        if(record?.logo_url && !record?.logo_url?.includes("test.com")) { 
+                            return record.logo_url
+                        }
+                        
+                        return DEFUALT_REGISTERED_APP_LOGO_URL;
+                    },
                 }
             },
 
@@ -336,18 +348,6 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             return true;
         });
     }
-
-    // protected getChildUIComponents() {
-    //     return { };
-    // }
-
-    // protected getChildUIStateData() {
-    //     return { };
-    // }
-
-    // protected async handleChildMountedLogic(): Promise<void> {
-       
-    // }
 
 }
 

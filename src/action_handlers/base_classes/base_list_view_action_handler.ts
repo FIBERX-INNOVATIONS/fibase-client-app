@@ -55,14 +55,14 @@ class BaseListViewActionHandler<
 
     public filter_values: Partial<FilterValues> = {};
 
-    protected fetch_list_method?: FetchListMethod<FilterValues, any>;
+    protected fetch_list_method?: FetchListMethod<FilterValues, T>;
 
 
     constructor(
         controller: BaseListViewController<T>,
         name: string = "base_list_view_action_handler",
         default_filter_values?: Partial<FilterValues>,
-        fetch_list_method?: FetchListMethod<FilterValues, any>
+        fetch_list_method?: FetchListMethod<FilterValues, T>
     ) {
 
         this.name = name;

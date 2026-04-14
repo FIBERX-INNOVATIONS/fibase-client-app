@@ -17,12 +17,15 @@ import {
     ListViewComponentsInterface
 } from "@/ui_types/list_view_type";
 
+import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
+
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
 import FormView from "@/views/registered_app/FormView.vue";
+import ProfileView from "@/views/registered_app/ProfileView.vue";
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 import RegisteredAppActionMenu from "@/action_menus/registered_app_action_menu";
@@ -146,6 +149,26 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
             )
         }, 10)
         
+    }
+
+        // Method to handle header button clicked
+    public handleViewActionMenuClicked = async (
+        record: RegisteredAppRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: `${base_content_key}.register_app_modal.registered_app_details`,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ProfileView),
+            
+            body_props: { record_id: record?.public_id },
+        };
+        
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
     }
 
 }

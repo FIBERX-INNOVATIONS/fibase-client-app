@@ -91,4 +91,4 @@ export type FetchListMethod<TFilters, TRecord> = (params: {
     sort_by?: string;
     sort_direction?: string;
     filters?: TFilters;
-}) => Promise<APIResponseInterface<PaginatedResponseResultInterface<TRecord>>>;
+}) => Promise<APIResponseInterface<PaginatedResponseResultInterface<TRecord[]>>>;

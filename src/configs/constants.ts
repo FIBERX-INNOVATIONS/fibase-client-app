@@ -7,6 +7,9 @@ import DeviceFingerprintUtil from "@ui/version_3/utils/device_fingerprint_util";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import { AxiosHeaders } from "axios";
 
+export const DEFUALT_REGISTERED_APP_LOGO_URL    = "/assets/img/default-registered-app-logo.png";
+export const DEFAULT_MEMBER_PROFILE_PHOTO_URL   = "/assets/img/default-registered-app-logo.png";
+
 // export const APP_CONTENT_DATA_URL = (
 //     "https://raw.githubusercontent.com/FIBERX-INNOVATIONS/fibase-public-content/development/app_content/en-GB.json"
 // ) as const;
