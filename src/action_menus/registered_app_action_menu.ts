@@ -62,7 +62,14 @@ class RegisteredAppActionMenu {
 
                 content: content?.[1]?.menu_text ?? "",
 
-                action_props: {},
+                action_props: {
+                    on_click: async (
+                        event?: MouseEvent,
+                        config?: { props: NavLinkUIPropsInterface }
+                    ): Promise<void> => {
+                        return await action_handler?.handleSelectActionMenuClicked(record, config);
+                    }
+                },
 
                 class_styles,
 

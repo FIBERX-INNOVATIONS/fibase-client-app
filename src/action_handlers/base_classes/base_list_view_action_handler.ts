@@ -33,6 +33,9 @@ import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_pane
 import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 import { debounceMethod } from "@ui/version_3/utils/debounce_util";
+import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
+import { markRaw } from "vue";
+import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 
 
 class BaseListViewActionHandler<
@@ -92,6 +95,11 @@ class BaseListViewActionHandler<
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> =>  { }
+
+    // Method to get table serial cell
+    private getSerialCell = () => {
+        return this.controller.state_refs.table_props.value.table_render_obj?.[0];
+    };
 
     // Method to handle on filter input change
     public handleOnInputChanged = async (
@@ -289,6 +297,143 @@ class BaseListViewActionHandler<
             records: updated_records
         });
     }
+
+    // Method to handle select action menu clicked
+    public handleSelectActionMenuClicked = async (
+        record: T,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+
+        const sn_cell = this.getSerialCell();
+
+        if (!sn_cell?.props || !sn_cell?.header) return;
+
+        const result = await this.handleOnRecordRowSelected(record);
+
+        // ❌ stop if selection failed
+        if (!result.status) return;
+
+        // ❌ avoid setTimeout hack
+        sn_cell.props.is_selected = true;
+
+        sn_cell.header.render = () => markRaw(DataTableSerialCellUI);
+    };
+
+    // Method to handle on a record row selected
+    public handleOnRecordRowSelected = async (
+        record: T,
+        input_value?: InputValue,
+    ): Promise<ActionMethodRetrunInterface> => {
+        try {
+            const row_key = this.controller.getTableRowKey();
+            const value = record?.[row_key];
+
+            const sn_cell = this.getSerialCell();
+
+            if (
+                value === undefined ||
+                value === null ||
+                !sn_cell?.props ||
+                !sn_cell?.header
+            ) {
+                return {
+                    status: false,
+                    msg: this.getContentMessage("invalid_record_selection")
+                };
+            }
+
+            const selected_records = this.controller.state_refs.selected_records.value;
+
+            const value_str = value.toString();
+
+            const index = selected_records.findIndex(
+                (item) => item?.toString() === value_str
+            );
+
+            if (index > -1) {
+                selected_records.splice(index, 1);
+            } else {
+                selected_records.push(value);
+            }
+
+            const has_selection = selected_records.length > 0;
+
+            sn_cell.props.is_selected = has_selection;
+
+            if (!has_selection) {
+                sn_cell.header.render = undefined;
+            }
+
+            return {
+                status: true,
+                msg: this.getContentMessage("success")
+            };
+
+        } 
+        catch (error: unknown) {
+            this.logger.error("Error selecting record: ", { error });
+
+            return {
+                status: false,
+                msg: this.getContentMessage("error_occurred")
+            };
+        }
+    };
+
+    // Method to handle on select all rows
+    public handleOnSelectAllRows = async (): Promise<ActionMethodRetrunInterface> => {
+        try {
+            const row_key           = this.controller.getTableRowKey();
+            const sn_cell           = this.getSerialCell();
+
+            if (!sn_cell?.header || !sn_cell?.props) {
+                return {
+                    status: false,
+                    msg: this.getContentMessage("invalid_record_selection")
+                };
+            }
+
+            const { records = [] } = this.controller.getListState();
+
+            const all_values = records
+                .map((record) => record?.[row_key])
+                .filter((val) => val !== undefined && val !== null);
+
+            const selected_records = this.controller.state_refs.selected_records.value;
+
+            const is_all_selected = selected_records.length === all_values.length;
+
+            // ✅ Toggle logic
+            if (is_all_selected) {
+                this.controller.state_refs.selected_records.value = [];
+            } else {
+                // ✅ Replace (not push) to avoid duplicates
+                this.controller.state_refs.selected_records.value = [...new Set(all_values)];
+            }
+
+            // ✅ Update header + props reactively (NO setTimeout)
+            const has_selection = this.controller.state_refs.selected_records.value.length > 0;
+
+            sn_cell.props.is_selected = has_selection;
+
+            sn_cell.header.render = has_selection
+                ? () => markRaw(DataTableSerialCellUI)
+                : undefined;
+
+            return {
+                status: true,
+                msg: this.getContentMessage("success")
+            };
+
+        } catch (error: unknown) {
+            this.logger.error("Error selecting all records: ", { error });
+
+            return {
+                status: false,
+                msg: this.getContentMessage("error_occurred")
+            };
+        }
+    };
 
 
 }

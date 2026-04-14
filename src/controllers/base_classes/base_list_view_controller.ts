@@ -46,13 +46,18 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 
 
 
-class BaseListViewController<T = any>  extends BaseController<
+class BaseListViewController<
+    T = any, 
+    K extends keyof T = keyof T
+>  extends BaseController<
     ListViewPropsInterface,
-    ListViewStateDataInterface<T>,
+    ListViewStateDataInterface<T, K>,
     ListViewComputedDataInterface,
     ListViewComponentsInterface,
     GlobalEventTypes
 > {
+    protected readonly record_id_key: K;
+
     public readonly list_view_class_styles: ListViewClassStylesInterface = ListViewClassStyles;
 
 
@@ -65,8 +70,13 @@ class BaseListViewController<T = any>  extends BaseController<
         GlobalEventTypes
     > | null = null;
 
-    constructor(props: ListViewPropsInterface) {
+    constructor(
+        props: ListViewPropsInterface,
+        record_id_key: K
+    ) {
         super("list_view", props, EventBus);
+
+        this.record_id_key = record_id_key;
     }
 
     /**
@@ -81,7 +91,7 @@ class BaseListViewController<T = any>  extends BaseController<
         return [];
     }
 
-    protected getTableRowKey(): keyof T {
+    public getTableRowKey(): keyof T {
         return "id" as keyof T; // child overrides
     }
 
@@ -164,7 +174,7 @@ class BaseListViewController<T = any>  extends BaseController<
     /**
      * Base state
      */
-    protected getBaseUIStateData(): ListViewStateDataInterface {
+    protected getBaseUIStateData(): ListViewStateDataInterface<T, K> {
 
         const {
             list_view_breadcrumb_class_styles,
@@ -176,6 +186,7 @@ class BaseListViewController<T = any>  extends BaseController<
         } = ListViewClassStyles
 
         const page_key                          = this.getPageContentKey();
+        const row_key                           = this.getTableRowKey();
         const breadcrumb_content_key            = `content_resource.${page_key}_view_ui.list_view_ui.breadcrumb_list`;
         const header_text_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_text`;
         const header_desc_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_description`;
@@ -260,8 +271,9 @@ class BaseListViewController<T = any>  extends BaseController<
         });
 
 
-
         return {
+            selected_records: [] as T[K][],
+
             breadcrumb_props: BreadcrumbUIPropsBuilder.getReactivePropsObjectFromContent(
                 "PageBreadcrumb",
                breadcrumb_content_key,
@@ -308,20 +320,20 @@ class BaseListViewController<T = any>  extends BaseController<
                 }
             )
 
-        } as ListViewStateDataInterface;
+        } as ListViewStateDataInterface<T, K>;
     }
 
     /**
      * Child state extension
      */
-    protected getChildUIStateData(): Partial<ListViewStateDataInterface> {
+    protected getChildUIStateData(): Partial<ListViewStateDataInterface<T, K>> {
         return {};
     }
 
     /**
      * Merge base + child state
      */
-    protected getUIStateData(): ListViewStateDataInterface {
+    protected getUIStateData(): ListViewStateDataInterface<T, K> {
         return {
             ...this.getBaseUIStateData(),
             ...this.getChildUIStateData()

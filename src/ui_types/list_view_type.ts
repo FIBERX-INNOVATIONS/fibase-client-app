@@ -13,6 +13,7 @@ import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_t
 import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 
 
+export type FieldArray<T, K extends keyof T> = T[K][];
 
 
 export interface ListViewPropsInterface {
@@ -34,8 +35,12 @@ export interface ListStateInterface<T = any> {
     sort_direction: "asc" | "desc" | null;
 }
 
-export interface ListViewStateDataInterface<T = any> {
-    
+export interface ListViewStateDataInterface<
+    T = any,
+    K extends keyof T = keyof T
+> {
+    selected_records: FieldArray<T, K>;
+
     breadcrumb_props: BreadcrumbUIPropsInterface;
 
     page_header_props: PageHeaderUIPropsInterface;

@@ -151,7 +151,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         
     }
 
-        // Method to handle header button clicked
+    // Method to handle view Action menu clicked
     public handleViewActionMenuClicked = async (
         record: RegisteredAppRecordInterface,
         config?: { props: NavLinkUIPropsInterface }

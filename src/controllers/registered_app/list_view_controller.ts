@@ -45,12 +45,12 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 
 
-class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface> {
+class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface, "public_id"> {
 
     public action_handler: RegisteredAppListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
-        super(props);
+        super(props, "public_id");
 
         this.action_handler = new RegisteredAppListViewActionHandler(this);
 
@@ -130,7 +130,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
         ];
     }
 
-    protected getTableRowKey(): keyof RegisteredAppRecordInterface {
+    public getTableRowKey(): keyof RegisteredAppRecordInterface {
         return "public_id" as keyof RegisteredAppRecordInterface;
     }
 
@@ -149,7 +149,39 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     render: (_row, index) => { return DataTableSerialCellUI }
                 },
                 props: {
-                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+
+                    is_selected: false,
+
+                    input_model_value: (record: RegisteredAppRecordInterface): InputValue => {
+                        return this.state_refs.selected_records.value.includes(record.public_id);
+                    },
+
+                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                        return {
+                            is_checked: this.state_refs.selected_records.value.includes(record.public_id),
+
+                            required: true,
+
+                            disabled: false,
+                        }
+                    },
+
+                    input_action_props: (record?: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                if (record !== undefined) {
+                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
+                                }
+
+                                return this.action_handler.handleOnSelectAllRows();
+                            }
+                        }
+                    },
                 }
             },
 
