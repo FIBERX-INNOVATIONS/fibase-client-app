@@ -27,11 +27,13 @@
 </template>
 
 <script setup lang="ts">
-
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import RegisteredAppFormViewProps       from "@/props_definition/registered_app/form_view_props";
 import RegisteredAppFormViewController  from "@/controllers/registered_app/form_view_controller";
 
-const props            = defineProps({});
-const controller       = new RegisteredAppFormViewController(props);
+
+const props            = defineProps(RegisteredAppFormViewProps);
+const controller       = new RegisteredAppFormViewController<RegisteredAppRecordInterface>(props);
 
 const { 
     state_refs,

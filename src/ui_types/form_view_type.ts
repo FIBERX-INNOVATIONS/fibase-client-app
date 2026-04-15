@@ -43,7 +43,9 @@ export interface FormViewClassStylesinterface {
     modal_btn_class_styles?: ButtonUIClassStylesInterface;
 }
 
-export interface FormViewPropsInterface {
+export interface FormViewPropsInterface<T = any>  {
+    record?: T;
+
     class_styles?: FormViewClassStylesinterface
 }
 

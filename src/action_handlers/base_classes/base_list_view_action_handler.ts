@@ -298,6 +298,61 @@ class BaseListViewActionHandler<
         });
     }
 
+    // Method to handle update records by removing a record
+    public removeListStateRecord = (
+        record_id: string | number,
+        record_id_key: keyof T
+    ): void => {
+
+        const list_state = this.controller.getListState();
+
+        const {
+            records = [],
+            total_items = 0,
+            current_page = 1,
+            total_pages = 1,
+            limit = 10
+        } = list_state;
+
+        // 🔍 Find record index
+        const record_index = records.findIndex(
+            (record: T) =>
+                record?.[record_id_key]?.toString() === record_id?.toString()
+        );
+
+        // ❌ Not found → exit
+        if (record_index === -1) return;
+
+        // ✅ Remove record (immutably)
+        const updated_records = records.filter(
+            (_, index) => index !== record_index
+        );
+
+        // ✅ Update total items
+        const updated_total_items = Math.max(0, total_items - 1);
+
+        // ✅ Recalculate total pages
+        const updated_total_pages = Math.max(
+            1,
+            Math.ceil(updated_total_items / limit)
+        );
+
+        // ✅ Adjust current page if needed
+        let updated_current_page = current_page;
+
+        if (current_page > updated_total_pages) {
+            updated_current_page = updated_total_pages;
+        }
+
+        // ✅ Update state
+        this.controller.setListState({
+            records: updated_records,
+            total_items: updated_total_items,
+            total_pages: updated_total_pages,
+            current_page: updated_current_page
+        });
+    };
+
     // Method to handle select action menu clicked
     public handleSelectActionMenuClicked = async (
         record: T,

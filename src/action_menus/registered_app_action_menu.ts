@@ -86,7 +86,14 @@ class RegisteredAppActionMenu {
 
                 content: content?.[2]?.menu_text ?? "",
 
-                action_props: {},
+                action_props: {
+                    on_click: async (
+                        event?: MouseEvent,
+                        config?: { props: NavLinkUIPropsInterface }
+                    ): Promise<void> => {
+                        return await action_handler?.handleEditActionMenuClicked(record, config);
+                    }
+                },
 
                 class_styles,
 
@@ -106,7 +113,14 @@ class RegisteredAppActionMenu {
 
                 content: content?.[3]?.menu_text ?? "",
 
-                action_props: {},
+                action_props: {
+                    on_click: async (
+                        event?: MouseEvent,
+                        config?: { props: NavLinkUIPropsInterface }
+                    ): Promise<void> => {
+                        return await action_handler?.handleDeleteActionMenuClicked(record, config);
+                    }
+                },
 
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
 

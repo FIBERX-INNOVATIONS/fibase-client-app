@@ -31,11 +31,12 @@ import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_bu
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import FormViewActionHandler from "@/action_handlers/registered_app/form_view_action_handler";
 import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
 
 
-class FormViewController extends BaseController <
-    FormViewPropsInterface,
+class FormViewController<T = any>  extends BaseController <
+    FormViewPropsInterface<T>,
     RegisteredAppFormState,
     FormViewComputedDataInterface,
     FormViewComponentsInterface,
@@ -46,7 +47,7 @@ class FormViewController extends BaseController <
 
     public readonly action_handler: FormViewActionHandler = new FormViewActionHandler(this);
 
-    constructor(props: FormViewPropsInterface) {
+    constructor(props: FormViewPropsInterface<T>) {
         super("registered_app_form_view", props, EventBus);
 
         this.getComponentDefinition();
@@ -70,6 +71,7 @@ class FormViewController extends BaseController <
             modal_btn_class_styles
         } = this.class_styles;
 
+        const existing_record           = (this?.props?.record) as RegisteredAppRecordInterface | undefined;
         const input_action_config       = this.action_handler.getInputActionHandlersConfig();
         const btn_action_config         = this.action_handler.getBtnActionHandlerConfig();
         const toaster_action_config     = this.action_handler.getToasterActionHandlerConfig()
@@ -82,17 +84,53 @@ class FormViewController extends BaseController <
 
         ButtonUIPropsBuilder.configure(modal_btn_class_styles, btn_action_config, { disabled: true })
 
-        const prefix_input_props = InputUIPropsBuilder.getReactivePropsObject("prefix", "text", input_group_content_key("prefix"));
+        const prefix_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "prefix", 
+            "text", 
+            input_group_content_key("prefix"), 
+            { model_value: existing_record?.prefix ?? "" }
+        );
 
-        const name_input_props = InputUIPropsBuilder.getReactivePropsObject("name", "text", input_group_content_key("name"));
+        const name_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "name", 
+            "text", 
+            input_group_content_key("name"), 
+            { model_value: existing_record?.name ?? "" }
+        );
 
-        const description_input_props = InputUIPropsBuilder.getReactivePropsObject("description", "textarea", input_group_content_key("description"), { number_props: { rows: 12 }});
+        const description_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "description", 
+            "textarea", 
+            input_group_content_key("description"), 
+            { 
+                number_props: { rows: 12 }, 
+                model_value: existing_record?.description ?? ""
+            }
+        );
 
-        const base_url_input_props = InputUIPropsBuilder.getReactivePropsObject("base_url", "text", input_group_content_key("base_url"));
+        const base_url_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "base_url", 
+            "text", 
+            input_group_content_key("base_url"),
+            { model_value: existing_record?.base_url ?? "" }
+        );
 
-        const logo_url_input_props = InputUIPropsBuilder.getReactivePropsObject("logo_url", "text", input_group_content_key("logo_url"));
+        const logo_url_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "logo_url", 
+            "text", 
+            input_group_content_key("logo_url"),
+            { model_value: existing_record?.logo_url ?? "" }
+        );
 
-        const urls_input_props = InputUIPropsBuilder.getReactivePropsObject("urls", "textarea", input_group_content_key("urls"), { number_props: { rows: 12 }});
+        const urls_input_props = InputUIPropsBuilder.getReactivePropsObject(
+            "urls", 
+            "textarea", 
+            input_group_content_key("urls"), 
+            { 
+                number_props: { rows: 12 },
+                model_value: existing_record?.urls?.join(",") ?? ""
+            }
+        );
 
         return {
             fields: reactive({
