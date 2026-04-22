@@ -12,6 +12,7 @@ const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginVi
 const LogoutView                        = () => import("@/views/LogoutView.vue");
 const DashboardView                     = () => import("@/views/DashboardView.vue");
 const RegisteredAppListView             = () => import("@/views/registered_app/ListView.vue");
+const CurrencyListView                  = () => import("@/views/currency/ListView.vue");
 
 const MyProfileView                     = () => import("@/views/MyProfileView.vue");
 
@@ -120,11 +121,21 @@ class RouterManager {
             },
             { 
                 path: "/registered-apps", 
-                name: "RegisteredAppLis", 
+                name: "RegisteredAppList", 
                 component: RegisteredAppListView,
                 meta: {
                     title_key: "registered-app-list-page", 
-                    permission_name: "", 
+                    permission_name: "view_all_registered_apps", 
+                    is_auth_page: false
+                }
+            },
+            { 
+                path: "/currencies", 
+                name: "CurrencyList", 
+                component: CurrencyListView,
+                meta: {
+                    title_key: "currency-list-page", 
+                    permission_name: "view_all_currencies", 
                     is_auth_page: false
                 }
             },

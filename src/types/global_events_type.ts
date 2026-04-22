@@ -17,7 +17,9 @@ export type GlobalEventTypes = {
 
     toggle_sidebar: ToggleSidebarEventPayloadInterface;
 
-    open_modal: OpenModalEventPayloadInterface;
+    open_modal: OpenModalEventPayloadInterface<any, any>;
+
+    on_new_record_created: NewRecordCreated<any>;
 };
 
 
@@ -58,4 +60,10 @@ export interface OpenModalEventPayloadInterface<
 
     footer_props?: FooterProps;
 
+}
+
+export interface NewRecordCreated<T, K = true> {
+    record: T;
+
+    re_fetch: K;
 }

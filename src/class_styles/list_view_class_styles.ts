@@ -9,6 +9,8 @@ import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_typ
 import input_ui_class_styles from "./input_ui_class_styles";
 import { DataTableUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
+import { DataTableResultAndBulkActionBarUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
+
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
@@ -122,6 +124,16 @@ const filters_input_ui_class_styles: InputUIClassStylesInterface = {
     ...input_ui_class_styles,
 }
 
+const table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActionBarUIClassStylesInterface = {
+   wrapper_class_style: "w-full py-4  my-2 flex items-center justify-between",
+
+    left_container_class_style: "",
+
+    right_container_class_style: "",
+
+    text_class_style: "",
+}
+
 const table_class_styles: DataTableUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[4%] overflow-x-auto relative h-auto min-h-[400px] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
     table_class_style: "w-full border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
@@ -214,6 +226,7 @@ const ListViewClassStyles: ListViewClassStylesInterface = {
     filters_class_styles,
     filters_input_group_class_styles,
     filters_input_ui_class_styles,
+    table_result_and_bulk_action_bar_class_styles,
     table_class_styles,
     table_cell_components_class_styles,
 

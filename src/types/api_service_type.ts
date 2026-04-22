@@ -126,3 +126,16 @@ export const getMemberFullName = (member?: CreatorUpdatorMemberinterface | Membe
     } = member
     return first_name && last_name ? `${first_name} ${last_name}` : "";
 };
+
+export interface FileStorageRecordInterface {
+    public_id: string;
+    reference_type: string;
+    file_name: string;
+    original_name: string;
+    mime_type: string;
+    category: string;
+    size: string; // raw
+    url: string;
+    is_active: boolean;
+    created_at: string;
+}

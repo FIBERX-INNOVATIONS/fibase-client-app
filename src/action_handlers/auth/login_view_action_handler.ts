@@ -58,7 +58,7 @@ class LoginViewActionHandler extends BaseFormActionHandler<
         }
     }
 
-    public handleOnBtnClick = async (
+    public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<ButtonActionMethodReturnInterface> =>  {

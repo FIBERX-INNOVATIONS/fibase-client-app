@@ -1,6 +1,7 @@
 import {
     RegisteredAppFromDataInterface,
-    RegisteredAppSocialLinksInterface
+    RegisteredAppSocialLinksInterface,
+    RegisteredAppValidatedFromDataInterface
 } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
@@ -157,20 +158,23 @@ class RegisteredAppValidator {
     // =========================
 
     public static validateUrls = (
-        urls: string[] | null
+        urls: string | null
     ): ActionMethodRetrunInterface => {
+    
         if (!urls) {
             return { status: true, msg: "" };
         }
 
-        if (!Array.isArray(urls)) {
+        const array_urls = urls.split(",").map((url) => url.trim());
+
+        if (!Array.isArray(array_urls)) {
             return {
                 status: false,
                 msg: this.getContentMessage("invalid_input_app_urls")
             };
         }
 
-        const invalid_urls = urls.filter(
+        const invalid_urls = array_urls.filter(
             (url) => !InputValidatorUtil.isValidURL(url)
         );
 
@@ -190,7 +194,7 @@ class RegisteredAppValidator {
 
     public static validateRegisteredAppInput(
         form_data: RegisteredAppFromDataInterface
-    ): ValidationResultInterface {
+    ): ValidationResultInterface<RegisteredAppValidatedFromDataInterface> {
         const {
             csrf_token,
             name,
@@ -236,7 +240,18 @@ class RegisteredAppValidator {
             return { v_state: false, v_msg: "invalid_input_app_urls_must_be_valid_links" };
         }
 
-        return { v_state: true, v_msg: "valid_input" };
+        const v_data: RegisteredAppValidatedFromDataInterface = {
+            csrf_token,
+            name,
+            prefix,
+            description,
+            base_url,
+            logo_url,
+            social_links,
+            urls: urls ? urls.split(",").map((url) => url.trim()) : []
+        };
+
+        return { v_state: true, v_msg: "valid_input", v_data };
     }
 }
 

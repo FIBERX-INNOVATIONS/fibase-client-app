@@ -2,7 +2,16 @@
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 
 const input_ui_class_styles: InputUIClassStylesInterface = {
-    input_class_style: "!w-full !min-h-10 !flex !rounded-md !border px-3 !py-2 !text-sm !ring-offset-background !placeholder:text-muted-foreground !focus-visible:outline-none !focus-visible:ring-2 !focus-visible:ring-ring !focus-visible:ring-offset-2  !bg-gray-200 !border-blue-600/70 !text-black !placeholder-gray-400 !focus:ring-sky-500",
+    input_class_style: `
+        !w-full !min-h-10 !flex !rounded-md !border px-3 !py-2 !text-sm !ring-offset-background 
+        !placeholder:text-muted-foreground !focus-visible:outline-none !focus-visible:ring-2 
+        !focus-visible:ring-ring !focus-visible:ring-offset-2  !bg-gray-200 !border-blue-600/70 
+        !text-black !placeholder-gray-400 !focus:ring-sky-500`.replace(/\s+/g, ' ').trim(),
+
+    file_input_class_style: `file:mr-4 file:py-2 file:px-4
+        file:rounded-lg file:border-1 file:text-sm file:font-semibold 
+        file:bg-gradient-to-r file:from-blue-500 file:to-blue-900
+        file:text-white hover:file:from-blue-500 hover:file:to-blue-400 hover:file:cursor-pointer`.replace(/\s+/g, ' ').trim(),
 
     wrapper_class_style: "w-full flex flex-col items-center gap-2 justify-center relative",
 
@@ -45,6 +54,16 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
     range_container_class_style: "w-full flex flex-col items-center justify-center gap-2",
 
     range_separator_class_style: "w-6 h-6 flex items-center justify-center",
+
+    preview_wrapper_class_style: "w-full h-auto flex items-center justify-start gap-4 p-2 border rounded-md",
+
+    img_preview_class_style: "w-full h-auto max-h-60 object-contain",
+
+    generic_file_preview_wrapper_class_style: "w-full h-auto flex items-center justify-start",
+
+    generic_file_preview_icon_class_style: "w-10 h-10 text-gray-500",
+
+    generic_file_preview_content_class_style: "text-sm text-gray-700",
 }
 
 export default input_ui_class_styles;

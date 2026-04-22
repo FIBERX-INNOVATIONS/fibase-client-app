@@ -1,4 +1,6 @@
 
+import { markRaw } from "vue";
+
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util";
@@ -9,9 +11,19 @@ import { FieldValidator } from "@/types/form_data_type";
 
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-import { ToasterUIActionPropsInterface, ToasterUIPropsInterface, ToastStatusType } from "@ui/version_3/ui_types/toaster_ui_type";
-
 import { CSRFTokenForType } from "@/configs/constants";
+
+import { GlobalEventTypes, OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
+import { FilePreviewUploadUIPropsInterface } from "@ui/version_3/ui_types/file_preview_upload_ui_type";
+
+
+import { 
+    ToasterUIActionPropsInterface, 
+    ToasterUIPropsInterface, 
+    ToastStatusType 
+} from "@ui/version_3/ui_types/toaster_ui_type";
+
 
 import { 
     ButtonActionMethodReturnInterface, 
@@ -31,8 +43,13 @@ import {
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
+import FilePreviewUploadUI from "@ui/version_3/components/FilePreviewUploadUI.vue";
+
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
 import AuthAPIService from "@/api_services/auth_api_service";
+import FilePreviewUploadUIClassStyles from "@/class_styles/file_preview_upload_class_styles";
+import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
+import ButtonUIClassStyles from "@/class_styles/button_ui_class_styles";
 
 
 class BaseFormActionHandler<
@@ -41,7 +58,7 @@ class BaseFormActionHandler<
     State extends BaseFormStateInterface = BaseFormStateInterface,
     Computed extends Record<string, any> = {},
     Components extends Record<string, any> = {},
-    Events extends Record<string, any> = {}
+    Events extends GlobalEventTypes = GlobalEventTypes
 > {
 
     public readonly name: string;
@@ -52,7 +69,7 @@ class BaseFormActionHandler<
 
     protected content_manager = ContentManagerUtil.getInstance();
 
-    protected form_data: Partial<FormData> = {};
+    public form_data: Partial<FormData> = {};
 
     private csrf_refresh_timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -268,11 +285,82 @@ class BaseFormActionHandler<
     };
 
     // Method to handle on btn clicked
-    public handleOnBtnClick = async (
+    public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<ButtonActionMethodReturnInterface> =>  {
         return { status: true, msg: "" };
+    }
+
+    // method to handle on file upload
+    public handleOnFileUpload = async (
+        files: File[],
+    ): Promise<boolean> => {
+        return false
+    }
+
+    // Method to open file upload modal on file selected
+    public handleOnFileSelected = async (
+        event?: Event,
+        input_value?: InputValue,
+        input_config?: { props: InputUIPropsInterface }
+    ): Promise<ActionMethodRetrunInterface> => {
+        const base_content_key  = "content_resource.global_modal_ui";
+        const target            = event?.target as HTMLInputElement;
+        const props             = input_config?.props;
+        const multiple          = props?.file_props?.multiple ?? false;
+        const class_styles      = FilePreviewUploadUIClassStyles
+
+        if(!target?.files) {
+            this.logger.warn(`No files selected`);
+            return { status: false, msg: this.getContentMessage("no_file_selected") };
+        }
+
+        if(!this.handleOnFileUpload) {
+            this.logger.warn(`handleOnFileUpload method not implemented in ${this.name}`);
+            return { status: false, msg: this.getContentMessage("file_upload_not_supported") };
+        }
+
+        const files                 = Array.from(target.files);
+
+        const action_props          = {
+            on_file_upload: this.handleOnFileUpload.bind(this),
+        };
+
+        const upload_button_props   = ButtonUIPropsBuilder.getReactivePropsObject(
+            `UploadFile${multiple ? "s" : ""}_${input_config?.props?.id ?? ""}`,
+            `${base_content_key}.file_preview_upload_modal.content.upload_btn_text`,
+            "file_upload_svg_icon",
+            "button",
+            {
+                class_styles: ButtonUIClassStyles,
+                boolean_props: { disabled: false },
+            }
+        );
+                
+        const modal_payload: OpenModalEventPayloadInterface<
+            FilePreviewUploadUIPropsInterface,
+            {}
+        > = {
+            content_key: `${base_content_key}.file_preview_upload_modal`,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(FilePreviewUploadUI),
+            
+            body_props: { 
+                files,
+                multiple,
+                class_styles,
+                upload_button_props,
+                action_props
+            },
+        };
+                
+        this.controller?.event_bus?.emit?.("open_modal", modal_payload);
+
+        return { status: true, msg: "" };
+
     }
 
 
@@ -290,7 +378,7 @@ class BaseFormActionHandler<
     public getBtnActionHandlerConfig = (): ButtonUIActionPropsInterface => {
 
         return {
-            on_click: this.handleOnBtnClick.bind(this),
+            on_click: this.handleOnFormSubmitBtnClick.bind(this),
         };
 
     }

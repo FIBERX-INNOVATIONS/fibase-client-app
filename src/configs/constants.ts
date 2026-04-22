@@ -84,3 +84,7 @@ export const STORAGE_SCHEMA = {
 }
 
 export type InternalStorageSchemaType = typeof STORAGE_SCHEMA
+
+export const FILE_STORAGE_REFERENCE_TYPE = {
+    REGISTERED_APP_LOGO: "app_logo"
+} as const;

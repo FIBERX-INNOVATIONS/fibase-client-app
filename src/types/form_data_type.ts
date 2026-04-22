@@ -38,5 +38,21 @@ export interface RegisteredAppFromDataInterface extends BaseFormData {
     base_url: string;
     logo_url: string;
     social_links: RegisteredAppSocialLinksInterface | null
-    urls: string[] | null
+    urls: string | null
+}
+
+export interface RegisteredAppValidatedFromDataInterface extends BaseFormData {
+    name: string;
+    prefix: string;
+    description: string;
+    base_url: string;
+    logo_url: string;
+    social_links: RegisteredAppSocialLinksInterface | null
+    urls: string[];
+}
+
+export interface StorageFileUploadFormDataInterface {
+    file: File;                
+    reference_type: string;    
+    is_public?: boolean;      
 }

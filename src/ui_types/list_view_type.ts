@@ -11,6 +11,7 @@ import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { PaginatedResponseResultInterface } from "@/types/api_service_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
+import { DataTableResultAndBulkActionBarUIClassStylesInterface, DataTableResultAndBulkActionBarUIPropsInterface } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
 
 
 export type FieldArray<T, K extends keyof T> = T[K][];
@@ -47,6 +48,8 @@ export interface ListViewStateDataInterface<
 
     filters_panel_props: FiltersPanelUIPropsInterface;
 
+    data_table_result_and_bulk_action_bar_props: DataTableResultAndBulkActionBarUIPropsInterface;
+
     table_props: DataTableUIPropsInterface<T>;
 
     list_state: ListStateInterface<T>;
@@ -66,6 +69,8 @@ export interface ListViewComponentsInterface {
 
     FiltersPanelUI: Component;
 
+    DataTableResultAndBulkActionBarUI: Component;
+
     DataTableUI: Component;
 
     DropdownMenuUI: Component;
@@ -83,6 +88,8 @@ export interface ListViewClassStylesInterface {
     filters_input_group_class_styles: InputGroupUIClassStylesInterface;
 
     filters_input_ui_class_styles: InputUIClassStylesInterface;
+
+    table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActionBarUIClassStylesInterface;
 
     table_class_styles: DataTableUIClassStylesInterface;
 

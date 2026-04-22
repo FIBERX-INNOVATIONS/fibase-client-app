@@ -9,6 +9,8 @@ import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+
 import {
     FormViewPropsInterface,
     FormViewComputedDataInterface,
@@ -28,10 +30,12 @@ import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
 import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
+import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import FormViewActionHandler from "@/action_handlers/registered_app/form_view_action_handler";
-import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+
+
 
 
 
@@ -117,9 +121,19 @@ class FormViewController<T = any>  extends BaseController <
 
         const logo_url_input_props = InputUIPropsBuilder.getReactivePropsObject(
             "logo_url", 
-            "text", 
+            "file", 
             input_group_content_key("logo_url"),
-            { model_value: existing_record?.logo_url ?? "" }
+            { 
+                model_value: existing_record?.logo_url ?? "",
+                action_props: {
+                    on_change: this.action_handler.handleOnFileSelected
+                },
+                file_props: {
+                    accept: "image/*",
+                    multiple: false,
+                    enable_preview: true
+                }
+            }
         );
 
         const urls_input_props = InputUIPropsBuilder.getReactivePropsObject(
@@ -155,7 +169,7 @@ class FormViewController<T = any>  extends BaseController <
 
     protected async handleOnMountedLogic(): Promise<void> {
         // set csrf token
-        await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.LOGIN);
+        await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.REGISTER_APP);
     }
 
     protected async handleBeforeUnmountedLogic(): Promise<void> {

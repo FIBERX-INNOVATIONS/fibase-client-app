@@ -157,7 +157,7 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 const ModalClassStyle: ModalUIClassStylesInterface = {
     wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
-    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-auto max-w-[50%] min-w-[35%]",
+    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-auto max-w-[90%] min-w-[35%]",
 
     header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
 

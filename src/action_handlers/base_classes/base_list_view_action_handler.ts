@@ -1,11 +1,17 @@
 
-import BaseController from "@ui/version_3/base_classes/base_controller";
+import { markRaw } from "vue";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-import { GlobalEventTypes } from "@/types/global_events_type";
+import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
+
+import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
+
+import { debounceMethod } from "@ui/version_3/utils/debounce_util";
+
+import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import {
     ListViewPropsInterface,
@@ -30,11 +36,8 @@ import {
 } from "@ui/version_3/ui_types/button_ui_type";
 
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
-import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-import { debounceMethod } from "@ui/version_3/utils/debounce_util";
-import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
-import { markRaw } from "vue";
 import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 
 
@@ -257,11 +260,20 @@ class BaseListViewActionHandler<
 
         const {
             is_loading = false,
-            records = []
+            records = [],
+            total_items = 0,
+            current_page = 1,
+            total_pages = 1,
         } = new_val
 
         this.controller.state_refs.table_props.value.is_loading     = is_loading;
         this.controller.state_refs.table_props.value.data           = records;
+
+        // update result and bulk actions bar
+        this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.current_page        = current_page;
+        this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.total_pages         = total_pages;
+        this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.total_records       = total_items;
+        this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.filtered_records    = records.length;
     }
 
     // Method to update a specific list state record
@@ -397,7 +409,8 @@ class BaseListViewActionHandler<
                 };
             }
 
-            const selected_records = this.controller.state_refs.selected_records.value;
+            const selected_records              = this.controller.state_refs.selected_records.value;
+            const bulk_action_selection_props =  this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
 
             const value_str = value.toString();
 
@@ -417,6 +430,11 @@ class BaseListViewActionHandler<
 
             if (!has_selection) {
                 sn_cell.header.render = undefined;
+            }
+
+            if(bulk_action_selection_props) {
+                bulk_action_selection_props.selected_count      = selected_records.length;
+                bulk_action_selection_props.bulk_button_props   = this.controller.getBulkActionButtonProps();
             }
 
             return {
@@ -454,7 +472,8 @@ class BaseListViewActionHandler<
                 .map((record) => record?.[row_key])
                 .filter((val) => val !== undefined && val !== null);
 
-            const selected_records = this.controller.state_refs.selected_records.value;
+            const selected_records              = this.controller.state_refs.selected_records.value;
+            const bulk_action_selection_props   =  this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
 
             const is_all_selected = selected_records.length === all_values.length;
 
@@ -475,6 +494,11 @@ class BaseListViewActionHandler<
                 ? () => markRaw(DataTableSerialCellUI)
                 : undefined;
 
+            if(bulk_action_selection_props) {
+                bulk_action_selection_props.selected_count      = this.controller.state_refs.selected_records.value.length;
+                bulk_action_selection_props.bulk_button_props   = this.controller.getBulkActionButtonProps();
+            }
+
             return {
                 status: true,
                 msg: this.getContentMessage("success")
@@ -489,6 +513,44 @@ class BaseListViewActionHandler<
             };
         }
     };
+
+    // Method to handle on new record created (to update list state)
+    public handleOnNewRecordCreated = async (
+        payload: NewRecordCreated<T, true>
+    ): Promise<boolean> => {
+        try {
+            const { record, re_fetch = true } = payload;
+
+            if(re_fetch) {
+                await this.fetchRecords();
+                return true;
+            }
+
+            const list_state = this.controller.getListState();
+
+            const {
+                records = [],
+                total_items = 0
+            } = list_state;
+
+            const updated_records = [record, ...records];
+
+            this.controller.setListState({
+                records: updated_records,
+                total_items: total_items + 1
+            }); 
+
+            return true;
+        }
+        catch(error: unknown) {
+            this.logger.error("Error handling new record created: ", { error });
+            return false;
+        } 
+    }
+
+    // Method to handle on bulk action btn clicked
+    public handleOnBulkActionBtnClicked = async () => {
+    }
 
 
 }

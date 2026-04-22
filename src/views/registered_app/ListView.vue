@@ -7,7 +7,13 @@
             <FiltersPanelUI  v-bind="filters_panel_props" />
         </PageHeaderUI>
 
-        <DataTableUI v-bind="table_props" />
+        <DataTableUI v-bind="table_props">
+            <template #section_1>
+                <DataTableResultAndBulkActionBarUI
+                    v-bind="data_table_result_and_bulk_action_bar_props"
+                />
+            </template>
+        </DataTableUI>
 
         <DropdownMenuUI v-bind="action_menu_dropdown_props" />
 
@@ -31,6 +37,7 @@ const {
     BreadcrumbUI,
     PageHeaderUI,
     FiltersPanelUI,
+    DataTableResultAndBulkActionBarUI,
     DataTableUI,
     DropdownMenuUI
 } = components;
@@ -39,6 +46,7 @@ const {
     breadcrumb_props,
     page_header_props,
     filters_panel_props,
+    data_table_result_and_bulk_action_bar_props,
     table_props,
     action_menu_dropdown_props
 } = state_refs;

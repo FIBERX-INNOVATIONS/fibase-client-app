@@ -16,7 +16,7 @@ const FormViewClassStyles: FormViewClassStylesinterface  = {
 
     header_text_class_style: "font-semibold tracking-tight text-2xl flex",
 
-    fieldset_class_style: "space-y-6 py-4 w-full h-auto max-h-[500px] overflow-y-auto overflow-x-hidden",
+    fieldset_class_style: "space-y-6 py-4 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
 
     input_group_class_style,
 

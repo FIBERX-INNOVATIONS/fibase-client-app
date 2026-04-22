@@ -28,6 +28,7 @@ import PageHeaderUI from "@ui/version_3/components/PageHeaderUI.vue";
 import FiltersPanelUI from "@ui/version_3/components/FiltersPanelUI.vue";
 import DataTableUI from "@ui/version_3/components/DataTableUI.vue";
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
+import DataTableResultAndBulkActionBarUI from "@ui/version_3/components/DataTableResultAndBulkActionBarUI.vue";
 
 import BreadcrumbUIPropsBuilder from "@ui/version_3/props_builder/breadcrumb_ui_props_builder";
 import PageHeaderUIPropsBuilder from "@ui/version_3/props_builder/page_header_ui_props_builder";
@@ -41,6 +42,7 @@ import BaseListViewActionHandler from "@/action_handlers/base_classes/base_list_
 import DataTableUIPropsBuilder from "@ui/version_3/props_builder/data_table_ui_props_builder";
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
+import DataTableResultAndBulkActionBarUIPropsBuilder from "@ui/version_3/props_builder/data_table_result_and_bulk_action_bar_ui_props_builder";
 
 
 
@@ -148,6 +150,8 @@ class BaseListViewController<
 
             FiltersPanelUI,
 
+            DataTableResultAndBulkActionBarUI,
+
             DataTableUI,
 
             DropdownMenuUI
@@ -182,11 +186,13 @@ class BaseListViewController<
             filters_class_styles,
             filters_input_group_class_styles: input_group_class_style,
             filters_input_ui_class_styles: input_ui_class_style,
-            table_class_styles
+            table_class_styles,
+            table_result_and_bulk_action_bar_class_styles
         } = ListViewClassStyles
 
         const page_key                          = this.getPageContentKey();
         const row_key                           = this.getTableRowKey();
+        const list_state                        = this.getListState();
         const breadcrumb_content_key            = `content_resource.${page_key}_view_ui.list_view_ui.breadcrumb_list`;
         const header_text_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_text`;
         const header_desc_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_description`;
@@ -197,6 +203,7 @@ class BaseListViewController<
         const apply_filters_btn_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.apply_filters_btn.btn_text`;
         const loader_html_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.table.loading_section.loader_text`;
         const empty_data_html_content_key       = `content_resource.${page_key}_view_ui.list_view_ui.table.empty_state_section.header_text`;
+        const table_result_content_key          = `content_resource.${page_key}_view_ui.list_view_ui.table.result_section.result_text`;
         const create_btn_icon                   = "plus_circle_svg_icon";
         const clear_filters_btn_icon            = "x_circile_svg_icon";
         const apply_filters_btn_icon            = "arrow_right_circle_svg_icon";
@@ -270,6 +277,14 @@ class BaseListViewController<
             empty_data_html_content_key
         });
 
+        const bulk_actions_btn = this.getBulkActionButtonProps();
+
+        const configures_result_and_bulk_action_bar = DataTableResultAndBulkActionBarUIPropsBuilder.configure({
+            class_styles: table_result_and_bulk_action_bar_class_styles,
+            content_props: { header_text_key: table_result_content_key },
+            selection_props: { bulk_button_props: bulk_actions_btn }
+        });
+
 
         return {
             selected_records: [] as T[K][],
@@ -303,13 +318,23 @@ class BaseListViewController<
                 }
             ),
 
+            data_table_result_and_bulk_action_bar_props: DataTableResultAndBulkActionBarUIPropsBuilder.getReactivePropsObject(
+                `${page_key}DataTableResultAndBulkActionBar`,
+                list_state.total_items,
+                list_state.limit,
+                list_state.current_page,
+                list_state.total_pages,
+                true,
+                0
+            ),
+
             table_props: DataTableUIPropsBuilder.getReactivePropsObject<T>(
                 this.getTableRowKey(),
                 this.getTableRenderConfig(),
                 [],
             ),
 
-            list_state: this.getListState(),
+            list_state,
 
             action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
                 "TableActionMeuDropdown", 
@@ -349,6 +374,10 @@ class BaseListViewController<
         this.action_handler?.hydrateFiltersFromRoute?.();
 
         await this.action_handler?.fetchRecords();
+
+        if(this.action_handler?.handleOnNewRecordCreated) {
+            this.event_bus?.on("on_new_record_created", this.action_handler.handleOnNewRecordCreated);
+        }
     }
 
     /**
@@ -363,6 +392,32 @@ class BaseListViewController<
         return {
             list_state: this.action_handler?.handleListStateChangedWatcher
         };
+    }
+
+    public getBulkActionButtonProps = (): ButtonUIPropsInterface => {
+        const {
+            filters_class_styles,
+        } = ListViewClassStyles
+
+        const page_key                          = this.getPageContentKey();
+        const table_bulk_action_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.table.bulk_action_section.btn_text`;
+        const bulk_action_btn_icon              = "vertical_elipsis_svg_icon";
+
+        return ButtonUIPropsBuilder.getReactivePropsObject(
+            `${page_key}BulkActionsBtn`,
+            table_bulk_action_content_key,
+            bulk_action_btn_icon,
+            "button",
+            {
+                action_props: {
+                    on_click: this.action_handler?.handleOnBulkActionBtnClicked
+                },
+                class_styles: filters_class_styles.apply_filters_btn_class_style
+            },
+            { selected_count: this.state_refs.selected_records?.value?.length ?? 0 }
+
+        )
+
     }
 }
 

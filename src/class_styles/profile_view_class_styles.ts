@@ -2,7 +2,7 @@ import { ProfileViewClassStylesInterface } from "@/ui_types/profile_view_type";
 
 
 const ProfileViewClassStyles: ProfileViewClassStylesInterface = { 
-    wrapper_class_style: "p-6 space-y-6 w-full h-auto max-h-[500px] overflow-y-auto overflow-x-hidden",
+    wrapper_class_style: "p-6 space-y-6 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
 
     loading_wrapper_class_style: "p-6 w-full flex gap-2 items-center justify-center h-auto max-h-[500px] overflow-y-auto overflow-x-hidden",
 
@@ -29,7 +29,7 @@ const ProfileViewClassStyles: ProfileViewClassStylesInterface = {
 
     icon_class_style: "w-4 h-4 flex items-center justify-center",
 
-    small_bold_underlined_text_class_style: "text-sm uppercase font-black border-b border-gray-800 pb-1 w-full",
+    small_bold_underlined_text_class_style: "text-sm uppercase font-black border-b border-gray-800 pb-1 w-full md:text-start text-center",
 
     small_bold_key_text_class_style: "text-sm font-black text-gray-900 uppercase",
 
@@ -49,7 +49,7 @@ const ProfileViewClassStyles: ProfileViewClassStylesInterface = {
 
     grid_class_style: {
         two_col_responsive_grid_wrapper_class_style: "grid grid-cols-1 md:grid-cols-2 gap-4",
-        grid_wrapper_class_style: "space-y-2 w-full flex md:items-start md:justify-start items-center justify-start flex-col py-4 px-2",
+        grid_wrapper_class_style: "space-y-2 w-full flex md:items-start md:justify-start items-center justify-center flex-col py-4 px-2",
 
     }
 
