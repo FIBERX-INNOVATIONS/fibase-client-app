@@ -12,6 +12,7 @@ import { PaginatedResponseResultInterface } from "@/types/api_service_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 import { DataTableResultAndBulkActionBarUIClassStylesInterface, DataTableResultAndBulkActionBarUIPropsInterface } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
+import { PaginationUIClassStylesInterface, PaginationUIPropsInterface } from "@ui/version_3/ui_types/pagination_ui_type";
 
 
 export type FieldArray<T, K extends keyof T> = T[K][];
@@ -55,6 +56,8 @@ export interface ListViewStateDataInterface<
     list_state: ListStateInterface<T>;
 
     action_menu_dropdown_props: DropdownMenuUIPropsInterface;
+
+    pagination_ui_props: PaginationUIPropsInterface;
     
 }
 
@@ -74,6 +77,8 @@ export interface ListViewComponentsInterface {
     DataTableUI: Component;
 
     DropdownMenuUI: Component;
+
+    PaginationUI: Component;
 }
 
 export interface ListViewClassStylesInterface {
@@ -94,6 +99,8 @@ export interface ListViewClassStylesInterface {
     table_class_styles: DataTableUIClassStylesInterface;
 
     table_cell_components_class_styles: DataTableCellComponentUIClassStylesInterface;
+
+    table_pagination_ui_class_styles: PaginationUIClassStylesInterface;
 
 }
 

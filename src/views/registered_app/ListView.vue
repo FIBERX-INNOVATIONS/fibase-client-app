@@ -13,6 +13,9 @@
                     v-bind="data_table_result_and_bulk_action_bar_props"
                 />
             </template>
+            <template #section_2>
+                <PaginationUI v-if="controller.state_refs.list_state.value.total_pages > 1" v-bind="pagination_ui_props" />
+            </template>
         </DataTableUI>
 
         <DropdownMenuUI v-bind="action_menu_dropdown_props" />
@@ -39,7 +42,8 @@ const {
     FiltersPanelUI,
     DataTableResultAndBulkActionBarUI,
     DataTableUI,
-    DropdownMenuUI
+    DropdownMenuUI,
+    PaginationUI
 } = components;
 
 const {
@@ -48,6 +52,7 @@ const {
     filters_panel_props,
     data_table_result_and_bulk_action_bar_props,
     table_props,
+    pagination_ui_props,
     action_menu_dropdown_props
 } = state_refs;
 

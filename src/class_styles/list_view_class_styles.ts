@@ -10,6 +10,8 @@ import input_ui_class_styles from "./input_ui_class_styles";
 import { DataTableUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 import { DataTableResultAndBulkActionBarUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
+import { PaginationUIClassStylesInterface } from "@ui/version_3/ui_types/pagination_ui_type";
+import ButtonUIClassStyles from "./button_ui_class_styles";
 
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
@@ -125,13 +127,13 @@ const filters_input_ui_class_styles: InputUIClassStylesInterface = {
 }
 
 const table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActionBarUIClassStylesInterface = {
-   wrapper_class_style: "w-full py-4  my-2 flex items-center justify-between",
+   wrapper_class_style: "w-full py-4  my-2 flex md:flex-row flex-col items-center md:justify-center justify-between",
 
-    left_container_class_style: "",
+    left_container_class_style: "md:w-6/12 w-full flex md:items-start items-center flex-col md:justify-start justify-center my-2",
 
-    right_container_class_style: "",
+    right_container_class_style: "md:w-6/12 w-full flex md:items-end items-center flex-col md:justify-end justify-center my-2",
 
-    text_class_style: "",
+    text_class_style: "md:text-start text-center text-sm text-gray-500",
 }
 
 const table_class_styles: DataTableUIClassStylesInterface = {
@@ -157,7 +159,7 @@ const table_class_styles: DataTableUIClassStylesInterface = {
 const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInterface = {
     wrapper_class_style: "w-full flex items-center justify-center p-2 text-center",
     text_class_style: "text-sm text-gray-900",
-    sub_text_class_style: "bg-green-900 truncate font-black uppercase rounded-full shadow px-2 py-1 text-xs text-white",
+    sub_text_class_style: "bg-green-900 truncate font-black uppercase rounded-full shadow px-2 py-1 text-xs text-white w-auto max-w-full",
     img_render_ui_class_style: {
         wrapper_class_style: "w-full flex items-center justify-center gap-2",
 
@@ -217,6 +219,24 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
     }
 }
 
+const table_pagination_ui_class_styles: PaginationUIClassStylesInterface = {
+    wrapper_class_style: "w-full flex flex-row items-center justify-center p-[5%] my-2",
+
+    button_class_style: `flex p-1 h-10 px-4 flex items-center justify-center border border-gray-300 text-sm font-bold cursor-pointer gap-2 hover:transition-colors hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-900 hover:text-white`,
+
+    active_page_class_style: "transition-colors bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 text-white",
+
+    btn_icon_class_style: ButtonUIClassStyles.icon_class_style,
+
+    disabled_class_style: "from-gray-300 to-gray-400 text-gray-600 cursor-not-allowed disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed",
+
+    page_container_class_style: "w-auto max-w-5/12 flex items-center justify-center",
+
+    prev_btn_class_style: "rounded-s-lg",
+
+    next_btn_class_style: "rounded-e-lg",
+}
+
 
 
 const ListViewClassStyles: ListViewClassStylesInterface = { 
@@ -229,6 +249,7 @@ const ListViewClassStyles: ListViewClassStylesInterface = {
     table_result_and_bulk_action_bar_class_styles,
     table_class_styles,
     table_cell_components_class_styles,
+    table_pagination_ui_class_styles
 
 }
 

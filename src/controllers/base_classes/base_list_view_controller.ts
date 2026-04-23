@@ -29,6 +29,7 @@ import FiltersPanelUI from "@ui/version_3/components/FiltersPanelUI.vue";
 import DataTableUI from "@ui/version_3/components/DataTableUI.vue";
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 import DataTableResultAndBulkActionBarUI from "@ui/version_3/components/DataTableResultAndBulkActionBarUI.vue";
+import PaginationUI from "@ui/version_3/components/PaginationUI.vue";
 
 import BreadcrumbUIPropsBuilder from "@ui/version_3/props_builder/breadcrumb_ui_props_builder";
 import PageHeaderUIPropsBuilder from "@ui/version_3/props_builder/page_header_ui_props_builder";
@@ -43,6 +44,7 @@ import DataTableUIPropsBuilder from "@ui/version_3/props_builder/data_table_ui_p
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 import DataTableResultAndBulkActionBarUIPropsBuilder from "@ui/version_3/props_builder/data_table_result_and_bulk_action_bar_ui_props_builder";
+import PaginationUIPropsBuilder from "@ui/version_3/props_builder/pagination_ui_props_builder";
 
 
 
@@ -154,7 +156,9 @@ class BaseListViewController<
 
             DataTableUI,
 
-            DropdownMenuUI
+            DropdownMenuUI,
+
+            PaginationUI
         };
     }
 
@@ -187,7 +191,8 @@ class BaseListViewController<
             filters_input_group_class_styles: input_group_class_style,
             filters_input_ui_class_styles: input_ui_class_style,
             table_class_styles,
-            table_result_and_bulk_action_bar_class_styles
+            table_result_and_bulk_action_bar_class_styles,
+            table_pagination_ui_class_styles
         } = ListViewClassStyles
 
         const page_key                          = this.getPageContentKey();
@@ -204,9 +209,12 @@ class BaseListViewController<
         const loader_html_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.table.loading_section.loader_text`;
         const empty_data_html_content_key       = `content_resource.${page_key}_view_ui.list_view_ui.table.empty_state_section.header_text`;
         const table_result_content_key          = `content_resource.${page_key}_view_ui.list_view_ui.table.result_section.result_text`;
+        const table_pagination_content_key      = `content_resource.${page_key}_view_ui.list_view_ui.table.pagination_section.btn_content`;
         const create_btn_icon                   = "plus_circle_svg_icon";
         const clear_filters_btn_icon            = "x_circile_svg_icon";
         const apply_filters_btn_icon            = "arrow_right_circle_svg_icon";
+        const next_pagination_btn_icon          = "arrow_right_short_cirlce_svg_icon";
+        const prev_pagination_btn_icon          = "arrow_left_short_circle_svg_icon";
 
 
         const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject(
@@ -269,7 +277,7 @@ class BaseListViewController<
             }
         );
 
-        const configured_table = DataTableUIPropsBuilder.configure({
+        const configured_table_ui = DataTableUIPropsBuilder.configure({
             section_id: `${page_key}TableSection`,
             table_id: `${page_key}Table`,
             class_styles: table_class_styles,
@@ -279,11 +287,17 @@ class BaseListViewController<
 
         const bulk_actions_btn = this.getBulkActionButtonProps();
 
-        const configures_result_and_bulk_action_bar = DataTableResultAndBulkActionBarUIPropsBuilder.configure({
+        const configures_result_and_bulk_action_bar_ui = DataTableResultAndBulkActionBarUIPropsBuilder.configure({
             class_styles: table_result_and_bulk_action_bar_class_styles,
             content_props: { header_text_key: table_result_content_key },
             selection_props: { bulk_button_props: bulk_actions_btn }
         });
+
+        const configure_pagination_ui = PaginationUIPropsBuilder.configure({
+            class_styles: table_pagination_ui_class_styles,
+            config: { show_numbers: true, max_visible_pages: 10 },
+            content: { prev_btn_icon: prev_pagination_btn_icon, next_btn_icon: next_pagination_btn_icon }
+        })
 
 
         return {
@@ -332,6 +346,9 @@ class BaseListViewController<
                 this.getTableRowKey(),
                 this.getTableRenderConfig(),
                 [],
+                {
+                    action_props: { on_sort: this?.action_handler?.handleOnSortRecord }
+                }
             ),
 
             list_state,
@@ -342,6 +359,16 @@ class BaseListViewController<
                     class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
                     menu_items: []
+                }
+            ),
+
+            pagination_ui_props: PaginationUIPropsBuilder.getReactivePropsObject(
+                `${page_key}PaginationUI`,
+                table_pagination_content_key,
+                list_state.current_page,
+                list_state.total_pages,
+                {
+                    action_props: { on_page_change: this?.action_handler?.handleOnPageChange }
                 }
             )
 

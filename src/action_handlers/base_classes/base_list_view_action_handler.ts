@@ -39,6 +39,7 @@ import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_pane
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
+import { DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
 
 class BaseListViewActionHandler<
@@ -274,6 +275,10 @@ class BaseListViewActionHandler<
         this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.total_pages         = total_pages;
         this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.total_records       = total_items;
         this.controller.state_refs.data_table_result_and_bulk_action_bar_props.value.data_props.filtered_records    = records.length;
+
+        // update pagination ui
+        this.controller.state_refs.pagination_ui_props.value.data_props.current_page    = current_page;
+        this.controller.state_refs.pagination_ui_props.value.data_props.total_pages     = total_pages
     }
 
     // Method to update a specific list state record
@@ -364,6 +369,30 @@ class BaseListViewActionHandler<
             current_page: updated_current_page
         });
     };
+
+    // Method to handle on table record sort
+    public handleOnSortRecord = async (
+        key: string | number | symbol,
+        direction: "asc" | "desc" | null,
+        config?: { props: DataTableUIPropsInterface<T> }
+    ): Promise<void> => {
+        this.controller.setListState({
+            sort_by: (key) as string,
+            sort_direction: direction
+        })
+
+        return await this.fetchRecords();
+    }
+
+    // Method to handle on table page change
+    public handleOnPageChange = async (page: number): Promise<void> => {
+
+        this.controller.setListState({
+            current_page: page
+        })
+
+        return await this.fetchRecords();
+    }
 
     // Method to handle select action menu clicked
     public handleSelectActionMenuClicked = async (
