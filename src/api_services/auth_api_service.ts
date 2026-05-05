@@ -98,8 +98,8 @@ class AuthAPIService extends BaseAPIService {
         });
 
         if (result.data) {
-            const { access_token, expires_in_mins } = result?.data;
-            MemberAuthenticatorUtil.onAccessRefreshSuccess(access_token, expires_in_mins);
+            const { access_token, expires_in_mins, permissions = [] } = result?.data;
+            MemberAuthenticatorUtil.onAccessRefreshSuccess(access_token, expires_in_mins, permissions);
         }
         else if (result.full_response?.status === 401) {
             MemberAuthenticatorUtil.onlogoutSuccess();

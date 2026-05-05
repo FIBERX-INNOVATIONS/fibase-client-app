@@ -32,14 +32,14 @@ import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
 
-import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
 import FormViewActionHandler from "@/action_handlers/registered_app/form_view_action_handler";
 
 
 
 
 
-class FormViewController<T = any>  extends BaseController <
+class RegisteredAppFormViewController<T = any>  extends BaseController <
     FormViewPropsInterface<T>,
     RegisteredAppFormState,
     FormViewComputedDataInterface,
@@ -179,4 +179,4 @@ class FormViewController<T = any>  extends BaseController <
 
 }
 
-export default FormViewController
+export default RegisteredAppFormViewController

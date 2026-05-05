@@ -20,21 +20,27 @@ class RegisteredAppActionMenu {
 
         const class_styles      = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
         const content_manager   = ContentManagerUtil.getInstance();
-        const content_key       = "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
-        const content           = content_manager.get<NavLinkContentPayloadResultInterface[]>(content_key, []) ?? [];
+        const base_content_key  = "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
         const record_id         = record?.public_id?.toString();
+
+        // menu contents
+        const view_menu_content         = content_manager.get<NavLinkContentPayloadResultInterface>?.(`${base_content_key}.view_menu_option`);
+        const select_menu_content       = content_manager.get<NavLinkContentPayloadResultInterface>?.(`${base_content_key}.select_menu_option`);
+        const edit_menu_content         = content_manager.get<NavLinkContentPayloadResultInterface>?.(`${base_content_key}.edit_menu_option`);
+        const delete_menu_content       = content_manager.get<NavLinkContentPayloadResultInterface>?.(`${base_content_key}.delete_menu_option`);
+
 
 
         const menus = [
             // View menu
             {
-                id: `${ content?.[0]?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
+                id: `${ view_menu_content?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
 
-                link: content?.[0]?.menu_link ?? "",
+                link: view_menu_content?.menu_link ?? "",
 
-                icon: content?.[0]?.menu_icon,
+                icon: view_menu_content?.menu_icon,
 
-                content: content?.[0]?.menu_text ?? "",
+                content: view_menu_content?.menu_text ?? "",
 
                 action_props: {
                     on_click: async (
@@ -54,13 +60,13 @@ class RegisteredAppActionMenu {
             },
             // Select Menu
             {
-                id: `${ content?.[1]?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
+                id: `${ select_menu_content?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
 
-                link: content?.[1]?.menu_link ?? "",
+                link: select_menu_content?.menu_link ?? "",
 
-                icon: content?.[1]?.menu_icon,
+                icon: select_menu_content?.menu_icon,
 
-                content: content?.[1]?.menu_text ?? "",
+                content: select_menu_content?.menu_text ?? "",
 
                 action_props: {
                     on_click: async (
@@ -78,13 +84,13 @@ class RegisteredAppActionMenu {
             },
             // Edit Menu
             {
-                id: `${ content?.[2]?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
+                id: `${ edit_menu_content?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
 
-                link: content?.[2]?.menu_link ?? "",
+                link: edit_menu_content?.menu_link ?? "",
 
-                icon: content?.[2]?.menu_icon,
+                icon: edit_menu_content?.menu_icon,
 
-                content: content?.[2]?.menu_text ?? "",
+                content: edit_menu_content?.menu_text ?? "",
 
                 action_props: {
                     on_click: async (
@@ -105,13 +111,13 @@ class RegisteredAppActionMenu {
             },
             // Delete Menu
             {
-                id: `${ content?.[3]?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
+                id: `${ delete_menu_content?.menu_text ?? "" }ActionMenu${ record_id.toUpperCase() }`,
 
-                link: content?.[3]?.menu_link ?? "",
+                link: delete_menu_content?.menu_link ?? "",
 
-                icon: content?.[3]?.menu_icon,
+                icon: delete_menu_content?.menu_icon,
 
-                content: content?.[3]?.menu_text ?? "",
+                content: delete_menu_content?.menu_text ?? "",
 
                 action_props: {
                     on_click: async (

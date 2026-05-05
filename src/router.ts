@@ -125,7 +125,7 @@ class RouterManager {
                 component: RegisteredAppListView,
                 meta: {
                     title_key: "registered-app-list-page", 
-                    permission_name: "view_all_registered_apps", 
+                    permission_name: "registered_app_module.get_registered_app_list", 
                     is_auth_page: false
                 }
             },
@@ -135,7 +135,7 @@ class RouterManager {
                 component: CurrencyListView,
                 meta: {
                     title_key: "currency-list-page", 
-                    permission_name: "view_all_currencies", 
+                    permission_name: "currency_module.get_currency_list", 
                     is_auth_page: false
                 }
             },

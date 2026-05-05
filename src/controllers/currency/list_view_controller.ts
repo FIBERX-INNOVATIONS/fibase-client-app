@@ -5,7 +5,7 @@ import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_
 
 import { 
     getMemberFullName, 
-    RegisteredAppRecordInterface 
+    CurrencyRecordInterface 
 } from "@/types/api_service_type";
 
 import { 
@@ -23,16 +23,18 @@ import {
     ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
-import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
+import { DEFUALT_CURRENCY_LOGO_URL } from "@/configs/constants";
 
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
-import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
+import CurrencyListViewActionHandler from "@/action_handlers/currency/list_view_action_handler";
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
+import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
 import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
@@ -45,26 +47,30 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 
 
-class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface, "public_id"> {
 
-    public action_handler: RegisteredAppListViewActionHandler;
+class CurrencyListViewController extends BaseListViewController<CurrencyRecordInterface, "code"> {
+
+    public action_handler: CurrencyListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
-        super(props, "public_id");
+        super(props, "code");
 
-        this.action_handler = new RegisteredAppListViewActionHandler(this);
+        this.action_handler = new CurrencyListViewActionHandler(this);
 
         this.getComponentDefinition();
     }
 
     protected getPageContentKey(): string {
-        return "registered_app";
+        return "currency";
     }
 
     protected getPageFilters(): ListFilterConfig[] {
         const page_key            = this.getPageContentKey();
-        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`
+        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`;
+        const app_id              = this.route.query?.app_id?.toString() ?? "";
+
         return [
+            // Search Filter
             {
                 key: "search",
                 type: "search",
@@ -79,6 +85,40 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
 
             },
+            // Precision Filter
+            {
+                key: "precision",
+                type: "number",
+                label_content_key: `${filters_content_key}.precision_filter`,
+                input_content_key: `${filters_content_key}.precision_filter`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.precision ?? "",
+                }
+            },
+            // Minor unit Filter
+            {
+                key: "minor_unit",
+                type: "number",
+                label_content_key: `${filters_content_key}.minor_unit_filter`,
+                input_content_key: `${filters_content_key}.minor_unit_filter`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.minor_unit ?? "",
+                }
+            },
+            // numeric Code Filter
+            {
+                key: "numeric_code",
+                type: "text",
+                label_content_key: `${filters_content_key}.numeric_code_filter`,
+                input_content_key: `${filters_content_key}.numeric_code_filter`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.numeric_code ?? "",
+                }
+            },
+            // Is Active filter
             {
                 key: "is_active",
                 type: "select",
@@ -90,6 +130,49 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     model_value: this.route.query?.is_active ?? ""
                 }
             },
+            // Is Fiat Filter
+            {
+                key: "is_fiat",
+                type: "select",
+                label_content_key: `${filters_content_key}.type_filter`,
+                input_content_key: `${filters_content_key}.type_filter`,
+                options_content_key: `${filters_content_key}.type_filter.option_list`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.is_fiat ?? ""
+                }
+            },
+            // App Id Filter
+            {
+                key: "app_id",
+                type: "select_search",
+                label_content_key: `${filters_content_key}.app_id_filter`,
+                input_content_key: `${filters_content_key}.app_id_filter`,
+                overides: {
+                    model_value: app_id,
+                    content_props: {
+                        caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                    },
+                    action_props: {
+                        ...this.action_handler.getFilterInputActionHandlersConfig(),
+                        fetch_data_method: PreviewRecordFetcher.fetchRegisteredAppPreviewRecords
+                    },
+                }
+
+            },
+            // Assigned/Unassigned to App
+            {
+                key: "unassigned_to_app",
+                type: "select",
+                label_content_key: `${filters_content_key}.unassigned_to_app_filter`,
+                input_content_key: `${filters_content_key}.unassigned_to_app_filter`,
+                options_content_key: `${filters_content_key}.unassigned_to_app_filter.option_list`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.unassigned_to_app ?? ""
+                }
+            },
+            // Created By Filter
             {
                 key: "created_by",
                 type: "select_search",
@@ -104,16 +187,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
 
             },
-            {
-                key: "key_version",
-                type: "number",
-                label_content_key: `${filters_content_key}.key_version_filter`,
-                input_content_key: `${filters_content_key}.key_version_filter`,
-                overides: {
-                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.key_version ?? "",
-                }
-            },
+            // Date Range Filter
             {
                 key: "date_range",
                 type: "date_range",
@@ -130,20 +204,22 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
         ];
     }
 
-    public getTableRowKey(): keyof RegisteredAppRecordInterface {
-        return "public_id" as keyof RegisteredAppRecordInterface;
+    public getTableRowKey(): keyof CurrencyRecordInterface {
+        return "code" as keyof CurrencyRecordInterface;
     }
 
-    protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app_status");
+    protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyRecordInterface>[] {
+        const content_manager   = ContentManagerUtil.getInstance();
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("currency_module.update_currency_status");
         
-        const columns: DataTableColumnRenderType<RegisteredAppRecordInterface>[] = [
+        const columns: DataTableColumnRenderType<CurrencyRecordInterface>[] = [
+            // S/N and Select Checkbox Column
             {
-                key: "public_id",
+                key: "code",
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sn_text",
                 },
                 cell: {
                     render: (_row, index) => { return DataTableSerialCellUI }
@@ -153,13 +229,13 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                     is_selected: false,
 
-                    input_model_value: (record: RegisteredAppRecordInterface): InputValue => {
-                        return this.state_refs.selected_records.value.includes(record.public_id);
+                    input_model_value: (record: CurrencyRecordInterface): InputValue => {
+                        return this.state_refs.selected_records.value.includes(record.code);
                     },
 
-                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
                         return {
-                            is_checked: this.state_refs.selected_records.value.includes(record.public_id),
+                            is_checked: this.state_refs.selected_records.value.includes(record.code),
 
                             required: true,
 
@@ -167,7 +243,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         }
                     },
 
-                    input_action_props: (record?: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                    input_action_props: (record?: CurrencyRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
@@ -185,81 +261,116 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
             },
 
+            // Currency Logo Url, Name amd Code column
             {
                 key: "name",
                 sortable: true,
-                width: "w-[25%]",
+                width: "w-[24%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.name_text",
                 },
                 cell: {
                     render: (row) => { return DataTableAvatarInfoCellUI }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: RegisteredAppRecordInterface) => record.name,
+                    getImgAltText: (record: CurrencyRecordInterface) => record.name,
 
-                    getImgSubText: (record: RegisteredAppRecordInterface) => record.public_id ?? "-",
+                    getImgSubText: (record: CurrencyRecordInterface) => record.code ?? "-",
 
-                    getImgContent: (record: RegisteredAppRecordInterface) => record.name,
+                    getImgContent: (record: CurrencyRecordInterface) => record.name,
 
-                    getImgSrc: (record: RegisteredAppRecordInterface) => {
-                        if(record?.logo_url && !record?.logo_url?.includes("test.com")) { 
-                            return record.logo_url
-                        }
-                        
-                        return DEFUALT_REGISTERED_APP_LOGO_URL;
+                    getImgSrc: (record: CurrencyRecordInterface) => {
+                        return record?.logo_url || DEFUALT_CURRENCY_LOGO_URL;
                     },
                 }
             },
 
+            // Country Code column
             {
-                key: "base_url",
+                key: "country_code",
                 sortable: true,
-                width: "w-[15%]",
+                width: "w-[9%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text",
                 },
                 cell: {
-                    render: (row) => { return DataTableLinkCellUI }
+                    render: (row) => { return DataTableTextContentCellUI }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
                 }
             },
 
+            // Currency type column
             {
-                key: "creator",
+                key: "is_fiat",
                 sortable: true,
-                width: "w-[15%]",
+                width: "w-[8%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.type_text",
                 },
                 cell: {
-                    render: (row) => { return DataTableLinkCellUI }
+                    render: (row) => { return DataTableTextContentCellUI }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    icon_key: "member_icon",
-
-                    // getImgSrc: (record: RegisteredAppRecordInterface) => record?.creator?.profile_photo_link ?? "",
-
-                    getImgAltText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? "",
-
-                    getLinkURL: (record: RegisteredAppRecordInterface) => record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
-
-                    getLinkText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? ""
-
+                    getTextContent: (record: CurrencyRecordInterface) => { 
+                        if(record.is_fiat) {
+                            return content_manager?.get<string>?.(
+                                "content_resource.currency_view_ui.list_view_ui.table.body.fiat_currency_type_text",
+                                ""
+                            ) ?? ""
+                        }
+                        
+                        return content_manager?.get<string>?.(
+                            "content_resource.currency_view_ui.list_view_ui.table.body.crypto_currency_type_text",
+                            ""
+                        ) ?? ""
+                    }
                 }
             },
 
+            // Precision Column
+            {
+                key: "precision",
+                sortable: true,
+                width: "w-[8%]",
+                header: {
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.precision_text",
+                },
+                cell: {
+                    render: (row) => { return DataTableTextContentCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                }
+            },
+
+            // Sort Order Column
+            {
+                key: "sort_order",
+                sortable: true,
+                width: "w-[7%]",
+                header: {
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text",
+                },
+                cell: {
+                    render: (row) => { return DataTableTextContentCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                }
+            },
+
+            // Is Active column
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[10%]",
+                width: "w-[7%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.status_text",
                 },
                 cell: {
                     render: (row) => { return DataTableToggleCellUI }
@@ -267,17 +378,17 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    input_model_value: (record: RegisteredAppRecordInterface): InputValue => {
+                    input_model_value: (record: CurrencyRecordInterface): InputValue => {
                         return InputTransformerUtil.resolveTypedValue(record.is_active);
                     },
 
-                    input_content_props: (record: RegisteredAppRecordInterface): InputUIContentOptionsInterface => {
+                    input_content_props: (record: CurrencyRecordInterface): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                         }
                     },
 
-                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
                         return {
                             is_checked: record.is_active,
 
@@ -287,7 +398,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         }
                     },
 
-                    input_action_props: (record: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                    input_action_props: (record: CurrencyRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
@@ -302,12 +413,41 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
             },
 
+            // Creator column 
+            {
+                key: "creator",
+                sortable: true,
+                width: "w-[13%]",
+                header: {
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.creator_text",
+                },
+                cell: {
+                    render: (row) => { return DataTableLinkCellUI }
+                },
+                props: {
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+
+                    icon_key: "member_icon",
+
+                    link_target: "_blank",
+
+                    getImgAltText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? "",
+
+                    getLinkURL: (record: CurrencyRecordInterface) => record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
+
+                    getLinkText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? ""
+
+                }
+            },
+
+
+            // Created at Column
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[22%]",
+                width: "w-[12%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text",
                 },
                 cell: {
                     render: (row) => { return DataTableTextContentCellUI }
@@ -315,7 +455,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    getDateTextContent: (record: RegisteredAppRecordInterface) => {
+                    getDateTextContent: (record: CurrencyRecordInterface) => {
                         const raw_date = record?.created_at;
                         
                         if(raw_date) { 
@@ -326,12 +466,13 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 }
             },
 
+            // Action column
             {
-                key: "public_id",
+                key: "code",
                 sortable: false,
-                width: "w-[8%]",
+                width: "w-[7%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.actions_text",
                 },
                 cell: {
                     render: (row) => { return DataTableActionIconCellUI }
@@ -339,7 +480,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    button_content_props: (record: RegisteredAppRecordInterface): ButtonUIContentOptionsInterface => {
+                    button_content_props: (record: CurrencyRecordInterface): ButtonUIContentOptionsInterface => {
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
@@ -355,7 +496,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
 
                     button_action_props: (
-                        record: RegisteredAppRecordInterface,
+                        record: CurrencyRecordInterface,
                         record_index?: number
                     ): ButtonUIActionPropsInterface => {
                         return {
@@ -383,4 +524,4 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
 }
 
-export default RegisteredAppListViewController;
+export default CurrencyListViewController;

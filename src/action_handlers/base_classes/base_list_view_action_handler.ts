@@ -163,14 +163,16 @@ class BaseListViewActionHandler<
                 filter_field_props = null
             }
         }
-
-
-        await debounceMethod(this.fetchRecords, 500)();
     }
 
     // Method to handle on apply filters
     public handleOnApplyFilters = async () => {
-        await debounceMethod(this.fetchRecords, 500)();
+        if(Object.values(this.filter_values).some(value => value != null)) {
+            this.hydrateFiltersFromRoute();
+
+            await debounceMethod(this.fetchRecords, 500)();
+        } 
+        
     }
 
     // Method to get action button action handlers config
@@ -198,6 +200,7 @@ class BaseListViewActionHandler<
 
     // Method to fetch records from API
     public fetchRecords = async (): Promise<void> => {
+        console.log("got here")
         this.controller.setListState({
             is_loading: true
         });
@@ -257,7 +260,7 @@ class BaseListViewActionHandler<
 
     //  Method to handle list state changed watcher
     public handleListStateChangedWatcher = (new_val: ListStateInterface): void => {
-        console.log("List state changed:", new_val);
+        // console.log("List state changed:", new_val);
 
         const {
             is_loading = false,

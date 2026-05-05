@@ -63,7 +63,8 @@ class MemberAuthenticatorUtil {
 
     // check is member has permisison X
     public static memberHasPermissionTo = (permission: string): boolean => {
-        if(!permission || permission) { return  true }
+        // if(!permission || permission) { return  true }
+        // console.log({permission})
 
         const member_permissions = MemberAuthenticatorUtil.getLoggedInMemberPermissions();
 
@@ -120,13 +121,18 @@ class MemberAuthenticatorUtil {
     // Method to set refresh data
     public static onAccessRefreshSuccess = (
         access_token: string,
-        expires_in_mins: number
+        expires_in_mins: number,
+        permissions?: string[]
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
         console.log({ expiry_date, expires_in_mins })
 
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
+
+        if(permissions && permissions?.length > 1) {
+            MemberAuthenticatorUtil.storage.set("current_member_permissions", permissions);
+        }
 
         return true
     }

@@ -157,6 +157,15 @@ class AppRootActionHandler {
         // Optional: close any open modal immediately
         if (close_modal) { this.handleCloseModal({}); }
 
+        if (redirect_url && redirect_url.length > 0) {
+            if(redirect_url.startsWith("/")) {
+                await this.controller.router.push(redirect_url);
+            }
+            else {
+                window.location.href = redirect_url;
+            }
+        }
+
         // Wait for the alert to be displayed
         if (duration > 0) { 
             await new Promise((resolve) => setTimeout(resolve, duration)); 
@@ -172,11 +181,6 @@ class AppRootActionHandler {
         if (should_reload) { 
             this.controller.router.go(0); 
         } 
-
-        else if (redirect_url && redirect_url.length > 0) { 
-            window.location.href = redirect_url;
-            // await this.controller.router.push(redirect_url); 
-        }
     };
 
     // Method to handle refresh access on fully logged in

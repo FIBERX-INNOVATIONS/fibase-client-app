@@ -56,3 +56,52 @@ export interface StorageFileUploadFormDataInterface {
     reference_type: string;    
     is_public?: boolean;      
 }
+
+export interface CurrencyFromDataInterface extends BaseFormData {
+    code: string;
+    logo_url: string;
+    numeric_code: string | null;
+    name: string;
+    symbol: string;
+    precision: number;
+    minor_unit: number | null;
+    format: string | null;
+    country_code: string | null;
+    is_fiat: boolean;
+    sort_order: number | null;
+}
+
+export interface CurrencyValidatedFromDataInterface extends BaseFormData {
+    code: string;
+    logo_url: string;
+    numeric_code: string | null;
+    name: string;
+    symbol: string;
+    precision: number;
+    minor_unit: number | null;
+    format: string | null;
+    country_code: string | null;
+    is_fiat: boolean;
+    sort_order: number | null;
+}
+
+export interface AppCurrencyActionFromDataInterface extends BaseFormData {
+    currency_code_or_id?: string | number;
+    currency_list?: (string | number)[];
+    app_id: string | number;
+    registered_app_id?: string | number;
+    action: "assign" | "unassign";
+}
+
+export interface AppCurrencyActionValidatedFormDataInterface extends BaseFormData {
+    app_id: string | number;
+    currency_list: (string | number)[];
+    action: "assign" | "unassign";
+    is_default?: boolean;
+}
+
+export interface AppCurrencyToggleDefaultValidatedformDataInterface extends BaseFormData {
+    csrf_token: string;
+    app_id: string | number;
+    currency_code_or_id: string | number;
+}

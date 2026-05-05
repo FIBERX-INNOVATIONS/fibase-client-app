@@ -41,6 +41,8 @@ export interface ListViewStateDataInterface<
     T = any,
     K extends keyof T = keyof T
 > {
+    data_table_key: string;
+    
     selected_records: FieldArray<T, K>;
 
     breadcrumb_props: BreadcrumbUIPropsInterface;

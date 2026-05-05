@@ -66,7 +66,7 @@ const ContentClassstyle = {
 
 const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
 
-    wrapper_class_style: "hidden w-[140px] bg-white p-0 min-h-[114px] m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
+    wrapper_class_style: "hidden w-[170px] bg-white p-0 min-h-[114px] m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 
@@ -157,7 +157,7 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 const ModalClassStyle: ModalUIClassStylesInterface = {
     wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
-    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-auto max-w-[90%] min-w-[35%]",
+    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-[45%] md:w-[50%] lg:w-[35%] max-w-[90%] min-w-[45%] md:min-w-[50%] lg:min-w-[35%]",
 
     header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
 

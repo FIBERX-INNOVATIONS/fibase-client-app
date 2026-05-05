@@ -8,7 +8,8 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import { AxiosHeaders } from "axios";
 
 export const DEFUALT_REGISTERED_APP_LOGO_URL    = "/assets/img/default-registered-app-logo.png";
-export const DEFAULT_MEMBER_PROFILE_PHOTO_URL   = "/assets/img/default-registered-app-logo.png";
+export const DEFAULT_MEMBER_PROFILE_PHOTO_URL   = "/assets/img/default-memeber-profile-photo-avatar.png";
+export const DEFUALT_CURRENCY_LOGO_URL          = "https://storage.googleapis.com/apps_media/currencies/DEFUALT.png";
 
 // export const APP_CONTENT_DATA_URL = (
 //     "https://raw.githubusercontent.com/FIBERX-INNOVATIONS/fibase-public-content/development/app_content/en-GB.json"
@@ -40,6 +41,8 @@ export const CSRF_TOKEN_FOR = {
     LOGIN: "login",
     TWO_FACTOR: "two_factor_login",
     REGISTER_APP: "register_app",
+    CURRENCY: "currency",
+    APP_CURRECY: "app_currency"
 } as const;
 
 export type CSRFTokenForType =
@@ -86,5 +89,7 @@ export const STORAGE_SCHEMA = {
 export type InternalStorageSchemaType = typeof STORAGE_SCHEMA
 
 export const FILE_STORAGE_REFERENCE_TYPE = {
-    REGISTERED_APP_LOGO: "app_logo"
+    REGISTERED_APP_LOGO: "app_logo",
+
+    CURRENCY_LOGO: "currency_logo"
 } as const;

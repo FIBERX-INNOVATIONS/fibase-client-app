@@ -56,6 +56,8 @@ export interface AuthAccessRecordInterface {
     access_token: string;
 
     expires_in_mins: number;
+
+    permissions: string[]
 }
 
 export interface AuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
@@ -139,3 +141,54 @@ export interface FileStorageRecordInterface {
     is_active: boolean;
     created_at: string;
 }
+
+export interface RegisteredAppPreviewRecordInterface {
+    public_id: string;
+    prefix: string;
+    name: string;
+    is_active: boolean;
+    logo_url: string;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+
+export interface AppCurrencyRecordinterface {
+    is_default: boolean;
+    created_at?: string;
+    updated_at?: string;
+    app?: RegisteredAppPreviewRecordInterface
+}
+
+
+export interface CurrencyRecordInterface {
+    code: string;
+    numeric_code: string | null;
+    logo_url: string | null;
+    name: string;
+    symbol: string;
+    precision: number;
+    minor_unit: number | null;
+    format: string | null;
+    country_code: string | null;
+    sort_order: number;
+
+    is_fiat: boolean;
+    is_active: boolean;
+
+    created_at?: string;
+
+    app_currencies?: AppCurrencyRecordinterface[];
+    creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export type CurrencyListResponseInterface = PaginatedResponseResultInterface<CurrencyRecordInterface[]>;
+
+export interface CurrencyStatusUpdateResponseInterface {
+    safe_app: CurrencyRecordInterface;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
+export type AppCurrencyActionResponseInterface = boolean;
+

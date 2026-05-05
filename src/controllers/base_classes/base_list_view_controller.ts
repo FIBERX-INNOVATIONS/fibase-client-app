@@ -139,6 +139,8 @@ class BaseListViewController<
             ...this.state_refs.list_state.value,
             ...patch
         };
+
+        
     }
 
     /**
@@ -226,7 +228,7 @@ class BaseListViewController<
         );
 
         const create_btn_props = ButtonUIPropsBuilder.getReactivePropsObject(
-            `create_${page_key}`,
+            `${page_key}_module.create_${page_key}`,
             create_btn_content_key,
             create_btn_icon,
             "button",
@@ -252,7 +254,7 @@ class BaseListViewController<
             "button",
             {
                 action_props: {
-                    on_click: this.action_handler?.handleOnApplyFilters
+                    // on_click: this.action_handler?.handleOnApplyFilters
                 },
                 class_styles: filters_class_styles.apply_filters_btn_class_style
             }
@@ -301,6 +303,8 @@ class BaseListViewController<
 
 
         return {
+            data_table_key: "fibaseDataTable",
+            
             selected_records: [] as T[K][],
 
             breadcrumb_props: BreadcrumbUIPropsBuilder.getReactivePropsObjectFromContent(
@@ -417,7 +421,9 @@ class BaseListViewController<
      */
     protected getUIWatchers(): WatchersType<ListViewPropsInterface, ListViewStateDataInterface> {
         return {
-            list_state: this.action_handler?.handleListStateChangedWatcher
+            list_state: this.action_handler?.handleListStateChangedWatcher,
+
+            route: this.action_handler?.handleOnApplyFilters
         };
     }
 

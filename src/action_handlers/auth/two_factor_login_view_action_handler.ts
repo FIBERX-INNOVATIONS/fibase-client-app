@@ -83,7 +83,7 @@ class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
                 return { status: false, msg: v_msg };
             }
 
-            StatusAlertTriggerUtil.triggerAlert(status, msg, 4, "/dashboard");
+            StatusAlertTriggerUtil.triggerAlert(status, msg, 4, `${window.location.origin}/dashboard`);
 
             return { status: true, msg: "login_successful" };
         }

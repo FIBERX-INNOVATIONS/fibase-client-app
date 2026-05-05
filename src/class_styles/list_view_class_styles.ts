@@ -138,14 +138,14 @@ const table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActio
 
 const table_class_styles: DataTableUIClassStylesInterface = {
     wrapper_class_style: "w-full py-4 px-[4%] overflow-x-auto relative h-auto min-h-[400px] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
-    table_class_style: "w-full border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
+    table_class_style: "lg:w-full w-[1200px] border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
     thead_class_style: "text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default group/head",
     th_class_style: "first:rounded-tl-lg last:rounded-tr-lg p-2 font-bold uppercase align-middle border-b border-gray-300",
     th_cell_wrapper_class_style: "flex items-center justify-center gap-2 w-full",
     th_sort_icon_class_style: "",
     tbody_class_style: "",
     tr_class_style: "",
-    td_class_style: "p-2 align-middle border-b-2 border-gray-200 w-full",
+    td_class_style: "p-2 align-middle border-b-2 border-gray-200",
     sortable_header_wrapper_class_style: "flex flex-col leading-none", 
     sortable_header_icon_class_style: "w-3 h-3 cursor-pointer flex",
     loading_section_wrapper_class_style: "text-center py-6 animate-pulse relative",
@@ -167,7 +167,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
 
         content_wrapper_class_style: "flex flex-col items-start justify-center w-7/12 h-full",
 
-        content_class_style: "font-bold text-sm text-gray-900 break-all",
+        content_class_style: "font-bold text-sm text-gray-900 break-word text-start",
 
         loading_class_style: "",
 
