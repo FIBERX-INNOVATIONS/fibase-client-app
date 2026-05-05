@@ -1,6 +1,6 @@
 {
     "name": "fibase-client-app",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "description": "Fibase Admin App – A modern, responsive dashboard for managing applications, roles, permissions, and members within the FiberX ecosystem. Built for performance and flexibility.",
     "private": true,
     "scripts": {
