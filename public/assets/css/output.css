@@ -1317,7 +1317,13 @@
     --tw-tracking: var(--tracking-wider);
     letter-spacing: var(--tracking-wider);
   }
+  .text-wrap {
+    text-wrap: wrap;
+  }
   .break-words {
+    overflow-wrap: break-word;
+  }
+  .wrap-break-word {
     overflow-wrap: break-word;
   }
   .break-all {

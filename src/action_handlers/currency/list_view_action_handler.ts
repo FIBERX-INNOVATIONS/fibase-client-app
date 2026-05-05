@@ -195,7 +195,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
 
             body_component: markRaw(ProfileView),
             
-            body_props: { record_id: record?.code },
+            body_props: { record_id: record?.code, record },
         };
         
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
@@ -631,13 +631,12 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             } = record;
 
             const app_id            = app_currencies?.[0]?.app?.public_id ?? "";
-            const action            = "unassign" as const;
             const csrf_token_result = await AuthAPIService.getFormCSRFToken(CSRF_TOKEN_FOR.APP_CURRECY);
             const csrf_token        = csrf_token_result.data?.token ?? "";
-            const form_data         = { csrf_token, app_id, action, currency_code_or_id };
+            const form_data         = { csrf_token, app_id, currency_code_or_id };
 
 
-            const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(form_data);
+            const { v_state, v_msg, v_data } = CurrencyValidator.validateSetAppDefaultCurrencyInput(form_data);
 
             if(!v_state || !v_data) {
                 return StatusAlertTriggerUtil.triggerAlert(
@@ -649,7 +648,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 );
             }
 
-            const result    = await CurrencyAPIService.handleAppCurrencyAction(v_data);
+            const result    = await CurrencyAPIService.toggleDefaultCurrency(v_data);
             const msg       = result?.msg ?? "error_occurred";
 
             if (!result || result?.status?.toLowerCase() === "error") {
@@ -672,7 +671,11 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 );
             }
             else if (result.status?.toLowerCase() === "success") {
-                this.removeListStateRecord(currency_code_or_id, "code");
+                if(app_currencies?.[0]) {
+                    app_currencies[0].is_default = true;
+
+                    this.updateListStateRecord(currency_code_or_id, { app_currencies }, "code")
+                }
 
                 return StatusAlertTriggerUtil.triggerAlert(
                     result.status, 

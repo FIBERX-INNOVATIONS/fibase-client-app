@@ -1,6 +1,8 @@
 import { 
     AppCurrencyActionFromDataInterface,
     AppCurrencyActionValidatedFormDataInterface,
+    AppCurrencyToggleDefaultFormDataInterface,
+    AppCurrencyToggleDefaultValidatedformDataInterface,
     CurrencyFromDataInterface, 
     CurrencyValidatedFromDataInterface 
 } from "@/types/form_data_type";
@@ -293,6 +295,48 @@ class CurrencyValidator {
 
 
     }
+
+    public static validateSetAppDefaultCurrencyInput(
+        form_data: AppCurrencyToggleDefaultFormDataInterface
+    ): ValidationResultInterface<AppCurrencyToggleDefaultValidatedformDataInterface> {
+
+        const {
+            csrf_token,
+            currency_code_or_id,
+            app_id
+        } = form_data;
+
+        // CSRF
+        if (InputValidatorUtil.isEmpty(csrf_token)) {
+            return { v_state: false, v_msg: "invalid_csrf_token" };
+        }
+        
+        if(InputValidatorUtil.isEmpty(app_id) || !app_id) {
+            return { v_state: false, v_msg: "invalid_input_app_id" };
+        } 
+
+        
+
+        if (InputValidatorUtil.isEmpty(currency_code_or_id) || !currency_code_or_id) {
+            return { v_state: false, v_msg: "no_currency_provided" };
+        }
+
+        const v_data: AppCurrencyToggleDefaultValidatedformDataInterface = {
+            csrf_token,
+            currency_code_or_id,
+            app_id
+        }
+
+        return {
+            v_state: true,
+            v_msg: "valid_input",
+            v_data
+        };
+
+
+    }
+
+    
 }
 
 export default CurrencyValidator;

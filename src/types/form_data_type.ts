@@ -100,6 +100,12 @@ export interface AppCurrencyActionValidatedFormDataInterface extends BaseFormDat
     is_default?: boolean;
 }
 
+export interface AppCurrencyToggleDefaultFormDataInterface extends BaseFormData {
+    csrf_token: string;
+    app_id: string | number;
+    currency_code_or_id: string | number;
+}
+
 export interface AppCurrencyToggleDefaultValidatedformDataInterface extends BaseFormData {
     csrf_token: string;
     app_id: string | number;

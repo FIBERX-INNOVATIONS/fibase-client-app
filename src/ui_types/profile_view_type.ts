@@ -1,7 +1,7 @@
 
 import { Component, Ref } from "vue";
 
-import { APIResponseInterface } from "@ui/version_2/types/util_type";
+import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
 
 
@@ -22,6 +22,8 @@ export interface ProfileViewStateDataInterface<T = any> {
 
 export interface ProfileViewComputedDataInterface {
     app_logo_url?: string;
+
+    logo_url?: string;
 
     creator_member_profile_photo_url?: string;
 

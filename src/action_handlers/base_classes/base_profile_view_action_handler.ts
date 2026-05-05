@@ -81,7 +81,7 @@ class BaseProfileViewActionHandler<
                 record
             } = this.controller?.props;
 
-            if(!record_id || Object.keys(record).length > 3) {
+            if(!record_id) {
                 return;
             }
 
@@ -93,9 +93,12 @@ class BaseProfileViewActionHandler<
             }
 
             if(response.data) {
-                const current_record = response.data;
+                const props_record      = this.controller.props?.record ?? {};
+                const current_record    = response.data;
 
-                this.controller.state_refs.profile_record.value = current_record;
+                console.log({ props_record, current_record })
+
+                this.controller.state_refs.profile_record.value = {...props_record, ...current_record };
                 return;
             }
         }

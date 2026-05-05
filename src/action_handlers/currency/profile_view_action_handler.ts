@@ -4,9 +4,9 @@ import BaseProfileViewController from "@/controllers/base_classes/base_profile_v
 
 import BaseProfileViewActionHandler from "../base_classes/base_profile_view_action_handler";
 
-import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
+import CurrencyAPIService from "@/api_services/currency_api_service";
 
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import { CurrencyRecordInterface } from "@/types/api_service_type";
 
 import { 
     GlobalEventTypes, 
@@ -21,27 +21,22 @@ import {
 } from "@/ui_types/profile_view_type";
 
 
-class RegisteredAppProfileViewActionHandler extends BaseProfileViewActionHandler<
-    RegisteredAppRecordInterface,
+
+class CurrencyProfileViewActionHandler extends BaseProfileViewActionHandler<
+    CurrencyRecordInterface,
     ProfileViewPropsInterface,
     ProfileViewStateDataInterface,
     ProfileViewComputedDataInterface,
     ProfileViewComponentsInterface,
     GlobalEventTypes
 >{
-    
-    constructor(
-        controller: BaseProfileViewController<RegisteredAppRecordInterface>,
-    ) {
+    constructor(controller: BaseProfileViewController<CurrencyRecordInterface>) {
         super(
-            controller, 
-            "registered_app_profile_view_action_handler",
-            RegisteredAppAPIService.getRegisteredApp
+            controller,
+            "currency_profile_view_action_handler",
+            CurrencyAPIService.getCurrency
         );
-
     }
-
-
 }
 
-export default RegisteredAppProfileViewActionHandler;
+export default CurrencyProfileViewActionHandler;

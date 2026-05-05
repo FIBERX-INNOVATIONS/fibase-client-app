@@ -1,7 +1,7 @@
 
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
-import RegisteredAppProfileViewActionHandler from "@/action_handlers/registered_app/profile_view_action_handler";
+import CurrencyProfileViewActionHandler from "@/action_handlers/currency/profile_view_action_handler";
 
 import { 
     ProfileViewComputedDataInterface, 
@@ -13,7 +13,7 @@ import {
     DEFUALT_REGISTERED_APP_LOGO_URL 
 }  from "@/configs/constants";
 
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import { CurrencyRecordInterface } from "@/types/api_service_type";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
@@ -21,132 +21,55 @@ import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 
 
-class RegisteredAppProfileViewController extends BaseProfileViewController<RegisteredAppRecordInterface> {
+class CurrencyProfileViewController extends BaseProfileViewController<CurrencyRecordInterface> {
 
-    public action_handler: RegisteredAppProfileViewActionHandler;
+    public action_handler: CurrencyProfileViewActionHandler;
 
     constructor(props: ProfileViewPropsInterface) {
         super(props);
 
-        this.action_handler = new RegisteredAppProfileViewActionHandler(this);
+        this.action_handler = new CurrencyProfileViewActionHandler(this);
 
         this.getComponentDefinition();
     }
 
     protected getPageContentKey(): string {
-        return "registered_app";
+        return "currency";
     }
 
-   /**
-    * Child computed
-    */
     protected getChildUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
-            app_logo_url: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                
-
-                if(record.logo_url) {
-                    return record?.logo_url;
-                }
-
-                return DEFUALT_REGISTERED_APP_LOGO_URL
-            },
-
-            creator_member_profile_photo_url: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-
-                if(record?.creator?.profile_photo_link) {
-                    return record?.creator?.profile_photo_link
-                }
-
-                return DEFAULT_MEMBER_PROFILE_PHOTO_URL;
-            },
-
-            updator_member_profile_photo_url: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-
-                if(record?.updater?.profile_photo_link) {
-                    return record?.updater?.profile_photo_link
-                }
-
-                return DEFAULT_MEMBER_PROFILE_PHOTO_URL;
+            logo_url: () => {
+                const record = this.state_refs.profile_record.value;
+                return record?.logo_url || DEFUALT_REGISTERED_APP_LOGO_URL;
             },
 
             readable_created_at: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-
-                if(record?.created_at) {
-                    return InputTransformerUtil.formatReadableDateTime(record.created_at);
-                }
-
-                return "-"
+                const record = this.state_refs.profile_record.value;
+                return record?.created_at
+                    ? InputTransformerUtil.formatReadableDateTime(record.created_at)
+                    : "-";
             },
 
             readable_updated_at: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-
-                if(record?.updated_at) {
-                    return InputTransformerUtil.formatReadableDateTime(record.updated_at);
-                }
-
-                return "-"
+                const record = this.state_refs.profile_record.value;
+                return record?.updated_at
+                    ? InputTransformerUtil.formatReadableDateTime(record.updated_at)
+                    : "-";
             },
 
-            readable_last_key_rotated_at: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-
-                if(record?.auth?.last_key_rotated_at) {
-                    return InputTransformerUtil.formatReadableDateTime(record?.auth?.last_key_rotated_at);
-                }
-
-                return "-"
+            creator_member_profile_photo_url: () => {
+                return this.state_refs.profile_record.value?.creator?.profile_photo_link
+                    || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             },
 
-            fb_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.fb_social_link ?? ""; 
-            },
+            updator_member_profile_photo_url: () => {
+                return this.state_refs.profile_record.value?.updater?.profile_photo_link
+                    || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
+            }
 
-            instagram_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.instagram_social_link ?? ""; 
-            },
-
-            twitter_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.twitter_social_link ?? ""; 
-            },
-
-            email_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.email_social_link ?? ""; 
-            },
-
-            telegram_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.telegram_social_link ?? ""; 
-            },
-
-            linkedin_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.linkedin_social_link ?? ""; 
-            },
-
-            youtube_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.youtube_social_link ?? ""; 
-            },
-
-            whatsapp_social_link: () => {
-                const record = (this.state_refs?.profile_record?.value || this.props.record) as RegisteredAppRecordInterface;
-                return record?.social_links?.whatsapp_social_link ?? ""; 
-            },
-            
-        } as ComputedDefinitionType<ProfileViewComputedDataInterface>;
+        };
     }
-
-
 }
 
-export default RegisteredAppProfileViewController;
+export default CurrencyProfileViewController;

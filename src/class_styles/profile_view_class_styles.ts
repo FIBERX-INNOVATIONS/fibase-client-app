@@ -2,7 +2,7 @@ import { ProfileViewClassStylesInterface } from "@/ui_types/profile_view_type";
 
 
 const ProfileViewClassStyles: ProfileViewClassStylesInterface = { 
-    wrapper_class_style: "p-6 space-y-6 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
+    wrapper_class_style: "py-6 px-[2%] space-y-6 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
 
     loading_wrapper_class_style: "p-6 w-full flex gap-2 items-center justify-center h-auto max-h-[500px] overflow-y-auto overflow-x-hidden",
 
@@ -10,7 +10,7 @@ const ProfileViewClassStyles: ProfileViewClassStylesInterface = {
     image_info_class_style: {
         wrapper_class_style: "w-full flex items-start gap-4",
 
-        image_class_style: "w-14 h-14 rounded-lg object-contain bg-gray-800",
+        image_class_style: "w-14 h-14 rounded-lg object-contain bg-gray-300",
 
         content_wrapper_class_style: "flex flex-col",
 
@@ -37,9 +37,9 @@ const ProfileViewClassStyles: ProfileViewClassStylesInterface = {
 
     p_class_style: "text-sm text-gray-400",
     
-    description_class_style: "text-sm text-gray-400 mt-1",
+    description_class_style: "text-xs text-gray-500 mt-1 w-full truncate break-all whitespace-normal wrap-break-word text-wrap",
 
-    member_avatar_img_class_style: "w-10 h-10 rounded-full object-contain bg-gray-800",
+    member_avatar_img_class_style: "w-10 h-10 rounded-full object-contain bg-gray-300",
 
     member_name_class_style: "font-semibold uppercase text-sm",
 

@@ -176,6 +176,7 @@ export interface CurrencyRecordInterface {
     is_active: boolean;
 
     created_at?: string;
+    updated_at?: string | null;
 
     app_currencies?: AppCurrencyRecordinterface[];
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
