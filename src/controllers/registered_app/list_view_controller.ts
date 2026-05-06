@@ -57,7 +57,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
         this.getComponentDefinition();
     }
 
-    protected getPageContentKey(): string {
+    public getPageContentKey(): string {
         return "registered_app";
     }
 

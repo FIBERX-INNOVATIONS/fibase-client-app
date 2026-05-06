@@ -59,6 +59,8 @@ export interface ListViewStateDataInterface<
 
     action_menu_dropdown_props: DropdownMenuUIPropsInterface;
 
+    bulk_action_menu_dropdown_props: DropdownMenuUIPropsInterface;
+
     pagination_ui_props: PaginationUIPropsInterface;
     
 }

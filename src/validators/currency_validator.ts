@@ -255,6 +255,8 @@ class CurrencyValidator {
             action,
         } = form_data;
 
+        console.log({ form_data })
+
         const app_id = form_data?.registered_app_id || form_data.app_id;
 
         // CSRF

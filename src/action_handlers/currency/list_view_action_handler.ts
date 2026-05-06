@@ -16,7 +16,8 @@ import {
     ListViewPropsInterface,
     ListViewStateDataInterface,
     ListViewComputedDataInterface,
-    ListViewComponentsInterface
+    ListViewComponentsInterface,
+    FieldArray
 } from "@/ui_types/list_view_type";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
@@ -46,6 +47,7 @@ import DecisionPromptUIPropsBuilder from "@ui/version_3/props_builder/decision_p
 import DecisionPromptUIClassStyles from "@/class_styles/decision_prompt_ui_class_styles";
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import ButtonUIClassStyles from "@/class_styles/button_ui_class_styles";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 
 
@@ -93,6 +95,22 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     }
+
+    private resolveCurrencyCodes = (
+        record: CurrencyRecordInterface | null,
+        selected_records: CurrencyRecordInterface[] = []
+    ): string[] => {
+
+        if (record?.code) {
+            return [record.code];
+        }
+
+        if (selected_records?.length) {
+            return selected_records.map(r => r.code);
+        }
+
+        return [];
+    };
 
     // Method to handle row status chnage toglle
     public handleStatusToggleChange = async (
@@ -156,28 +174,22 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         record_index?: number
     ): void => {
-        const menu_el = document.getElementById("TableActionMeuDropdown");
-        const is_open = menu_el?.style?.display === "block";
+        const action_mneu_btn_id    = `ActionBtn${record_index?.toString()}`
+        const action_menu_id        = "TableActionMeuDropdown";
+        const menu_el               = document.getElementById(action_menu_id);
+        const is_open               = menu_el?.style?.display === "block";
         
-        if (is_open) {
-            return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-                `ActionBtn${record_index?.toString()}`,
-                "TableActionMeuDropdown",
-                true
-            )
+        if (!is_open) {
+            const updated_menu = CurrencyActionMenu.getMenus(record, this, this.controller.route);
+
+            this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
         }
 
-        const updated_menu = CurrencyActionMenu.getMenus(record, this, this.controller.route);
-
-        this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
-
-        setTimeout(() => {
-            DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-                `ActionBtn${record_index?.toString()}`,
-                "TableActionMeuDropdown",
-                true
-            )
-        }, 10)
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            action_mneu_btn_id,
+            action_menu_id,
+            true
+        );
         
     }
 
@@ -369,13 +381,14 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
 
     // Method to handle opening assign un-assign currency view
     public handleOpenAssignFormView = async(
-        record: CurrencyRecordInterface,
-        config?: { props: NavLinkUIPropsInterface }
+        record: CurrencyRecordInterface | null,
+        config?: { props: NavLinkUIPropsInterface },
+        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
     ): Promise<void> => {
         const base_content_key = "content_resource.currency_view_ui.list_view_ui";
         const app_id            = record?.app_currencies?.[0]?.app?.public_id ?? this.controller?.route?.query?.app_id ?? "";
         const app               = record?.app_currencies?.[0]?.app;
-        const currency_codes    = record?.code ? [record?.code] : [];
+        const currency_codes    = record?.code ? [record?.code] : selected_records;
         
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key: `${base_content_key}.currency_modal.assign_currency`,
@@ -392,11 +405,22 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
 
     // Method to handle opening confirm un-assign view
     public handleOpenConfirmUnAssignView = async(
-        record: CurrencyRecordInterface,
-        config?: { props: NavLinkUIPropsInterface }
+        record: CurrencyRecordInterface | null,
+        config?: { props: NavLinkUIPropsInterface },
+        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
     ): Promise<void> => {
-        const base_content_key      = "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency";
-        const updated_record        = { ...record, app: record?.app_currencies?.[0].app };
+        let base_content_key    = "";
+        let updated_record      = {};
+        const app_name          = InputTransformerUtil.capitalize(this.controller?.route?.query?.app_id?.toString() ?? "");
+
+        if(record?.code) {
+            base_content_key    = "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency";
+            updated_record      = { ...record, app: record?.app_currencies?.[0].app };
+        }
+        else if (selected_records?.length) {
+            base_content_key    = "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
+            updated_record      = { currency_count: selected_records?.length, app_name,  currencies: selected_records?.join(", ") };
+        }
 
         const decsion_prompt_props  =  DecisionPromptUIPropsBuilder.buildFromContentKeys({
             record: updated_record,
@@ -408,7 +432,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             class_styles: DecisionPromptUIClassStyles,
 
             cancel_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `CancelBtn-${record.code}`,
+                `CancelBtn-${record?.code ?? app_name}`,
                 `${base_content_key}.content.cancel_btn_text`,
                 "x_circile_svg_icon",
                 "button",
@@ -426,7 +450,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             ),
 
             confirm_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `ConfirmBtn-${record.code}`,
+                `ConfirmBtn-${record?.code ?? app_name}`,
                 `${base_content_key}.content.confirm_btn_text`,
                 "check_circle_svg_icon",
                 "button",
@@ -440,7 +464,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                             event?: MouseEvent,
                             config?: { props: ButtonUIPropsInterface }
                         ): Promise<void> => {
-                            return await this.handleUnAssignRecordAction(record)
+                            return await this.handleUnAssignRecordAction(record, selected_records)
                         }
                     }
                 }
@@ -463,21 +487,25 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
 
     // Method to handle un-assigning api query
     public handleUnAssignRecordAction =  async(
-        record: CurrencyRecordInterface,
-        record_index?: number
+        record: CurrencyRecordInterface | null,
+        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
     ): Promise<void> => {
 
         try {
-            const {
-                code: currency_code_or_id,
-                app_currencies,
-            } = record;
+            const action                = "unassign" as const;
+            const route_app_id          = this.controller?.route?.query?.app_id?.toString() ?? null;
+            const record_app_id         = record?.app_currencies?.[0]?.app?.public_id ?? null;
+            const app_id                = route_app_id ?? record_app_id ?? "";
+            const currency_code_or_id   = record?.code;
+            const currency_list         = Array.isArray(selected_records) && selected_records.length ? (selected_records as string[]) : undefined;
+            const currency_codes        = Array.isArray(selected_records) && selected_records.length ? (selected_records as string[]) : [record?.code ?? ""];
+            console.log({ record, selected_records })
 
-            const app_id            = app_currencies?.[0]?.app?.public_id ?? "";
-            const action            = "unassign" as const;
+            
             const csrf_token_result = await AuthAPIService.getFormCSRFToken(CSRF_TOKEN_FOR.APP_CURRECY);
             const csrf_token        = csrf_token_result.data?.token ?? "";
-            const form_data         = { csrf_token, app_id, action, currency_code_or_id };
+
+            const form_data         = { csrf_token, app_id, action, currency_code_or_id, currency_list };
 
 
             const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(form_data);
@@ -496,53 +524,28 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             const msg       = result?.msg ?? "error_occurred";
 
             if (!result || result?.status?.toLowerCase() === "error") {
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error", 
-                    msg,
-                    4,
-                    undefined,
-                    true
-                );
+                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4 );
             }
             else if (result.status?.toLowerCase() === "logout") {
                 this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error", 
-                    "session_expired",
-                    4,
-                    undefined,
-                    true
-                );
+                return StatusAlertTriggerUtil.triggerAlert( "error",  "session_expired", 4 );
             }
             else if (result.status?.toLowerCase() === "success") {
-                this.removeListStateRecord(currency_code_or_id, "code");
 
-                return StatusAlertTriggerUtil.triggerAlert(
-                    result.status, 
-                    msg,
-                    4,
-                    undefined,
-                    true
-                );
+                // ✅ Remove ALL affected records
+                currency_codes.forEach(code => {
+                    this.removeListStateRecord(code, "code");
+                });
+                
+
+                return StatusAlertTriggerUtil.triggerAlert( result.status,  msg, 4);
             }
 
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error", 
-                msg,
-                4,
-                undefined,
-                true
-            );
+            return StatusAlertTriggerUtil.triggerAlert( "error",  msg, 4);
         }
         catch (error: unknown) {
             this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error", 
-                "error_occurred",
-                4,
-                undefined,
-                true
-            );
+            return StatusAlertTriggerUtil.triggerAlert( "error",  "error_occurred", 4);
         }
         
     }
@@ -705,6 +708,34 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             );
         }
         
+    }
+
+    // Method to handle on bulk action btn clicked
+    public toggleBulkActionMenu = async (
+        event?: MouseEvent,
+        config?: { props: ButtonUIPropsInterface }
+    ): Promise<void> => {
+        const page_key              = this.controller.getPageContentKey();
+        const bulk_actn_btn_id      = `${page_key}BulkActionsBtn`;
+        const bulk_action_menu_id   = "TableBulkActionMeuDropdown";
+        const menu_el               = document.getElementById(bulk_action_menu_id);
+        const is_open               = menu_el?.style?.display === "block";
+        const selected_records      = this.controller.state_refs.selected_records.value
+        
+        
+        if (!is_open) {
+            const updated_menu = CurrencyActionMenu.getBulkActionMenus(selected_records, this, this.controller.route);
+            console.log({ updated_menu })
+
+            this.controller.state_refs.bulk_action_menu_dropdown_props.value.menu_items = updated_menu;
+        }
+
+        
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            bulk_actn_btn_id,
+            bulk_action_menu_id,
+            true
+        )
     }
 
 

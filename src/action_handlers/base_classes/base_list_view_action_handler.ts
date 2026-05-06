@@ -268,7 +268,10 @@ class BaseListViewActionHandler<
             total_items = 0,
             current_page = 1,
             total_pages = 1,
-        } = new_val
+        } = new_val;
+
+        const sn_cell                       = this.getSerialCell();
+        const bulk_action_selection_props   =  this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
 
         this.controller.state_refs.table_props.value.is_loading     = is_loading;
         this.controller.state_refs.table_props.value.data           = records;
@@ -281,7 +284,23 @@ class BaseListViewActionHandler<
 
         // update pagination ui
         this.controller.state_refs.pagination_ui_props.value.data_props.current_page    = current_page;
-        this.controller.state_refs.pagination_ui_props.value.data_props.total_pages     = total_pages
+        this.controller.state_refs.pagination_ui_props.value.data_props.total_pages     = total_pages;
+
+        // update selcetd records
+        this.controller.state_refs.selected_records.value = [];
+
+        if(sn_cell?.header) {
+            sn_cell.header.render = undefined;
+        }
+
+        if(sn_cell?.props) {
+            sn_cell.props.is_selected = false;
+        }
+
+        if(bulk_action_selection_props) {
+            bulk_action_selection_props.selected_count      = 0;
+            bulk_action_selection_props.bulk_button_props   = this.controller.getBulkActionButtonProps();
+        }
     }
 
     // Method to update a specific list state record
@@ -581,8 +600,7 @@ class BaseListViewActionHandler<
     }
 
     // Method to handle on bulk action btn clicked
-    public handleOnBulkActionBtnClicked = async () => {
-    }
+    public toggleBulkActionMenu = async () => {}
 
 
 }

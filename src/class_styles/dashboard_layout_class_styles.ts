@@ -66,7 +66,7 @@ const ContentClassstyle = {
 
 const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
 
-    wrapper_class_style: "hidden w-[170px] bg-white p-0 min-h-[114px] m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
+    wrapper_class_style: "hidden w-[170px] bg-white p-0 m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 

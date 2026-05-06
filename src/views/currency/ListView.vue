@@ -20,6 +20,8 @@
 
         <DropdownMenuUI v-bind="action_menu_dropdown_props" />
 
+        <DropdownMenuUI v-bind="bulk_action_menu_dropdown_props" />
+
     </section>
 </template>
 
@@ -53,7 +55,8 @@ const {
     data_table_result_and_bulk_action_bar_props,
     table_props,
     pagination_ui_props,
-    action_menu_dropdown_props
+    action_menu_dropdown_props,
+    bulk_action_menu_dropdown_props
 } = state_refs;
 
 </script>

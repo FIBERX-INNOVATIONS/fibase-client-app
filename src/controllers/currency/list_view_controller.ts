@@ -46,8 +46,6 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 
 
-
-
 class CurrencyListViewController extends BaseListViewController<CurrencyRecordInterface, "code"> {
 
     public action_handler: CurrencyListViewActionHandler;
@@ -60,7 +58,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
         this.getComponentDefinition();
     }
 
-    protected getPageContentKey(): string {
+    public getPageContentKey(): string {
         return "currency";
     }
 

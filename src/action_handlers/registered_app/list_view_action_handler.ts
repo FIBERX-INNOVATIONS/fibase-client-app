@@ -143,18 +143,22 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         record: RegisteredAppRecordInterface,
         record_index?: number
     ): void => {
+        const action_mneu_btn_id    = `ActionBtn${record_index?.toString()}`
+        const action_menu_id        = "TableActionMeuDropdown";
+        const menu_el               = document.getElementById(action_menu_id);
+        const is_open               = menu_el?.style?.display === "block";
 
-        const updated_menu = RegisteredAppActionMenu.getMenus(record, this);
+        if (!is_open) {
+            const updated_menu = RegisteredAppActionMenu.getMenus(record, this);
 
-        this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
+            this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
+        }
 
-        setTimeout(() => {
-            DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-                `ActionBtn${record_index?.toString()}`,
-                "TableActionMeuDropdown",
-                true
-            )
-        }, 10)
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            action_mneu_btn_id,
+            action_menu_id,
+            true
+        );
         
     }
 

@@ -87,7 +87,7 @@ class BaseListViewController<
      * Page name used to resolve content paths.
      * Child controllers override this.
      */
-    protected getPageContentKey(): string {
+    public getPageContentKey(): string {
         return "registered_app";
     }
 
@@ -366,6 +366,15 @@ class BaseListViewController<
                 }
             ),
 
+            bulk_action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
+                "TableBulkActionMeuDropdown", 
+                {
+                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+
+                    menu_items: []
+                }
+            ),
+
             pagination_ui_props: PaginationUIPropsBuilder.getReactivePropsObject(
                 `${page_key}PaginationUI`,
                 table_pagination_content_key,
@@ -443,7 +452,7 @@ class BaseListViewController<
             "button",
             {
                 action_props: {
-                    on_click: this.action_handler?.handleOnBulkActionBtnClicked
+                    on_click: this.action_handler?.toggleBulkActionMenu
                 },
                 class_styles: filters_class_styles.apply_filters_btn_class_style
             },
