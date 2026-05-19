@@ -1,10 +1,10 @@
-import { 
+import {
     AppCurrencyActionFromDataInterface,
     AppCurrencyActionValidatedFormDataInterface,
     AppCurrencyToggleDefaultFormDataInterface,
     AppCurrencyToggleDefaultValidatedformDataInterface,
-    CurrencyFromDataInterface, 
-    CurrencyValidatedFromDataInterface 
+    CurrencyFromDataInterface,
+    CurrencyValidatedFromDataInterface
 } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
@@ -136,11 +136,9 @@ class CurrencyValidator {
         return { status: true, msg: "" };
     };
 
-
     public static validateCurrencyInput(
         form_data: CurrencyFromDataInterface
     ): ValidationResultInterface<CurrencyValidatedFromDataInterface> {
-
         const {
             csrf_token,
             code,
@@ -247,15 +245,9 @@ class CurrencyValidator {
     public static validateAppCurrencyInput(
         form_data: AppCurrencyActionFromDataInterface
     ): ValidationResultInterface<AppCurrencyActionValidatedFormDataInterface> {
+        const { csrf_token, currency_code_or_id, currency_list, action } = form_data;
 
-        const {
-            csrf_token,
-            currency_code_or_id,
-            currency_list,
-            action,
-        } = form_data;
-
-        console.log({ form_data })
+        console.log({ form_data });
 
         const app_id = form_data?.registered_app_id || form_data.app_id;
 
@@ -264,17 +256,13 @@ class CurrencyValidator {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
 
-        const currency_array = currency_code_or_id ? [currency_code_or_id] : currency_list ?? [];
+        const currency_array = currency_code_or_id ? [currency_code_or_id] : (currency_list ?? []);
 
-        if(InputValidatorUtil.isEmpty(app_id) || !app_id) {
+        if (InputValidatorUtil.isEmpty(app_id) || !app_id) {
             return { v_state: false, v_msg: "invalid_input_app_id" };
-        } 
+        }
 
-        if (
-            InputValidatorUtil.isEmpty(action) ||
-            !action || 
-            !["assign", "unassign"].includes(action)
-        ) {
+        if (InputValidatorUtil.isEmpty(action) || !action || !["assign", "unassign"].includes(action)) {
             return { v_state: false, v_msg: "invalid_currency_assign_unassign_action_type" };
         }
 
@@ -287,37 +275,28 @@ class CurrencyValidator {
             currency_list: currency_array,
             action,
             app_id
-        }
+        };
 
         return {
             v_state: true,
             v_msg: "valid_input",
             v_data
         };
-
-
     }
 
     public static validateSetAppDefaultCurrencyInput(
         form_data: AppCurrencyToggleDefaultFormDataInterface
     ): ValidationResultInterface<AppCurrencyToggleDefaultValidatedformDataInterface> {
-
-        const {
-            csrf_token,
-            currency_code_or_id,
-            app_id
-        } = form_data;
+        const { csrf_token, currency_code_or_id, app_id } = form_data;
 
         // CSRF
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
-        
-        if(InputValidatorUtil.isEmpty(app_id) || !app_id) {
-            return { v_state: false, v_msg: "invalid_input_app_id" };
-        } 
 
-        
+        if (InputValidatorUtil.isEmpty(app_id) || !app_id) {
+            return { v_state: false, v_msg: "invalid_input_app_id" };
+        }
 
         if (InputValidatorUtil.isEmpty(currency_code_or_id) || !currency_code_or_id) {
             return { v_state: false, v_msg: "no_currency_provided" };
@@ -327,18 +306,14 @@ class CurrencyValidator {
             csrf_token,
             currency_code_or_id,
             app_id
-        }
+        };
 
         return {
             v_state: true,
             v_msg: "valid_input",
             v_data
         };
-
-
     }
-
-    
 }
 
 export default CurrencyValidator;

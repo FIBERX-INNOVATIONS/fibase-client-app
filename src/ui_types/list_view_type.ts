@@ -1,9 +1,17 @@
-
 import { Component, Ref } from "vue";
 
-import { BreadcrumbUIClassStylesInterface, BreadcrumbUIPropsInterface } from "@ui/version_3/ui_types/breadcrumb_ui_type";
-import { PageHeaderUIClassStylesInterface, PageHeaderUIPropsInterface } from "@ui/version_3/ui_types/page_header_ui_type";
-import { FiltersPanelUIClassStylesInterface, FiltersPanelUIPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
+import {
+    BreadcrumbUIClassStylesInterface,
+    BreadcrumbUIPropsInterface
+} from "@ui/version_3/ui_types/breadcrumb_ui_type";
+import {
+    PageHeaderUIClassStylesInterface,
+    PageHeaderUIPropsInterface
+} from "@ui/version_3/ui_types/page_header_ui_type";
+import {
+    FiltersPanelUIClassStylesInterface,
+    FiltersPanelUIPropsInterface
+} from "@ui/version_3/ui_types/filters_panel_ui_type";
 import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 import { DataTableUIClassStylesInterface, DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
@@ -11,12 +19,16 @@ import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { PaginatedResponseResultInterface } from "@/types/api_service_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
-import { DataTableResultAndBulkActionBarUIClassStylesInterface, DataTableResultAndBulkActionBarUIPropsInterface } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
-import { PaginationUIClassStylesInterface, PaginationUIPropsInterface } from "@ui/version_3/ui_types/pagination_ui_type";
-
+import {
+    DataTableResultAndBulkActionBarUIClassStylesInterface,
+    DataTableResultAndBulkActionBarUIPropsInterface
+} from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
+import {
+    PaginationUIClassStylesInterface,
+    PaginationUIPropsInterface
+} from "@ui/version_3/ui_types/pagination_ui_type";
 
 export type FieldArray<T, K extends keyof T> = T[K][];
-
 
 export interface ListViewPropsInterface {
     class_styles?: ListViewClassStylesInterface;
@@ -37,12 +49,9 @@ export interface ListStateInterface<T = any> {
     sort_direction: "asc" | "desc" | null;
 }
 
-export interface ListViewStateDataInterface<
-    T = any,
-    K extends keyof T = keyof T
-> {
+export interface ListViewStateDataInterface<T = any, K extends keyof T = keyof T> {
     data_table_key: string;
-    
+
     selected_records: FieldArray<T, K>;
 
     breadcrumb_props: BreadcrumbUIPropsInterface;
@@ -62,12 +71,9 @@ export interface ListViewStateDataInterface<
     bulk_action_menu_dropdown_props: DropdownMenuUIPropsInterface;
 
     pagination_ui_props: PaginationUIPropsInterface;
-    
 }
 
-export interface ListViewComputedDataInterface {
-    
-}
+export interface ListViewComputedDataInterface {}
 
 export interface ListViewComponentsInterface {
     BreadcrumbUI: Component;
@@ -105,7 +111,6 @@ export interface ListViewClassStylesInterface {
     table_cell_components_class_styles: DataTableCellComponentUIClassStylesInterface;
 
     table_pagination_ui_class_styles: PaginationUIClassStylesInterface;
-
 }
 
 export type FetchListMethod<TFilters, TRecord> = (params: {

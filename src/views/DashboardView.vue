@@ -1,3 +1,1 @@
-<template>
-    Dahsboard
-</template>
+<template>Dahsboard</template>

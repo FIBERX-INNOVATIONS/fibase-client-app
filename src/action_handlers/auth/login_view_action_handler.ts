@@ -20,7 +20,6 @@ import LoginValidator from "@/validators/login_validator";
 import AuthAPIService from "@/api_services/auth_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
-
 class LoginViewActionHandler extends BaseFormActionHandler<
     LoginFormDataInterface,
     LoginViewPropsInterface,
@@ -28,8 +27,7 @@ class LoginViewActionHandler extends BaseFormActionHandler<
     LoginViewComputedDataInterface,
     LoginViewComponentsInterface,
     GlobalEventTypes
->{
-    
+> {
     constructor(
         controller: BaseController<
             LoginViewPropsInterface,
@@ -46,36 +44,34 @@ class LoginViewActionHandler extends BaseFormActionHandler<
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
-
     }
-
 
     protected getValidators(): Partial<Record<keyof LoginFormDataInterface, FieldValidator<LoginFormDataInterface>>> {
         return {
             username: LoginValidator.validateUsernameField,
 
             password: LoginValidator.validatePasswordField
-        }
+        };
     }
 
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<ButtonActionMethodReturnInterface> =>  {
+    ): Promise<ButtonActionMethodReturnInterface> => {
         this.hideErrorAlert();
 
         try {
-            const form_data             = (this.form_data) as LoginFormDataInterface;
-            const { v_state, v_msg }    = LoginValidator.validateLoginInput(form_data);
+            const form_data = this.form_data as LoginFormDataInterface;
+            const { v_state, v_msg } = LoginValidator.validateLoginInput(form_data);
 
-            if(!v_state) {
+            if (!v_state) {
                 this.showErrorAlert("error", v_msg, 4);
                 return { status: false, msg: v_msg };
             }
 
             const { status, msg, data } = await AuthAPIService.logIn(form_data);
 
-            if(status !== "success" || !data) {
+            if (status !== "success" || !data) {
                 this.showErrorAlert("error", msg, 5);
                 return { status: false, msg: v_msg };
             }
@@ -83,14 +79,12 @@ class LoginViewActionHandler extends BaseFormActionHandler<
             StatusAlertTriggerUtil.triggerAlert(status, msg, 4, "/two-factor-login");
 
             return { status: true, msg: "login_successful" };
-        }
-        catch(error: unknown) {
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
-            this.showErrorAlert("error", "error_occurred" );
+            this.showErrorAlert("error", "error_occurred");
             return { status: false, msg: "error_occurred" };
-        } 
-    }
-
+        }
+    };
 }
 
 export default LoginViewActionHandler;

@@ -20,27 +20,17 @@ import {
 import { CurrencyListViewFiltersInterface } from "@/types/list_view_filter_type";
 
 class CurrencyAPIService extends BaseAPIService {
-
     // =========================
     // 🔹 GET LIST
     // =========================
-    public static getCurrencyList = async (
-        params?: {
-            page?: number;
-            limit?: number;
-            sort_by?: string;
-            sort_direction?: string;
-            filters?: Partial<CurrencyListViewFiltersInterface>;
-        }
-    ): Promise<APIResponseInterface<CurrencyListResponseInterface>> => {
-
-        const {
-            page = 0,
-            limit = 12,
-            sort_by = "created_at",
-            sort_direction = "DESC",
-            filters
-        } = params ?? {};
+    public static getCurrencyList = async (params?: {
+        page?: number;
+        limit?: number;
+        sort_by?: string;
+        sort_direction?: string;
+        filters?: Partial<CurrencyListViewFiltersInterface>;
+    }): Promise<APIResponseInterface<CurrencyListResponseInterface>> => {
+        const { page = 0, limit = 12, sort_by = "created_at", sort_direction = "DESC", filters } = params ?? {};
 
         return await this.queryAPI<CurrencyListResponseInterface>({
             url: `/currency/list`,
@@ -130,7 +120,7 @@ class CurrencyAPIService extends BaseAPIService {
         return await this.queryAPI<AppCurrencyActionResponseInterface>({
             url: `/currency/app-currency/action`,
             method: "POST",
-            data,
+            data
         });
     };
 
@@ -143,7 +133,7 @@ class CurrencyAPIService extends BaseAPIService {
         return await this.queryAPI<AppCurrencyActionResponseInterface>({
             url: `/currency/app-currency/update-default-currency`,
             method: "POST",
-            data,
+            data
         });
     };
 }

@@ -20,8 +20,6 @@ import CurrencyValidator from "@/validators/currency_validator";
 import CurrencyAPIService from "@/api_services/currency_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
-
-
 class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
     AppCurrencyActionFromDataInterface,
     AssignCurrencyFormViewPropsInterface,
@@ -29,8 +27,7 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
     FormViewComputedDataInterface,
     FormViewComponentsInterface,
     GlobalEventTypes
->{
-    
+> {
     constructor(
         controller: BaseController<
             AssignCurrencyFormViewPropsInterface,
@@ -47,53 +44,51 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
-
     }
 
-    protected getFormDataValue (): AppCurrencyActionFromDataInterface {
+    protected getFormDataValue(): AppCurrencyActionFromDataInterface {
         const currency_list = this.controller?.props?.currency_codes ?? [];
-        const app_id        = this.controller?.props?.app_id ?? this.controller.props?.app?.public_id ?? ""
+        const app_id = this.controller?.props?.app_id ?? this.controller.props?.app?.public_id ?? "";
 
         return {
             csrf_token: null,
             currency_list,
             app_id,
             action: "assign"
-        }
+        };
     }
 
-
-    protected getValidators(): Partial<Record<keyof AppCurrencyActionFromDataInterface, FieldValidator<AppCurrencyActionFromDataInterface>>> {
-        return {
-
-        }
+    protected getValidators(): Partial<
+        Record<keyof AppCurrencyActionFromDataInterface, FieldValidator<AppCurrencyActionFromDataInterface>>
+    > {
+        return {};
     }
 
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<ButtonActionMethodReturnInterface> =>  {
+    ): Promise<ButtonActionMethodReturnInterface> => {
         this.hideErrorAlert();
 
         try {
-            const form_data                     = (this.form_data) as AppCurrencyActionFromDataInterface;
-            const { v_state, v_msg, v_data }    = CurrencyValidator.validateAppCurrencyInput(form_data);
+            const form_data = this.form_data as AppCurrencyActionFromDataInterface;
+            const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(form_data);
 
-            if(!v_state || !v_data) {
+            if (!v_state || !v_data) {
                 this.showErrorAlert("error", v_msg, 4);
                 return { status: false, msg: v_msg };
             }
 
             const result = await CurrencyAPIService.handleAppCurrencyAction(v_data);
 
-            if(!result) {
+            if (!result) {
                 this.showErrorAlert("error", "error_occurred");
                 return { status: false, msg: "error_occurred" };
             }
 
             const { status, msg, data } = result;
 
-            if(status !== "success" || !data) {
+            if (status !== "success" || !data) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg: v_msg };
             }
@@ -103,14 +98,12 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
             StatusAlertTriggerUtil.triggerAlert(status, msg, 5, app_currencies_url, true);
 
             return { status: true, msg: "login_successful" };
-        }
-        catch(error: unknown) {
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
-            this.showErrorAlert("error", "error_occurred" );
+            this.showErrorAlert("error", "error_occurred");
             return { status: false, msg: "error_occurred" };
-        } 
-    }
-
+        }
+    };
 }
 
 export default AssignCurrencyFormViewActionHandler;

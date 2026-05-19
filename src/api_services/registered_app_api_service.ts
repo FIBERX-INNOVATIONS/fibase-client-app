@@ -2,42 +2,32 @@ import BaseAPIService from "@ui/version_3/base_classes/base_api_service";
 
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
-import {
-    RegisteredAppFromDataInterface,
-    RegisteredAppValidatedFromDataInterface
-} from "@/types/form_data_type";
+import { RegisteredAppFromDataInterface, RegisteredAppValidatedFromDataInterface } from "@/types/form_data_type";
 
-
-import {
-    RegisteredAppRecordInterface,
-    PaginatedResponseResultInterface
-} from "@/types/api_service_type";
+import { RegisteredAppRecordInterface, PaginatedResponseResultInterface } from "@/types/api_service_type";
 
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 
 class RegisteredAppAPIService extends BaseAPIService {
-
     // =========================
     // 🔹 GET LIST
     // =========================
-    public static getRegisteredAppList = async (
-        params?: {
-            page?: number;
-            limit?: number;
-            sort_by?: string;
-            sort_direction?: string;
-            filters?: Partial<RegisteredAppListViewFiltersInterface>;
-        }
-    ): Promise<APIResponseInterface<PaginatedResponseResultInterface<RegisteredAppRecordInterface[]>>> => {
+    public static getRegisteredAppList = async (params?: {
+        page?: number;
+        limit?: number;
+        sort_by?: string;
+        sort_direction?: string;
+        filters?: Partial<RegisteredAppListViewFiltersInterface>;
+    }): Promise<APIResponseInterface<PaginatedResponseResultInterface<RegisteredAppRecordInterface[]>>> => {
         const { page = 1, limit = 10, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaginatedResponseResultInterface<RegisteredAppRecordInterface[]>>({
             url: `/registered-app/list`,
             method: "GET",
-            params: { 
-                page, 
-                limit, 
-                sort_by, 
+            params: {
+                page,
+                limit,
+                sort_by,
                 sort_direction,
                 ...filters
             }

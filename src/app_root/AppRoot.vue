@@ -1,47 +1,33 @@
 <template>
-    <template v-if="true">
-        <!-- loader -->
-        <ScreenLoaderUI 
-            v-bind="screen_loader_props" 
-            @isLoading="action_handler.handleIsLoading" 
-        />
-        <!-- alert -->
-        <StatusAlertUI 
-            v-bind="status_alert_props" 
-            @alert_status_updated="action_handler.handleStatusChanged" 
-        />
+    <ScreenLoaderUI
+        :visible="state_refs.screen_loader_visible.value"
+        :loader_symbol="state_refs.screen_loader_symbol.value"
+        :loader_text="state_refs.screen_loader_text.value"
+        :class_styles="state_refs.screen_loader_class_styles.value"
+    />
 
-        <!-- Layout -->
-        <LayoutView />
+    <StatusAlertUI
+        :alert_box_id="state_refs.alert_box_id.value"
+        :class_styles="state_refs.status_alert_ui_class_style.value"
+        :close_btn_icon="state_refs.status_alert_close_btn_icon.value"
+        :visible="!!state_refs.alert_status.value"
+        :alert_status="state_refs.alert_status.value"
+        :status_icon="state_refs.status_icon.value"
+        :status_content_messgae="state_refs.alert_message.value"
+        :on_close="action_handler?.handleOnCloseStatusClick"
+    />
 
-        
-
-    </template>
+    <!-- <LayoutView /> -->
 </template>
 
 <script setup lang="ts">
 import AppRootController from "@/controllers/app_root_controller";
 
-const props         = defineProps({});
-const controller    = new AppRootController(props)
+const props = defineProps({});
+const controller = new AppRootController(props);
+const component_definition = controller.getComponentDefinition();
+const { action_handler } = controller;
+const { state_refs, components } = component_definition;
 
-const { 
-    state_refs, 
-    components, 
-    computed_refs,
-    action_handler 
-} = controller;
-
-const {
-    modals,
-    status_alert_props,
-    screen_loader_props
-} = state_refs;
-
-const { 
-    ScreenLoaderUI, 
-    StatusAlertUI, 
-    LayoutView
-} = components;
-
+const { ScreenLoaderUI, StatusAlertUI, LayoutView } = components;
 </script>

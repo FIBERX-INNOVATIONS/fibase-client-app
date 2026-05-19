@@ -4,7 +4,6 @@ import DeleteButtonUIClassStyles from "./delete_button_ui_class_styles";
 import CancelButtonUIClassStyles from "./cancel_button_class_styles";
 
 const DecisionPromptUIClassStyles: DecisionPromptUIClassStylesInterface = {
-
     wrapper_class_style: "w-full items-center justify-center flex flex-col gap-4 py-[2%]",
 
     content_wrapper_class_style: "w-full items-center justify-center flex flex-col gap-2 py-[2%] px-[5%]",

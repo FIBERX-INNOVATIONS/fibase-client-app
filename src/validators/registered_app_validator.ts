@@ -21,9 +21,7 @@ class RegisteredAppValidator {
     // 🔹 FIELD VALIDATIONS
     // =========================
 
-    public static validatePrefixField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validatePrefixField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -34,9 +32,7 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateNameField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateNameField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -54,9 +50,7 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateDescriptionField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateDescriptionField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -74,9 +68,7 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateBaseUrlField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateBaseUrlField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -94,9 +86,7 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateLogoUrlField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateLogoUrlField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -132,16 +122,11 @@ class RegisteredAppValidator {
             };
         }
 
-        const invalid_links = Object.entries(social_links).filter(
-            ([_, value]) => {
-                if (!value) return false;
+        const invalid_links = Object.entries(social_links).filter(([_, value]) => {
+            if (!value) return false;
 
-                return (
-                    !InputValidatorUtil.isValidURL(value) &&
-                    !InputValidatorUtil.isValidEmail(value)
-                );
-            }
-        );
+            return !InputValidatorUtil.isValidURL(value) && !InputValidatorUtil.isValidEmail(value);
+        });
 
         if (invalid_links.length) {
             return {
@@ -157,10 +142,7 @@ class RegisteredAppValidator {
     // 🔹 URLS ARRAY
     // =========================
 
-    public static validateUrls = (
-        urls: string | null
-    ): ActionMethodRetrunInterface => {
-    
+    public static validateUrls = (urls: string | null): ActionMethodRetrunInterface => {
         if (!urls) {
             return { status: true, msg: "" };
         }
@@ -174,9 +156,7 @@ class RegisteredAppValidator {
             };
         }
 
-        const invalid_urls = array_urls.filter(
-            (url) => !InputValidatorUtil.isValidURL(url)
-        );
+        const invalid_urls = array_urls.filter((url) => !InputValidatorUtil.isValidURL(url));
 
         if (invalid_urls.length) {
             return {
@@ -195,16 +175,7 @@ class RegisteredAppValidator {
     public static validateRegisteredAppInput(
         form_data: RegisteredAppFromDataInterface
     ): ValidationResultInterface<RegisteredAppValidatedFromDataInterface> {
-        const {
-            csrf_token,
-            name,
-            prefix,
-            description,
-            base_url,
-            logo_url,
-            social_links,
-            urls
-        } = form_data;
+        const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };

@@ -1,10 +1,6 @@
 <template>
     <template v-if="true">
-        <LayoutSectionsUI
-            id="TopBar"
-            element_type="nav"
-            :class_styles="class_styles"
-        >
+        <LayoutSectionsUI id="TopBar" element_type="nav" :class_styles="class_styles">
             <template #section_1>
                 <ButtonUI v-bind="hamburger_btn_props" />
                 <ImageRenderUI v-bind="nav_logo_props" />
@@ -13,9 +9,7 @@
             <template #section_3>
                 <ImageRenderUI v-bind="member_avatar_props" />
             </template>
-
-            
-        </LayoutSectionsUI>    
+        </LayoutSectionsUI>
 
         <DropdownMenuUI v-bind="member_avatar_dropdown_props" />
     </template>
@@ -28,25 +22,9 @@ const props = defineProps({});
 
 const controller = new TopBarUIController(props);
 
-const {
-    class_styles,
-    components,
-    state_refs
-} = controller;
+const { class_styles, components, state_refs } = controller;
 
-const {
-    LayoutSectionsUI,
-    ButtonUI,
-    ImageRenderUI,
-    DropdownMenuUI
-} = components;
+const { LayoutSectionsUI, ButtonUI, ImageRenderUI, DropdownMenuUI } = components;
 
-const {
-    hamburger_btn_props,
-    nav_logo_props,
-    member_avatar_props,
-    member_avatar_dropdown_props
-} = state_refs
-
-
+const { hamburger_btn_props, nav_logo_props, member_avatar_props, member_avatar_dropdown_props } = state_refs;
 </script>

@@ -1,20 +1,14 @@
-import {
-  createRouter,
-  createWebHistory,
-  Router,
-  RouteRecordRaw,
-  RouteMeta
-} from "vue-router";
+import { createRouter, createWebHistory, Router, RouteRecordRaw, RouteMeta } from "vue-router";
 import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
-const LoginView                         = () => import("@/views/LoginView.vue");
-const TwoFactorLoginView                = () => import("@/views/TwoFactorLoginView.vue");
-const LogoutView                        = () => import("@/views/LogoutView.vue");
-const DashboardView                     = () => import("@/views/DashboardView.vue");
-const RegisteredAppListView             = () => import("@/views/registered_app/ListView.vue");
-const CurrencyListView                  = () => import("@/views/currency/ListView.vue");
+const LoginView = () => import("@/views/LoginView.vue");
+const TwoFactorLoginView = () => import("@/views/TwoFactorLoginView.vue");
+const LogoutView = () => import("@/views/LogoutView.vue");
+const DashboardView = () => import("@/views/DashboardView.vue");
+const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
+const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
-const MyProfileView                     = () => import("@/views/MyProfileView.vue");
+const MyProfileView = () => import("@/views/MyProfileView.vue");
 
 class RouterManager {
     public readonly name = "router_manager";
@@ -22,19 +16,19 @@ class RouterManager {
     private router: Router;
 
     constructor() {
-        this.routes                     = this.getRoutes();
-        this.router                     = this.createRouter();
+        this.routes = this.getRoutes();
+        this.router = this.createRouter();
 
         this.setupRouterGuards();
     }
 
     // Method to create the router instance
-    private createRouter (): Router  {
+    private createRouter(): Router {
         return createRouter({ history: createWebHistory("/"), routes: this.routes });
     }
 
     // Method to set up route gaurds
-    private setupRouterGuards (): void {
+    private setupRouterGuards(): void {
         this.router.beforeEach(async (to, from, next) => {
             const route = this.routes.find((el) => el.name === to.name);
 
@@ -43,22 +37,19 @@ class RouterManager {
                 return next(from.fullPath);
             }
 
-            const {
-                title_key,
-                permission_name = "" as string,
-            } = (route.meta || {}) as RouteMeta;
+            const { title_key, permission_name = "" as string } = (route.meta || {}) as RouteMeta;
 
-            const is_logged_in              = MemberAuthenticatorUtil.isLoggedIn()
-            const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
-            const has_permission            = permission_name ? MemberAuthenticatorUtil.memberHasPermissionTo((permission_name as string)) : true;
+            const is_logged_in = MemberAuthenticatorUtil.isLoggedIn();
+            const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
+            const has_permission = permission_name
+                ? MemberAuthenticatorUtil.memberHasPermissionTo(permission_name as string)
+                : true;
 
             if (!is_logged_in && route.name !== "Login") {
                 return next("/login");
-            }
-            else if ((is_logged_in && !is_fully_authenticated) && route.name !== "TwoFactorLogin") {
+            } else if (is_logged_in && !is_fully_authenticated && route.name !== "TwoFactorLogin") {
                 return next("/two-factor-login");
-            }
-            else if(is_fully_authenticated && !has_permission) {
+            } else if (is_fully_authenticated && !has_permission) {
                 return next("/dashboard"); // change to 404 page later
             }
 
@@ -67,94 +58,103 @@ class RouterManager {
     }
 
     // Method to get routes array
-    private getRoutes (): RouteRecordRaw[] {
+    private getRoutes(): RouteRecordRaw[] {
         return [
-            { 
-                path: "/", 
-                name: "Home", 
+            {
+                path: "/",
+                name: "Home",
                 component: LoginView,
                 meta: {
+                    page_meta_key: "home-page",
                     title_key: "home-page",
-                    permission_name: "", 
-                    is_auth_page: true,
+                    permission_name: "",
+                    is_auth_page: true
                 }
             },
-            { 
-                path: "/login", 
-                name: "Login", 
+            {
+                path: "/login",
+                name: "Login",
                 component: LoginView,
                 meta: {
+                    page_meta_key: "login-page",
                     title_key: "login-page",
-                    permission_name: "", 
-                    is_auth_page: true,
+                    permission_name: "",
+                    is_auth_page: true
                 }
             },
-            { 
-                path: "/two-factor-login", 
-                name: "TwoFactorLogin", 
+            {
+                path: "/two-factor-login",
+                name: "TwoFactorLogin",
                 component: TwoFactorLoginView,
                 meta: {
-                    title_key: "two-factor-login-page", 
-                    permission_name: "", 
-                    is_auth_page: true,
+                    page_meta_key: "two-factor-login-page",
+                    title_key: "two-factor-login-page",
+                    permission_name: "",
+                    is_auth_page: true
                 }
             },
-            { 
-                path: "/logout", 
-                name: "Logout", 
+            {
+                path: "/logout",
+                name: "Logout",
                 component: LogoutView,
                 meta: {
-                    title_key: "logout-page", 
-                    permission_name: "", 
-                    is_auth_page: true,
+                    page_meta_key: "logout-page",
+                    title_key: "logout-page",
+                    permission_name: "",
+                    is_auth_page: true
                 }
             },
-            { 
-                path: "/dashboard", 
-                name: "Dashboard", 
+            {
+                path: "/dashboard",
+                name: "Dashboard",
                 component: DashboardView,
                 meta: {
-                    title_key: "dashboard-page", 
-                    permission_name: "", 
+                    page_meta_key: "dashboard-page",
+                    title_key: "dashboard-page",
+                    permission_name: "",
                     is_auth_page: false
                 }
             },
-            { 
-                path: "/registered-apps", 
-                name: "RegisteredAppList", 
+            {
+                path: "/registered-apps",
+                name: "RegisteredAppList",
                 component: RegisteredAppListView,
                 meta: {
-                    title_key: "registered-app-list-page", 
-                    permission_name: "registered_app_module.get_registered_app_list", 
+                    page_meta_key: "registered-app-list-page",
+                    title_key: "registered-app-list-page",
+                    permission_name: "registered_app_module.get_registered_app_list",
                     is_auth_page: false
                 }
             },
-            { 
-                path: "/currencies", 
-                name: "CurrencyList", 
+            {
+                path: "/currencies",
+                name: "CurrencyList",
                 component: CurrencyListView,
                 meta: {
-                    title_key: "currency-list-page", 
-                    permission_name: "currency_module.get_currency_list", 
+                    page_meta_key: "currency-list-page",
+                    title_key: "currency-list-page",
+                    permission_name: "currency_module.get_currency_list",
                     is_auth_page: false
                 }
             },
-            { 
-                path: "/my-profile", 
-                name: "MyProfile", 
+            {
+                path: "/my-profile",
+                name: "MyProfile",
                 component: MyProfileView,
                 meta: {
-                    title_key: "my-profile-page", 
-                    permission_name: "", 
+                    page_meta_key: "my-profile-page",
+                    title_key: "my-profile-page",
+                    permission_name: "",
                     is_auth_page: false
                 }
-            },
+            }
         ];
     }
 
     // Method to expose router so it can be used in main.ts
-    public getRouter(): Router { return this.router; }
-
+    public getRouter(): Router {
+        return this.router;
+    }
 }
 
 export default RouterManager;

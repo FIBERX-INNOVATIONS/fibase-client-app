@@ -1,23 +1,18 @@
-
 import { Component, Ref } from "vue";
 
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
 
-
-export interface ProfileViewPropsInterface<T = any>  {
+export interface ProfileViewPropsInterface<T = any> {
     record?: T;
 
     record_id: string;
 }
 
-
-
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
-    profile_record: T
-    
+    profile_record: T;
 }
 
 export interface ProfileViewComputedDataInterface {
@@ -50,12 +45,10 @@ export interface ProfileViewComputedDataInterface {
     youtube_social_link?: string;
 
     whatsapp_social_link?: string;
-    
 }
 
 export interface ProfileViewComponentsInterface {
     ImageRenderUI: Component;
-
 }
 
 export interface ProfileViewClassStylesInterface {
@@ -79,9 +72,7 @@ export interface ProfileViewClassStylesInterface {
     grid_class_style?: {
         two_col_responsive_grid_wrapper_class_style?: string;
         grid_wrapper_class_style?: string;
-
-    }
-
+    };
 }
 
 export type FetchRecordMethod<TRecord> = (record_id: string) => Promise<APIResponseInterface<TRecord>>;

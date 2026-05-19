@@ -1,4 +1,3 @@
-
 import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 
 const input_group_class_style: InputGroupUIClassStylesInterface = {
@@ -10,7 +9,7 @@ const input_group_class_style: InputGroupUIClassStylesInterface = {
 
     required_text_class_style: "text-red-500 text-sm italic font-medium",
 
-    group_input_wrapper_class_style: "w-full mt-2",
-}
+    group_input_wrapper_class_style: "w-full mt-2"
+};
 
 export default input_group_class_style;

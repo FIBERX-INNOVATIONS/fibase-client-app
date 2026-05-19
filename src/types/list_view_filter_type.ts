@@ -1,4 +1,3 @@
-
 export interface RegisteredAppListViewFiltersInterface {
     preview_only?: boolean;
     search?: string | null;
@@ -18,6 +17,6 @@ export interface CurrencyListViewFiltersInterface {
     precision?: number | null;
     minor_unit?: number | null;
     numeric_code?: string | null;
-    app_id?: string | number | null,
+    app_id?: string | number | null;
     date_range?: { start_date: string; end_date: string } | null;
 }

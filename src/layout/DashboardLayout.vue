@@ -8,11 +8,7 @@
             <RouterView />
         </main>
     </template>
-    <ModalUI
-        v-for="(modal_prop, index) in modals"
-        :key="index"
-        v-bind="modal_prop"
-    >
+    <ModalUI v-for="(modal_prop, index) in modals" :key="index" v-bind="modal_prop">
         <template v-if="modal_prop?.body_component" #body>
             <component :is="modal_prop?.body_component" v-bind="modal_prop?.body_props" />
         </template>
@@ -26,21 +22,12 @@
 <script setup lang="ts">
 import DashboardLayoutController from "@/controllers/layout/dashboard_layout_controller";
 
-const props         = defineProps({});
-const controller    = new DashboardLayoutController(props);
+const props = defineProps({});
+const controller = new DashboardLayoutController(props);
 
-const { 
-    class_styles,
-    components, 
-    state_refs
-} = controller;
+const { class_styles, components, state_refs } = controller;
 
-const { 
-    TopBarUI,
-    SideBarUI,
-    ModalUI
-} = components
+const { TopBarUI, SideBarUI, ModalUI } = components;
 
-const { modals } = state_refs
-
+const { modals } = state_refs;
 </script>

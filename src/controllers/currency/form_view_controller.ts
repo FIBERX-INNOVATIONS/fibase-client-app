@@ -33,7 +33,6 @@ import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import { InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 
-
 class CurrencyFormViewController<T = any> extends BaseController<
     FormViewPropsInterface<T>,
     CurrencyFormState,
@@ -41,7 +40,6 @@ class CurrencyFormViewController<T = any> extends BaseController<
     FormViewComponentsInterface,
     GlobalEventTypes
 > {
-
     public readonly class_styles: FormViewClassStylesinterface = FormViewClassStyles;
     public readonly action_handler = new CurrencyFormViewActionHandler(this);
 
@@ -55,52 +53,39 @@ class CurrencyFormViewController<T = any> extends BaseController<
     }
 
     protected getUIStateData(): CurrencyFormState {
+        const { input_ui_class_styles, toaster_ui_class_styles, btn_class_styles, modal_btn_class_styles } =
+            this.class_styles;
 
-        const {
-            input_ui_class_styles,
-            toaster_ui_class_styles,
-            btn_class_styles,
-            modal_btn_class_styles
-        } = this.class_styles;
-
-        const record                    = this.props?.record as CurrencyRecordInterface;
-        const input_action_config       = this.action_handler.getInputActionHandlersConfig();
-        const btn_action_config         = this.action_handler.getBtnActionHandlerConfig();
-        const toaster_action_config     = this.action_handler.getToasterActionHandlerConfig();
-        const btn_content_key           = "content_resource.currency_view_ui.form_view_ui.fieldset.btn_text";
+        const record = this.props?.record as CurrencyRecordInterface;
+        const input_action_config = this.action_handler.getInputActionHandlersConfig();
+        const btn_action_config = this.action_handler.getBtnActionHandlerConfig();
+        const toaster_action_config = this.action_handler.getToasterActionHandlerConfig();
+        const btn_content_key = "content_resource.currency_view_ui.form_view_ui.fieldset.btn_text";
 
         InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
 
         ToasterUIPropsBuilder.configure("currency_submit_toaster", toaster_ui_class_styles, toaster_action_config);
 
-        ButtonUIPropsBuilder.configure(modal_btn_class_styles, btn_action_config, { disabled: true })
+        ButtonUIPropsBuilder.configure(modal_btn_class_styles, btn_action_config, { disabled: true });
 
-        
-
-        const input_group_content_key   = (input_id: string) => {
+        const input_group_content_key = (input_id: string) => {
             return `content_resource.currency_view_ui.form_view_ui.fieldset.${input_id}_field`;
-        }
+        };
 
         const build = (
-            key: string, 
-            type: InputType, 
+            key: string,
+            type: InputType,
             value: InputValue = "",
             overrides: Partial<InputUIPropsInterface> = {}
         ): InputGroupUIPropsInterface => {
             return InputGroupUIPropsBuilder.getReactivePropsObject(
-                InputUIPropsBuilder.getReactivePropsObject(
-                    key, 
-                    type, 
-                    input_group_content_key(key), 
-                    { 
-                        model_value: value,
-                        ...overrides
-                    },
-                    
-                ),
+                InputUIPropsBuilder.getReactivePropsObject(key, type, input_group_content_key(key), {
+                    model_value: value,
+                    ...overrides
+                }),
                 input_group_content_key(key)
             );
-        }
+        };
 
         return {
             fields: reactive({
@@ -120,39 +105,35 @@ class CurrencyFormViewController<T = any> extends BaseController<
 
                 format_input_group_props: build("format", "text", record?.format),
 
-                sort_order_input_group_props: build("sort_order", "number", record?.sort_order, { number_props: { min: 1 }}),
+                sort_order_input_group_props: build("sort_order", "number", record?.sort_order, {
+                    number_props: { min: 1 }
+                }),
 
-                logo_url_input_group_props: build(
-                    "logo_url", 
-                    "file", 
-                    record?.logo_url,
-                    {
-                        action_props: {
-                            on_change: this.action_handler.handleOnFileSelected
-                        },
-                        file_props: {
-                            accept: "image/*",
-                            multiple: false,
-                            enable_preview: true
-                        }
+                logo_url_input_group_props: build("logo_url", "file", record?.logo_url, {
+                    action_props: {
+                        on_change: this.action_handler.handleOnFileSelected
+                    },
+                    file_props: {
+                        accept: "image/*",
+                        multiple: false,
+                        enable_preview: true
                     }
-                ),
+                }),
 
-                is_fiat_input_group_props: build(
-                    "is_fiat", 
-                    "checkbox", 
-                    record?.is_fiat,
-                    {
-                        boolean_props: {
-                            is_checked: record?.is_active ?? false
-                        }
+                is_fiat_input_group_props: build("is_fiat", "checkbox", record?.is_fiat, {
+                    boolean_props: {
+                        is_checked: record?.is_active ?? false
                     }
-                ),
+                })
             }),
 
             toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
 
-            btn_props: ButtonUIPropsBuilder.getReactivePropsObject("currency_submit", btn_content_key, "paper_airplane_send_svg_icon")
+            btn_props: ButtonUIPropsBuilder.getReactivePropsObject(
+                "currency_submit",
+                btn_content_key,
+                "paper_airplane_send_svg_icon"
+            )
         } as CurrencyFormState;
     }
 

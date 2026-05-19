@@ -4,7 +4,8 @@ import { fileURLToPath, URL } from "node:url";
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const uiToolkitPath = fileURLToPath(new URL("../../fi-ui-toolkit", import.meta.url));
 
 export default defineConfig({
     root: "./",
@@ -18,10 +19,10 @@ export default defineConfig({
     publicDir: "./public/",
 
     resolve: {
-        alias: { 
+        alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),
-            "@ui": fileURLToPath(new URL("../../fi-ui-toolkit", import.meta.url)),
-            "vue": path.resolve(__dirname, "node_modules/vue") // ✅ now works
+            "@ui": uiToolkitPath,
+            vue: path.resolve(__dirname, "node_modules/vue")
         }
     },
 
@@ -32,9 +33,16 @@ export default defineConfig({
         rollupOptions: { input: "./index.html" }
     },
 
-    optimizeDeps: { include: [] },
+    optimizeDeps: {
+        include: ["axios", "vue", "vue-router"],
+        exclude: ["@ui"]
+    },
 
     server: {
+        fs: {
+            allow: [__dirname, uiToolkitPath]
+        },
+
         port: 5172,
         strictPort: true,
         open: true,

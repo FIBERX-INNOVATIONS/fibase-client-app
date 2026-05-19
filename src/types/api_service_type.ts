@@ -1,4 +1,3 @@
-
 export interface CSRFTokenRecordInterface {
     token: string;
     expires_at: string;
@@ -9,7 +8,7 @@ export interface PaginatedResponseResultInterface<T> {
     total_items: number;
     total_pages: number;
     current_page: number;
-    records: T
+    records: T;
 }
 
 export interface ActorRoleInterface {
@@ -57,7 +56,7 @@ export interface AuthAccessRecordInterface {
 
     expires_in_mins: number;
 
-    permissions: string[]
+    permissions: string[];
 }
 
 export interface AuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
@@ -116,16 +115,15 @@ export interface RegisteredAppRecordInterface {
 
     roles?: ActorRoleInterface[];
 
-    auth?:  RegisteredAppAuthInterface | null;
+    auth?: RegisteredAppAuthInterface | null;
 }
 
 export const getMemberFullName = (member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null): string => {
-    if(!member) { return "" }
+    if (!member) {
+        return "";
+    }
 
-    const {
-        first_name,
-        last_name
-    } = member
+    const { first_name, last_name } = member;
     return first_name && last_name ? `${first_name} ${last_name}` : "";
 };
 
@@ -156,9 +154,8 @@ export interface AppCurrencyRecordinterface {
     is_default: boolean;
     created_at?: string;
     updated_at?: string;
-    app?: RegisteredAppPreviewRecordInterface
+    app?: RegisteredAppPreviewRecordInterface;
 }
-
 
 export interface CurrencyRecordInterface {
     code: string;
@@ -192,4 +189,3 @@ export interface CurrencyStatusUpdateResponseInterface {
 }
 
 export type AppCurrencyActionResponseInterface = boolean;
-

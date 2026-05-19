@@ -1,4 +1,4 @@
-import { Ref, ref } from "vue";
+import { reactive, Ref, ref } from "vue";
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
@@ -19,7 +19,7 @@ import { WatchersType } from "@ui/version_3/types/base_type";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
-
+import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ListViewClassStyles from "@/class_styles/list_view_class_styles";
 
@@ -31,7 +31,6 @@ import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 import DataTableResultAndBulkActionBarUI from "@ui/version_3/components/DataTableResultAndBulkActionBarUI.vue";
 import PaginationUI from "@ui/version_3/components/PaginationUI.vue";
 
-import BreadcrumbUIPropsBuilder from "@ui/version_3/props_builder/breadcrumb_ui_props_builder";
 import PageHeaderUIPropsBuilder from "@ui/version_3/props_builder/page_header_ui_props_builder";
 import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
@@ -45,15 +44,9 @@ import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_men
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 import DataTableResultAndBulkActionBarUIPropsBuilder from "@ui/version_3/props_builder/data_table_result_and_bulk_action_bar_ui_props_builder";
 import PaginationUIPropsBuilder from "@ui/version_3/props_builder/pagination_ui_props_builder";
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-
-
-
-
-class BaseListViewController<
-    T = any, 
-    K extends keyof T = keyof T
->  extends BaseController<
+class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseController<
     ListViewPropsInterface,
     ListViewStateDataInterface<T, K>,
     ListViewComputedDataInterface,
@@ -64,20 +57,16 @@ class BaseListViewController<
 
     public readonly list_view_class_styles: ListViewClassStylesInterface = ListViewClassStyles;
 
-
     public action_handler: BaseListViewActionHandler<
         T,
-        ListViewPropsInterface, 
+        ListViewPropsInterface,
         ListViewStateDataInterface,
         ListViewComputedDataInterface,
         ListViewComponentsInterface,
         GlobalEventTypes
     > | null = null;
 
-    constructor(
-        props: ListViewPropsInterface,
-        record_id_key: K
-    ) {
+    constructor(props: ListViewPropsInterface, record_id_key: K) {
         super("list_view", props, EventBus);
 
         this.record_id_key = record_id_key;
@@ -117,30 +106,22 @@ class BaseListViewController<
     }
 
     public getListState(): ListStateInterface<T> {
-
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(
-                this.getDefaultListState()
-            ) as Ref<ListStateInterface<T>>;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
         }
 
         return this.state_refs.list_state.value;
     }
 
     public setListState(patch: Partial<ListStateInterface<T>>): void {
-
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(
-                this.getDefaultListState()
-            ) as Ref<ListStateInterface<T>>;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
         }
 
         this.state_refs.list_state.value = {
             ...this.state_refs.list_state.value,
             ...patch
         };
-
-        
     }
 
     /**
@@ -185,7 +166,6 @@ class BaseListViewController<
      * Base state
      */
     protected getBaseUIStateData(): ListViewStateDataInterface<T, K> {
-
         const {
             list_view_breadcrumb_class_styles,
             page_header_class_styles,
@@ -195,37 +175,32 @@ class BaseListViewController<
             table_class_styles,
             table_result_and_bulk_action_bar_class_styles,
             table_pagination_ui_class_styles
-        } = ListViewClassStyles
+        } = ListViewClassStyles;
 
-        const page_key                          = this.getPageContentKey();
-        const row_key                           = this.getTableRowKey();
-        const list_state                        = this.getListState();
-        const breadcrumb_content_key            = `content_resource.${page_key}_view_ui.list_view_ui.breadcrumb_list`;
-        const header_text_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_text`;
-        const header_desc_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_description`;
-        const create_btn_content_key            = `content_resource.${page_key}_view_ui.list_view_ui.header_section.create_btn.btn_text`;
-        const filters_toggle_btn_content_key    = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.toggle_btn.btn_text`;
-        const filters_toggle_btn_icon_key       = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.toggle_btn.btn_icon`;
-        const clear_filters_btn_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.clear_filters_btn.btn_text`;
-        const apply_filters_btn_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.apply_filters_btn.btn_text`;
-        const loader_html_content_key           = `content_resource.${page_key}_view_ui.list_view_ui.table.loading_section.loader_text`;
-        const empty_data_html_content_key       = `content_resource.${page_key}_view_ui.list_view_ui.table.empty_state_section.header_text`;
-        const table_result_content_key          = `content_resource.${page_key}_view_ui.list_view_ui.table.result_section.result_text`;
-        const table_pagination_content_key      = `content_resource.${page_key}_view_ui.list_view_ui.table.pagination_section.btn_content`;
-        const create_btn_icon                   = "plus_circle_svg_icon";
-        const clear_filters_btn_icon            = "x_circile_svg_icon";
-        const apply_filters_btn_icon            = "arrow_right_circle_svg_icon";
-        const next_pagination_btn_icon          = "arrow_right_short_cirlce_svg_icon";
-        const prev_pagination_btn_icon          = "arrow_left_short_circle_svg_icon";
+        const page_key = this.getPageContentKey();
+        const row_key = this.getTableRowKey();
+        const list_state = this.getListState();
+        const breadcrumb_content_key = `content_resource.${page_key}_view_ui.list_view_ui.breadcrumb_list`;
+        const header_text_content_key = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_text`;
+        const header_desc_content_key = `content_resource.${page_key}_view_ui.list_view_ui.header_section.header_description`;
+        const create_btn_content_key = `content_resource.${page_key}_view_ui.list_view_ui.header_section.create_btn.btn_text`;
+        const filters_toggle_btn_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.toggle_btn.btn_text`;
+        const filters_toggle_btn_icon_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.toggle_btn.btn_icon`;
+        const clear_filters_btn_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.clear_filters_btn.btn_text`;
+        const apply_filters_btn_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section.apply_filters_btn.btn_text`;
+        const loader_html_content_key = `content_resource.${page_key}_view_ui.list_view_ui.table.loading_section.loader_text`;
+        const empty_data_html_content_key = `content_resource.${page_key}_view_ui.list_view_ui.table.empty_state_section.header_text`;
+        const table_result_content_key = `content_resource.${page_key}_view_ui.list_view_ui.table.result_section.result_text`;
+        const table_pagination_content_key = `content_resource.${page_key}_view_ui.list_view_ui.table.pagination_section.btn_content`;
+        const create_btn_icon = "plus_circle_svg_icon";
+        const clear_filters_btn_icon = "x_circile_svg_icon";
+        const apply_filters_btn_icon = "arrow_right_circle_svg_icon";
+        const next_pagination_btn_icon = "arrow_right_short_cirlce_svg_icon";
+        const prev_pagination_btn_icon = "arrow_left_short_circle_svg_icon";
 
-
-        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject(
-            "h2", 
-            header_text_content_key,
-            {
-                class_styles: page_header_class_styles.header_text_class_styles
-            }
-        );
+        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject("h2", header_text_content_key, {
+            class_styles: page_header_class_styles.header_text_class_styles
+        });
 
         const create_btn_props = ButtonUIPropsBuilder.getReactivePropsObject(
             `${page_key}_module.create_${page_key}`,
@@ -242,10 +217,10 @@ class BaseListViewController<
 
         const filters_config = this.getPageFilters();
 
-        const filter_fields = FilterConfigBuilderUtil.build(
-            filters_config,
-            { input_group_class_style, input_ui_class_style }
-        );
+        const filter_fields = FilterConfigBuilderUtil.build(filters_config, {
+            input_group_class_style,
+            input_ui_class_style
+        });
 
         const apply_button = ButtonUIPropsBuilder.getReactivePropsObject(
             `apply_${page_key}_filters`,
@@ -273,11 +248,9 @@ class BaseListViewController<
             }
         );
 
-        const permitted_header_actions = header_action_btns.filter(
-            (btn: ButtonUIPropsInterface) => {
-                return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "")
-            }
-        );
+        const permitted_header_actions = header_action_btns.filter((btn: ButtonUIPropsInterface) => {
+            return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "");
+        });
 
         const configured_table_ui = DataTableUIPropsBuilder.configure({
             section_id: `${page_key}TableSection`,
@@ -299,29 +272,30 @@ class BaseListViewController<
             class_styles: table_pagination_ui_class_styles,
             config: { show_numbers: true, max_visible_pages: 10 },
             content: { prev_btn_icon: prev_pagination_btn_icon, next_btn_icon: next_pagination_btn_icon }
-        })
+        });
 
+        const content_manager = ContentManagerUtil.getInstance();
+        const breadcrumb_items = content_manager.get<NavLinkUIPropsInterface[]>(breadcrumb_content_key, []) ?? [];
 
         return {
             data_table_key: "fibaseDataTable",
-            
+
             selected_records: [] as T[K][],
 
-            breadcrumb_props: BreadcrumbUIPropsBuilder.getReactivePropsObjectFromContent(
-                "PageBreadcrumb",
-               breadcrumb_content_key,
-                "",
-                list_view_breadcrumb_class_styles
-            ),
+            breadcrumb_props: reactive({
+                id: "PageBreadcrumb",
+                breadcrumb_items,
+                separator: "",
+                class_styles: list_view_breadcrumb_class_styles
+            }),
 
             page_header_props: PageHeaderUIPropsBuilder.getReactivePropsObject(
-                header_props, 
+                header_props,
                 permitted_header_actions,
                 header_desc_content_key,
                 {
                     class_styles: page_header_class_styles
                 }
-
             ),
 
             filters_panel_props: FiltersPanelUIPropsBuilder.getReactivePropsObject(
@@ -336,15 +310,16 @@ class BaseListViewController<
                 }
             ),
 
-            data_table_result_and_bulk_action_bar_props: DataTableResultAndBulkActionBarUIPropsBuilder.getReactivePropsObject(
-                `${page_key}DataTableResultAndBulkActionBar`,
-                list_state.total_items,
-                list_state.limit,
-                list_state.current_page,
-                list_state.total_pages,
-                true,
-                0
-            ),
+            data_table_result_and_bulk_action_bar_props:
+                DataTableResultAndBulkActionBarUIPropsBuilder.getReactivePropsObject(
+                    `${page_key}DataTableResultAndBulkActionBar`,
+                    list_state.total_items,
+                    list_state.limit,
+                    list_state.current_page,
+                    list_state.total_pages,
+                    true,
+                    0
+                ),
 
             table_props: DataTableUIPropsBuilder.getReactivePropsObject<T>(
                 this.getTableRowKey(),
@@ -357,17 +332,14 @@ class BaseListViewController<
 
             list_state,
 
-            action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
-                "TableActionMeuDropdown", 
-                {
-                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+            action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("TableActionMeuDropdown", {
+                class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
-                    menu_items: []
-                }
-            ),
+                menu_items: []
+            }),
 
             bulk_action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
-                "TableBulkActionMeuDropdown", 
+                "TableBulkActionMeuDropdown",
                 {
                     class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
@@ -384,7 +356,6 @@ class BaseListViewController<
                     action_props: { on_page_change: this?.action_handler?.handleOnPageChange }
                 }
             )
-
         } as ListViewStateDataInterface<T, K>;
     }
 
@@ -415,7 +386,7 @@ class BaseListViewController<
 
         await this.action_handler?.fetchRecords();
 
-        if(this.action_handler?.handleOnNewRecordCreated) {
+        if (this.action_handler?.handleOnNewRecordCreated) {
             this.event_bus?.on("on_new_record_created", this.action_handler.handleOnNewRecordCreated);
         }
     }
@@ -437,13 +408,11 @@ class BaseListViewController<
     }
 
     public getBulkActionButtonProps = (): ButtonUIPropsInterface => {
-        const {
-            filters_class_styles,
-        } = ListViewClassStyles
+        const { filters_class_styles } = ListViewClassStyles;
 
-        const page_key                          = this.getPageContentKey();
-        const table_bulk_action_content_key     = `content_resource.${page_key}_view_ui.list_view_ui.table.bulk_action_section.btn_text`;
-        const bulk_action_btn_icon              = "vertical_elipsis_svg_icon";
+        const page_key = this.getPageContentKey();
+        const table_bulk_action_content_key = `content_resource.${page_key}_view_ui.list_view_ui.table.bulk_action_section.btn_text`;
+        const bulk_action_btn_icon = "vertical_elipsis_svg_icon";
 
         return ButtonUIPropsBuilder.getReactivePropsObject(
             `${page_key}BulkActionsBtn`,
@@ -457,10 +426,8 @@ class BaseListViewController<
                 class_styles: filters_class_styles.apply_filters_btn_class_style
             },
             { selected_count: this.state_refs.selected_records?.value?.length ?? 0 }
-
-        )
-
-    }
+        );
+    };
 }
 
 export default BaseListViewController;

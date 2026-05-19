@@ -8,5 +8,5 @@ export interface FormDataInterface {
 export interface BaseFormStateInterface {
     toast_alert_props: ToasterUIPropsInterface;
 
-    btn_props: ButtonUIPropsInterface
+    btn_props: ButtonUIPropsInterface;
 }

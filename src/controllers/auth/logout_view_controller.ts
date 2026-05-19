@@ -1,4 +1,3 @@
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -11,7 +10,7 @@ import {
     LogoutViewPropsInterface,
     LogoutViewStateDataInterface,
     LogoutViewComputedDataInterface,
-    LogoutViewComponentsInterface,
+    LogoutViewComponentsInterface
 } from "@/ui_types/logout_view_type";
 
 import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
@@ -23,14 +22,13 @@ import LogoutViewActionHandler from "@/action_handlers/auth/logout_view_action_h
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 
-class LogoutViewController extends BaseController <
+class LogoutViewController extends BaseController<
     LogoutViewPropsInterface,
     LogoutViewStateDataInterface,
     LogoutViewComputedDataInterface,
     LogoutViewComponentsInterface,
     GlobalEventTypes
 > {
-
     public readonly class_styles: AuthsViewClassStylesInterface = AuthLayoutClassStyles.auth_view_class_style;
 
     public readonly action_handler: LogoutViewActionHandler = new LogoutViewActionHandler(this);
@@ -42,41 +40,38 @@ class LogoutViewController extends BaseController <
     }
 
     // Method to get ui components
-    protected getUIComponents(): LogoutViewComponentsInterface { 
-        return  { HeaderTextUI }; 
+    protected getUIComponents(): LogoutViewComponentsInterface {
+        return { HeaderTextUI };
     }
 
     // Method to get state data
     protected getUIStateData(): LogoutViewStateDataInterface {
-        const {
-            header_text_class_style,
-        } = this.class_styles;
+        const { header_text_class_style } = this.class_styles;
 
         HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
-        
+
         return {
-            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject("h2", "content_resource.logout_view_ui.header_text"),
+            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject(
+                "h2",
+                "content_resource.logout_view_ui.header_text"
+            ),
 
             spinner_html_content: RenderHtmlUtil.renderLoaderHtml({
                 class_style: "w-12 h-12 flex items-center"
             })
-
         } as LogoutViewStateDataInterface;
     }
 
     protected async handleOnMountedLogic(): Promise<void> {
-        const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
+        const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
 
-        if(!is_fully_authenticated) { 
+        if (!is_fully_authenticated) {
             await this.router.push("/login");
             return;
         }
 
         this.action_handler.handleLogoutAction();
-
-        
     }
-
 }
 
-export default LogoutViewController
+export default LogoutViewController;

@@ -1,11 +1,8 @@
 import { Component, Ref } from "vue";
 
+export interface LayoutViewPropsInterface {}
 
-export interface LayoutViewPropsInterface {
-}
-
-export interface LayoutViewStateDataInterface {
-}
+export interface LayoutViewStateDataInterface {}
 
 export interface LayoutViewComputedDataInterface {
     is_authenticated: boolean;
@@ -16,5 +13,4 @@ export interface LayoutViewComponentsInterface {
     DashboardLayout: Component;
 }
 
-export interface LayoutViewClassStylesInterface {
-}
+export interface LayoutViewClassStylesInterface {}

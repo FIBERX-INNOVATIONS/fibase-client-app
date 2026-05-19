@@ -26,8 +26,6 @@ import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 import FileStorageAPIService from "@/api_services/file_storage_api_service";
 
-
-
 class FormViewActionHandler extends BaseFormActionHandler<
     RegisteredAppFromDataInterface,
     FormViewPropsInterface,
@@ -35,8 +33,7 @@ class FormViewActionHandler extends BaseFormActionHandler<
     FormViewComputedDataInterface,
     FormViewComponentsInterface,
     GlobalEventTypes
->{
-    
+> {
     constructor(
         controller: BaseController<
             FormViewPropsInterface,
@@ -53,10 +50,9 @@ class FormViewActionHandler extends BaseFormActionHandler<
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
-
     }
 
-    protected getFormDataValue (): RegisteredAppFromDataInterface {
+    protected getFormDataValue(): RegisteredAppFromDataInterface {
         const record = this.controller?.props?.record as RegisteredAppRecordInterface;
 
         return {
@@ -68,11 +64,12 @@ class FormViewActionHandler extends BaseFormActionHandler<
             logo_url: record?.logo_url ?? "",
             social_links: record?.social_links ?? {},
             urls: record?.urls?.join(",") ?? ""
-        }
+        };
     }
 
-
-    protected getValidators(): Partial<Record<keyof RegisteredAppFromDataInterface, FieldValidator<RegisteredAppFromDataInterface>>> {
+    protected getValidators(): Partial<
+        Record<keyof RegisteredAppFromDataInterface, FieldValidator<RegisteredAppFromDataInterface>>
+    > {
         return {
             name: RegisteredAppValidator.validateNameField,
 
@@ -87,81 +84,77 @@ class FormViewActionHandler extends BaseFormActionHandler<
             social_links: RegisteredAppValidator.validateSocialLinks,
 
             urls: RegisteredAppValidator.validateUrls
-        }
+        };
     }
 
     // method to handle on file upload
-    public handleOnFileUpload = async (
-        files: File[],
-    ): Promise<boolean> => {
+    public handleOnFileUpload = async (files: File[]): Promise<boolean> => {
         try {
             const form_data = new FormData();
-            
+
             form_data.append("file", files[0]);
             form_data.append("reference_type", FILE_STORAGE_REFERENCE_TYPE.REGISTERED_APP_LOGO);
-            form_data.append('is_public', 'true');
+            form_data.append("is_public", "true");
 
             const result = await FileStorageAPIService.uploadFile(form_data);
 
-            if(!result) {
+            if (!result) {
                 StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
-            
-            if(status !== "success" || !data?.url) {
+
+            if (status !== "success" || !data?.url) {
                 StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
-            
+
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;
-            return true
-        }
-        catch(error: unknown) {
+            return true;
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 10, undefined, false);
-            return false
+            return false;
         }
-    }
+    };
 
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<ButtonActionMethodReturnInterface> =>  {
+    ): Promise<ButtonActionMethodReturnInterface> => {
         this.hideErrorAlert();
 
         try {
-            const form_data                     = (this.form_data) as RegisteredAppFromDataInterface;
-            const record                        = (this.controller?.props?.record) as RegisteredAppRecordInterface
-            const record_id                     = record.public_id;
-            const { v_state, v_msg, v_data }    = RegisteredAppValidator.validateRegisteredAppInput(form_data);
+            const form_data = this.form_data as RegisteredAppFromDataInterface;
+            const record = this.controller?.props?.record as RegisteredAppRecordInterface;
+            const record_id = record.public_id;
+            const { v_state, v_msg, v_data } = RegisteredAppValidator.validateRegisteredAppInput(form_data);
 
-            if(!v_state || !v_data) {
+            if (!v_state || !v_data) {
                 this.showErrorAlert("error", v_msg, 4);
                 return { status: false, msg: v_msg };
             }
 
             let result;
 
-            if(record_id) {
+            if (record_id) {
                 result = await RegisteredAppAPIService.updateRegisteredApp(record_id, v_data);
-            }
-            else {
+            } else {
                 result = await RegisteredAppAPIService.createRegisteredApp(v_data);
             }
 
-            if(!result) {
+            if (!result) {
                 this.showErrorAlert("error", "error_occurred");
                 return { status: false, msg: "error_occurred" };
             }
 
             const { status, msg, data } = result;
 
-            if(status !== "success" || !data?.public_id) {
+            if (status !== "success" || !data?.public_id) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg: v_msg };
             }
@@ -172,14 +165,12 @@ class FormViewActionHandler extends BaseFormActionHandler<
             this.controller.event_bus?.emit("on_new_record_created", record_payload);
 
             return { status: true, msg: "login_successful" };
-        }
-        catch(error: unknown) {
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
-            this.showErrorAlert("error", "error_occurred" );
+            this.showErrorAlert("error", "error_occurred");
             return { status: false, msg: "error_occurred" };
-        } 
-    }
-
+        }
+    };
 }
 
 export default FormViewActionHandler;

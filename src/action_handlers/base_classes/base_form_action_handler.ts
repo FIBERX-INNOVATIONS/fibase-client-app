@@ -1,4 +1,3 @@
-
 import { markRaw } from "vue";
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
@@ -17,24 +16,19 @@ import { GlobalEventTypes, OpenModalEventPayloadInterface } from "@/types/global
 
 import { FilePreviewUploadUIPropsInterface } from "@ui/version_3/ui_types/file_preview_upload_ui_type";
 
-
-import { 
-    ToasterUIActionPropsInterface, 
-    ToasterUIPropsInterface, 
-    ToastStatusType 
+import {
+    ToasterUIActionPropsInterface,
+    ToasterUIPropsInterface,
+    ToastStatusType
 } from "@ui/version_3/ui_types/toaster_ui_type";
 
-
-import { 
-    ButtonActionMethodReturnInterface, 
-    ButtonUIActionPropsInterface, 
-    ButtonUIPropsInterface 
+import {
+    ButtonActionMethodReturnInterface,
+    ButtonUIActionPropsInterface,
+    ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
-import { 
-    BaseFormStateInterface, 
-    FormDataInterface 
-} from "@/types/form_action_type";
+import { BaseFormStateInterface, FormDataInterface } from "@/types/form_action_type";
 
 import {
     InputUIPropsInterface,
@@ -51,7 +45,6 @@ import FilePreviewUploadUIClassStyles from "@/class_styles/file_preview_upload_c
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import ButtonUIClassStyles from "@/class_styles/button_ui_class_styles";
 
-
 class BaseFormActionHandler<
     FormData extends Record<string, any> = {},
     Props extends Record<string, any> = {},
@@ -60,7 +53,6 @@ class BaseFormActionHandler<
     Components extends Record<string, any> = {},
     Events extends GlobalEventTypes = GlobalEventTypes
 > {
-
     public readonly name: string;
 
     protected controller: BaseController<Props, State, Computed, Components, Events>;
@@ -75,13 +67,11 @@ class BaseFormActionHandler<
 
     protected validators: Partial<Record<keyof FormData, FieldValidator<FormData>>> = {};
 
-
     constructor(
         controller: BaseController<Props, State, Computed, Components, Events>,
         name: string = "base_form_action_handler",
         default_form_data?: Partial<FormData>
     ) {
-
         this.name = name;
 
         this.controller = controller;
@@ -92,22 +82,15 @@ class BaseFormActionHandler<
             prefix: name,
             show_timestamp: false
         });
-
     }
 
     // Method to get content message
     protected getContentMessage = (message_key: string): string => {
-
         return this.content_manager.getAPIResponseValue(message_key);
-
-    }
+    };
 
     // Method to run validators
-    protected runValidator = async (
-        key: keyof FormData,
-        value: any
-    ): Promise<ActionMethodRetrunInterface>  => {
-
+    protected runValidator = async (key: keyof FormData, value: any): Promise<ActionMethodRetrunInterface> => {
         const validator = this.validators[key];
 
         if (!validator) {
@@ -115,12 +98,11 @@ class BaseFormActionHandler<
         }
 
         return await validator(value, this.form_data);
-    }
+    };
 
     // Method to retrun status icon
     protected getStatusIcon = (status?: ToastStatusType): SVGIconKey => {
         switch (status) {
-
             case "success":
                 return "check_circle_svg_icon";
 
@@ -136,63 +118,55 @@ class BaseFormActionHandler<
             default:
                 return "check_circle_svg_icon";
         }
-    }
+    };
 
     // Method to hide error alert
     public hideErrorAlert = (): void => {
         const empty_props = ToasterUIPropsBuilder.getReactivePropsObject();
 
-        Object.assign(
-            this.controller.state_refs.toast_alert_props.value,
-            empty_props
-        );
+        Object.assign(this.controller.state_refs.toast_alert_props.value, empty_props);
         return;
-    }
+    };
 
     // Method to show error alert
-    public showErrorAlert = (
-        status: ToastStatusType, 
-        message_key: string,
-        duration?: number
-    ): void => {
-        const to_ms         = duration ? (duration * 1000) : undefined;
-        const status_icon   = this.getStatusIcon(status);
-        const message       = this.getContentMessage(message_key);
-        const new_props     = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon, to_ms);
+    public showErrorAlert = (status: ToastStatusType, message_key: string, duration?: number): void => {
+        const to_ms = duration ? duration * 1000 : undefined;
+        const status_icon = this.getStatusIcon(status);
+        const message = this.getContentMessage(message_key);
+        const new_props = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon, to_ms);
 
-        Object.assign(
-            this.controller.state_refs.toast_alert_props.value, 
-            new_props
-        );
+        Object.assign(this.controller.state_refs.toast_alert_props.value, new_props);
         return;
-    }
+    };
 
     // Method to get form data
-    public getFormData = (): FormDataInterface => { return this.form_data; }
+    public getFormData = (): FormDataInterface => {
+        return this.form_data;
+    };
 
     // Method to reset form data
-    public resetFormData = (): void => { this.form_data = {}; }
-
+    public resetFormData = (): void => {
+        this.form_data = {};
+    };
 
     // Method to schedule csrf refresh
-    private scheduleCsrfRefresh = (
-        expires_at: string, 
-        token_for: CSRFTokenForType | null
-    ): void => {
-        if (!expires_at) { return; }
+    private scheduleCsrfRefresh = (expires_at: string, token_for: CSRFTokenForType | null): void => {
+        if (!expires_at) {
+            return;
+        }
 
         // Clear any existing timer
         this.clearScheduledTimers();
 
-        const expiration_time   = new Date(expires_at).getTime();
-        const now               = Date.now()
-        const delay             = expiration_time - now
+        const expiration_time = new Date(expires_at).getTime();
+        const now = Date.now();
+        const delay = expiration_time - now;
 
         this.csrf_refresh_timer = setTimeout(async () => {
             this.logger.debug("Refreshing CSRF Token Now");
             await this.setCSRFToken(token_for);
         }, delay);
-    }
+    };
 
     // Method to clear scheduled timers
     public clearScheduledTimers = (): boolean => {
@@ -202,33 +176,33 @@ class BaseFormActionHandler<
         }
 
         return true;
-    }
+    };
 
     // Method to set csrf_token in form data
-    public setCSRFToken = async (
-        token_for: CSRFTokenForType | null
-    ): Promise<boolean> => {
-
-        if(!token_for) { return false }
+    public setCSRFToken = async (token_for: CSRFTokenForType | null): Promise<boolean> => {
+        if (!token_for) {
+            return false;
+        }
 
         const result = await AuthAPIService.getFormCSRFToken(token_for);
 
-        if(!result || result.status !== "success" || !result?.data) { return false }
+        if (!result || result.status !== "success" || !result?.data) {
+            return false;
+        }
 
         const { expires_at, token } = result.data;
 
         (this.form_data as any)["csrf_token"] = token ?? null;
 
-        if(this.controller.state_refs.btn_props.value?.boolean_props) {
+        if (this.controller.state_refs.btn_props.value?.boolean_props) {
             this.controller.state_refs.btn_props.value.boolean_props.disabled = token ? false : true;
         }
-
 
         // Schedule next refresh
         this.scheduleCsrfRefresh(expires_at, token_for);
 
         return true;
-    }
+    };
 
     // Method to handle on toaster hide
     public handleOnToasterHide = async (
@@ -236,12 +210,12 @@ class BaseFormActionHandler<
         visible?: boolean,
         input_config?: { props: ToasterUIPropsInterface }
     ): Promise<ActionMethodRetrunInterface> => {
-        if(visible === false) { 
-            this.hideErrorAlert(); 
+        if (visible === false) {
+            this.hideErrorAlert();
         }
 
         return { status: true, msg: "" };
-    }
+    };
 
     // Method to handle on input and record in form data
     public handleOnInputChanged = async (
@@ -249,23 +223,19 @@ class BaseFormActionHandler<
         input_value?: InputValue,
         input_config?: { props: InputUIPropsInterface }
     ): Promise<ActionMethodRetrunInterface> => {
-
         const input_props = input_config?.props;
 
-        const target =
-            event?.target as HTMLInputElement | HTMLTextAreaElement | null;
+        const target = event?.target as HTMLInputElement | HTMLTextAreaElement | null;
 
         const value = input_value ?? target?.value;
 
         const input_id = input_props?.id;
 
         if (!input_id) {
-
             return {
                 status: false,
                 msg: this.getContentMessage("invalid_input_config")
             };
-
         }
 
         const formatted_key = input_id.replace(/_\d+$/, "");
@@ -276,10 +246,7 @@ class BaseFormActionHandler<
         /* Run Validator if Exists            */
         /* ---------------------------------- */
 
-        const validation_result = await this.runValidator(
-            formatted_key,
-            value
-        );
+        const validation_result = await this.runValidator(formatted_key, value);
 
         return validation_result;
     };
@@ -288,16 +255,14 @@ class BaseFormActionHandler<
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<ButtonActionMethodReturnInterface> =>  {
+    ): Promise<ButtonActionMethodReturnInterface> => {
         return { status: true, msg: "" };
-    }
+    };
 
     // method to handle on file upload
-    public handleOnFileUpload = async (
-        files: File[],
-    ): Promise<boolean> => {
-        return false
-    }
+    public handleOnFileUpload = async (files: File[]): Promise<boolean> => {
+        return false;
+    };
 
     // Method to open file upload modal on file selected
     public handleOnFileSelected = async (
@@ -305,95 +270,82 @@ class BaseFormActionHandler<
         input_value?: InputValue,
         input_config?: { props: InputUIPropsInterface }
     ): Promise<ActionMethodRetrunInterface> => {
-        const base_content_key  = "content_resource.global_modal_ui";
-        const target            = event?.target as HTMLInputElement;
-        const props             = input_config?.props;
-        const multiple          = props?.file_props?.multiple ?? false;
-        const class_styles      = FilePreviewUploadUIClassStyles
+        const base_content_key = "content_resource.global_modal_ui";
+        const target = event?.target as HTMLInputElement;
+        const props = input_config?.props;
+        const multiple = props?.file_props?.multiple ?? false;
+        const class_styles = FilePreviewUploadUIClassStyles;
 
-        if(!target?.files) {
+        if (!target?.files) {
             this.logger.warn(`No files selected`);
             return { status: false, msg: this.getContentMessage("no_file_selected") };
         }
 
-        if(!this.handleOnFileUpload) {
+        if (!this.handleOnFileUpload) {
             this.logger.warn(`handleOnFileUpload method not implemented in ${this.name}`);
             return { status: false, msg: this.getContentMessage("file_upload_not_supported") };
         }
 
-        const files                 = Array.from(target.files);
+        const files = Array.from(target.files);
 
-        const action_props          = {
-            on_file_upload: this.handleOnFileUpload.bind(this),
+        const action_props = {
+            on_file_upload: this.handleOnFileUpload.bind(this)
         };
 
-        const upload_button_props   = ButtonUIPropsBuilder.getReactivePropsObject(
+        const upload_button_props = ButtonUIPropsBuilder.getReactivePropsObject(
             `UploadFile${multiple ? "s" : ""}_${input_config?.props?.id ?? ""}`,
             `${base_content_key}.file_preview_upload_modal.content.upload_btn_text`,
             "file_upload_svg_icon",
             "button",
             {
                 class_styles: ButtonUIClassStyles,
-                boolean_props: { disabled: false },
+                boolean_props: { disabled: false }
             }
         );
-                
-        const modal_payload: OpenModalEventPayloadInterface<
-            FilePreviewUploadUIPropsInterface,
-            {}
-        > = {
+
+        const modal_payload: OpenModalEventPayloadInterface<FilePreviewUploadUIPropsInterface, {}> = {
             content_key: `${base_content_key}.file_preview_upload_modal`,
 
             animation_type: "slide_top",
 
             body_component: markRaw(FilePreviewUploadUI),
-            
-            body_props: { 
+
+            body_props: {
                 files,
                 multiple,
                 class_styles,
                 upload_button_props,
                 action_props
-            },
+            }
         };
-                
+
         this.controller?.event_bus?.emit?.("open_modal", modal_payload);
 
         return { status: true, msg: "" };
-
-    }
-
+    };
 
     /* ---------------------------------- */
     /* Input and button Handler Config    */
     /* ---------------------------------- */
     public getInputActionHandlersConfig = (): InputUIActionPropsInterface => {
-
         return {
             on_change: this.handleOnInputChanged
         };
-
-    }
+    };
 
     public getBtnActionHandlerConfig = (): ButtonUIActionPropsInterface => {
-
         return {
-            on_click: this.handleOnFormSubmitBtnClick.bind(this),
+            on_click: this.handleOnFormSubmitBtnClick.bind(this)
         };
-
-    }
+    };
 
     public getToasterActionHandlerConfig = (): ToasterUIActionPropsInterface => {
-
         return {
             on_click: this.handleOnToasterHide.bind(this),
 
             on_hide: this.handleOnToasterHide.bind(this)
         };
-
-    }
-
-
+    };
 }
 
 export default BaseFormActionHandler;

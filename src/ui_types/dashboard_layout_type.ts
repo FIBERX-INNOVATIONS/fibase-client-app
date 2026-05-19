@@ -1,5 +1,3 @@
-
-
 import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { DropdownMenuUIClassStylesInterface } from "@ui/version_3/ui_types/dropdown_menu_ui_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
@@ -9,23 +7,20 @@ import { Component, Ref } from "vue";
 import { SideBarUIClassStyleInterface } from "./side_bar_ui_type";
 import { ModalUIClassStylesInterface, ModalUIPropsExtendedInterface } from "@ui/version_3/ui_types/modal_ui_type";
 
-
 export interface DashboardLayoutPropsInterface {
-    class_styles?: DashboardLayoutClassStylesInterface
+    class_styles?: DashboardLayoutClassStylesInterface;
 }
 
 export interface DashboardLayoutStateDataInterface {
-    modals: ModalUIPropsExtendedInterface[]
-
+    modals: ModalUIPropsExtendedInterface[];
 }
 
-export interface DashboardLayoutComputedDataInterface {
-}
+export interface DashboardLayoutComputedDataInterface {}
 
 export interface DashboardLayoutComponentsInterface {
-   TopBarUI: Component;
-   SideBarUI: Component;
-   ModalUI: Component;
+    TopBarUI: Component;
+    SideBarUI: Component;
+    ModalUI: Component;
 }
 
 export interface DashboardLayoutClassStylesInterface {

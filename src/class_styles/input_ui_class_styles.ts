@@ -1,4 +1,3 @@
-
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 
 const input_ui_class_styles: InputUIClassStylesInterface = {
@@ -6,12 +5,16 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
         !w-full !min-h-10 !flex !rounded-md !border px-3 !py-2 !text-sm !ring-offset-background 
         !placeholder:text-muted-foreground !focus-visible:outline-none !focus-visible:ring-2 
         !focus-visible:ring-ring !focus-visible:ring-offset-2  !bg-gray-200 !border-blue-600/70 
-        !text-black !placeholder-gray-400 !focus:ring-sky-500`.replace(/\s+/g, ' ').trim(),
+        !text-black !placeholder-gray-400 !focus:ring-sky-500`
+        .replace(/\s+/g, " ")
+        .trim(),
 
     file_input_class_style: `file:mr-4 file:py-2 file:px-4
         file:rounded-lg file:border-1 file:text-sm file:font-semibold 
         file:bg-gradient-to-r file:from-blue-500 file:to-blue-900
-        file:text-white hover:file:from-blue-500 hover:file:to-blue-400 hover:file:cursor-pointer`.replace(/\s+/g, ' ').trim(),
+        file:text-white hover:file:from-blue-500 hover:file:to-blue-400 hover:file:cursor-pointer`
+        .replace(/\s+/g, " ")
+        .trim(),
 
     wrapper_class_style: "w-full flex flex-col items-center gap-2 justify-center relative",
 
@@ -29,7 +32,8 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
 
     caret_icon_class: "absolute right-3 top-[17px] -translate-y-1/2 text-gray-500 cursor-pointer w-6 h-6",
 
-    dropdown_wrapper_class_style: "p-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto",
+    dropdown_wrapper_class_style:
+        "p-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto",
 
     options_wrapper_class_style: "",
 
@@ -49,7 +53,8 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
 
     search_wrapper_class_style: "w-full flex relative",
 
-    search_icon_class_style: "w-8 h-8 p-2 absolute top-1 left-1  cursor-pointer inline-flex items-center justify-center rounded-lg ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-8 bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 text-white",
+    search_icon_class_style:
+        "w-8 h-8 p-2 absolute top-1 left-1  cursor-pointer inline-flex items-center justify-center rounded-lg ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-8 bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-500 hover:to-blue-400 text-white",
 
     search_input_class_style: "pl-10",
 
@@ -74,8 +79,8 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
 
         chip_class_style: "px-2 py-1 bg-gray-200 rounded-full flex items-center gap-1 font-bold",
 
-        chip_btn_class_style: "w-6 h-6 flex items-center text-red-500 font-bold cursor-pointer",
+        chip_btn_class_style: "w-6 h-6 flex items-center text-red-500 font-bold cursor-pointer"
     }
-}
+};
 
 export default input_ui_class_styles;

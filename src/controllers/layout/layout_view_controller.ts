@@ -1,4 +1,3 @@
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -20,16 +19,13 @@ import AuthLayout from "@/layout/AuthLayout.vue";
 import DashboardLayout from "@/layout/DashboardLayout.vue";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-
-
-class LayoutViewController extends BaseController <
+class LayoutViewController extends BaseController<
     LayoutViewPropsInterface,
     LayoutViewStateDataInterface,
     LayoutViewComputedDataInterface,
     LayoutViewComponentsInterface,
     GlobalEventTypes
 > {
-
     constructor(props: LayoutViewPropsInterface) {
         super("layout_view", props, EventBus);
 
@@ -37,22 +33,21 @@ class LayoutViewController extends BaseController <
     }
 
     // Method to get ui components
-    protected getUIComponents(): LayoutViewComponentsInterface { 
-        return  { 
+    protected getUIComponents(): LayoutViewComponentsInterface {
+        return {
             AuthLayout,
-            DashboardLayout 
-        }; 
+            DashboardLayout
+        };
     }
 
     // Method to get ui computed data
     protected getUIComputedData(): ComputedDefinitionType<LayoutViewComputedDataInterface> {
         return {
             is_authenticated: (): boolean => {
-                return MemberAuthenticatorUtil.isFullyLoggedIn()
+                return MemberAuthenticatorUtil.isFullyLoggedIn();
             }
-        } 
+        };
     }
-
 }
 
-export default LayoutViewController
+export default LayoutViewController;

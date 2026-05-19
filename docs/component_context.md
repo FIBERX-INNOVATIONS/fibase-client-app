@@ -77,6 +77,7 @@ i am workin on the modal component and i am not sure how to dynamixally set the 
         </div>
 
     </OverlayUI>
+
 </template>
 
 <script setup lang="ts">
@@ -116,22 +117,21 @@ const {
 import { Component } from "vue";
 import { SVGIconKey } from "../resources/svg_icon_resource";
 
-/* ---------------------------------- */
-/* Modal Animation                    */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Modal Animation _/
+/_ ---------------------------------- _/
 
 export type ModalAnimationType =
-    | "fade"
-    | "slide_left"
-    | "slide_right"
-    | "slide_top"
-    | "slide_bottom"
-    | "scale";
+| "fade"
+| "slide_left"
+| "slide_right"
+| "slide_top"
+| "slide_bottom"
+| "scale";
 
-
-/* ---------------------------------- */
-/* Class Styles                       */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Class Styles _/
+/_ ---------------------------------- _/
 
 export interface ModalUIClassStylesInterface {
 
@@ -155,10 +155,9 @@ export interface ModalUIClassStylesInterface {
 
 }
 
-
-/* ---------------------------------- */
-/* Action Return                      */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Action Return _/
+/_ ---------------------------------- _/
 
 export interface ModalUIActionReturnInterface {
 
@@ -170,20 +169,19 @@ export interface ModalUIActionReturnInterface {
 
 }
 
-/* ---------------------------------- */
-/* Content Props                      */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Content Props _/
+/_ ---------------------------------- _/
 export interface ModalUIContentPropsInterface {
-    close_btn_content?: string;
+close_btn_content?: string;
 
     close_btn_icon_key?: SVGIconKey;
 
 }
 
-
-/* ---------------------------------- */
-/* Action Props                       */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Action Props _/
+/_ ---------------------------------- _/
 
 export interface ModalUIActionPropsInterface {
 
@@ -194,11 +192,9 @@ export interface ModalUIActionPropsInterface {
 
 }
 
-
-
-/* ---------------------------------- */
-/* Props Interface                    */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Props Interface _/
+/_ ---------------------------------- _/
 
 export interface ModalUIPropsInterface {
 
@@ -224,10 +220,9 @@ export interface ModalUIPropsInterface {
 
 }
 
-
-/* ---------------------------------- */
-/* State                              */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ State _/
+/_ ---------------------------------- _/
 
 export interface ModalUIStateDataInterface {
 
@@ -235,10 +230,9 @@ export interface ModalUIStateDataInterface {
 
 }
 
-
-/* ---------------------------------- */
-/* Computed                           */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Computed _/
+/_ ---------------------------------- _/
 
 export interface ModalUIComputedDataInterface {
 
@@ -248,10 +242,9 @@ export interface ModalUIComputedDataInterface {
 
 }
 
-
-/* ---------------------------------- */
-/* Components                         */
-/* ---------------------------------- */
+/_ ---------------------------------- _/
+/_ Components _/
+/_ ---------------------------------- _/
 
 export interface ModalUIComponentsInterface {
 

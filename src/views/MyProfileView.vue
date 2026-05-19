@@ -1,3 +1,1 @@
-<template>
-    My Profile View
-</template>
+<template>My Profile View</template>

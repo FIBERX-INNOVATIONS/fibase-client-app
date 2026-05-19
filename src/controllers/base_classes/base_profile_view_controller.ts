@@ -1,9 +1,6 @@
-
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import BaseProfileViewActionHandler from "@/action_handlers/base_classes/base_profile_view_action_handler";
-
 
 import { ComputedDefinitionType, WatchersType } from "@ui/version_3/types/base_type";
 
@@ -16,14 +13,13 @@ import {
     ProfileViewStateDataInterface,
     ProfileViewComputedDataInterface,
     ProfileViewComponentsInterface,
-    ProfileViewClassStylesInterface,
+    ProfileViewClassStylesInterface
 } from "@/ui_types/profile_view_type";
 
 import ProfileViewClassStyles from "@/class_styles/profile_view_class_styles";
 import ImageRenderUI from "@ui/version_3/components/ImageRenderUI.vue";
 
-
-class BaseProfileViewController<T = any>  extends BaseController<
+class BaseProfileViewController<T = any> extends BaseController<
     ProfileViewPropsInterface,
     ProfileViewStateDataInterface<T>,
     ProfileViewComputedDataInterface,
@@ -32,10 +28,9 @@ class BaseProfileViewController<T = any>  extends BaseController<
 > {
     public readonly class_styles: ProfileViewClassStylesInterface = ProfileViewClassStyles;
 
-
     public action_handler: BaseProfileViewActionHandler<
         T,
-        ProfileViewPropsInterface, 
+        ProfileViewPropsInterface,
         ProfileViewStateDataInterface,
         ProfileViewComputedDataInterface,
         ProfileViewComponentsInterface,
@@ -53,8 +48,6 @@ class BaseProfileViewController<T = any>  extends BaseController<
     protected getPageContentKey(): string {
         return "registered_app";
     }
-
-
 
     /**
      * Base UI Components
@@ -86,12 +79,10 @@ class BaseProfileViewController<T = any>  extends BaseController<
      * Base state
      */
     protected getBaseUIStateData(): ProfileViewStateDataInterface {
-
         return {
             is_loading: false,
 
-            profile_record: (this.props?.record)
-        
+            profile_record: this.props?.record
         } as ProfileViewStateDataInterface;
     }
 
@@ -112,23 +103,18 @@ class BaseProfileViewController<T = any>  extends BaseController<
         };
     }
 
-
     /**
      * Base computed
      */
     protected getBaseUIComputedData(): ComputedDefinitionType<ProfileViewComputedDataInterface> {
-        return {
-
-        } as ComputedDefinitionType<ProfileViewComputedDataInterface>;
+        return {} as ComputedDefinitionType<ProfileViewComputedDataInterface>;
     }
 
     /**
      * Child computed
      */
     protected getChildUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
-        return {
-
-        } as ComputedDefinitionType<ProfileViewComputedDataInterface>;
+        return {} as ComputedDefinitionType<ProfileViewComputedDataInterface>;
     }
 
     /**
@@ -136,7 +122,7 @@ class BaseProfileViewController<T = any>  extends BaseController<
      */
     protected getUIComputedData(): ComputedDefinitionType<ProfileViewComputedDataInterface> {
         return {
-             ...this.getBaseUIComputedData(),
+            ...this.getBaseUIComputedData(),
             ...this.getChildUIComputedData()
         } as ComputedDefinitionType<ProfileViewComputedDataInterface>;
     }

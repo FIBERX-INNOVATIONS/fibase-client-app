@@ -1,25 +1,21 @@
-
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-import { 
-    getMemberFullName, 
-    CurrencyRecordInterface 
-} from "@/types/api_service_type";
+import { getMemberFullName, CurrencyRecordInterface } from "@/types/api_service_type";
 
-import { 
+import {
     ActionMethodRetrunInterface,
-    InputUIActionPropsInterface, 
-    InputUIBooleanPropsInterface, 
-    InputUIContentOptionsInterface, 
-    InputUIPropsInterface, 
+    InputUIActionPropsInterface,
+    InputUIBooleanPropsInterface,
+    InputUIContentOptionsInterface,
+    InputUIPropsInterface,
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
-import { 
+import {
     ButtonUIActionPropsInterface,
-    ButtonUIContentOptionsInterface, 
+    ButtonUIContentOptionsInterface,
     ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
@@ -43,11 +39,7 @@ import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellCompone
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
-
-
-
 class CurrencyListViewController extends BaseListViewController<CurrencyRecordInterface, "code"> {
-
     public action_handler: CurrencyListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
@@ -63,9 +55,9 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
     }
 
     protected getPageFilters(): ListFilterConfig[] {
-        const page_key            = this.getPageContentKey();
+        const page_key = this.getPageContentKey();
         const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`;
-        const app_id              = this.route.query?.app_id?.toString() ?? "";
+        const app_id = this.route.query?.app_id?.toString() ?? "";
 
         return [
             // Search Filter
@@ -79,9 +71,8 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         search_icon_html_content: SVGIcons.search_svg_icon
                     },
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.search ?? "",
+                    model_value: this.route.query?.search ?? ""
                 }
-
             },
             // Precision Filter
             {
@@ -91,7 +82,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 input_content_key: `${filters_content_key}.precision_filter`,
                 overides: {
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.precision ?? "",
+                    model_value: this.route.query?.precision ?? ""
                 }
             },
             // Minor unit Filter
@@ -102,7 +93,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 input_content_key: `${filters_content_key}.minor_unit_filter`,
                 overides: {
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.minor_unit ?? "",
+                    model_value: this.route.query?.minor_unit ?? ""
                 }
             },
             // numeric Code Filter
@@ -113,7 +104,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 input_content_key: `${filters_content_key}.numeric_code_filter`,
                 overides: {
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.numeric_code ?? "",
+                    model_value: this.route.query?.numeric_code ?? ""
                 }
             },
             // Is Active filter
@@ -154,9 +145,8 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                     action_props: {
                         ...this.action_handler.getFilterInputActionHandlersConfig(),
                         fetch_data_method: PreviewRecordFetcher.fetchRegisteredAppPreviewRecords
-                    },
+                    }
                 }
-
             },
             // Assigned/Unassigned to App
             {
@@ -183,7 +173,6 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                     }
                 }
-
             },
             // Date Range Filter
             {
@@ -207,9 +196,11 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
     }
 
     protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyRecordInterface>[] {
-        const content_manager   = ContentManagerUtil.getInstance();
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("currency_module.update_currency_status");
-        
+        const content_manager = ContentManagerUtil.getInstance();
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
+            "currency_module.update_currency_status"
+        );
+
         const columns: DataTableColumnRenderType<CurrencyRecordInterface>[] = [
             // S/N and Select Checkbox Column
             {
@@ -217,10 +208,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sn_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
-                    render: (_row, index) => { return DataTableSerialCellUI }
+                    render: (_row, index) => {
+                        return DataTableSerialCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -237,8 +230,8 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                             required: true,
 
-                            disabled: false,
-                        }
+                            disabled: false
+                        };
                     },
 
                     input_action_props: (record?: CurrencyRecordInterface): InputUIActionPropsInterface => {
@@ -254,8 +247,8 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                                 return this.action_handler.handleOnSelectAllRows();
                             }
-                        }
-                    },
+                        };
+                    }
                 }
             },
 
@@ -265,10 +258,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[24%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.name_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.name_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableAvatarInfoCellUI }
+                    render: (row) => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -280,7 +275,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                     getImgSrc: (record: CurrencyRecordInterface) => {
                         return record?.logo_url || DEFUALT_CURRENCY_LOGO_URL;
-                    },
+                    }
                 }
             },
 
@@ -290,10 +285,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[9%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
@@ -306,26 +303,32 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.type_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.type_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    getTextContent: (record: CurrencyRecordInterface) => { 
-                        if(record.is_fiat) {
-                            return content_manager?.get<string>?.(
-                                "content_resource.currency_view_ui.list_view_ui.table.body.fiat_currency_type_text",
+                    getTextContent: (record: CurrencyRecordInterface) => {
+                        if (record.is_fiat) {
+                            return (
+                                content_manager?.get<string>?.(
+                                    "content_resource.currency_view_ui.list_view_ui.table.body.fiat_currency_type_text",
+                                    ""
+                                ) ?? ""
+                            );
+                        }
+
+                        return (
+                            content_manager?.get<string>?.(
+                                "content_resource.currency_view_ui.list_view_ui.table.body.crypto_currency_type_text",
                                 ""
                             ) ?? ""
-                        }
-                        
-                        return content_manager?.get<string>?.(
-                            "content_resource.currency_view_ui.list_view_ui.table.body.crypto_currency_type_text",
-                            ""
-                        ) ?? ""
+                        );
                     }
                 }
             },
@@ -336,10 +339,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.precision_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.precision_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
@@ -352,10 +357,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[7%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
@@ -368,10 +375,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[7%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.status_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableToggleCellUI }
+                    render: (row) => {
+                        return DataTableToggleCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -383,7 +392,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                     input_content_props: (record: CurrencyRecordInterface): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
-                        }
+                        };
                     },
 
                     input_ui_boolean_props: (record: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
@@ -392,8 +401,8 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                             required: true,
 
-                            disabled: false,
-                        }
+                            disabled: false
+                        };
                     },
 
                     input_action_props: (record: CurrencyRecordInterface): InputUIActionPropsInterface => {
@@ -405,22 +414,23 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                             ): Promise<ActionMethodRetrunInterface> => {
                                 return this.action_handler.handleStatusToggleChange(record, input_value);
                             }
-                        }
-                    },
-
+                        };
+                    }
                 }
             },
 
-            // Creator column 
+            // Creator column
             {
                 key: "creator",
                 sortable: true,
                 width: "w-[13%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.creator_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableLinkCellUI }
+                    render: (row) => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -431,13 +441,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                     getImgAltText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? "",
 
-                    getLinkURL: (record: CurrencyRecordInterface) => record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
+                    getLinkURL: (record: CurrencyRecordInterface) =>
+                        record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
 
                     getLinkText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? ""
-
                 }
             },
-
 
             // Created at Column
             {
@@ -445,22 +454,25 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[12%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
                     getDateTextContent: (record: CurrencyRecordInterface) => {
                         const raw_date = record?.created_at;
-                        
-                        if(raw_date) { 
-                            return InputTransformerUtil.formatReadableDateTime(raw_date) 
+
+                        if (raw_date) {
+                            return InputTransformerUtil.formatReadableDateTime(raw_date);
+                        } else {
+                            return "-";
                         }
-                        else { return "-" }
-                    },
+                    }
                 }
             },
 
@@ -470,10 +482,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: false,
                 width: "w-[7%]",
                 header: {
-                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.actions_text",
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableActionIconCellUI }
+                    render: (row) => {
+                        return DataTableActionIconCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -482,16 +496,21 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
-                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.content_class_style,
-                                icon_class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
+                                icon_class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             }),
 
                             loading_html_content: RenderHtmlUtil.renderLoaderHtml({
-                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             })
-                        }
+                        };
                     },
-
 
                     button_action_props: (
                         record: CurrencyRecordInterface,
@@ -502,24 +521,22 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                                 event?: MouseEvent,
                                 config?: { props: ButtonUIPropsInterface }
                             ): Promise<void> => {
-                                this.action_handler.toggleActionMenu(record, record_index)
+                                this.action_handler.toggleActionMenu(record, record_index);
                             }
-                            
-                        }
-                    },
+                        };
+                    }
                 }
             }
         ];
 
         // ✅ Remove column if no permission
-        return columns.filter(col => {
+        return columns.filter((col) => {
             if (!can_change_status && col.key === "is_active") {
                 return false;
             }
             return true;
         });
     }
-
 }
 
 export default CurrencyListViewController;

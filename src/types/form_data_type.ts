@@ -1,5 +1,3 @@
-
-
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
 export type FieldValidator<FormData> = (
@@ -37,8 +35,8 @@ export interface RegisteredAppFromDataInterface extends BaseFormData {
     description: string;
     base_url: string;
     logo_url: string;
-    social_links: RegisteredAppSocialLinksInterface | null
-    urls: string | null
+    social_links: RegisteredAppSocialLinksInterface | null;
+    urls: string | null;
 }
 
 export interface RegisteredAppValidatedFromDataInterface extends BaseFormData {
@@ -47,14 +45,14 @@ export interface RegisteredAppValidatedFromDataInterface extends BaseFormData {
     description: string;
     base_url: string;
     logo_url: string;
-    social_links: RegisteredAppSocialLinksInterface | null
+    social_links: RegisteredAppSocialLinksInterface | null;
     urls: string[];
 }
 
 export interface StorageFileUploadFormDataInterface {
-    file: File;                
-    reference_type: string;    
-    is_public?: boolean;      
+    file: File;
+    reference_type: string;
+    is_public?: boolean;
 }
 
 export interface CurrencyFromDataInterface extends BaseFormData {

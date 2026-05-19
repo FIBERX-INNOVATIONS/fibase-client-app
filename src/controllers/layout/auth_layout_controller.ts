@@ -1,4 +1,3 @@
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -17,15 +16,13 @@ import CopyRightUIPropsBuilder from "@ui/version_3/props_builder/copy_right_ui_p
 import CopyRightUIClassStyles from "@/class_styles/copy_right_ui_class_styles";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-
-class AuthLayoutController extends BaseController <
+class AuthLayoutController extends BaseController<
     AuthLayoutPropsInterface,
     AuthLayoutStateDataInterface,
     AuthLayoutComputedDataInterface,
     AuthLayoutComponentsInterface,
     GlobalEventTypes
 > {
-
     constructor(props: AuthLayoutPropsInterface) {
         super("auth_layout", props, EventBus);
 
@@ -33,28 +30,26 @@ class AuthLayoutController extends BaseController <
     }
 
     // Method to get ui components
-    protected getUIComponents(): AuthLayoutComponentsInterface { 
-        return  { CopyRightUI }; 
+    protected getUIComponents(): AuthLayoutComponentsInterface {
+        return { CopyRightUI };
     }
 
     // Method to get state data
     protected getUIStateData(): AuthLayoutStateDataInterface {
         CopyRightUIPropsBuilder.configure(CopyRightUIClassStyles);
-        
+
         return {
-            copyright_props: CopyRightUIPropsBuilder.getReactivePropsObject(),
+            copyright_props: CopyRightUIPropsBuilder.getReactivePropsObject()
         } as AuthLayoutStateDataInterface;
     }
 
     protected async handleOnMountedLogic(): Promise<void> {
-        const is_fully_authenticated    = MemberAuthenticatorUtil.isFullyLoggedIn();
+        const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
 
-        if(
-            is_fully_authenticated &&
-            this.route.name !== "Logout"
-        ) { await this.router.push("/dashboard") }
+        if (is_fully_authenticated && this.route.name !== "Logout") {
+            await this.router.push("/dashboard");
+        }
     }
-
 }
 
-export default AuthLayoutController
+export default AuthLayoutController;

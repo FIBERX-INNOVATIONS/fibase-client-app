@@ -26,8 +26,6 @@ import CurrencyAPIService from "@/api_services/currency_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 import FileStorageAPIService from "@/api_services/file_storage_api_service";
 
-
-
 class CurrencyFormViewActionHandler extends BaseFormActionHandler<
     CurrencyFromDataInterface,
     FormViewPropsInterface,
@@ -35,8 +33,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
     FormViewComputedDataInterface,
     FormViewComponentsInterface,
     GlobalEventTypes
->{
-    
+> {
     constructor(
         controller: BaseController<
             FormViewPropsInterface,
@@ -53,10 +50,9 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
-
     }
 
-    protected getFormDataValue (): CurrencyFromDataInterface {
+    protected getFormDataValue(): CurrencyFromDataInterface {
         const record = this.controller?.props?.record as CurrencyRecordInterface;
 
         return {
@@ -72,11 +68,12 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
             is_fiat: record?.is_fiat ?? false,
             sort_order: record?.sort_order ?? null,
             logo_url: record?.logo_url ?? ""
-        }
+        };
     }
 
-
-    protected getValidators(): Partial<Record<keyof CurrencyFromDataInterface, FieldValidator<CurrencyFromDataInterface>>> {
+    protected getValidators(): Partial<
+        Record<keyof CurrencyFromDataInterface, FieldValidator<CurrencyFromDataInterface>>
+    > {
         return {
             code: CurrencyValidator.validateCurrencyCode,
 
@@ -96,82 +93,78 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
 
             logo_url: CurrencyValidator.validateLogoUrl,
 
-            sort_order: CurrencyValidator.validateSortOrder,
-        }
+            sort_order: CurrencyValidator.validateSortOrder
+        };
     }
 
     // method to handle on file upload
-    public handleOnFileUpload = async (
-        files: File[],
-    ): Promise<boolean> => {
+    public handleOnFileUpload = async (files: File[]): Promise<boolean> => {
         try {
             const form_data = new FormData();
-            
+
             form_data.append("file", files[0]);
             form_data.append("reference_type", FILE_STORAGE_REFERENCE_TYPE.CURRENCY_LOGO);
-            form_data.append('is_public', 'true');
+            form_data.append("is_public", "true");
 
             const result = await FileStorageAPIService.uploadFile(form_data);
 
-            if(!result) {
+            if (!result) {
                 StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
-            
-            if(status !== "success" || !data?.url) {
+
+            if (status !== "success" || !data?.url) {
                 StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
-            
+
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;
-            return true
-        }
-        catch(error: unknown) {
+            return true;
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 10, undefined, false);
-            return false
+            return false;
         }
-    }
+    };
 
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<ButtonActionMethodReturnInterface> =>  {
+    ): Promise<ButtonActionMethodReturnInterface> => {
         this.hideErrorAlert();
 
         try {
-            const form_data                     = (this.form_data) as CurrencyFromDataInterface;
-            const record                        = (this.controller?.props?.record) as CurrencyRecordInterface
-            const record_id                     = record.code;
-            const { v_state, v_msg, v_data }    = CurrencyValidator.validateCurrencyInput(form_data);
+            const form_data = this.form_data as CurrencyFromDataInterface;
+            const record = this.controller?.props?.record as CurrencyRecordInterface;
+            const record_id = record.code;
+            const { v_state, v_msg, v_data } = CurrencyValidator.validateCurrencyInput(form_data);
 
-            if(!v_state || !v_data) {
+            if (!v_state || !v_data) {
                 this.showErrorAlert("error", v_msg, 4);
                 return { status: false, msg: v_msg };
             }
 
             let result;
 
-            if(record_id) {
+            if (record_id) {
                 result = await CurrencyAPIService.updateCurrency(record_id, v_data);
-            }
-            else {
+            } else {
                 result = await CurrencyAPIService.createCurrency(v_data);
             }
 
-            if(!result) {
+            if (!result) {
                 this.showErrorAlert("error", "error_occurred");
                 return { status: false, msg: "error_occurred" };
             }
 
             const { status, msg, data } = result;
 
-            if(status !== "success" || !data?.code) {
+            if (status !== "success" || !data?.code) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg: v_msg };
             }
@@ -182,14 +175,12 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
             this.controller.event_bus?.emit("on_new_record_created", record_payload);
 
             return { status: true, msg: "login_successful" };
-        }
-        catch(error: unknown) {
+        } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
-            this.showErrorAlert("error", "error_occurred" );
+            this.showErrorAlert("error", "error_occurred");
             return { status: false, msg: "error_occurred" };
-        } 
-    }
-
+        }
+    };
 }
 
 export default CurrencyFormViewActionHandler;

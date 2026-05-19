@@ -1,25 +1,21 @@
-
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-import { 
-    getMemberFullName, 
-    RegisteredAppRecordInterface 
-} from "@/types/api_service_type";
+import { getMemberFullName, RegisteredAppRecordInterface } from "@/types/api_service_type";
 
-import { 
+import {
     ActionMethodRetrunInterface,
-    InputUIActionPropsInterface, 
-    InputUIBooleanPropsInterface, 
-    InputUIContentOptionsInterface, 
-    InputUIPropsInterface, 
+    InputUIActionPropsInterface,
+    InputUIBooleanPropsInterface,
+    InputUIContentOptionsInterface,
+    InputUIPropsInterface,
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
-import { 
+import {
     ButtonUIActionPropsInterface,
-    ButtonUIContentOptionsInterface, 
+    ButtonUIContentOptionsInterface,
     ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
@@ -41,12 +37,7 @@ import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellCompone
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
-
-
-
-
 class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface, "public_id"> {
-
     public action_handler: RegisteredAppListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
@@ -62,8 +53,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
     }
 
     protected getPageFilters(): ListFilterConfig[] {
-        const page_key            = this.getPageContentKey();
-        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`
+        const page_key = this.getPageContentKey();
+        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`;
         return [
             {
                 key: "search",
@@ -75,9 +66,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         search_icon_html_content: SVGIcons.search_svg_icon
                     },
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.search ?? "",
+                    model_value: this.route.query?.search ?? ""
                 }
-
             },
             {
                 key: "is_active",
@@ -102,7 +92,6 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                     }
                 }
-
             },
             {
                 key: "key_version",
@@ -111,7 +100,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 input_content_key: `${filters_content_key}.key_version_filter`,
                 overides: {
                     action_props: this.action_handler.getFilterInputActionHandlersConfig(),
-                    model_value: this.route.query?.key_version ?? "",
+                    model_value: this.route.query?.key_version ?? ""
                 }
             },
             {
@@ -135,18 +124,22 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
     }
 
     protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app_status");
-        
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
+            "registered_app_module.update_registered_app_status"
+        );
+
         const columns: DataTableColumnRenderType<RegisteredAppRecordInterface>[] = [
             {
                 key: "public_id",
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
-                    render: (_row, index) => { return DataTableSerialCellUI }
+                    render: (_row, index) => {
+                        return DataTableSerialCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -163,8 +156,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                             required: true,
 
-                            disabled: false,
-                        }
+                            disabled: false
+                        };
                     },
 
                     input_action_props: (record?: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
@@ -180,8 +173,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                                 return this.action_handler.handleOnSelectAllRows();
                             }
-                        }
-                    },
+                        };
+                    }
                 }
             },
 
@@ -190,10 +183,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[25%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableAvatarInfoCellUI }
+                    render: (row) => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -204,12 +199,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     getImgContent: (record: RegisteredAppRecordInterface) => record.name,
 
                     getImgSrc: (record: RegisteredAppRecordInterface) => {
-                        if(record?.logo_url && !record?.logo_url?.includes("test.com")) { 
-                            return record.logo_url
+                        if (record?.logo_url && !record?.logo_url?.includes("test.com")) {
+                            return record.logo_url;
                         }
-                        
+
                         return DEFUALT_REGISTERED_APP_LOGO_URL;
-                    },
+                    }
                 }
             },
 
@@ -218,10 +213,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[15%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableLinkCellUI }
+                    render: (row) => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
@@ -233,10 +230,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[15%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableLinkCellUI }
+                    render: (row) => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -247,10 +246,10 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                     getImgAltText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? "",
 
-                    getLinkURL: (record: RegisteredAppRecordInterface) => record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
+                    getLinkURL: (record: RegisteredAppRecordInterface) =>
+                        record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
 
                     getLinkText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? ""
-
                 }
             },
 
@@ -259,10 +258,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[10%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableToggleCellUI }
+                    render: (row) => {
+                        return DataTableToggleCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -274,7 +275,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     input_content_props: (record: RegisteredAppRecordInterface): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
-                        }
+                        };
                     },
 
                     input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
@@ -283,8 +284,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                             required: true,
 
-                            disabled: false,
-                        }
+                            disabled: false
+                        };
                     },
 
                     input_action_props: (record: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
@@ -296,9 +297,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                             ): Promise<ActionMethodRetrunInterface> => {
                                 return this.action_handler.handleStatusToggleChange(record, input_value);
                             }
-                        }
-                    },
-
+                        };
+                    }
                 }
             },
 
@@ -307,22 +307,25 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[22%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableTextContentCellUI }
+                    render: (row) => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
                     getDateTextContent: (record: RegisteredAppRecordInterface) => {
                         const raw_date = record?.created_at;
-                        
-                        if(raw_date) { 
-                            return InputTransformerUtil.formatReadableDateTime(raw_date) 
+
+                        if (raw_date) {
+                            return InputTransformerUtil.formatReadableDateTime(raw_date);
+                        } else {
+                            return "-";
                         }
-                        else { return "-" }
-                    },
+                    }
                 }
             },
 
@@ -331,10 +334,12 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: false,
                 width: "w-[8%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text",
+                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
-                    render: (row) => { return DataTableActionIconCellUI }
+                    render: (row) => {
+                        return DataTableActionIconCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -343,16 +348,21 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
-                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.content_class_style,
-                                icon_class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
+                                icon_class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             }),
 
                             loading_html_content: RenderHtmlUtil.renderLoaderHtml({
-                                class_style: this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style?.icon_class_style
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             })
-                        }
+                        };
                     },
-
 
                     button_action_props: (
                         record: RegisteredAppRecordInterface,
@@ -363,24 +373,22 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                                 event?: MouseEvent,
                                 config?: { props: ButtonUIPropsInterface }
                             ): Promise<void> => {
-                                this.action_handler.toggleActionMenu(record, record_index)
+                                this.action_handler.toggleActionMenu(record, record_index);
                             }
-                            
-                        }
-                    },
+                        };
+                    }
                 }
             }
         ];
 
         // ✅ Remove column if no permission
-        return columns.filter(col => {
+        return columns.filter((col) => {
             if (!can_change_status && col.key === "is_active") {
                 return false;
             }
             return true;
         });
     }
-
 }
 
 export default RegisteredAppListViewController;

@@ -1,9 +1,8 @@
-
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
-import LoggerUtil from "@ui/version_3/utils/logger_util"
+import LoggerUtil from "@ui/version_3/utils/logger_util";
 
-import {  GlobalEventTypes } from "@/types/global_events_type";
+import { GlobalEventTypes } from "@/types/global_events_type";
 
 import {
     TopBarUIPropsInterface,
@@ -18,16 +17,14 @@ import { ImageRenderUIPropsInterface } from "@ui/version_3/ui_types/image_render
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
-
-
 class TopBarUIActionHandler {
     public readonly name = "top_bar_ui_action_handler";
 
     // Make controller static so it’s shared across all usage
     private controller: BaseController<
-        TopBarUIPropsInterface, 
-        TopBarUIStateDataInterface, 
-        TopBarUIComputedDataInterface, 
+        TopBarUIPropsInterface,
+        TopBarUIStateDataInterface,
+        TopBarUIComputedDataInterface,
         TopBarUIComponentsInterface,
         GlobalEventTypes
     >;
@@ -47,35 +44,26 @@ class TopBarUIActionHandler {
     }
 
     // Method to handle on hamburger icon btn click
-    public toggleSideBar = async (
-        event?: MouseEvent,
-        config?: { props: ButtonUIPropsInterface }
-    ): Promise<void> => {
+    public toggleSideBar = async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
         console.log("Hamburger icon clicked");
         this.controller.event_bus?.emit("toggle_sidebar", {});
         return;
-    }
+    };
 
     // Method to redirect to dahsboard home page
-    public toHomePage = async (
-        event?: MouseEvent,
-        config?: { props: ImageRenderUIPropsInterface }
-    ): Promise<void> => {
+    public toHomePage = async (event?: MouseEvent, config?: { props: ImageRenderUIPropsInterface }): Promise<void> => {
         this.controller.router.push("/dashboard");
         return;
-    }
+    };
 
     // Method to toggle member avatar drodpown
-    public toggleMemeberAvatarDrodpwn =  async (
+    public toggleMemeberAvatarDrodpwn = async (
         event?: MouseEvent,
         config?: { props: ImageRenderUIPropsInterface }
     ): Promise<void> => {
         DropdownMenuUIPropsBuilder.toggleDropdownMenu("MemberAvatar", "MemberAvatarDropdown");
-        return
-    }
-
-
-   
+        return;
+    };
 }
 
 export default TopBarUIActionHandler;

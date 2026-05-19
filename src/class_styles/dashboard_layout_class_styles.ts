@@ -1,4 +1,3 @@
-
 import { DashboardLayoutClassStylesInterface } from "@/ui_types/dashboard_layout_type";
 import { SideBarUIClassStyleInterface } from "@/ui_types/side_bar_ui_type";
 import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -8,16 +7,18 @@ import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/lay
 import { ModalUIClassStylesInterface } from "@ui/version_3/ui_types/modal_ui_type";
 import { NavLinkUIClassStylesInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
-
 const TopBarClassStyles: LayoutSectionsUIClassStylesInterface = {
-    wrapper_class_style: "w-screen px-4 flex flex-wrap items-center justify-between relative min-h-[70px] h-auto w-full bg-white py-2",
+    wrapper_class_style:
+        "w-screen px-4 flex flex-wrap items-center justify-between relative min-h-[70px] h-auto w-full bg-white py-2",
 
-    section_1_wrapper_class_style:  "flex items-center space-x-2 md:w-3/12 w-6/12 overflow-hidden h-full relative",
+    section_1_wrapper_class_style: "flex items-center space-x-2 md:w-3/12 w-6/12 overflow-hidden h-full relative",
 
-    section_2_wrapper_class_style: "flex items-center space-x-2 md:w-6/12 w-full overflow-hidden md:order-1 order-2 h-full relative",
+    section_2_wrapper_class_style:
+        "flex items-center space-x-2 md:w-6/12 w-full overflow-hidden md:order-1 order-2 h-full relative",
 
-    section_3_wrapper_class_style: "flex items-center justify-end space-x-2 md:w-3/12 w-6/12 overflow-hidden md:order-2 order-1 h-full relative"
-}
+    section_3_wrapper_class_style:
+        "flex items-center justify-end space-x-2 md:w-3/12 w-6/12 overflow-hidden md:order-2 order-1 h-full relative"
+};
 
 const HamburgerBtnClassStyle: ButtonUIClassStylesInterface = {
     wrapper_class_style: "w-10 h-12 flex items-center justify-center overflow-hidden",
@@ -32,8 +33,8 @@ const HamburgerBtnClassStyle: ButtonUIClassStylesInterface = {
 
     text_class_style: "",
 
-    content_class_style: "",
-}
+    content_class_style: ""
+};
 
 const TopBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
     wrapper_class_style: "flex items-center cursor-pointer w-10/12 h-full",
@@ -44,11 +45,12 @@ const TopBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
 
     loading_class_style: "",
 
-    error_class_style: "",
-}
+    error_class_style: ""
+};
 
-const MemberAvatarClassStyle: ImageRenderUIClassStylesInterface  = {
-    wrapper_class_style: "w-auto max-w-8/12 flex items-center justify-end h-full hover:shadow-lg rounded-full cursor-pointer border-[#001f3f] border-2 overflow-hidden",
+const MemberAvatarClassStyle: ImageRenderUIClassStylesInterface = {
+    wrapper_class_style:
+        "w-auto max-w-8/12 flex items-center justify-end h-full hover:shadow-lg rounded-full cursor-pointer border-[#001f3f] border-2 overflow-hidden",
 
     image_class_style: "w-[45px] h-[45px] border-4 border-white bg-gray-200 object-fit rounded-full",
 
@@ -56,27 +58,28 @@ const MemberAvatarClassStyle: ImageRenderUIClassStylesInterface  = {
 
     loading_class_style: "",
 
-    error_class_style: "",
-}
+    error_class_style: ""
+};
 
 const ContentClassstyle = {
     icon_class_style: "w-full h-full flex items-center justify-center",
     caret_wrapper_class_style: "h-full w-full flex items-center justify-center"
-}
+};
 
 const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
-
-    wrapper_class_style: "hidden w-[170px] bg-white p-0 m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
+    wrapper_class_style:
+        "hidden w-[170px] bg-white p-0 m-0 absolute border border-gray-100 rounded-2xl shadow-lg z-[10]",
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 
     menu_item_wrapper_class_style: "w-full px-1 m-0",
 
-    visible_class_style: "",
-}
+    visible_class_style: ""
+};
 
 const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8]",
+    wrapper_class_style:
+        "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8]",
 
     active_menu_class_style: "bg-[#f0f4f8]",
 
@@ -85,10 +88,11 @@ const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
     icon_img_class_style: "w-full h-auto text-black",
 
     content_class_style: "flex items-center justify-start text-black text-[16px] text-start w-full"
-}
+};
 
 const DeleteDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer p-2 my-2 hover:rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8] border-t border-gray-300",
+    wrapper_class_style:
+        "flex items-center cursor-pointer p-2 my-2 hover:rounded-lg flex justify-between items-center group/link w-full hover:bg-[#f0f4f8] border-t border-gray-300",
 
     active_menu_class_style: "bg-[#f0f4f8] hover:rounded-lg",
 
@@ -97,27 +101,29 @@ const DeleteDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
     icon_img_class_style: "w-full h-auto text-red-700",
 
     content_class_style: "flex items-center justify-start text-red-700 text-[16px] text-start w-full"
-}
+};
 
 const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
     overlay_class_style: {
-        wrapper_class_style: "fixed inset-0 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[40]",
+        wrapper_class_style:
+            "fixed inset-0 opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[40]",
 
         overlay_class_style: "absolute w-full h-full bg-[#000000cc] cursor-pointer z-[41]",
 
-        content_wrapper_class_style: "absolute w-full h-full p-0 m-0 flex items-start justify-start",
+        content_wrapper_class_style: "absolute w-full h-full p-0 m-0 flex items-start justify-start"
     },
     layout_section_class_style: {
+        wrapper_class_style:
+            "h-screen bg-[#02182e] shadow-lg w-48 z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
 
-        wrapper_class_style: "h-screen bg-[#02182e] shadow-lg w-48 z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
-
-        section_1_wrapper_class_style:  "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",
+        section_1_wrapper_class_style:
+            "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",
 
         section_2_wrapper_class_style: "h-[85%] overflow-x-hidden overflow-y-auto w-full p-0",
 
         section_3_wrapper_class_style: ""
     }
-}
+};
 
 const SideBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
     wrapper_class_style: "flex items-center justify-center cursor-pointer w-full h-full",
@@ -128,22 +134,22 @@ const SideBarLogoClassstyle: ImageRenderUIClassStylesInterface = {
 
     loading_class_style: "",
 
-    error_class_style: "",
-}
+    error_class_style: ""
+};
 
 const SideBarMenuListClassStyle: DropdownMenuUIClassStylesInterface = {
-
     wrapper_class_style: "w-full p-0 m-0 flex flex-col items-center justify-start",
 
     menu_class_style: "py-2 w-full border-b-2 border-[#6f7e8d6e] last:border-b-0",
 
     menu_item_wrapper_class_style: "w-full px-1 m-0",
 
-    visible_class_style: "",
-}
+    visible_class_style: ""
+};
 
 const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
-    wrapper_class_style: "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full h-[50px] hover:bg-[#6f7e8d6e] my-1",
+    wrapper_class_style:
+        "flex items-center cursor-pointer p-2 rounded-lg flex justify-between items-center group/link w-full h-[50px] hover:bg-[#6f7e8d6e] my-1",
 
     active_menu_class_style: "bg-[#6f7e8d6e]",
 
@@ -152,30 +158,31 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
     icon_img_class_style: "w-[24px] h-[24px] text-white",
 
     content_class_style: "flex items-center justify-start text-white text-[16px] text-start w-full"
-}
+};
 
 const ModalClassStyle: ModalUIClassStylesInterface = {
     wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
-    modal_class_style: "overflow-hidden relative bg-white shadow-lg rounded-lg w-[45%] md:w-[50%] lg:w-[35%] max-w-[90%] min-w-[45%] md:min-w-[50%] lg:min-w-[35%]",
+    modal_class_style:
+        "overflow-hidden relative bg-white shadow-lg rounded-lg w-[45%] md:w-[50%] lg:w-[35%] max-w-[90%] min-w-[45%] md:min-w-[50%] lg:min-w-[35%]",
 
     header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
 
     header_title_wrapper_class_style: "flex items-center justify-start w-10/12 h-full py-2 px-2 overflow-hidden",
 
-    header_title_class_style:  "font-black uppercase w-full truncate",
+    header_title_class_style: "font-black uppercase w-full truncate",
 
     header_title_img_icon_class_style: "w-[36px] h-[36px] flex items-center justify-center mr-2",
 
     header_close_btn_wrapper_class_style: "flex items-center justify-center w-2/12 h-full p-2 overflow-hidden",
 
-    close_btn_class_style: "w-[34px] h-[34px] text-[24px] cursor-pointer font-bold rounded-full hover:shadow-2xl flex items-center justify-center bg-gray-200",
+    close_btn_class_style:
+        "w-[34px] h-[34px] text-[24px] cursor-pointer font-bold rounded-full hover:shadow-2xl flex items-center justify-center bg-gray-200",
 
     body_class_style: "flex-1 w-full h-full items-center justify-center",
 
-    footer_class_style: "",
-}
-
+    footer_class_style: ""
+};
 
 // const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
 const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
@@ -208,6 +215,6 @@ const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
     side_bar_menu_item_class_style: SideBarNavMenuClassstyle,
 
     modal_class_style: ModalClassStyle
-}
+};
 
 export default DashboardLayoutClassStyles;

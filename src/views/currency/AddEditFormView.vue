@@ -1,9 +1,7 @@
 <template>
     <section id="CurrencyFormView" :class="class_styles.wrapper_class_style">
-
         <form @submit.prevent :class="class_styles.form_box_wrapper_class_style">
             <fieldset :class="class_styles.fieldset_class_style">
-
                 <InputGroupUI v-bind="fields.code_input_group_props" />
 
                 <InputGroupUI v-bind="fields.name_input_group_props" />
@@ -25,15 +23,12 @@
                 <InputGroupUI v-bind="fields.logo_url_input_group_props" />
 
                 <InputGroupUI v-bind="fields.is_fiat_input_group_props" />
-
             </fieldset>
 
             <ToasterUI v-bind="toast_alert_props" />
 
             <ButtonUI v-bind="btn_props" />
-
         </form>
-
     </section>
 </template>
 

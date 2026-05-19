@@ -2,7 +2,7 @@
     "compilerOptions": {
         "paths": {
             "@/*": ["./src/*"],
-            "@ui/*": ["../../fi-ui-toolkit/*"],
+            "@ui/*": ["../../fi-ui-toolkit/*"]
         }
     },
     "exclude": ["node_modules", "dist"]

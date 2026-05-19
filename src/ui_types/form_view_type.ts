@@ -1,24 +1,16 @@
-
 import { Component, Ref } from "vue";
 
-import { 
-    ButtonUIClassStylesInterface, 
-    ButtonUIPropsInterface 
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonUIClassStylesInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
-import { 
-    InputGroupUIClassStylesInterface, 
-    InputGroupUIPropsInterface 
+import {
+    InputGroupUIClassStylesInterface,
+    InputGroupUIPropsInterface
 } from "@ui/version_3/ui_types/input_group_ui_type";
 
-import { 
-    ToasterUIClassStylesInterface, 
-    ToasterUIPropsInterface 
-} from "@ui/version_3/ui_types/toaster_ui_type";
+import { ToasterUIClassStylesInterface, ToasterUIPropsInterface } from "@ui/version_3/ui_types/toaster_ui_type";
 
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
 import { RegisteredAppPreviewRecordInterface } from "@/types/api_service_type";
-
 
 export interface FormViewClassStylesinterface {
     wrapper_class_style: string;
@@ -26,7 +18,7 @@ export interface FormViewClassStylesinterface {
     form_box_class_style: string;
 
     form_box_wrapper_class_style: string;
-    
+
     header_text_class_style: string;
 
     fieldset_class_style: string;
@@ -44,10 +36,10 @@ export interface FormViewClassStylesinterface {
     modal_btn_class_styles?: ButtonUIClassStylesInterface;
 }
 
-export interface FormViewPropsInterface<T = any>  {
+export interface FormViewPropsInterface<T = any> {
     record?: T;
 
-    class_styles?: FormViewClassStylesinterface
+    class_styles?: FormViewClassStylesinterface;
 }
 
 export interface FormViewStateDataInterface<
@@ -60,9 +52,7 @@ export interface FormViewStateDataInterface<
     btn_props: ButtonUIPropsInterface;
 }
 
-export interface FormViewComputedDataInterface {
-    
-}
+export interface FormViewComputedDataInterface {}
 
 export interface FormViewComponentsInterface {
     InputGroupUI: Component;
@@ -78,7 +68,6 @@ type RegisteredAppFields = {
     logo_url_input_group_props: InputGroupUIPropsInterface;
     urls_input_group_props: InputGroupUIPropsInterface;
 };
-
 
 type CurrencyFields = {
     code_input_group_props: InputGroupUIPropsInterface;
@@ -108,19 +97,18 @@ type AppCurrencyFields = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
     currency_code_list_input_group_props: InputGroupUIPropsInterface;
-
-}
+};
 
 export type RegisteredAppFormState = FormViewStateDataInterface<RegisteredAppFields>;
 export type CurrencyFormState = FormViewStateDataInterface<CurrencyFields>;
 export type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFields>;
 
-export interface AssignCurrencyFormViewPropsInterface  {
-    app_id: string
+export interface AssignCurrencyFormViewPropsInterface {
+    app_id: string;
 
     app?: RegisteredAppPreviewRecordInterface;
 
     currency_codes: string[];
 
-    class_styles?: FormViewClassStylesinterface
+    class_styles?: FormViewClassStylesinterface;
 }

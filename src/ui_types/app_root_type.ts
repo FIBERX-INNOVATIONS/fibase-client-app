@@ -1,29 +1,30 @@
-import { Component, Ref } from "vue";
+import { Component } from "vue";
 
-import { 
-    ScreenLoaderClassStylesInterface,
+import {
+    ScreenLoaderUIClassStylesInterface,
     ScreenLoaderUIPropsInterface
 } from "@ui/version_3/ui_types/screen_loader_ui_type";
 
-import { 
-    StatusAlertUIClassStylesInterface, 
-    StatusAlertUIPropsInterface 
-} from "@ui/version_3/ui_types/status_alert_ui_type";
+import { StatusAlertUIClassStylesInterface } from "@ui/version_3/ui_types/status_alert_ui_type";
 
+import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-export interface AppRootPropsInterface {
-}
+export interface AppRootPropsInterface {}
 
 export interface AppRootStateDataInterface {
-    modals:string[];
-
-    screen_loader_props: ScreenLoaderUIPropsInterface;
-
-    status_alert_props: StatusAlertUIPropsInterface
+    screen_loader_visible: boolean;
+    screen_loader_symbol: ScreenLoaderUIPropsInterface["loader_symbol"];
+    screen_loader_text: ScreenLoaderUIPropsInterface["loader_text"];
+    screen_loader_class_styles: ScreenLoaderUIPropsInterface["class_styles"];
+    alert_box_id: string;
+    alert_status: string | null;
+    alert_message: string | null | undefined;
+    status_icon: SVGIconKey | null;
+    status_alert_ui_class_style: StatusAlertUIClassStylesInterface | null;
+    status_alert_close_btn_icon: SVGIconKey | null;
 }
 
-export interface AppRootComputedDataInterface {
-}
+export interface AppRootComputedDataInterface {}
 
 export interface AppRootComponentsInterface {
     ScreenLoaderUI: Component;
@@ -32,6 +33,6 @@ export interface AppRootComponentsInterface {
 }
 
 export interface AppRootClassStylesInterface {
-    screen_loader_ui_class_style: ScreenLoaderClassStylesInterface,
-    status_alert_ui_class_style: StatusAlertUIClassStylesInterface
+    screen_loader_ui_class_style: ScreenLoaderUIClassStylesInterface;
+    status_alert_ui_class_style: StatusAlertUIClassStylesInterface;
 }

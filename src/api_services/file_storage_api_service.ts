@@ -6,10 +6,7 @@ import { StorageFileUploadFormDataInterface } from "@/types/form_data_type";
 
 import { FileStorageRecordInterface } from "@/types/api_service_type";
 
- 
 class FileStorageAPIService extends BaseAPIService {
-
-
     // =========================
     // 🔹 UPLOAD
     // =========================
@@ -21,7 +18,7 @@ class FileStorageAPIService extends BaseAPIService {
             method: "POST",
             data,
             disable_retry: true,
-            maxBodyLength: Infinity,
+            maxBodyLength: Infinity
         });
     };
 }

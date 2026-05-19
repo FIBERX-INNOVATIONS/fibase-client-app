@@ -1,4 +1,3 @@
-
 import { Component, Ref } from "vue";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -7,10 +6,8 @@ import { InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_u
 import { ToasterUIPropsInterface } from "@ui/version_3/ui_types/toaster_ui_type";
 import { AuthsViewClassStylesInterface } from "./auth_layout_type";
 
-
-
 export interface LoginViewPropsInterface {
-    class_styles?: AuthsViewClassStylesInterface
+    class_styles?: AuthsViewClassStylesInterface;
 }
 
 export interface LoginViewStateDataInterface {
@@ -25,9 +22,7 @@ export interface LoginViewStateDataInterface {
     btn_props: ButtonUIPropsInterface;
 }
 
-export interface LoginViewComputedDataInterface {
-    
-}
+export interface LoginViewComputedDataInterface {}
 
 export interface LoginViewComponentsInterface {
     HeaderTextUI: Component;
