@@ -65,8 +65,8 @@ class RouterManager {
                 name: "Home",
                 component: LoginView,
                 meta: {
-                    page_meta_key: "home-page",
-                    title_key: "home-page",
+                    page_meta_key: "home_page",
+                    title_key: "home_page",
                     permission_name: "",
                     is_auth_page: true
                 }
@@ -76,8 +76,8 @@ class RouterManager {
                 name: "Login",
                 component: LoginView,
                 meta: {
-                    page_meta_key: "login-page",
-                    title_key: "login-page",
+                    page_meta_key: "login_page",
+                    title_key: "login_page",
                     permission_name: "",
                     is_auth_page: true
                 }
@@ -87,8 +87,8 @@ class RouterManager {
                 name: "TwoFactorLogin",
                 component: TwoFactorLoginView,
                 meta: {
-                    page_meta_key: "two-factor-login-page",
-                    title_key: "two-factor-login-page",
+                    page_meta_key: "two_factor_login_page",
+                    title_key: "two_factor_login_page",
                     permission_name: "",
                     is_auth_page: true
                 }
@@ -98,8 +98,8 @@ class RouterManager {
                 name: "Logout",
                 component: LogoutView,
                 meta: {
-                    page_meta_key: "logout-page",
-                    title_key: "logout-page",
+                    page_meta_key: "logout_page",
+                    title_key: "logout_page",
                     permission_name: "",
                     is_auth_page: true
                 }
@@ -109,8 +109,8 @@ class RouterManager {
                 name: "Dashboard",
                 component: DashboardView,
                 meta: {
-                    page_meta_key: "dashboard-page",
-                    title_key: "dashboard-page",
+                    page_meta_key: "dashboard_page",
+                    title_key: "dashboard_page",
                     permission_name: "",
                     is_auth_page: false
                 }
@@ -120,8 +120,8 @@ class RouterManager {
                 name: "RegisteredAppList",
                 component: RegisteredAppListView,
                 meta: {
-                    page_meta_key: "registered-app-list-page",
-                    title_key: "registered-app-list-page",
+                    page_meta_key: "registered_app_list_page",
+                    title_key: "registered_app_list_page",
                     permission_name: "registered_app_module.get_registered_app_list",
                     is_auth_page: false
                 }
@@ -131,8 +131,8 @@ class RouterManager {
                 name: "CurrencyList",
                 component: CurrencyListView,
                 meta: {
-                    page_meta_key: "currency-list-page",
-                    title_key: "currency-list-page",
+                    page_meta_key: "currency_list_page",
+                    title_key: "currency_list_page",
                     permission_name: "currency_module.get_currency_list",
                     is_auth_page: false
                 }
@@ -142,8 +142,8 @@ class RouterManager {
                 name: "MyProfile",
                 component: MyProfileView,
                 meta: {
-                    page_meta_key: "my-profile-page",
-                    title_key: "my-profile-page",
+                    page_meta_key: "my_profile_page",
+                    title_key: "my_profile_page",
                     permission_name: "",
                     is_auth_page: false
                 }
