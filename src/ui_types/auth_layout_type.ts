@@ -1,9 +1,5 @@
-import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { CopyRightUIPropsInterface } from "@ui/version_3/ui_types/copy_rigth_ui_type";
-import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
-import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
-import { ToasterUIClassStylesInterface } from "@ui/version_3/ui_types/toaster_ui_type";
-import { Component, Ref } from "vue";
+import { Component } from "vue";
 import { FormViewClassStylesinterface } from "./form_view_type";
 
 export interface AuthLayoutPropsInterface {
@@ -14,7 +10,9 @@ export interface AuthLayoutStateDataInterface {
     copyright_props: CopyRightUIPropsInterface;
 }
 
-export interface AuthLayoutComputedDataInterface {}
+export interface AuthLayoutComputedDataInterface {
+    is_route_ready: boolean;
+}
 
 export interface AuthLayoutComponentsInterface {
     CopyRightUI: Component;

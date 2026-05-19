@@ -1,3 +1,5 @@
+import { markRaw } from "vue";
+
 import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -5,7 +7,6 @@ import { EventBus } from "@/utils/global_event_bus_util";
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
-import { markRaw } from "vue";
 
 import {
     LayoutViewPropsInterface,
