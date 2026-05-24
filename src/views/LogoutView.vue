@@ -12,13 +12,15 @@
 
 <script setup lang="ts">
 import LogoutViewController from "@/controllers/auth/logout_view_controller";
+import type { LogoutViewPropsInterface } from "@/ui_types/logout_view_type";
 
-const props = defineProps({});
+const props = defineProps<LogoutViewPropsInterface>();
 const controller = new LogoutViewController(props);
+const component_definition = controller.getComponentDefinition();
 
-const { state_refs, components, class_styles } = controller;
+const { state_refs, components } = component_definition;
 
 const { HeaderTextUI } = components;
 
-const { header_text_props, spinner_html_content } = state_refs;
+const { class_styles, header_text_props, spinner_html_content } = state_refs;
 </script>

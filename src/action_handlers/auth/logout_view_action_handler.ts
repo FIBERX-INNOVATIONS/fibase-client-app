@@ -1,10 +1,7 @@
 import BaseController from "@ui/version_3/base_classes/base_controller";
-
-import LoggerUtil from "@ui/version_3/utils/logger_util";
+import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
-
-import { sleep } from "@ui/version_3/utils/debounce_util";
 
 import {
     LogoutViewPropsInterface,
@@ -13,20 +10,18 @@ import {
     LogoutViewComponentsInterface
 } from "@/ui_types/logout_view_type";
 import AuthAPIService from "@/api_services/auth_api_service";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-class LogoutViewActionHandler {
+class LogoutViewActionHandler extends BaseActionHandler<
+    LogoutViewPropsInterface,
+    LogoutViewStateDataInterface,
+    LogoutViewComputedDataInterface,
+    LogoutViewComponentsInterface,
+    GlobalEventTypes
+> {
     public readonly name = "logout_view_action_handler";
 
-    // Make controller static so it’s shared across all usage
-    private controller: BaseController<
-        LogoutViewPropsInterface,
-        LogoutViewStateDataInterface,
-        LogoutViewComputedDataInterface,
-        LogoutViewComponentsInterface,
-        GlobalEventTypes
-    >;
-
-    private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
+    private logout_timer: ReturnType<typeof setTimeout> | null = null;
 
     constructor(
         controller: BaseController<
@@ -37,14 +32,33 @@ class LogoutViewActionHandler {
             GlobalEventTypes
         >
     ) {
-        this.controller = controller;
+        super(controller, "logout_view_action_handler");
     }
 
-    public handleLogoutAction = async () => {
-        await sleep(2000);
-        await AuthAPIService.logOut();
-        await this.controller.router.push("/login");
+    public handleLogoutAction = async (): Promise<void> => {
+        this.cleanup();
+
+        this.logout_timer = setTimeout(async () => {
+            try {
+                await AuthAPIService.logOut();
+            } catch (error: unknown) {
+                this.logger.error("Failed to log out", error);
+            } finally {
+                this.logout_timer = null;
+                MemberAuthenticatorUtil.onlogoutSuccess();
+                await this.controller.router.push("/login");
+            }
+        }, 2000);
     };
+
+    public cleanup(): void {
+        if (!this.logout_timer) {
+            return;
+        }
+
+        clearTimeout(this.logout_timer);
+        this.logout_timer = null;
+    }
 }
 
 export default LogoutViewActionHandler;

@@ -20,14 +20,22 @@
 
 <script setup lang="ts">
 import LoginViewController from "@/controllers/auth/login_view_controller";
+import type { LoginViewPropsInterface } from "@/ui_types/login_view_type";
 
-const props = defineProps({});
+const props = defineProps<LoginViewPropsInterface>();
 const controller = new LoginViewController(props);
+const component_definition = controller.getComponentDefinition();
 
-const { state_refs, components, class_styles } = controller;
+const { state_refs, components } = component_definition;
 
 const { HeaderTextUI, InputGroupUI, ToasterUI, ButtonUI } = components;
 
-const { header_text_props, username_input_group_props, password_input_group_props, toast_alert_props, btn_props } =
-    state_refs;
+const {
+    class_styles,
+    header_text_props,
+    username_input_group_props,
+    password_input_group_props,
+    toast_alert_props,
+    btn_props
+} = state_refs;
 </script>

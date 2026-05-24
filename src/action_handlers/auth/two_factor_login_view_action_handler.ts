@@ -37,9 +37,9 @@ class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
             GlobalEventTypes
         >
     ) {
-        const form_data = { csrf_token: null, username: null, password: null };
+        const form_data = { csrf_token: null, otp_code: "" };
 
-        super(controller, "login_view_action_handler", form_data);
+        super(controller, "two_factor_login_view_action_handler", form_data);
 
         this.validators = this.getValidators();
 
@@ -52,6 +52,10 @@ class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
         return {
             otp_code: TwoFactorLoginValidator.validateOtpCodeField
         };
+    }
+
+    protected getSubmitRequiredFields(): (keyof TwoFactorFormDataInterface & string)[] {
+        return ["otp_code"];
     }
 
     public handleOnFormSubmitBtnClick = async (
@@ -73,14 +77,14 @@ class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
             const { status, msg, data } = await AuthAPIService.twoFactorLogin(form_data);
 
             if (status === "logout") {
-                this.controller.router.push("/login");
-                return { status: false, msg: v_msg };
+                await this.controller.router.push("/login");
+                return { status: false, msg };
             } else if (status !== "success" || !data) {
                 this.showErrorAlert("error", msg, 5);
-                return { status: false, msg: v_msg };
+                return { status: false, msg };
             }
 
-            StatusAlertTriggerUtil.triggerAlert(status, msg, 4, `${window.location.origin}/dashboard`);
+            StatusAlertTriggerUtil.triggerAlert(status, msg, 4, "/dashboard");
 
             return { status: true, msg: "login_successful" };
         } catch (error: unknown) {

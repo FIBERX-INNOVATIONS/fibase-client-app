@@ -3,6 +3,7 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 import { EventBus } from "@/utils/global_event_bus_util";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
+import { markRaw } from "vue";
 
 import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
@@ -29,19 +30,22 @@ class LogoutViewController extends BaseController<
     LogoutViewComponentsInterface,
     GlobalEventTypes
 > {
-    public readonly class_styles: AuthsViewClassStylesInterface = AuthLayoutClassStyles.auth_view_class_style;
+    public action_handler: LogoutViewActionHandler;
 
-    public readonly action_handler: LogoutViewActionHandler = new LogoutViewActionHandler(this);
+    private readonly class_styles: AuthsViewClassStylesInterface;
 
     constructor(props: LogoutViewPropsInterface) {
         super("logout_view", props, EventBus);
 
-        this.getComponentDefinition();
+        this.class_styles = props.class_styles ?? AuthLayoutClassStyles.auth_view_class_style;
+
+        this.action_handler = new LogoutViewActionHandler(this);
+        this.setActionHandler(this.action_handler);
     }
 
     // Method to get ui components
     protected getUIComponents(): LogoutViewComponentsInterface {
-        return { HeaderTextUI };
+        return { HeaderTextUI: markRaw(HeaderTextUI) };
     }
 
     // Method to get state data
@@ -51,6 +55,8 @@ class LogoutViewController extends BaseController<
         HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
 
         return {
+            class_styles: this.class_styles,
+
             header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject(
                 "h2",
                 "content_resource.logout_view_ui.header_text"
@@ -63,14 +69,18 @@ class LogoutViewController extends BaseController<
     }
 
     protected async handleOnMountedLogic(): Promise<void> {
-        const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
+        const is_logged_in = MemberAuthenticatorUtil.isLoggedIn();
 
-        if (!is_fully_authenticated) {
+        if (!is_logged_in) {
             await this.router.push("/login");
             return;
         }
 
         this.action_handler.handleLogoutAction();
+    }
+
+    protected async handleBeforeUnmountedLogic(): Promise<void> {
+        this.action_handler.cleanup();
     }
 }
 

@@ -1,8 +1,7 @@
-import { markRaw } from "vue";
+import { markRaw, reactive } from "vue";
 
 import BaseController from "@ui/version_3/base_classes/base_controller";
-
-import LoggerUtil from "@ui/version_3/utils/logger_util";
+import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
@@ -45,6 +44,8 @@ import FilePreviewUploadUIClassStyles from "@/class_styles/file_preview_upload_c
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import ButtonUIClassStyles from "@/class_styles/button_ui_class_styles";
 
+type FormFieldKey<FormData> = Extract<keyof FormData, string>;
+
 class BaseFormActionHandler<
     FormData extends Record<string, any> = {},
     Props extends Record<string, any> = {},
@@ -52,16 +53,16 @@ class BaseFormActionHandler<
     Computed extends Record<string, any> = {},
     Components extends Record<string, any> = {},
     Events extends GlobalEventTypes = GlobalEventTypes
-> {
+> extends BaseActionHandler<Props, State, Computed, Components, Events> {
     public readonly name: string;
-
-    protected controller: BaseController<Props, State, Computed, Components, Events>;
-
-    protected logger: LoggerUtil;
 
     protected content_manager = ContentManagerUtil.getInstance();
 
     public form_data: Partial<FormData> = {};
+
+    private readonly default_form_data: Partial<FormData>;
+
+    private validation_state: Partial<Record<keyof FormData, boolean>> = {};
 
     private csrf_refresh_timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -72,16 +73,12 @@ class BaseFormActionHandler<
         name: string = "base_form_action_handler",
         default_form_data?: Partial<FormData>
     ) {
+        super(controller, name);
+
         this.name = name;
 
-        this.controller = controller;
-
-        this.form_data = default_form_data ?? {};
-
-        this.logger = new LoggerUtil({
-            prefix: name,
-            show_timestamp: false
-        });
+        this.default_form_data = { ...(default_form_data ?? {}) } as Partial<FormData>;
+        this.form_data = reactive({ ...this.default_form_data }) as unknown as Partial<FormData>;
     }
 
     // Method to get content message
@@ -124,7 +121,9 @@ class BaseFormActionHandler<
     public hideErrorAlert = (): void => {
         const empty_props = ToasterUIPropsBuilder.getReactivePropsObject();
 
-        Object.assign(this.controller.state_refs.toast_alert_props.value, empty_props);
+        ToasterUIPropsBuilder.updateProps(this.controller.state_refs.toast_alert_props.value, empty_props, {
+            allow_static: true
+        });
         return;
     };
 
@@ -135,7 +134,9 @@ class BaseFormActionHandler<
         const message = this.getContentMessage(message_key);
         const new_props = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon, to_ms);
 
-        Object.assign(this.controller.state_refs.toast_alert_props.value, new_props);
+        ToasterUIPropsBuilder.updateProps(this.controller.state_refs.toast_alert_props.value, new_props, {
+            allow_static: true
+        });
         return;
     };
 
@@ -146,21 +147,30 @@ class BaseFormActionHandler<
 
     // Method to reset form data
     public resetFormData = (): void => {
-        this.form_data = {};
+        Object.keys(this.form_data).forEach((key) => {
+            delete (this.form_data as Record<string, any>)[key];
+        });
+
+        Object.assign(this.form_data, this.default_form_data);
+        this.validation_state = {};
+        this.syncSubmitButtonState();
     };
 
     // Method to schedule csrf refresh
     private scheduleCsrfRefresh = (expires_at: string, token_for: CSRFTokenForType | null): void => {
-        if (!expires_at) {
+        if (!expires_at || !token_for) {
             return;
         }
 
-        // Clear any existing timer
         this.clearScheduledTimers();
 
         const expiration_time = new Date(expires_at).getTime();
-        const now = Date.now();
-        const delay = expiration_time - now;
+        const refresh_buffer_ms = 30 * 1000;
+        const delay = expiration_time - Date.now() - refresh_buffer_ms;
+
+        if (!Number.isFinite(expiration_time) || delay <= 0) {
+            return;
+        }
 
         this.csrf_refresh_timer = setTimeout(async () => {
             this.logger.debug("Refreshing CSRF Token Now");
@@ -176,6 +186,42 @@ class BaseFormActionHandler<
         }
 
         return true;
+    };
+
+    protected getSubmitRequiredFields(): FormFieldKey<FormData>[] {
+        return [];
+    }
+
+    private getFieldKeyFromInputId = (input_id?: string): FormFieldKey<FormData> | null => {
+        if (!input_id) {
+            return null;
+        }
+
+        return input_id.replace(/_\d+$/, "") as FormFieldKey<FormData>;
+    };
+
+    private hasValidCSRFToken = (): boolean => {
+        return Boolean((this.form_data as Record<string, any>).csrf_token);
+    };
+
+    private isSubmitReady = (): boolean => {
+        const required_fields = this.getSubmitRequiredFields();
+
+        if (!this.hasValidCSRFToken()) {
+            return false;
+        }
+
+        return required_fields.every((field) => {
+            const value = this.form_data[field];
+            const has_value = value !== null && value !== undefined && value !== "";
+            const is_valid = this.validation_state[field] !== false;
+
+            return has_value && is_valid;
+        });
+    };
+
+    protected syncSubmitButtonState = (): void => {
+        ButtonUIPropsBuilder.setDisabled(this.controller.state_refs.btn_props.value, !this.isSubmitReady());
     };
 
     // Method to set csrf_token in form data
@@ -194,11 +240,7 @@ class BaseFormActionHandler<
 
         (this.form_data as any)["csrf_token"] = token ?? null;
 
-        if (this.controller.state_refs.btn_props.value?.boolean_props) {
-            this.controller.state_refs.btn_props.value.boolean_props.disabled = token ? false : true;
-        }
-
-        // Schedule next refresh
+        this.syncSubmitButtonState();
         this.scheduleCsrfRefresh(expires_at, token_for);
 
         return true;
@@ -229,24 +271,21 @@ class BaseFormActionHandler<
 
         const value = input_value ?? target?.value;
 
-        const input_id = input_props?.id;
+        const field_key = this.getFieldKeyFromInputId(input_props?.id);
 
-        if (!input_id) {
+        if (!field_key) {
             return {
                 status: false,
                 msg: this.getContentMessage("invalid_input_config")
             };
         }
 
-        const formatted_key = input_id.replace(/_\d+$/, "");
+        (this.form_data as Record<string, any>)[field_key] = value;
 
-        (this.form_data as any)[formatted_key] = value;
+        const validation_result = await this.runValidator(field_key, value);
 
-        /* ---------------------------------- */
-        /* Run Validator if Exists            */
-        /* ---------------------------------- */
-
-        const validation_result = await this.runValidator(formatted_key, value);
+        this.validation_state[field_key] = validation_result.status;
+        this.syncSubmitButtonState();
 
         return validation_result;
     };

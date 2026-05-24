@@ -1,4 +1,4 @@
-import { Component, Ref } from "vue";
+import { Component } from "vue";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
@@ -11,6 +11,8 @@ export interface TwoFactorLoginViewPropsInterface {
 }
 
 export interface TwoFactorLoginViewStateDataInterface {
+    class_styles: AuthsViewClassStylesInterface;
+
     header_text_props: HeaderTextUIPropsInterface;
 
     otp_input_group_props: InputGroupUIPropsInterface;

@@ -57,11 +57,11 @@ class LoginValidator {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
 
-        if (InputValidatorUtil.isEmpty(username)) {
+        if (!LoginValidator.validateUsernameField(username).status) {
             return { v_state: false, v_msg: "invalid_input_username" };
         }
 
-        if (InputValidatorUtil.isEmpty(password)) {
+        if (!LoginValidator.validatePasswordField(password).status) {
             return { v_state: false, v_msg: "invalid_input_password" };
         }
 

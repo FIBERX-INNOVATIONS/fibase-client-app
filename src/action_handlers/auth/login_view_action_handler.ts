@@ -54,6 +54,10 @@ class LoginViewActionHandler extends BaseFormActionHandler<
         };
     }
 
+    protected getSubmitRequiredFields(): (keyof LoginFormDataInterface & string)[] {
+        return ["username", "password"];
+    }
+
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
@@ -73,7 +77,7 @@ class LoginViewActionHandler extends BaseFormActionHandler<
 
             if (status !== "success" || !data) {
                 this.showErrorAlert("error", msg, 5);
-                return { status: false, msg: v_msg };
+                return { status: false, msg };
             }
 
             StatusAlertTriggerUtil.triggerAlert(status, msg, 4, "/two-factor-login");

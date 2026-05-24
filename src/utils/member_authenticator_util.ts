@@ -138,6 +138,7 @@ class MemberAuthenticatorUtil {
         MemberAuthenticatorUtil.storage.remove("current_member");
         MemberAuthenticatorUtil.storage.remove("current_member_permissions");
         MemberAuthenticatorUtil.storage.remove("current_member_access_token");
+        MemberAuthenticatorUtil.storage.remove("current_member_challenge_token");
         MemberAuthenticatorUtil.storage.remove("current_member_access_expiry_date");
 
         return true;

@@ -3,6 +3,7 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 import { EventBus } from "@/utils/global_event_bus_util";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
+import { markRaw } from "vue";
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
@@ -37,30 +38,38 @@ class LoginViewController extends BaseController<
     LoginViewComponentsInterface,
     GlobalEventTypes
 > {
-    public readonly class_styles: AuthsViewClassStylesInterface = AuthLayoutClassStyles.auth_view_class_style;
+    public action_handler: LoginViewActionHandler;
 
-    public readonly action_handler: LoginViewActionHandler = new LoginViewActionHandler(this);
+    private readonly class_styles: AuthsViewClassStylesInterface;
 
     constructor(props: LoginViewPropsInterface) {
         super("login_view", props, EventBus);
 
-        this.getComponentDefinition();
+        this.class_styles = props.class_styles ?? AuthLayoutClassStyles.auth_view_class_style;
+
+        this.action_handler = new LoginViewActionHandler(this);
+        this.setActionHandler(this.action_handler);
     }
 
     // Method to get ui components
     protected getUIComponents(): LoginViewComponentsInterface {
         return {
-            HeaderTextUI,
-            InputGroupUI,
-            ToasterUI,
-            ButtonUI
+            HeaderTextUI: markRaw(HeaderTextUI),
+            InputGroupUI: markRaw(InputGroupUI),
+            ToasterUI: markRaw(ToasterUI),
+            ButtonUI: markRaw(ButtonUI)
         };
     }
 
     // Method to get state data
     protected getUIStateData(): LoginViewStateDataInterface {
-        const { header_text_class_style, input_ui_class_styles, toaster_ui_class_styles, btn_class_styles } =
-            this.class_styles;
+        const {
+            header_text_class_style,
+            input_group_class_style,
+            input_ui_class_styles,
+            toaster_ui_class_styles,
+            btn_class_styles
+        } = this.class_styles;
 
         const input_action_config = this.action_handler.getInputActionHandlersConfig();
         const btn_action_config = this.action_handler.getBtnActionHandlerConfig();
@@ -70,6 +79,8 @@ class LoginViewController extends BaseController<
         const btn_content_key = "content_resource.login_view_ui.fieldset.btn_text";
 
         HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
+
+        InputGroupUIPropsBuilder.configure(input_group_class_style);
 
         InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
 
@@ -102,10 +113,12 @@ class LoginViewController extends BaseController<
 
             password_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(
                 password_input_props,
-                username_content_key
+                password_content_key
             ),
 
             toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
+
+            class_styles: this.class_styles,
 
             btn_props: ButtonUIPropsBuilder.getReactivePropsObject(
                 "login_submit",

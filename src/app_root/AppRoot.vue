@@ -17,7 +17,7 @@
         :on_close="action_handler?.handleOnCloseStatusClick"
     />
 
-    <!-- <LayoutView /> -->
+    <LayoutView />
 </template>
 
 <script setup lang="ts">

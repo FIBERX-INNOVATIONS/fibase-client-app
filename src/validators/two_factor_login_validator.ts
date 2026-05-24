@@ -13,8 +13,10 @@ class TwoFactorLoginValidator {
         return TwoFactorLoginValidator.content_manager.getAPIResponseValue(message_key);
     }
 
-    public static validateOtpCodeField = (otp_value: string[]): ActionMethodRetrunInterface => {
-        if (!InputValidatorUtil.containsOnlyNumbers(otp_value) || otp_value.length < 6) {
+    public static validateOtpCodeField = (otp_value: string | string[]): ActionMethodRetrunInterface => {
+        const otp_code = Array.isArray(otp_value) ? otp_value.join("") : otp_value;
+
+        if (!InputValidatorUtil.containsOnlyNumbers(otp_code) || otp_code.length !== 6) {
             return {
                 status: false,
                 msg: TwoFactorLoginValidator.getContentMessage("invalid_otp_code")
@@ -34,7 +36,7 @@ class TwoFactorLoginValidator {
         if (
             InputValidatorUtil.isEmpty(otp_code) ||
             !InputValidatorUtil.containsOnlyNumbers(otp_code) ||
-            otp_code.length < 6
+            otp_code.length !== 6
         ) {
             return { v_state: false, v_msg: "invalid_otp_code" };
         }
