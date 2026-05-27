@@ -1,9 +1,4 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
-import { EventBus } from "@/utils/global_event_bus_util";
-
 import { GlobalEventTypes } from "@/types/global_events_type";
-import { markRaw } from "vue";
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
@@ -14,97 +9,59 @@ import {
     TwoFactorLoginViewStateDataInterface,
     TwoFactorLoginViewComputedDataInterface,
     TwoFactorLoginViewComponentsInterface
-} from "@/ui_types//two_factor_login_view_type";
+} from "@/ui_types/two_factor_login_view_type";
 
 import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
 
-import HeaderTextUI from "@ui/version_3/components/HeaderTextUI.vue";
-import InputGroupUI from "@ui/version_3/components/InputGroupUI.vue";
-import ToasterUI from "@ui/version_3/components/ToasterUI.vue";
-import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
-
-import HeaderTextUIPropsBuilder from "@ui/version_3/props_builder/header_text_ui_props_builder";
-import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
-import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 import TwoFactorLoginViewActionHandler from "@/action_handlers/auth/two_factor_login_view_action_handler";
-import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
+import { TwoFactorFormDataInterface } from "@/types/form_data_type";
 
-class TwoFactorLoginViewController extends BaseController<
+class TwoFactorLoginViewController extends BaseFormViewController<
+    TwoFactorFormDataInterface,
     TwoFactorLoginViewPropsInterface,
     TwoFactorLoginViewStateDataInterface,
     TwoFactorLoginViewComputedDataInterface,
     TwoFactorLoginViewComponentsInterface,
+    AuthsViewClassStylesInterface,
+    TwoFactorLoginViewActionHandler,
     GlobalEventTypes
 > {
-    public action_handler: TwoFactorLoginViewActionHandler;
-
-    private readonly class_styles: AuthsViewClassStylesInterface;
-
     constructor(props: TwoFactorLoginViewPropsInterface) {
-        super("two_factor_login_view", props, EventBus);
+        super("two_factor_login_view", props, AuthLayoutClassStyles.auth_view_class_style);
 
-        this.class_styles = props.class_styles ?? AuthLayoutClassStyles.auth_view_class_style;
-
-        this.action_handler = new TwoFactorLoginViewActionHandler(this);
-        this.setActionHandler(this.action_handler);
-    }
-
-    // Method to get ui components
-    protected getUIComponents(): TwoFactorLoginViewComponentsInterface {
-        return {
-            HeaderTextUI: markRaw(HeaderTextUI),
-            InputGroupUI: markRaw(InputGroupUI),
-            ToasterUI: markRaw(ToasterUI),
-            ButtonUI: markRaw(ButtonUI)
-        };
+        this.setFormActionHandler(new TwoFactorLoginViewActionHandler(this));
     }
 
     // Method to get state data
     protected getUIStateData(): TwoFactorLoginViewStateDataInterface {
-        const {
-            header_text_class_style,
-            input_group_class_style,
-            input_ui_class_styles,
-            toaster_ui_class_styles,
-            btn_class_styles
-        } = this.class_styles;
-
-        const input_action_config = this.action_handler.getInputActionHandlersConfig();
-        const btn_action_config = this.action_handler.getBtnActionHandlerConfig();
-        const toaster_action_config = this.action_handler.getToasterActionHandlerConfig();
         const username_content_key = "content_resource.two_factor_login_view_ui.fieldset.otp_field";
         const btn_content_key = "content_resource.two_factor_login_view_ui.fieldset.btn_text";
 
-        HeaderTextUIPropsBuilder.configure({ text_class_style: header_text_class_style });
+        this.configureFormUI({
+            toaster_id: "two_factor_toaster",
+            input_number_props: { length: 6 }
+        });
 
-        InputGroupUIPropsBuilder.configure(input_group_class_style);
-
-        InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config, undefined, { length: 6 });
-
-        ToasterUIPropsBuilder.configure("two_factor_toaster", toaster_ui_class_styles, toaster_action_config);
-
-        ButtonUIPropsBuilder.configure(btn_class_styles, btn_action_config, { disabled: true });
-
-        const otp_input_props = InputUIPropsBuilder.getReactivePropsObject("otp_code", "otp", username_content_key);
+        const otp_input_props = this.buildInputProps("otp_code", "otp", username_content_key);
 
         return {
-            header_text_props: HeaderTextUIPropsBuilder.getReactivePropsObject(
-                "h2",
-                "content_resource.two_factor_login_view_ui.header_text"
+            header_text_props: this.buildHeaderTextProps(
+                "content_resource.two_factor_login_view_ui.header_text",
+                "h2"
             ),
 
-            otp_input_group_props: InputGroupUIPropsBuilder.getReactivePropsObject(
+            otp_input_group_props: this.buildInputGroupFromInputProps(
                 otp_input_props,
                 username_content_key
             ),
 
-            toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
+            toast_alert_props: this.buildToasterProps(),
 
             class_styles: this.class_styles,
 
-            btn_props: ButtonUIPropsBuilder.getReactivePropsObject(
+            btn_props: this.buildSubmitButtonProps(
                 "login_submit",
                 btn_content_key,
                 "paper_airplane_send_svg_icon"
@@ -127,12 +84,7 @@ class TwoFactorLoginViewController extends BaseController<
         }
 
         // set csrf token
-        await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.TWO_FACTOR);
-    }
-
-    protected async handleBeforeUnmountedLogic(): Promise<void> {
-        // clear scheduled timers
-        this.action_handler.clearScheduledTimers();
+        await this.setFormCSRFToken(CSRF_TOKEN_FOR.TWO_FACTOR);
     }
 }
 

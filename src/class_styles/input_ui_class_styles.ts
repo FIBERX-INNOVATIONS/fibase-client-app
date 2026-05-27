@@ -30,14 +30,16 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
 
     inactive_class_style: "bg-gray-900",
 
-    caret_icon_class: "absolute right-3 top-[17px] -translate-y-1/2 text-gray-500 cursor-pointer w-6 h-6",
+    caret_icon_class:
+        "absolute right-3 top-[17px] -translate-y-1/2 text-gray-500 cursor-pointer w-6 h-6",
 
     dropdown_wrapper_class_style:
         "p-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto",
 
     options_wrapper_class_style: "",
 
-    option_class_style: "px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm text-gray-700 text-start font-bold",
+    option_class_style:
+        "px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm text-gray-700 text-start font-bold",
 
     option_content_class_style: "",
 
@@ -62,7 +64,8 @@ const input_ui_class_styles: InputUIClassStylesInterface = {
 
     range_separator_class_style: "w-6 h-6 flex items-center justify-center",
 
-    preview_wrapper_class_style: "w-full h-auto flex items-center justify-start gap-4 p-2 border rounded-md",
+    preview_wrapper_class_style:
+        "w-full h-auto flex items-center justify-start gap-4 p-2 border rounded-md",
 
     img_preview_class_style: "w-full h-auto max-h-60 object-contain",
 

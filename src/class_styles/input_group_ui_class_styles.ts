@@ -5,7 +5,8 @@ const input_group_class_style: InputGroupUIClassStylesInterface = {
 
     label_wrapper_class_style: "w-full flex my-2",
 
-    label_text_class_style: "text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+    label_text_class_style:
+        "text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
 
     required_text_class_style: "text-red-500 text-sm italic font-medium",
 

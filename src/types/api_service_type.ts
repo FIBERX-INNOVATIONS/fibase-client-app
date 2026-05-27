@@ -118,7 +118,9 @@ export interface RegisteredAppRecordInterface {
     auth?: RegisteredAppAuthInterface | null;
 }
 
-export const getMemberFullName = (member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null): string => {
+export const getMemberFullName = (
+    member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null
+): string => {
     if (!member) {
         return "";
     }
@@ -180,7 +182,9 @@ export interface CurrencyRecordInterface {
     updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
-export type CurrencyListResponseInterface = PaginatedResponseResultInterface<CurrencyRecordInterface[]>;
+export type CurrencyListResponseInterface = PaginatedResponseResultInterface<
+    CurrencyRecordInterface[]
+>;
 
 export interface CurrencyStatusUpdateResponseInterface {
     safe_app: CurrencyRecordInterface;

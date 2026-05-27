@@ -3,5 +3,9 @@ module.exports = {
 
     plugins: [],
 
-    content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}", "../../fi-ui-toolkit/**/*.{vue,js,ts,jsx,tsx}"]
+    content: [
+        "./index.html",
+        "./src/**/*.{vue,js,ts,jsx,tsx}",
+        "../../fi-ui-toolkit/**/*.{vue,js,ts,jsx,tsx}"
+    ]
 };

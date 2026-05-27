@@ -1,6 +1,12 @@
 import { PropType } from "vue";
-import { CurrencyRecordInterface, RegisteredAppPreviewRecordInterface } from "@/types/api_service_type";
-import { FormViewClassStylesinterface, AssignCurrencyFormViewPropsInterface } from "@/ui_types/form_view_type";
+import {
+    CurrencyRecordInterface,
+    RegisteredAppPreviewRecordInterface
+} from "@/types/api_service_type";
+import {
+    FormViewClassStylesInterface,
+    AssignCurrencyFormViewPropsInterface
+} from "@/ui_types/form_view_type";
 
 const AssignCurrencyFormViewProps = {
     app_id: {
@@ -22,7 +28,7 @@ const AssignCurrencyFormViewProps = {
     },
 
     class_styles: {
-        type: Object as PropType<FormViewClassStylesinterface>,
+        type: Object as PropType<FormViewClassStylesInterface>,
         default: () => ({})
     }
 } satisfies Record<keyof AssignCurrencyFormViewPropsInterface, any>;

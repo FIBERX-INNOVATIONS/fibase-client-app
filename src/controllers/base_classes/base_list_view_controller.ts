@@ -18,7 +18,10 @@ import {
 import { WatchersType } from "@ui/version_3/types/base_type";
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
+import {
+    DataTableColumnRenderType,
+    DataTableUIPropsInterface
+} from "@ui/version_3/ui_types/data_table_ui_type";
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ListViewClassStyles from "@/class_styles/list_view_class_styles";
@@ -46,7 +49,10 @@ import DataTableResultAndBulkActionBarUIPropsBuilder from "@ui/version_3/props_b
 import PaginationUIPropsBuilder from "@ui/version_3/props_builder/pagination_ui_props_builder";
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseController<
+class BaseListViewController<
+    T extends object = Record<string, unknown>,
+    K extends keyof T = keyof T
+> extends BaseController<
     ListViewPropsInterface,
     ListViewStateDataInterface<T, K>,
     ListViewComputedDataInterface,
@@ -57,14 +63,7 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
 
     public readonly list_view_class_styles: ListViewClassStylesInterface = ListViewClassStyles;
 
-    public action_handler: BaseListViewActionHandler<
-        T,
-        ListViewPropsInterface,
-        ListViewStateDataInterface,
-        ListViewComputedDataInterface,
-        ListViewComponentsInterface,
-        GlobalEventTypes
-    > | null = null;
+    public action_handler: BaseListViewActionHandler<T, K> | null = null;
 
     constructor(props: ListViewPropsInterface, record_id_key: K) {
         super("list_view", props, EventBus);
@@ -84,8 +83,8 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
         return [];
     }
 
-    public getTableRowKey(): keyof T {
-        return "id" as keyof T; // child overrides
+    public getTableRowKey(): K {
+        return this.record_id_key;
     }
 
     protected getTableRenderConfig(): DataTableColumnRenderType<T>[] {
@@ -107,7 +106,9 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
 
     public getListState(): ListStateInterface<T> {
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<
+                ListStateInterface<T>
+            >;
         }
 
         return this.state_refs.list_state.value;
@@ -115,7 +116,9 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
 
     public setListState(patch: Partial<ListStateInterface<T>>): void {
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<
+                ListStateInterface<T>
+            >;
         }
 
         this.state_refs.list_state.value = {
@@ -198,9 +201,13 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
         const next_pagination_btn_icon = "arrow_right_short_cirlce_svg_icon";
         const prev_pagination_btn_icon = "arrow_left_short_circle_svg_icon";
 
-        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject("h2", header_text_content_key, {
-            class_styles: page_header_class_styles.header_text_class_styles
-        });
+        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject(
+            "h2",
+            header_text_content_key,
+            {
+                class_styles: page_header_class_styles.header_text_class_styles
+            }
+        );
 
         const create_btn_props = ButtonUIPropsBuilder.getReactivePropsObject(
             `${page_key}_module.create_${page_key}`,
@@ -228,9 +235,6 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
             apply_filters_btn_icon,
             "button",
             {
-                action_props: {
-                    // on_click: this.action_handler?.handleOnApplyFilters
-                },
                 class_styles: filters_class_styles.apply_filters_btn_class_style
             }
         );
@@ -241,16 +245,15 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
             clear_filters_btn_icon,
             "button",
             {
-                action_props: {
-                    on_click: this.action_handler?.handleOnClearFilters
-                },
                 class_styles: filters_class_styles.clear_filters_btn_class_style
             }
         );
 
-        const permitted_header_actions = header_action_btns.filter((btn: ButtonUIPropsInterface) => {
-            return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "");
-        });
+        const permitted_header_actions = header_action_btns.filter(
+            (btn: ButtonUIPropsInterface) => {
+                return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "");
+            }
+        );
 
         const configured_table_ui = DataTableUIPropsBuilder.configure({
             section_id: `${page_key}TableSection`,
@@ -262,20 +265,50 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
 
         const bulk_actions_btn = this.getBulkActionButtonProps();
 
-        const configures_result_and_bulk_action_bar_ui = DataTableResultAndBulkActionBarUIPropsBuilder.configure({
-            class_styles: table_result_and_bulk_action_bar_class_styles,
-            content_props: { header_text_key: table_result_content_key },
-            selection_props: { bulk_button_props: bulk_actions_btn }
-        });
+        const configures_result_and_bulk_action_bar_ui =
+            DataTableResultAndBulkActionBarUIPropsBuilder.configure({
+                class_styles: table_result_and_bulk_action_bar_class_styles,
+                content_props: { header_text_key: table_result_content_key },
+                selection_props: { bulk_button_props: bulk_actions_btn }
+            });
 
         const configure_pagination_ui = PaginationUIPropsBuilder.configure({
             class_styles: table_pagination_ui_class_styles,
             config: { show_numbers: true, max_visible_pages: 10 },
-            content: { prev_btn_icon: prev_pagination_btn_icon, next_btn_icon: next_pagination_btn_icon }
+            content: {
+                prev_btn_icon: prev_pagination_btn_icon,
+                next_btn_icon: next_pagination_btn_icon
+            }
         });
 
         const content_manager = ContentManagerUtil.getInstance();
-        const breadcrumb_items = content_manager.get<NavLinkUIPropsInterface[]>(breadcrumb_content_key, []) ?? [];
+        const breadcrumb_items =
+            content_manager.get<NavLinkUIPropsInterface[]>(breadcrumb_content_key, []) ?? [];
+
+        const filters_panel_props = FiltersPanelUIPropsBuilder.getReactivePropsObject(
+            filters_toggle_btn_content_key,
+            filters_toggle_btn_icon_key,
+            filter_fields,
+            apply_button,
+            clear_button,
+            {
+                class_styles: filters_class_styles
+            }
+        );
+
+        filters_panel_props.action_props =
+            this.action_handler?.getFiltersPanelActionPropsConfig?.();
+        filters_panel_props.sync_route_query = false;
+
+        const table_props = DataTableUIPropsBuilder.getReactivePropsObject<T>(
+            this.getTableRowKey(),
+            this.getTableRenderConfig(),
+            []
+        ) as unknown as DataTableUIPropsInterface<T>;
+
+        table_props.action_props = {
+            on_sort: this.action_handler?.handleOnSortRecord
+        };
 
         return {
             data_table_key: "fibaseDataTable",
@@ -298,17 +331,7 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
                 }
             ),
 
-            filters_panel_props: FiltersPanelUIPropsBuilder.getReactivePropsObject(
-                filters_toggle_btn_content_key,
-                filters_toggle_btn_icon_key,
-                filter_fields,
-                apply_button,
-                clear_button,
-                {
-                    class_styles: filters_class_styles,
-                    action_props: this.action_handler?.getFiltersPanelActionPropsConfig?.()
-                }
-            ),
+            filters_panel_props,
 
             data_table_result_and_bulk_action_bar_props:
                 DataTableResultAndBulkActionBarUIPropsBuilder.getReactivePropsObject(
@@ -321,22 +344,18 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
                     0
                 ),
 
-            table_props: DataTableUIPropsBuilder.getReactivePropsObject<T>(
-                this.getTableRowKey(),
-                this.getTableRenderConfig(),
-                [],
-                {
-                    action_props: { on_sort: this?.action_handler?.handleOnSortRecord }
-                }
-            ),
+            table_props,
 
             list_state,
 
-            action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("TableActionMeuDropdown", {
-                class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+            action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
+                "TableActionMeuDropdown",
+                {
+                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
-                menu_items: []
-            }),
+                    menu_items: []
+                }
+            ),
 
             bulk_action_menu_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
                 "TableBulkActionMeuDropdown",
@@ -382,12 +401,13 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
     protected async handleOnMountedLogic(): Promise<void> {
         await this.handleChildMountedLogic();
 
-        this.action_handler?.hydrateFiltersFromRoute?.();
-
-        await this.action_handler?.fetchRecords();
+        await this.action_handler?.handleRouteChanged?.(this.route);
 
         if (this.action_handler?.handleOnNewRecordCreated) {
-            this.event_bus?.on("on_new_record_created", this.action_handler.handleOnNewRecordCreated);
+            this.event_bus?.on(
+                "on_new_record_created",
+                this.action_handler.handleOnNewRecordCreated
+            );
         }
     }
 
@@ -396,14 +416,26 @@ class BaseListViewController<T = any, K extends keyof T = keyof T> extends BaseC
      */
     protected async handleChildMountedLogic(): Promise<void> {}
 
+    protected async handleBeforeUnmountedLogic(): Promise<void> {
+        if (this.action_handler?.handleOnNewRecordCreated) {
+            this.event_bus?.off(
+                "on_new_record_created",
+                this.action_handler.handleOnNewRecordCreated
+            );
+        }
+    }
+
     /**
      * Base Mounted logic
      */
-    protected getUIWatchers(): WatchersType<ListViewPropsInterface, ListViewStateDataInterface> {
+    protected getUIWatchers(): WatchersType<
+        ListViewPropsInterface,
+        ListViewStateDataInterface<T, K>
+    > {
         return {
             list_state: this.action_handler?.handleListStateChangedWatcher,
 
-            route: this.action_handler?.handleOnApplyFilters
+            route: this.action_handler?.handleRouteChanged
         };
     }
 

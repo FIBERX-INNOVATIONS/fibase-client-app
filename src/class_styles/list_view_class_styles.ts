@@ -13,7 +13,8 @@ import { PaginationUIClassStylesInterface } from "@ui/version_3/ui_types/paginat
 import ButtonUIClassStyles from "./button_ui_class_styles";
 
 const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
-    wrapper_class_style: "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
+    wrapper_class_style:
+        "w-full py-4 px-[2%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2 h-[50px]",
 
     list_class_style: "inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse",
 
@@ -27,7 +28,8 @@ const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
 
         active_menu_class_style: "",
 
-        icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden  w-4 h-4 me-2",
+        icon_img_wrapper_class_style:
+            "flex items-center justify-center overflow-hidden  w-4 h-4 me-2",
 
         icon_img_class_style: "w-full h-auto",
 
@@ -36,7 +38,8 @@ const list_view_breadcrumb_class_styles: BreadcrumbUIClassStylesInterface = {
 };
 
 const page_header_class_styles: PageHeaderUIClassStylesInterface = {
-    wrapper_class_style: "w-full py-4 px-[4%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
+    wrapper_class_style:
+        "w-full py-4 px-[4%] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
 
     top_row_class_style: "flex flex-col md:flex-row md:items-center md:justify-between gap-3",
 
@@ -47,7 +50,8 @@ const page_header_class_styles: PageHeaderUIClassStylesInterface = {
     action_buttons_wrapper_class_style: "flex flex-wrap gap-2",
 
     header_text_class_styles: {
-        text_class_style: "font-bold text-start capitalize text-2xl flex w-full items-center justify-start"
+        text_class_style:
+            "font-bold text-start capitalize text-2xl flex w-full items-center justify-start"
     },
 
     action_button_class_styles: {
@@ -80,9 +84,11 @@ const filters_class_styles: FiltersPanelUIClassStylesInterface = {
 
     toggle_btn_content_wrapper_class_style: "flex item-center justify-center",
 
-    panel_wrapper_class_style: "w-full flex flex-col items-center justify-center py-2 transition-all duration-500",
+    panel_wrapper_class_style:
+        "w-full flex flex-col items-center justify-center py-2 transition-all duration-500",
 
-    filters_grid_class_style: "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full px-4",
+    filters_grid_class_style:
+        "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full px-4",
 
     actions_wrapper_class_style: "w-full flex flex-wrap gap-3 pt-2 items-center justify-end",
 
@@ -129,24 +135,27 @@ const filters_input_ui_class_styles: InputUIClassStylesInterface = {
     ...input_ui_class_styles
 };
 
-const table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActionBarUIClassStylesInterface = {
-    wrapper_class_style: "w-full py-4  my-2 flex md:flex-row flex-col items-center md:justify-center justify-between",
+const table_result_and_bulk_action_bar_class_styles: DataTableResultAndBulkActionBarUIClassStylesInterface =
+    {
+        wrapper_class_style:
+            "w-full py-4  my-2 flex md:flex-row flex-col items-center md:justify-center justify-between",
 
-    left_container_class_style:
-        "md:w-6/12 w-full flex md:items-start items-center flex-col md:justify-start justify-center my-2",
+        left_container_class_style:
+            "md:w-6/12 w-full flex md:items-start items-center flex-col md:justify-start justify-center my-2",
 
-    right_container_class_style:
-        "md:w-6/12 w-full flex md:items-end items-center flex-col md:justify-end justify-center my-2",
+        right_container_class_style:
+            "md:w-6/12 w-full flex md:items-end items-center flex-col md:justify-end justify-center my-2",
 
-    text_class_style: "md:text-start text-center text-sm text-gray-500"
-};
+        text_class_style: "md:text-start text-center text-sm text-gray-500"
+    };
 
 const table_class_styles: DataTableUIClassStylesInterface = {
     wrapper_class_style:
         "w-full py-4 px-[4%] overflow-x-auto relative h-auto min-h-[400px] rounded-3xl bg-white shadow-lg border border-gray-100 my-2",
     table_class_style:
         "lg:w-full w-[1200px] border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
-    thead_class_style: "text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default group/head",
+    thead_class_style:
+        "text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default group/head",
     th_class_style:
         "first:rounded-tl-lg last:rounded-tr-lg p-2 font-bold uppercase align-middle border-b border-gray-300",
     th_cell_wrapper_class_style: "flex items-center justify-center gap-2 w-full",
@@ -157,8 +166,10 @@ const table_class_styles: DataTableUIClassStylesInterface = {
     sortable_header_wrapper_class_style: "flex flex-col leading-none",
     sortable_header_icon_class_style: "w-3 h-3 cursor-pointer flex",
     loading_section_wrapper_class_style: "text-center py-6 animate-pulse relative",
-    loader_text_wrapper_class_style: "flex justify-center items-center gap-2 absolute w-full h-full ",
-    loader_text_icon_class_style: "animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full",
+    loader_text_wrapper_class_style:
+        "flex justify-center items-center gap-2 absolute w-full h-full ",
+    loader_text_icon_class_style:
+        "animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full",
     loader_skeleton_bar_class_style: "w-full h-12 my-4 bg-gray-300 rounded-lg shadow",
     empty_data_wrapper_class_style: "text-center py-6 opacity-70",
     empty_data_class_style: ""
@@ -198,7 +209,8 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
 
         loader_class_style: "w-6 h-6 ml-2 flex items-center",
 
-        switch_btn_class_style: "group inline-flex h-6 w-11 transition items-center rounded-full cursor-pointer",
+        switch_btn_class_style:
+            "group inline-flex h-6 w-11 transition items-center rounded-full cursor-pointer",
 
         knob_class_style: "size-4 rounded-full transition transform bg-white",
 

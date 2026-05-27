@@ -30,7 +30,13 @@ class CurrencyAPIService extends BaseAPIService {
         sort_direction?: string;
         filters?: Partial<CurrencyListViewFiltersInterface>;
     }): Promise<APIResponseInterface<CurrencyListResponseInterface>> => {
-        const { page = 0, limit = 12, sort_by = "created_at", sort_direction = "DESC", filters } = params ?? {};
+        const {
+            page = 0,
+            limit = 12,
+            sort_by = "created_at",
+            sort_direction = "DESC",
+            filters
+        } = params ?? {};
 
         return await this.queryAPI<CurrencyListResponseInterface>({
             url: `/currency/list`,

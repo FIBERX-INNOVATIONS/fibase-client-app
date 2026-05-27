@@ -6,15 +6,9 @@ import BaseListViewActionHandler from "../base_classes/base_list_view_action_han
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
-import { GlobalEventTypes, OpenModalEventPayloadInterface } from "@/types/global_events_type";
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
 
-import {
-    ListViewPropsInterface,
-    ListViewStateDataInterface,
-    ListViewComputedDataInterface,
-    ListViewComponentsInterface,
-    FieldArray
-} from "@/ui_types/list_view_type";
+import { FieldArray } from "@/ui_types/list_view_type";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
@@ -44,15 +38,16 @@ import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 class CurrencyListViewActionHandler extends BaseListViewActionHandler<
     CurrencyRecordInterface,
-    ListViewPropsInterface,
-    ListViewStateDataInterface,
-    ListViewComputedDataInterface,
-    ListViewComponentsInterface,
-    GlobalEventTypes,
+    "code",
     CurrencyListViewFiltersInterface
 > {
-    constructor(controller: BaseListViewController<CurrencyRecordInterface>) {
-        super(controller, "currency_list_view_action_handler", {}, CurrencyAPIService.getCurrencyList);
+    constructor(controller: BaseListViewController<CurrencyRecordInterface, "code">) {
+        super(
+            controller,
+            "currency_list_view_action_handler",
+            {},
+            CurrencyAPIService.getCurrencyList
+        );
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
@@ -155,7 +150,11 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_mneu_btn_id, action_menu_id, true);
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            action_mneu_btn_id,
+            action_menu_id,
+            true
+        );
     };
 
     // Method to handle view Action menu clicked
@@ -203,7 +202,8 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.currency_view_ui.list_view_ui.currency_modal.delete_currency";
+        const base_content_key =
+            "content_resource.currency_view_ui.list_view_ui.currency_modal.delete_currency";
 
         const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
             record,
@@ -276,7 +276,13 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             const code = record.code;
 
             if (!code) {
-                return StatusAlertTriggerUtil.triggerAlert("error", "record_not_found", 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "record_not_found",
+                    4,
+                    undefined,
+                    true
+                );
             }
 
             const result = await CurrencyAPIService.deleteCurrency(code);
@@ -286,7 +292,13 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
             } else if (result.status?.toLowerCase() === "logout") {
                 this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "session_expired",
+                    4,
+                    undefined,
+                    true
+                );
             } else if (result.status?.toLowerCase() === "success") {
                 this.removeListStateRecord(code, "code");
 
@@ -296,7 +308,13 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
         } catch (error: unknown) {
             this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
+            return StatusAlertTriggerUtil.triggerAlert(
+                "error",
+                "error_occurred",
+                4,
+                undefined,
+                true
+            );
         }
     };
 
@@ -307,7 +325,10 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
     ): Promise<void> => {
         const base_content_key = "content_resource.currency_view_ui.list_view_ui";
-        const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.controller?.route?.query?.app_id ?? "";
+        const app_id =
+            record?.app_currencies?.[0]?.app?.public_id ??
+            this.controller?.route?.query?.app_id ??
+            "";
         const app = record?.app_currencies?.[0]?.app;
         const currency_codes = record?.code ? [record?.code] : selected_records;
 
@@ -332,13 +353,17 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
     ): Promise<void> => {
         let base_content_key = "";
         let updated_record = {};
-        const app_name = InputTransformerUtil.capitalize(this.controller?.route?.query?.app_id?.toString() ?? "");
+        const app_name = InputTransformerUtil.capitalize(
+            this.controller?.route?.query?.app_id?.toString() ?? ""
+        );
 
         if (record?.code) {
-            base_content_key = "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency";
+            base_content_key =
+                "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency";
             updated_record = { ...record, app: record?.app_currencies?.[0].app };
         } else if (selected_records?.length) {
-            base_content_key = "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
+            base_content_key =
+                "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
             updated_record = {
                 currency_count: selected_records?.length,
                 app_name,
@@ -420,19 +445,23 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             const app_id = route_app_id ?? record_app_id ?? "";
             const currency_code_or_id = record?.code;
             const currency_list =
-                Array.isArray(selected_records) && selected_records.length ? (selected_records as string[]) : undefined;
+                Array.isArray(selected_records) && selected_records.length
+                    ? (selected_records as string[])
+                    : undefined;
             const currency_codes =
                 Array.isArray(selected_records) && selected_records.length
                     ? (selected_records as string[])
                     : [record?.code ?? ""];
-            console.log({ record, selected_records });
 
-            const csrf_token_result = await AuthAPIService.getFormCSRFToken(CSRF_TOKEN_FOR.APP_CURRECY);
+            const csrf_token_result = await AuthAPIService.getFormCSRFToken(
+                CSRF_TOKEN_FOR.APP_CURRECY
+            );
             const csrf_token = csrf_token_result.data?.token ?? "";
 
             const form_data = { csrf_token, app_id, action, currency_code_or_id, currency_list };
 
-            const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(form_data);
+            const { v_state, v_msg, v_data } =
+                CurrencyValidator.validateAppCurrencyInput(form_data);
 
             if (!v_state || !v_data) {
                 return StatusAlertTriggerUtil.triggerAlert("error", v_msg, 4, undefined, true);
@@ -447,7 +476,6 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 this.controller.router.push("/logout");
                 return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4);
             } else if (result.status?.toLowerCase() === "success") {
-                // ✅ Remove ALL affected records
                 currency_codes.forEach((code) => {
                     this.removeListStateRecord(code, "code");
                 });
@@ -467,7 +495,8 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.currency_view_ui.list_view_ui.currency_modal.set_default_currency";
+        const base_content_key =
+            "content_resource.currency_view_ui.list_view_ui.currency_modal.set_default_currency";
         const updated_record = { ...record, app: record?.app_currencies?.[0].app };
 
         const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
@@ -541,11 +570,14 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             const { code: currency_code_or_id, app_currencies } = record;
 
             const app_id = app_currencies?.[0]?.app?.public_id ?? "";
-            const csrf_token_result = await AuthAPIService.getFormCSRFToken(CSRF_TOKEN_FOR.APP_CURRECY);
+            const csrf_token_result = await AuthAPIService.getFormCSRFToken(
+                CSRF_TOKEN_FOR.APP_CURRECY
+            );
             const csrf_token = csrf_token_result.data?.token ?? "";
             const form_data = { csrf_token, app_id, currency_code_or_id };
 
-            const { v_state, v_msg, v_data } = CurrencyValidator.validateSetAppDefaultCurrencyInput(form_data);
+            const { v_state, v_msg, v_data } =
+                CurrencyValidator.validateSetAppDefaultCurrencyInput(form_data);
 
             if (!v_state || !v_data) {
                 return StatusAlertTriggerUtil.triggerAlert("error", v_msg, 4, undefined, true);
@@ -558,7 +590,13 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
             } else if (result.status?.toLowerCase() === "logout") {
                 this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "session_expired",
+                    4,
+                    undefined,
+                    true
+                );
             } else if (result.status?.toLowerCase() === "success") {
                 if (app_currencies?.[0]) {
                     app_currencies[0].is_default = true;
@@ -572,7 +610,13 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
             return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
         } catch (error: unknown) {
             this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
+            return StatusAlertTriggerUtil.triggerAlert(
+                "error",
+                "error_occurred",
+                4,
+                undefined,
+                true
+            );
         }
     };
 
@@ -589,13 +633,21 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         const selected_records = this.controller.state_refs.selected_records.value;
 
         if (!is_open) {
-            const updated_menu = CurrencyActionMenu.getBulkActionMenus(selected_records, this, this.controller.route);
-            console.log({ updated_menu });
+            const updated_menu = CurrencyActionMenu.getBulkActionMenus(
+                selected_records,
+                this,
+                this.controller.route
+            );
 
-            this.controller.state_refs.bulk_action_menu_dropdown_props.value.menu_items = updated_menu;
+            this.controller.state_refs.bulk_action_menu_dropdown_props.value.menu_items =
+                updated_menu;
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(bulk_actn_btn_id, bulk_action_menu_id, true);
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            bulk_actn_btn_id,
+            bulk_action_menu_id,
+            true
+        );
     };
 }
 

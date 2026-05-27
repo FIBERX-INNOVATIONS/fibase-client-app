@@ -6,15 +6,14 @@
             <FiltersPanelUI v-bind="filters_panel_props" />
         </PageHeaderUI>
 
-        <DataTableUI v-bind="table_props">
+        <DataTableUI :key="data_table_key" v-bind="table_props">
             <template #section_1>
-                <DataTableResultAndBulkActionBarUI v-bind="data_table_result_and_bulk_action_bar_props" />
+                <DataTableResultAndBulkActionBarUI
+                    v-bind="data_table_result_and_bulk_action_bar_props"
+                />
             </template>
             <template #section_2>
-                <PaginationUI
-                    v-if="controller.state_refs.list_state.value.total_pages > 1"
-                    v-bind="pagination_ui_props"
-                />
+                <PaginationUI v-if="list_state.total_pages > 1" v-bind="pagination_ui_props" />
             </template>
         </DataTableUI>
 
@@ -23,12 +22,15 @@
 </template>
 
 <script setup lang="ts">
-import LoginViewController from "@/controllers/registered_app/list_view_controller";
+import RegisteredAppListViewController from "@/controllers/registered_app/list_view_controller";
+import type { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
-const props = defineProps({});
-const controller = new LoginViewController(props);
+const props = defineProps<ListViewPropsInterface>();
+const controller = new RegisteredAppListViewController(props);
+const component_definition = controller.getComponentDefinition();
 
-const { state_refs, components, list_view_class_styles } = controller;
+const { state_refs, components } = component_definition;
+const { list_view_class_styles } = controller;
 
 const {
     BreadcrumbUI,
@@ -45,7 +47,9 @@ const {
     page_header_props,
     filters_panel_props,
     data_table_result_and_bulk_action_bar_props,
+    data_table_key,
     table_props,
+    list_state,
     pagination_ui_props,
     action_menu_dropdown_props
 } = state_refs;

@@ -50,7 +50,9 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateDescriptionField = (value: string | null): ActionMethodRetrunInterface => {
+    public static validateDescriptionField = (
+        value: string | null
+    ): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -175,7 +177,8 @@ class RegisteredAppValidator {
     public static validateRegisteredAppInput(
         form_data: RegisteredAppFromDataInterface
     ): ValidationResultInterface<RegisteredAppValidatedFromDataInterface> {
-        const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } = form_data;
+        const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } =
+            form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };

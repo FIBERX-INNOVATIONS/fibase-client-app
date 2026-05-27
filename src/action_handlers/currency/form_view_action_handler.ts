@@ -109,18 +109,36 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    msg || "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
+            StatusAlertTriggerUtil.triggerAlert(
+                "success",
+                msg || "file_uploaded_successfully",
+                5,
+                undefined,
+                true
+            );
 
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;

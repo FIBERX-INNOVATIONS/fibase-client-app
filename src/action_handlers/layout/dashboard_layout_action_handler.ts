@@ -14,7 +14,10 @@ import {
     DashboardLayoutComputedDataInterface,
     DashboardLayoutComponentsInterface
 } from "@/ui_types/dashboard_layout_type";
-import { ModalUIActionPropsInterface, ModalUIPropsInterface } from "@ui/version_3/ui_types/modal_ui_type";
+import {
+    ModalUIActionPropsInterface,
+    ModalUIPropsInterface
+} from "@ui/version_3/ui_types/modal_ui_type";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 import ModalUIPropsBuilder from "@ui/version_3/props_builder/modal_ui_props_builder";
 
@@ -30,7 +33,10 @@ class DashbaordLayoutActionHandler {
         GlobalEventTypes
     >;
 
-    private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
+    private readonly logger: LoggerUtil = new LoggerUtil({
+        prefix: this.name,
+        show_timestamp: false
+    });
 
     constructor(
         controller: BaseController<
@@ -45,7 +51,10 @@ class DashbaordLayoutActionHandler {
     }
 
     // Method to handle getting default modal props
-    private getDefaultModalProps = (modal_index: number, content_key: string): ModalUIPropsInterface => {
+    private getDefaultModalProps = (
+        modal_index: number,
+        content_key: string
+    ): ModalUIPropsInterface => {
         return ModalUIPropsBuilder.getReactivePropsObjectFromContentData(modal_index, content_key, {
             class_styles: DashboardLayoutClassStyles.modal_class_style,
             content_props: {
@@ -66,7 +75,10 @@ class DashbaordLayoutActionHandler {
     // Method to get modal action props config
     private getModalActionPropsConfig = (): ModalUIActionPropsInterface => {
         return {
-            on_close: async (event?: Event, config?: { props: ModalUIPropsInterface }): Promise<void> => {
+            on_close: async (
+                event?: Event,
+                config?: { props: ModalUIPropsInterface }
+            ): Promise<void> => {
                 if (!config?.props?.layer) {
                     return;
                 }

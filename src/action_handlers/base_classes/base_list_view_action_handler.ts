@@ -1,14 +1,13 @@
 import { markRaw } from "vue";
+import type { LocationQueryRaw, RouteLocationNormalizedLoaded } from "vue-router";
 
-import LoggerUtil from "@ui/version_3/utils/logger_util";
+import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
 import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
-
-import { debounceMethod } from "@ui/version_3/utils/debounce_util";
 
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
@@ -17,7 +16,6 @@ import {
     ListViewStateDataInterface,
     ListViewComputedDataInterface,
     ListViewComponentsInterface,
-    ListViewClassStylesInterface,
     FetchListMethod,
     ListStateInterface
 } from "@/ui_types/list_view_type";
@@ -29,28 +27,35 @@ import {
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
-import { ButtonUIActionPropsInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import {
+    ButtonUIActionPropsInterface,
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
 
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
+import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 import { DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
+type MutableRecord = Record<string, unknown>;
+type QueryValue = string | number;
+
 class BaseListViewActionHandler<
-    T,
-    Props extends ListViewPropsInterface,
-    State extends ListViewStateDataInterface,
-    Computed extends ListViewComputedDataInterface,
-    Components extends ListViewComponentsInterface,
-    Events extends GlobalEventTypes,
-    FilterValues extends Record<string, any> = {}
+    T extends object,
+    K extends keyof T = keyof T,
+    FilterValues extends object = {}
+> extends BaseActionHandler<
+    ListViewPropsInterface,
+    ListViewStateDataInterface<T, K>,
+    ListViewComputedDataInterface,
+    ListViewComponentsInterface,
+    GlobalEventTypes
 > {
     public readonly name: string;
 
-    protected controller: BaseListViewController<T>;
-
-    protected logger: LoggerUtil;
+    protected override controller: BaseListViewController<T, K>;
 
     protected content_manager = ContentManagerUtil.getInstance();
 
@@ -59,11 +64,13 @@ class BaseListViewActionHandler<
     protected fetch_list_method?: FetchListMethod<FilterValues, T>;
 
     constructor(
-        controller: BaseListViewController<T>,
+        controller: BaseListViewController<T, K>,
         name: string = "base_list_view_action_handler",
         default_filter_values?: Partial<FilterValues>,
         fetch_list_method?: FetchListMethod<FilterValues, T>
     ) {
+        super(controller, name);
+
         this.name = name;
 
         this.controller = controller;
@@ -71,11 +78,6 @@ class BaseListViewActionHandler<
         this.filter_values = default_filter_values ?? {};
 
         this.fetch_list_method = fetch_list_method;
-
-        this.logger = new LoggerUtil({
-            prefix: name,
-            show_timestamp: false
-        });
     }
 
     // Method to get content message
@@ -92,6 +94,131 @@ class BaseListViewActionHandler<
     // Method to get table serial cell
     private getSerialCell = () => {
         return this.controller.state_refs.table_props.value.table_render_obj?.[0];
+    };
+
+    private getFilterKeys = (): string[] => {
+        const filter_fields =
+            this.controller.state_refs.filters_panel_props?.value?.filter_fields ?? [];
+
+        return filter_fields.map((field) => field.key);
+    };
+
+    private isEmptyFilterValue = (value: unknown): boolean => {
+        return (
+            value === null ||
+            value === undefined ||
+            value === "" ||
+            (Array.isArray(value) && value.length === 0)
+        );
+    };
+
+    private parsePositiveInteger = (value: unknown, fallback: number): number => {
+        const raw_value = Array.isArray(value) ? value[0] : value;
+        const parsed = Number(raw_value);
+
+        return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+    };
+
+    private getFilterRecord = (): MutableRecord => {
+        return this.filter_values as MutableRecord;
+    };
+
+    private serializeQueryValue = (value: unknown): QueryValue => {
+        if (typeof value === "object" && value !== null) {
+            return JSON.stringify(value);
+        }
+
+        if (typeof value === "boolean") {
+            return value.toString();
+        }
+
+        return value as QueryValue;
+    };
+
+    private buildFilterQuery = (base_query: LocationQueryRaw = {}): LocationQueryRaw => {
+        const next_query = { ...base_query };
+        const filter_values = this.getFilterRecord();
+
+        this.getFilterKeys().forEach((key) => {
+            const value = filter_values[key];
+
+            if (this.isEmptyFilterValue(value)) {
+                delete next_query[key];
+                return;
+            }
+
+            next_query[key] = this.serializeQueryValue(value);
+        });
+
+        return next_query;
+    };
+
+    private buildListStateFromRoute = (
+        query: RouteLocationNormalizedLoaded["query"]
+    ): Partial<ListStateInterface<T>> => {
+        const current_state = this.controller.getListState();
+        const sort_by = Array.isArray(query.sort_by) ? query.sort_by[0] : query.sort_by;
+        const sort_direction = Array.isArray(query.sort_direction)
+            ? query.sort_direction[0]
+            : query.sort_direction;
+
+        return {
+            current_page: this.parsePositiveInteger(query.page, current_state.current_page),
+            limit: this.parsePositiveInteger(query.limit, current_state.limit),
+            sort_by: typeof sort_by === "string" && sort_by ? sort_by : null,
+            sort_direction:
+                sort_direction === "asc" || sort_direction === "desc" ? sort_direction : null
+        };
+    };
+
+    private setFilterValues = (values: Partial<FilterValues>): void => {
+        const current_values = this.getFilterRecord();
+        const next_values = values as MutableRecord;
+
+        Object.keys(current_values).forEach((key) => {
+            delete current_values[key];
+        });
+
+        this.getFilterKeys().forEach((key) => {
+            const value = next_values[key];
+
+            if (!this.isEmptyFilterValue(value)) {
+                current_values[key] = value;
+            }
+        });
+    };
+
+    private syncFilterPanelValues = (): void => {
+        const panel_props = this.controller.state_refs.filters_panel_props.value;
+        const filter_values = { ...this.filter_values };
+
+        panel_props.props_filter_values = filter_values;
+
+        panel_props.filter_fields.forEach((field) => {
+            const input_props = field.input_group_props?.input_props;
+
+            if (!input_props) {
+                return;
+            }
+
+            const value = (filter_values as MutableRecord)[field.key] ?? null;
+
+            InputUIPropsBuilder.updateValue(input_props, value as InputValue);
+        });
+    };
+
+    private updateRouteQuery = async (next_query: LocationQueryRaw): Promise<boolean> => {
+        const current_query = this.controller.route.query;
+        const current_query_string = JSON.stringify(current_query);
+        const next_query_string = JSON.stringify(next_query);
+
+        if (current_query_string === next_query_string) {
+            return false;
+        }
+
+        await this.controller.router.replace({ query: next_query });
+
+        return true;
     };
 
     // Method to handle on filter input change
@@ -116,48 +243,89 @@ class BaseListViewActionHandler<
         }
 
         const formatted_key = input_id.replace(/_\d+$/, "");
+        const filter_values = this.getFilterRecord();
 
-        (this.filter_values as any)[formatted_key] = value;
+        if (this.isEmptyFilterValue(value)) {
+            delete filter_values[formatted_key];
+        } else {
+            filter_values[formatted_key] = value;
+        }
 
-        this.controller.state_refs.filters_panel_props.value.props_filter_values = { ...this.filter_values };
+        this.syncFilterPanelValues();
 
         return {
             status: true,
-            msg: "filter_input_ser"
+            msg: "filter_input_set"
         };
     };
 
     // Method to hydrate filters from route query
-    public hydrateFiltersFromRoute = () => {
-        const { route } = this.controller;
+    public hydrateFiltersFromRoute = (route_query = this.controller.route.query): void => {
+        const hydrated_query = FiltersPanelUIPropsBuilder.hydrateFiltersFromRoute(route_query);
+        const filter_keys = this.getFilterKeys();
+        const route_filters = filter_keys.reduce((filters, key) => {
+            const value = hydrated_query[key];
 
-        const route_filters = FiltersPanelUIPropsBuilder.hydrateFiltersFromRoute(route.query);
+            if (!this.isEmptyFilterValue(value)) {
+                filters[key] = value;
+            }
 
-        this.filter_values = route_filters as FilterValues;
+            return filters;
+        }, {} as MutableRecord);
 
-        this.controller.state_refs.filters_panel_props.value.props_filter_values = { ...this.filter_values };
+        this.setFilterValues(route_filters as FilterValues);
+        this.syncFilterPanelValues();
     };
 
     // Method to handle on clear filters
-    public handleOnClearFilters = async () => {
-        const { filter_fields } = this.controller.state_refs.filters_panel_props.value;
+    public handleOnClearFilters = async (): Promise<void> => {
+        const next_query = { ...this.controller.route.query };
 
-        for (let i = 0; i < filter_fields.length; i++) {
-            const filter_field_props = filter_fields?.[i]?.input_group_props?.input_props;
+        this.getFilterKeys().forEach((key) => {
+            delete next_query[key];
+        });
 
-            if (filter_field_props) {
-                filter_field_props.model_value = null;
-            }
+        delete next_query.page;
+
+        this.setFilterValues({} as Partial<FilterValues>);
+        this.syncFilterPanelValues();
+
+        const route_changed = await this.updateRouteQuery(next_query);
+
+        if (!route_changed) {
+            await this.fetchRecords();
         }
     };
 
     // Method to handle on apply filters
-    public handleOnApplyFilters = async () => {
-        if (Object.values(this.filter_values).some((value) => value != null)) {
-            this.hydrateFiltersFromRoute();
-
-            await debounceMethod(this.fetchRecords, 500)();
+    public handleOnApplyFilters = async (filters?: MutableRecord): Promise<void> => {
+        if (filters) {
+            this.setFilterValues(filters as Partial<FilterValues>);
+            this.syncFilterPanelValues();
         }
+
+        const next_query = this.buildFilterQuery({
+            ...this.controller.route.query
+        });
+
+        delete next_query.page;
+
+        const route_changed = await this.updateRouteQuery(next_query);
+
+        if (!route_changed) {
+            await this.fetchRecords();
+        }
+    };
+
+    public handleRouteChanged = async (
+        route: RouteLocationNormalizedLoaded = this.controller.route
+    ): Promise<void> => {
+        const { query } = route;
+
+        this.hydrateFiltersFromRoute(query);
+        this.controller.setListState(this.buildListStateFromRoute(query));
+
+        await this.fetchRecords();
     };
 
     // Method to get action button action handlers config
@@ -177,13 +345,14 @@ class BaseListViewActionHandler<
     // Method to get filters pannel action props config
     public getFiltersPanelActionPropsConfig = (): FiltersPanelUIActionPropsInterface => {
         return {
+            on_apply_filters: this.handleOnApplyFilters,
+
             on_clear_filters: this.handleOnClearFilters
         };
     };
 
     // Method to fetch records from API
     public fetchRecords = async (): Promise<void> => {
-        console.log("got here");
         this.controller.setListState({
             is_loading: true
         });
@@ -229,14 +398,19 @@ class BaseListViewActionHandler<
     };
 
     //  Method to handle list state changed watcher
-    public handleListStateChangedWatcher = (new_val: ListStateInterface): void => {
-        // console.log("List state changed:", new_val);
-
-        const { is_loading = false, records = [], total_items = 0, current_page = 1, total_pages = 1 } = new_val;
+    public handleListStateChangedWatcher = (new_val: ListStateInterface<T>): void => {
+        const {
+            is_loading = false,
+            records = [],
+            total_items = 0,
+            current_page = 1,
+            total_pages = 1
+        } = new_val;
 
         const sn_cell = this.getSerialCell();
         const bulk_action_selection_props =
-            this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
+            this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value
+                ?.selection_props;
 
         this.controller.state_refs.table_props.value.is_loading = is_loading;
         this.controller.state_refs.table_props.value.data = records;
@@ -268,7 +442,8 @@ class BaseListViewActionHandler<
 
         if (bulk_action_selection_props) {
             bulk_action_selection_props.selected_count = 0;
-            bulk_action_selection_props.bulk_button_props = this.controller.getBulkActionButtonProps();
+            bulk_action_selection_props.bulk_button_props =
+                this.controller.getBulkActionButtonProps();
         }
     };
 
@@ -284,21 +459,17 @@ class BaseListViewActionHandler<
             return record[record_id_key]?.toString() === record_id?.toString();
         });
 
-        // ❌ If not found → exit
         if (record_index_to_update === -1) return;
 
-        // ✅ Create new updated record
         const updated_record: T = {
             ...records[record_index_to_update],
             ...fields_updated
         };
 
-        // ✅ Create new records array (immutability)
         const updated_records: T[] = [...records];
 
         updated_records[record_index_to_update] = updated_record;
 
-        // ✅ Push back to state
         this.controller.setListState({
             records: updated_records
         });
@@ -308,33 +479,32 @@ class BaseListViewActionHandler<
     public removeListStateRecord = (record_id: string | number, record_id_key: keyof T): void => {
         const list_state = this.controller.getListState();
 
-        const { records = [], total_items = 0, current_page = 1, total_pages = 1, limit = 10 } = list_state;
+        const {
+            records = [],
+            total_items = 0,
+            current_page = 1,
+            total_pages = 1,
+            limit = 10
+        } = list_state;
 
-        // 🔍 Find record index
         const record_index = records.findIndex(
             (record: T) => record?.[record_id_key]?.toString() === record_id?.toString()
         );
 
-        // ❌ Not found → exit
         if (record_index === -1) return;
 
-        // ✅ Remove record (immutably)
         const updated_records = records.filter((_, index) => index !== record_index);
 
-        // ✅ Update total items
         const updated_total_items = Math.max(0, total_items - 1);
 
-        // ✅ Recalculate total pages
         const updated_total_pages = Math.max(1, Math.ceil(updated_total_items / limit));
 
-        // ✅ Adjust current page if needed
         let updated_current_page = current_page;
 
         if (current_page > updated_total_pages) {
             updated_current_page = updated_total_pages;
         }
 
-        // ✅ Update state
         this.controller.setListState({
             records: updated_records,
             total_items: updated_total_items,
@@ -354,7 +524,23 @@ class BaseListViewActionHandler<
             sort_direction: direction
         });
 
-        return await this.fetchRecords();
+        const next_query = { ...this.controller.route.query };
+
+        if (direction) {
+            next_query.sort_by = key.toString();
+            next_query.sort_direction = direction;
+        } else {
+            delete next_query.sort_by;
+            delete next_query.sort_direction;
+        }
+
+        delete next_query.page;
+
+        const route_changed = await this.updateRouteQuery(next_query);
+
+        if (!route_changed) {
+            await this.fetchRecords();
+        }
     };
 
     // Method to handle on table page change
@@ -363,7 +549,16 @@ class BaseListViewActionHandler<
             current_page: page
         });
 
-        return await this.fetchRecords();
+        const next_query = {
+            ...this.controller.route.query,
+            page
+        };
+
+        const route_changed = await this.updateRouteQuery(next_query);
+
+        if (!route_changed) {
+            await this.fetchRecords();
+        }
     };
 
     // Method to handle select action menu clicked
@@ -377,10 +572,8 @@ class BaseListViewActionHandler<
 
         const result = await this.handleOnRecordRowSelected(record);
 
-        // ❌ stop if selection failed
         if (!result.status) return;
 
-        // ❌ avoid setTimeout hack
         sn_cell.props.is_selected = true;
 
         sn_cell.header.render = () => markRaw(DataTableSerialCellUI);
@@ -406,7 +599,8 @@ class BaseListViewActionHandler<
 
             const selected_records = this.controller.state_refs.selected_records.value;
             const bulk_action_selection_props =
-                this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
+                this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value
+                    ?.selection_props;
 
             const value_str = value.toString();
 
@@ -428,7 +622,8 @@ class BaseListViewActionHandler<
 
             if (bulk_action_selection_props) {
                 bulk_action_selection_props.selected_count = selected_records.length;
-                bulk_action_selection_props.bulk_button_props = this.controller.getBulkActionButtonProps();
+                bulk_action_selection_props.bulk_button_props =
+                    this.controller.getBulkActionButtonProps();
             }
 
             return {
@@ -466,28 +661,30 @@ class BaseListViewActionHandler<
 
             const selected_records = this.controller.state_refs.selected_records.value;
             const bulk_action_selection_props =
-                this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value?.selection_props;
+                this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value
+                    ?.selection_props;
 
             const is_all_selected = selected_records.length === all_values.length;
 
-            // ✅ Toggle logic
             if (is_all_selected) {
                 this.controller.state_refs.selected_records.value = [];
             } else {
-                // ✅ Replace (not push) to avoid duplicates
                 this.controller.state_refs.selected_records.value = [...new Set(all_values)];
             }
 
-            // ✅ Update header + props reactively (NO setTimeout)
             const has_selection = this.controller.state_refs.selected_records.value.length > 0;
 
             sn_cell.props.is_selected = has_selection;
 
-            sn_cell.header.render = has_selection ? () => markRaw(DataTableSerialCellUI) : undefined;
+            sn_cell.header.render = has_selection
+                ? () => markRaw(DataTableSerialCellUI)
+                : undefined;
 
             if (bulk_action_selection_props) {
-                bulk_action_selection_props.selected_count = this.controller.state_refs.selected_records.value.length;
-                bulk_action_selection_props.bulk_button_props = this.controller.getBulkActionButtonProps();
+                bulk_action_selection_props.selected_count =
+                    this.controller.state_refs.selected_records.value.length;
+                bulk_action_selection_props.bulk_button_props =
+                    this.controller.getBulkActionButtonProps();
             }
 
             return {
@@ -505,7 +702,9 @@ class BaseListViewActionHandler<
     };
 
     // Method to handle on new record created (to update list state)
-    public handleOnNewRecordCreated = async (payload: NewRecordCreated<T, true>): Promise<boolean> => {
+    public handleOnNewRecordCreated = async (
+        payload: NewRecordCreated<T, true>
+    ): Promise<boolean> => {
         try {
             const { record, re_fetch = true } = payload;
 

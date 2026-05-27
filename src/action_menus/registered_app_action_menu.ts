@@ -1,7 +1,10 @@
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
-import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
+import {
+    NavLinkUIPropsInterface,
+    NavLinkContentPayloadResultInterface
+} from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
@@ -12,9 +15,11 @@ class RegisteredAppActionMenu {
         record: RegisteredAppRecordInterface,
         action_handler?: RegisteredAppListViewActionHandler
     ): NavLinkUIPropsInterface[] {
-        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles =
+            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
-        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
+        const base_content_key =
+            "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
         const record_id = record?.public_id?.toString();
 
         // menu contents
@@ -102,8 +107,9 @@ class RegisteredAppActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(
+                        "registered_app_module.update_registered_app"
+                    ) && !record?.is_active
             },
             // Delete Menu
             {
@@ -127,8 +133,9 @@ class RegisteredAppActionMenu {
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.delete_registered_app") &&
-                    !record.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(
+                        "registered_app_module.delete_registered_app"
+                    ) && !record.is_active
             }
         ];
 

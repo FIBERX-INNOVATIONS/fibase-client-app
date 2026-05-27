@@ -29,7 +29,10 @@ class TopBarUIActionHandler {
         GlobalEventTypes
     >;
 
-    private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
+    private readonly logger: LoggerUtil = new LoggerUtil({
+        prefix: this.name,
+        show_timestamp: false
+    });
 
     constructor(
         controller: BaseController<
@@ -44,14 +47,20 @@ class TopBarUIActionHandler {
     }
 
     // Method to handle on hamburger icon btn click
-    public toggleSideBar = async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
+    public toggleSideBar = async (
+        event?: MouseEvent,
+        config?: { props: ButtonUIPropsInterface }
+    ): Promise<void> => {
         console.log("Hamburger icon clicked");
         this.controller.event_bus?.emit("toggle_sidebar", {});
         return;
     };
 
     // Method to redirect to dahsboard home page
-    public toHomePage = async (event?: MouseEvent, config?: { props: ImageRenderUIPropsInterface }): Promise<void> => {
+    public toHomePage = async (
+        event?: MouseEvent,
+        config?: { props: ImageRenderUIPropsInterface }
+    ): Promise<void> => {
         this.controller.router.push("/dashboard");
         return;
     };

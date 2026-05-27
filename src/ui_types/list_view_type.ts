@@ -14,7 +14,10 @@ import {
 } from "@ui/version_3/ui_types/filters_panel_ui_type";
 import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 import { InputUIClassStylesInterface } from "@ui/version_3/ui_types/input_ui_type";
-import { DataTableUIClassStylesInterface, DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
+import {
+    DataTableUIClassStylesInterface,
+    DataTableUIPropsInterface
+} from "@ui/version_3/ui_types/data_table_ui_type";
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { PaginatedResponseResultInterface } from "@/types/api_service_type";
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
@@ -34,7 +37,7 @@ export interface ListViewPropsInterface {
     class_styles?: ListViewClassStylesInterface;
 }
 
-export interface ListStateInterface<T = any> {
+export interface ListStateInterface<T extends object = Record<string, unknown>> {
     is_loading: boolean;
 
     records: T[];
@@ -49,7 +52,10 @@ export interface ListStateInterface<T = any> {
     sort_direction: "asc" | "desc" | null;
 }
 
-export interface ListViewStateDataInterface<T = any, K extends keyof T = keyof T> {
+export interface ListViewStateDataInterface<
+    T extends object = Record<string, unknown>,
+    K extends keyof T = keyof T
+> {
     data_table_key: string;
 
     selected_records: FieldArray<T, K>;
@@ -113,10 +119,10 @@ export interface ListViewClassStylesInterface {
     table_pagination_ui_class_styles: PaginationUIClassStylesInterface;
 }
 
-export type FetchListMethod<TFilters, TRecord> = (params: {
+export type FetchListMethod<TFilters extends object, TRecord extends object> = (params: {
     page?: number;
     limit?: number;
     sort_by?: string;
-    sort_direction?: string;
+    sort_direction?: "asc" | "desc";
     filters?: TFilters;
 }) => Promise<APIResponseInterface<PaginatedResponseResultInterface<TRecord[]>>>;

@@ -48,7 +48,8 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
 
     protected getFormDataValue(): AppCurrencyActionFromDataInterface {
         const currency_list = this.controller?.props?.currency_codes ?? [];
-        const app_id = this.controller?.props?.app_id ?? this.controller.props?.app?.public_id ?? "";
+        const app_id =
+            this.controller?.props?.app_id ?? this.controller.props?.app?.public_id ?? "";
 
         return {
             csrf_token: null,
@@ -59,7 +60,10 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
     }
 
     protected getValidators(): Partial<
-        Record<keyof AppCurrencyActionFromDataInterface, FieldValidator<AppCurrencyActionFromDataInterface>>
+        Record<
+            keyof AppCurrencyActionFromDataInterface,
+            FieldValidator<AppCurrencyActionFromDataInterface>
+        >
     > {
         return {};
     }
@@ -72,7 +76,8 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
 
         try {
             const form_data = this.form_data as AppCurrencyActionFromDataInterface;
-            const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(form_data);
+            const { v_state, v_msg, v_data } =
+                CurrencyValidator.validateAppCurrencyInput(form_data);
 
             if (!v_state || !v_data) {
                 this.showErrorAlert("error", v_msg, 4);

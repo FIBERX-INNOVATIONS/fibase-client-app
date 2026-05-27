@@ -113,7 +113,9 @@ class BaseProfileViewController<T = any> extends BaseController<
     /**
      * Child computed
      */
-    protected getChildUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
+    protected getChildUIComputedData(): ComputedDefinitionType<
+        Partial<ProfileViewComputedDataInterface>
+    > {
         return {} as ComputedDefinitionType<ProfileViewComputedDataInterface>;
     }
 
@@ -144,7 +146,10 @@ class BaseProfileViewController<T = any> extends BaseController<
     /**
      * Base Mounted logic
      */
-    protected getUIWatchers(): WatchersType<ProfileViewPropsInterface, ProfileViewStateDataInterface> {
+    protected getUIWatchers(): WatchersType<
+        ProfileViewPropsInterface,
+        ProfileViewStateDataInterface
+    > {
         return {
             record_id: this.action_handler?.fetchRecord
         };

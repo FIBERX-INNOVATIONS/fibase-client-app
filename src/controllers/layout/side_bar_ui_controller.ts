@@ -34,7 +34,8 @@ class SideBarUIController extends BaseController<
     SideBarUIComponentsInterface,
     GlobalEventTypes
 > {
-    public class_styles: SideBarUIClassStyleInterface = DashboardLayoutClassStyles.side_bar_class_style;
+    public class_styles: SideBarUIClassStyleInterface =
+        DashboardLayoutClassStyles.side_bar_class_style;
 
     public action_handler: SideBarUIActionHandler = new SideBarUIActionHandler(this);
 
@@ -76,14 +77,17 @@ class SideBarUIController extends BaseController<
                 }
             ),
 
-            nav_menu_list_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("SidebarMenuList", {
-                class_styles: DashboardLayoutClassStyles.side_bar_menu_list_class_style,
+            nav_menu_list_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
+                "SidebarMenuList",
+                {
+                    class_styles: DashboardLayoutClassStyles.side_bar_menu_list_class_style,
 
-                menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
-                    "content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list",
-                    DashboardLayoutClassStyles.side_bar_menu_item_class_style
-                )
-            })
+                    menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
+                        "content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list",
+                        DashboardLayoutClassStyles.side_bar_menu_item_class_style
+                    )
+                }
+            )
         };
     }
 

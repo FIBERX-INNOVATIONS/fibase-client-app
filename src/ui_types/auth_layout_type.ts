@@ -1,6 +1,6 @@
 import { CopyRightUIPropsInterface } from "@ui/version_3/ui_types/copy_rigth_ui_type";
 import { Component } from "vue";
-import { FormViewClassStylesinterface } from "./form_view_type";
+import { FormViewClassStylesInterface } from "./form_view_type";
 
 export interface AuthLayoutPropsInterface {
     class_styles?: AuthLayoutClassStylesInterface;
@@ -18,7 +18,7 @@ export interface AuthLayoutComponentsInterface {
     CopyRightUI: Component;
 }
 
-export interface AuthsViewClassStylesInterface extends FormViewClassStylesinterface {
+export interface AuthsViewClassStylesInterface extends FormViewClassStylesInterface {
     wrapper_class_style: string;
 
     form_box_class_style: string;

@@ -24,7 +24,11 @@ class RegisteredAppProfileViewActionHandler extends BaseProfileViewActionHandler
     GlobalEventTypes
 > {
     constructor(controller: BaseProfileViewController<RegisteredAppRecordInterface>) {
-        super(controller, "registered_app_profile_view_action_handler", RegisteredAppAPIService.getRegisteredApp);
+        super(
+            controller,
+            "registered_app_profile_view_action_handler",
+            RegisteredAppAPIService.getRegisteredApp
+        );
     }
 }
 

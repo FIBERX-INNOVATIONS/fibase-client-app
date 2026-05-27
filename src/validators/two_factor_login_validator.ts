@@ -13,7 +13,9 @@ class TwoFactorLoginValidator {
         return TwoFactorLoginValidator.content_manager.getAPIResponseValue(message_key);
     }
 
-    public static validateOtpCodeField = (otp_value: string | string[]): ActionMethodRetrunInterface => {
+    public static validateOtpCodeField = (
+        otp_value: string | string[]
+    ): ActionMethodRetrunInterface => {
         const otp_code = Array.isArray(otp_value) ? otp_value.join("") : otp_value;
 
         if (!InputValidatorUtil.containsOnlyNumbers(otp_code) || otp_code.length !== 6) {
@@ -26,7 +28,9 @@ class TwoFactorLoginValidator {
     };
 
     /** Validate TwoFactorLogin input */
-    public static validateTwoFactorLoginInput(form_data: TwoFactorFormDataInterface): ValidationResultInterface {
+    public static validateTwoFactorLoginInput(
+        form_data: TwoFactorFormDataInterface
+    ): ValidationResultInterface {
         const { csrf_token, otp_code } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {

@@ -28,5 +28,6 @@ const { state_refs, components } = component_definition;
 
 const { HeaderTextUI, InputGroupUI, ToasterUI, ButtonUI } = components;
 
-const { class_styles, header_text_props, otp_input_group_props, toast_alert_props, btn_props } = state_refs;
+const { class_styles, header_text_props, otp_input_group_props, toast_alert_props, btn_props } =
+    state_refs;
 </script>

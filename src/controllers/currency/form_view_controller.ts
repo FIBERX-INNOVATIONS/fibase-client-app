@@ -1,9 +1,5 @@
 import { reactive } from "vue";
 
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
-import { EventBus } from "@/utils/global_event_bus_util";
-
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
@@ -16,57 +12,42 @@ import {
     FormViewPropsInterface,
     CurrencyFormState,
     FormViewComponentsInterface,
-    FormViewClassStylesinterface
+    FormViewClassStylesInterface
 } from "@/ui_types/form_view_type";
 
 import CurrencyFormViewActionHandler from "@/action_handlers/currency/form_view_action_handler";
 
 import FormViewClassStyles from "@/class_styles/form_view_class_styles";
 
-import InputGroupUI from "@ui/version_3/components/InputGroupUI.vue";
-import ToasterUI from "@ui/version_3/components/ToasterUI.vue";
-import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
-
-import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
-import InputGroupUIPropsBuilder from "@ui/version_3/props_builder/input_group_ui_props_builder";
-import ToasterUIPropsBuilder from "@ui/version_3/props_builder/toaster_ui_props_builder";
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import { InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_ui_type";
+import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
+import { CurrencyFromDataInterface } from "@/types/form_data_type";
 
-class CurrencyFormViewController<T = any> extends BaseController<
+class CurrencyFormViewController<T = any> extends BaseFormViewController<
+    CurrencyFromDataInterface,
     FormViewPropsInterface<T>,
     CurrencyFormState,
     any,
     FormViewComponentsInterface,
+    FormViewClassStylesInterface,
+    CurrencyFormViewActionHandler,
     GlobalEventTypes
 > {
-    public readonly class_styles: FormViewClassStylesinterface = FormViewClassStyles;
-    public readonly action_handler = new CurrencyFormViewActionHandler(this);
-
     constructor(props: FormViewPropsInterface<T>) {
-        super("currency_form_view", props, EventBus);
+        super("currency_form_view", props, FormViewClassStyles);
+
+        this.setFormActionHandler(new CurrencyFormViewActionHandler(this));
         this.getComponentDefinition();
     }
 
-    protected getUIComponents(): FormViewComponentsInterface {
-        return { InputGroupUI, ToasterUI, ButtonUI };
-    }
-
     protected getUIStateData(): CurrencyFormState {
-        const { input_ui_class_styles, toaster_ui_class_styles, btn_class_styles, modal_btn_class_styles } =
-            this.class_styles;
-
         const record = this.props?.record as CurrencyRecordInterface;
-        const input_action_config = this.action_handler.getInputActionHandlersConfig();
-        const btn_action_config = this.action_handler.getBtnActionHandlerConfig();
-        const toaster_action_config = this.action_handler.getToasterActionHandlerConfig();
         const btn_content_key = "content_resource.currency_view_ui.form_view_ui.fieldset.btn_text";
 
-        InputUIPropsBuilder.configure(input_ui_class_styles, input_action_config);
-
-        ToasterUIPropsBuilder.configure("currency_submit_toaster", toaster_ui_class_styles, toaster_action_config);
-
-        ButtonUIPropsBuilder.configure(modal_btn_class_styles, btn_action_config, { disabled: true });
+        this.configureFormUI({
+            toaster_id: "currency_submit_toaster",
+            use_modal_button_styles: true
+        });
 
         const input_group_content_key = (input_id: string) => {
             return `content_resource.currency_view_ui.form_view_ui.fieldset.${input_id}_field`;
@@ -78,13 +59,10 @@ class CurrencyFormViewController<T = any> extends BaseController<
             value: InputValue = "",
             overrides: Partial<InputUIPropsInterface> = {}
         ): InputGroupUIPropsInterface => {
-            return InputGroupUIPropsBuilder.getReactivePropsObject(
-                InputUIPropsBuilder.getReactivePropsObject(key, type, input_group_content_key(key), {
-                    model_value: value,
-                    ...overrides
-                }),
-                input_group_content_key(key)
-            );
+            return this.buildInputGroupProps(key, type, input_group_content_key(key), {
+                model_value: value,
+                input_props: overrides
+            });
         };
 
         return {
@@ -127,9 +105,9 @@ class CurrencyFormViewController<T = any> extends BaseController<
                 })
             }),
 
-            toast_alert_props: ToasterUIPropsBuilder.getReactivePropsObject(),
+            toast_alert_props: this.buildToasterProps(),
 
-            btn_props: ButtonUIPropsBuilder.getReactivePropsObject(
+            btn_props: this.buildSubmitButtonProps(
                 "currency_submit",
                 btn_content_key,
                 "paper_airplane_send_svg_icon"
@@ -138,7 +116,7 @@ class CurrencyFormViewController<T = any> extends BaseController<
     }
 
     protected async handleOnMountedLogic(): Promise<void> {
-        await this.action_handler.setCSRFToken(CSRF_TOKEN_FOR.CURRENCY);
+        await this.setFormCSRFToken(CSRF_TOKEN_FOR.CURRENCY);
     }
 }
 

@@ -82,7 +82,10 @@ class BaseProfileViewActionHandler<
 
                 console.log({ props_record, current_record });
 
-                this.controller.state_refs.profile_record.value = { ...props_record, ...current_record };
+                this.controller.state_refs.profile_record.value = {
+                    ...props_record,
+                    ...current_record
+                };
                 return;
             }
         } catch (error: unknown) {

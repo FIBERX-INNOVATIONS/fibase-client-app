@@ -4,20 +4,13 @@ import BaseListViewController from "@/controllers/base_classes/base_list_view_co
 
 import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
 
-import { GlobalEventTypes, OpenModalEventPayloadInterface } from "@/types/global_events_type";
-
-import {
-    ListViewPropsInterface,
-    ListViewStateDataInterface,
-    ListViewComputedDataInterface,
-    ListViewComponentsInterface
-} from "@/ui_types/list_view_type";
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
 
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
-import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
 import FormView from "@/views/registered_app/FormView.vue";
@@ -34,15 +27,16 @@ import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
 class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     RegisteredAppRecordInterface,
-    ListViewPropsInterface,
-    ListViewStateDataInterface,
-    ListViewComputedDataInterface,
-    ListViewComponentsInterface,
-    GlobalEventTypes,
+    "public_id",
     RegisteredAppListViewFiltersInterface
 > {
-    constructor(controller: BaseListViewController<RegisteredAppRecordInterface>) {
-        super(controller, "registered_app_list_view_action_handler", {}, RegisteredAppAPIService.getRegisteredAppList);
+    constructor(controller: BaseListViewController<RegisteredAppRecordInterface, "public_id">) {
+        super(
+            controller,
+            "registered_app_list_view_action_handler",
+            {},
+            RegisteredAppAPIService.getRegisteredAppList
+        );
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
@@ -96,7 +90,11 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                     msg: this.getContentMessage("session_expired")
                 };
             } else if (result.status === "success") {
-                this.updateListStateRecord(public_id, { is_active: !record.is_active }, "public_id");
+                this.updateListStateRecord(
+                    public_id,
+                    { is_active: !record.is_active },
+                    "public_id"
+                );
 
                 return {
                     status: true,
@@ -118,7 +116,10 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     };
 
     // Method to toogle data table action menu
-    public toggleActionMenu = (record: RegisteredAppRecordInterface, record_index?: number): void => {
+    public toggleActionMenu = (
+        record: RegisteredAppRecordInterface,
+        record_index?: number
+    ): void => {
         const action_mneu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -130,7 +131,11 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
             this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_mneu_btn_id, action_menu_id, true);
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
+            action_mneu_btn_id,
+            action_menu_id,
+            true
+        );
     };
 
     // Method to handle view Action menu clicked
@@ -249,7 +254,13 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
             const public_id = record.public_id;
 
             if (!public_id) {
-                return StatusAlertTriggerUtil.triggerAlert("error", "record_not_found", 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "record_not_found",
+                    4,
+                    undefined,
+                    true
+                );
             }
 
             const result = await RegisteredAppAPIService.deleteRegisteredApp(public_id);
@@ -259,7 +270,13 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
             } else if (result.status?.toLowerCase() === "logout") {
                 this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "session_expired",
+                    4,
+                    undefined,
+                    true
+                );
             } else if (result.status?.toLowerCase() === "success") {
                 this.removeListStateRecord(public_id, "public_id");
 
@@ -269,7 +286,13 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
             return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
         } catch (error: unknown) {
             this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
+            return StatusAlertTriggerUtil.triggerAlert(
+                "error",
+                "error_occurred",
+                4,
+                undefined,
+                true
+            );
         }
     };
 }

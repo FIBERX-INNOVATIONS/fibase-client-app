@@ -2,9 +2,15 @@ import BaseProfileViewController from "@/controllers/base_classes/base_profile_v
 
 import RegisteredAppProfileViewActionHandler from "@/action_handlers/registered_app/profile_view_action_handler";
 
-import { ProfileViewComputedDataInterface, ProfileViewPropsInterface } from "@/ui_types/profile_view_type";
+import {
+    ProfileViewComputedDataInterface,
+    ProfileViewPropsInterface
+} from "@/ui_types/profile_view_type";
 
-import { DEFAULT_MEMBER_PROFILE_PHOTO_URL, DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
+import {
+    DEFAULT_MEMBER_PROFILE_PHOTO_URL,
+    DEFUALT_REGISTERED_APP_LOGO_URL
+} from "@/configs/constants";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
@@ -30,7 +36,9 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
     /**
      * Child computed
      */
-    protected getChildUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
+    protected getChildUIComputedData(): ComputedDefinitionType<
+        Partial<ProfileViewComputedDataInterface>
+    > {
         return {
             app_logo_url: () => {
                 const record = (this.state_refs?.profile_record?.value ||
@@ -92,7 +100,9 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
                     this.props.record) as RegisteredAppRecordInterface;
 
                 if (record?.auth?.last_key_rotated_at) {
-                    return InputTransformerUtil.formatReadableDateTime(record?.auth?.last_key_rotated_at);
+                    return InputTransformerUtil.formatReadableDateTime(
+                        record?.auth?.last_key_rotated_at
+                    );
                 }
 
                 return "-";

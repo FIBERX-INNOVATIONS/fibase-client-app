@@ -2,7 +2,10 @@ import { PropType } from "vue";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
-import { FormViewClassStylesinterface, FormViewPropsInterface } from "../../ui_types/form_view_type";
+import {
+    FormViewClassStylesInterface,
+    FormViewPropsInterface
+} from "../../ui_types/form_view_type";
 
 const RegisteredAppFormViewProps = {
     record: {
@@ -11,7 +14,7 @@ const RegisteredAppFormViewProps = {
     },
 
     class_styles: {
-        type: Object as PropType<FormViewClassStylesinterface>,
+        type: Object as PropType<FormViewClassStylesInterface>,
         default: () => ({})
     }
 } satisfies Record<keyof FormViewPropsInterface, any>;

@@ -36,7 +36,8 @@ class TopBarUIController extends BaseController<
     TopBarUIComponentsInterface,
     GlobalEventTypes
 > {
-    public class_styles: LayoutSectionsUIClassStylesInterface = DashboardLayoutClassStyles.top_bar_class_style;
+    public class_styles: LayoutSectionsUIClassStylesInterface =
+        DashboardLayoutClassStyles.top_bar_class_style;
 
     public action_handler: TopBarUIActionHandler = new TopBarUIActionHandler(this);
 
@@ -90,14 +91,17 @@ class TopBarUIController extends BaseController<
                 }
             ),
 
-            member_avatar_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("MemberAvatarDropdown", {
-                class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+            member_avatar_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
+                "MemberAvatarDropdown",
+                {
+                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
-                menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
-                    "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
-                    DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
-                )
-            })
+                    menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
+                        "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
+                        DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
+                    )
+                }
+            )
         };
     }
 

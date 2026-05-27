@@ -1,4 +1,7 @@
-import { ToastStatusType, ToasterUIClassStylesInterface } from "@ui/version_3/ui_types/toaster_ui_type";
+import {
+    ToastStatusType,
+    ToasterUIClassStylesInterface
+} from "@ui/version_3/ui_types/toaster_ui_type";
 
 const ToasterUIClassStyles: ToasterUIClassStylesInterface = {
     wrapper_class_style: "w-full flex items-stretch justify-start border-l-4 rounded-lg",

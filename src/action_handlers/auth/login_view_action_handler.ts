@@ -1,6 +1,8 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
+import { LoginFieldsType } from "@/types/form_fields_type";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
+
+import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
 import { FieldValidator, LoginFormDataInterface } from "@/types/form_data_type";
 
@@ -8,32 +10,36 @@ import { ButtonActionMethodReturnInterface } from "@ui/version_3/ui_types/button
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
-import {
-    LoginViewPropsInterface,
-    LoginViewStateDataInterface,
-    LoginViewComputedDataInterface,
-    LoginViewComponentsInterface
-} from "@/ui_types/login_view_type";
+import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
+
+import {
+    FormViewComputedDataInterface,
+    FormViewPropsWithClassStyles,
+    LoginViewStateDataInterface,
+    FormViewComponentsInterface
+} from "@/ui_types/form_view_type";
+
 import LoginValidator from "@/validators/login_validator";
 import AuthAPIService from "@/api_services/auth_api_service";
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
 class LoginViewActionHandler extends BaseFormActionHandler<
     LoginFormDataInterface,
-    LoginViewPropsInterface,
+    LoginFieldsType,
+    FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>,
     LoginViewStateDataInterface,
-    LoginViewComputedDataInterface,
-    LoginViewComponentsInterface,
+    FormViewComputedDataInterface,
+    FormViewComponentsInterface,
     GlobalEventTypes
 > {
     constructor(
         controller: BaseController<
-            LoginViewPropsInterface,
+            FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>,
             LoginViewStateDataInterface,
-            LoginViewComputedDataInterface,
-            LoginViewComponentsInterface,
+            FormViewComputedDataInterface,
+            FormViewComponentsInterface,
             GlobalEventTypes
         >
     ) {
@@ -46,7 +52,9 @@ class LoginViewActionHandler extends BaseFormActionHandler<
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
-    protected getValidators(): Partial<Record<keyof LoginFormDataInterface, FieldValidator<LoginFormDataInterface>>> {
+    protected getValidators(): Partial<
+        Record<keyof LoginFormDataInterface, FieldValidator<LoginFormDataInterface>>
+    > {
         return {
             username: LoginValidator.validateUsernameField,
 

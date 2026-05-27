@@ -13,7 +13,9 @@ class LoginValidator {
         return LoginValidator.content_manager.getAPIResponseValue(message_key);
     }
 
-    public static validateUsernameField = (username_value: string | null): ActionMethodRetrunInterface => {
+    public static validateUsernameField = (
+        username_value: string | null
+    ): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(username_value)) {
             return {
                 status: false,
@@ -31,7 +33,9 @@ class LoginValidator {
         return { status: true, msg: "" };
     };
 
-    public static validatePasswordField = (password_value: string | null): ActionMethodRetrunInterface => {
+    public static validatePasswordField = (
+        password_value: string | null
+    ): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(password_value)) {
             return {
                 status: false,

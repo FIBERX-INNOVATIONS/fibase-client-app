@@ -37,7 +37,10 @@ import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellCompone
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
-class RegisteredAppListViewController extends BaseListViewController<RegisteredAppRecordInterface, "public_id"> {
+class RegisteredAppListViewController extends BaseListViewController<
+    RegisteredAppRecordInterface,
+    "public_id"
+> {
     public action_handler: RegisteredAppListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
@@ -119,8 +122,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
         ];
     }
 
-    public getTableRowKey(): keyof RegisteredAppRecordInterface {
-        return "public_id" as keyof RegisteredAppRecordInterface;
+    public getTableRowKey(): "public_id" {
+        return "public_id";
     }
 
     protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
@@ -134,7 +137,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: (_row, index) => {
@@ -150,9 +154,13 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         return this.state_refs.selected_records.value.includes(record.public_id);
                     },
 
-                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (
+                        record: RegisteredAppRecordInterface
+                    ): InputUIBooleanPropsInterface => {
                         return {
-                            is_checked: this.state_refs.selected_records.value.includes(record.public_id),
+                            is_checked: this.state_refs.selected_records.value.includes(
+                                record.public_id
+                            ),
 
                             required: true,
 
@@ -160,7 +168,9 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         };
                     },
 
-                    input_action_props: (record?: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                    input_action_props: (
+                        record?: RegisteredAppRecordInterface
+                    ): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
@@ -168,7 +178,10 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
                                 if (record !== undefined) {
-                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
+                                    return this.action_handler.handleOnRecordRowSelected(
+                                        record,
+                                        input_value
+                                    );
                                 }
 
                                 return this.action_handler.handleOnSelectAllRows();
@@ -183,7 +196,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[25%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text"
                 },
                 cell: {
                     render: (row) => {
@@ -194,7 +208,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getImgAltText: (record: RegisteredAppRecordInterface) => record.name,
 
-                    getImgSubText: (record: RegisteredAppRecordInterface) => record.public_id ?? "-",
+                    getImgSubText: (record: RegisteredAppRecordInterface) =>
+                        record.public_id ?? "-",
 
                     getImgContent: (record: RegisteredAppRecordInterface) => record.name,
 
@@ -213,7 +228,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[15%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text"
                 },
                 cell: {
                     render: (row) => {
@@ -230,7 +246,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[15%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
                     render: (row) => {
@@ -244,12 +261,16 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                     // getImgSrc: (record: RegisteredAppRecordInterface) => record?.creator?.profile_photo_link ?? "",
 
-                    getImgAltText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: RegisteredAppRecordInterface) =>
+                        getMemberFullName(record?.creator) ?? "",
 
                     getLinkURL: (record: RegisteredAppRecordInterface) =>
-                        record?.creator?.public_id ? `/members?member-profile=${record?.creator?.public_id}` : "",
+                        record?.creator?.public_id
+                            ? `/members?member-profile=${record?.creator?.public_id}`
+                            : "",
 
-                    getLinkText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? ""
+                    getLinkText: (record: RegisteredAppRecordInterface) =>
+                        getMemberFullName(record?.creator) ?? ""
                 }
             },
 
@@ -258,7 +279,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[10%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: (row) => {
@@ -272,13 +294,17 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         return InputTransformerUtil.resolveTypedValue(record.is_active);
                     },
 
-                    input_content_props: (record: RegisteredAppRecordInterface): InputUIContentOptionsInterface => {
+                    input_content_props: (
+                        record: RegisteredAppRecordInterface
+                    ): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                         };
                     },
 
-                    input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (
+                        record: RegisteredAppRecordInterface
+                    ): InputUIBooleanPropsInterface => {
                         return {
                             is_checked: record.is_active,
 
@@ -288,14 +314,19 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                         };
                     },
 
-                    input_action_props: (record: RegisteredAppRecordInterface): InputUIActionPropsInterface => {
+                    input_action_props: (
+                        record: RegisteredAppRecordInterface
+                    ): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
                                 input_value?: InputValue,
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
-                                return this.action_handler.handleStatusToggleChange(record, input_value);
+                                return this.action_handler.handleStatusToggleChange(
+                                    record,
+                                    input_value
+                                );
                             }
                         };
                     }
@@ -307,7 +338,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: true,
                 width: "w-[22%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: (row) => {
@@ -334,7 +366,8 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 sortable: false,
                 width: "w-[8%]",
                 header: {
-                    label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text"
+                    label_key:
+                        "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: (row) => {
@@ -344,22 +377,24 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    button_content_props: (record: RegisteredAppRecordInterface): ButtonUIContentOptionsInterface => {
+                    button_content_props: (
+                        record: RegisteredAppRecordInterface
+                    ): ButtonUIContentOptionsInterface => {
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                        ?.content_class_style,
+                                    this.list_view_class_styles.table_cell_components_class_styles
+                                        .button_ui_class_style?.content_class_style,
                                 icon_class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                        ?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles
+                                        .button_ui_class_style?.icon_class_style
                             }),
 
                             loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                        ?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles
+                                        .button_ui_class_style?.icon_class_style
                             })
                         };
                     },
@@ -381,7 +416,6 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             }
         ];
 
-        // ✅ Remove column if no permission
         return columns.filter((col) => {
             if (!can_change_status && col.key === "is_active") {
                 return false;

@@ -26,5 +26,6 @@ const { class_styles, components, state_refs } = controller;
 
 const { LayoutSectionsUI, ButtonUI, ImageRenderUI, DropdownMenuUI } = components;
 
-const { hamburger_btn_props, nav_logo_props, member_avatar_props, member_avatar_dropdown_props } = state_refs;
+const { hamburger_btn_props, nav_logo_props, member_avatar_props, member_avatar_dropdown_props } =
+    state_refs;
 </script>

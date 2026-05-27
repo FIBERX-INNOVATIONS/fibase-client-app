@@ -1,4 +1,7 @@
-import { AuthLayoutClassStylesInterface, AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
+import {
+    AuthLayoutClassStylesInterface,
+    AuthsViewClassStylesInterface
+} from "@/ui_types/auth_layout_type";
 
 import FormViewClassStyles from "./form_view_class_styles";
 

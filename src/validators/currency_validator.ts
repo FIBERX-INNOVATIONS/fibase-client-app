@@ -57,7 +57,8 @@ class CurrencyValidator {
 
     // NUMERIC CODE (ISO 4217)
     public static validateNumericCode = (value: string | null): ActionMethodRetrunInterface => {
-        if (!value) return { status: true, msg: this.getContentMessage("invalid_currency_numeric_code") };
+        if (!value)
+            return { status: true, msg: this.getContentMessage("invalid_currency_numeric_code") };
 
         if (!/^\d{3}$/.test(value)) {
             return { status: false, msg: this.getContentMessage("invalid_currency_numeric_code") };
@@ -81,7 +82,8 @@ class CurrencyValidator {
 
     // MINOR UNIT
     public static validateMinorUnit = (value: number | null): ActionMethodRetrunInterface => {
-        if (value === null) return { status: true, msg: this.getContentMessage("invalid_currency_minor_unit") };
+        if (value === null)
+            return { status: true, msg: this.getContentMessage("invalid_currency_minor_unit") };
 
         if (value < 0) {
             return { status: false, msg: this.getContentMessage("invalid_currency_minor_unit") };
@@ -103,7 +105,8 @@ class CurrencyValidator {
 
     // COUNTRY CODE
     public static validateCountryCode = (value: string | null): ActionMethodRetrunInterface => {
-        if (!value) return { status: true, msg: this.getContentMessage("invalid_currency_country_code") };
+        if (!value)
+            return { status: true, msg: this.getContentMessage("invalid_currency_country_code") };
 
         if (!/^[A-Z]{2}$/.test(value)) {
             return { status: false, msg: this.getContentMessage("invalid_currency_country_code") };
@@ -127,10 +130,14 @@ class CurrencyValidator {
 
     // SORT ORDER
     public static validateSortOrder = (value: number | null): ActionMethodRetrunInterface => {
-        if (value === null) return { status: true, msg: this.getContentMessage("invalid_currency_sort_order") };
+        if (value === null)
+            return { status: true, msg: this.getContentMessage("invalid_currency_sort_order") };
 
         if (value < 0) {
-            return { status: false, msg: this.getContentMessage("invalid_currency_sort_order_must_be_integer") };
+            return {
+                status: false,
+                msg: this.getContentMessage("invalid_currency_sort_order_must_be_integer")
+            };
         }
 
         return { status: true, msg: "" };
@@ -262,7 +269,11 @@ class CurrencyValidator {
             return { v_state: false, v_msg: "invalid_input_app_id" };
         }
 
-        if (InputValidatorUtil.isEmpty(action) || !action || !["assign", "unassign"].includes(action)) {
+        if (
+            InputValidatorUtil.isEmpty(action) ||
+            !action ||
+            !["assign", "unassign"].includes(action)
+        ) {
             return { v_state: false, v_msg: "invalid_currency_assign_unassign_action_type" };
         }
 

@@ -1,4 +1,9 @@
-import { CHAR_CORPUS, DATA_SHIFT_KEY, InternalStorageSchemaType, STORAGE_SCHEMA } from "@/configs/constants";
+import {
+    CHAR_CORPUS,
+    DATA_SHIFT_KEY,
+    InternalStorageSchemaType,
+    STORAGE_SCHEMA
+} from "@/configs/constants";
 
 import { MemberRecordInterface } from "@/types/api_service_type";
 
@@ -89,7 +94,10 @@ class MemberAuthenticatorUtil {
 
         MemberAuthenticatorUtil.storage.set("current_member", current_member);
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
-        MemberAuthenticatorUtil.storage.set("current_member_challenge_token", login_challenge_token);
+        MemberAuthenticatorUtil.storage.set(
+            "current_member_challenge_token",
+            login_challenge_token
+        );
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
 
         return true;

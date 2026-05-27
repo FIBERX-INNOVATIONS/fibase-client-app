@@ -38,14 +38,16 @@ class PreviewRecordFetcher {
                 return fallback;
             }
 
-            const records = result.data.records.map((obj: RegisteredAppRecordInterface): SelectOptionInterface => {
-                const { name, prefix, public_id } = obj;
+            const records = result.data.records.map(
+                (obj: RegisteredAppRecordInterface): SelectOptionInterface => {
+                    const { name, prefix, public_id } = obj;
 
-                return {
-                    label_text: `${prefix?.toUpperCase?.() ?? ""} - ${name ?? ""}`,
-                    value: public_id
-                };
-            });
+                    return {
+                        label_text: `${prefix?.toUpperCase?.() ?? ""} - ${name ?? ""}`,
+                        value: public_id
+                    };
+                }
+            );
 
             return {
                 records,
@@ -84,14 +86,16 @@ class PreviewRecordFetcher {
                 return fallback;
             }
 
-            const records = result.data.records.map((obj: CurrencyRecordInterface): SelectOptionInterface => {
-                const { name, code } = obj;
+            const records = result.data.records.map(
+                (obj: CurrencyRecordInterface): SelectOptionInterface => {
+                    const { name, code } = obj;
 
-                return {
-                    label_text: `${code?.toUpperCase?.() ?? ""} - ${name ?? ""}`,
-                    value: code
-                };
-            });
+                    return {
+                        label_text: `${code?.toUpperCase?.() ?? ""} - ${name ?? ""}`,
+                        value: code
+                    };
+                }
+            );
 
             return {
                 records,

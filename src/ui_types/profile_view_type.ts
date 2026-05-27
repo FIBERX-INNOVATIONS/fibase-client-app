@@ -75,4 +75,6 @@ export interface ProfileViewClassStylesInterface {
     };
 }
 
-export type FetchRecordMethod<TRecord> = (record_id: string) => Promise<APIResponseInterface<TRecord>>;
+export type FetchRecordMethod<TRecord> = (
+    record_id: string
+) => Promise<APIResponseInterface<TRecord>>;

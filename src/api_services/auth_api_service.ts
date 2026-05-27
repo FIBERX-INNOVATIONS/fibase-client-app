@@ -69,7 +69,12 @@ class AuthAPIService extends BaseAPIService {
         if (result?.data) {
             const { current_member, access_token, expires_in_mins, permissions } = result.data;
 
-            MemberAuthenticatorUtil.onTwoFactorLoginSuccess(current_member, permissions, access_token, expires_in_mins);
+            MemberAuthenticatorUtil.onTwoFactorLoginSuccess(
+                current_member,
+                permissions,
+                access_token,
+                expires_in_mins
+            );
         } else if (result.full_response?.status === 401) {
             MemberAuthenticatorUtil.onlogoutSuccess();
         }
@@ -78,7 +83,9 @@ class AuthAPIService extends BaseAPIService {
     };
 
     // Service method to query logout endpoint
-    public static refreshAccessToen = async (): Promise<APIResponseInterface<AuthAccessRecordInterface>> => {
+    public static refreshAccessToen = async (): Promise<
+        APIResponseInterface<AuthAccessRecordInterface>
+    > => {
         const result = await this.queryAPI<AuthAccessRecordInterface>({
             url: `/auth/refresh`,
             method: "POST",
@@ -87,7 +94,11 @@ class AuthAPIService extends BaseAPIService {
 
         if (result.data) {
             const { access_token, expires_in_mins, permissions = [] } = result.data;
-            MemberAuthenticatorUtil.onAccessRefreshSuccess(access_token, expires_in_mins, permissions);
+            MemberAuthenticatorUtil.onAccessRefreshSuccess(
+                access_token,
+                expires_in_mins,
+                permissions
+            );
         } else if (result.full_response?.status === 401) {
             MemberAuthenticatorUtil.onlogoutSuccess();
         }

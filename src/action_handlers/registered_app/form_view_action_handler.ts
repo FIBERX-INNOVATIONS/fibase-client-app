@@ -99,18 +99,36 @@ class FormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    msg || "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
+            StatusAlertTriggerUtil.triggerAlert(
+                "success",
+                msg || "file_uploaded_successfully",
+                5,
+                undefined,
+                true
+            );
 
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;
@@ -132,7 +150,8 @@ class FormViewActionHandler extends BaseFormActionHandler<
             const form_data = this.form_data as RegisteredAppFromDataInterface;
             const record = this.controller?.props?.record as RegisteredAppRecordInterface;
             const record_id = record.public_id;
-            const { v_state, v_msg, v_data } = RegisteredAppValidator.validateRegisteredAppInput(form_data);
+            const { v_state, v_msg, v_data } =
+                RegisteredAppValidator.validateRegisteredAppInput(form_data);
 
             if (!v_state || !v_data) {
                 this.showErrorAlert("error", v_msg, 4);
@@ -159,7 +178,9 @@ class FormViewActionHandler extends BaseFormActionHandler<
                 return { status: false, msg: v_msg };
             }
 
-            const record_payload = { record: data } as NewRecordCreated<RegisteredAppRecordInterface>;
+            const record_payload = {
+                record: data
+            } as NewRecordCreated<RegisteredAppRecordInterface>;
 
             StatusAlertTriggerUtil.triggerAlert(status, msg, 5, undefined, true);
             this.controller.event_bus?.emit("on_new_record_created", record_payload);

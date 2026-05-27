@@ -20,7 +20,11 @@ class StatusAlertTriggerUtil {
         }
 
         const msg = StatusAlertTriggerUtil.content_manager?.getAPIResponseValue(message_key);
-        const status_alert_options = { duration: duration_in_sec * 1000, redirect_url, close_modal };
+        const status_alert_options = {
+            duration: duration_in_sec * 1000,
+            redirect_url,
+            close_modal
+        };
         const status_alert_payload = { status, msg, options: status_alert_options };
 
         StatusAlertTriggerUtil.event_bus.emit("alert_status_updated", status_alert_payload);

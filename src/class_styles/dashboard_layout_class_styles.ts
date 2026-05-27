@@ -11,7 +11,8 @@ const TopBarClassStyles: LayoutSectionsUIClassStylesInterface = {
     wrapper_class_style:
         "w-screen px-4 flex flex-wrap items-center justify-between relative min-h-[70px] h-auto w-full bg-white py-2",
 
-    section_1_wrapper_class_style: "flex items-center space-x-2 md:w-3/12 w-6/12 overflow-hidden h-full relative",
+    section_1_wrapper_class_style:
+        "flex items-center space-x-2 md:w-3/12 w-6/12 overflow-hidden h-full relative",
 
     section_2_wrapper_class_style:
         "flex items-center space-x-2 md:w-6/12 w-full overflow-hidden md:order-1 order-2 h-full relative",
@@ -52,7 +53,8 @@ const MemberAvatarClassStyle: ImageRenderUIClassStylesInterface = {
     wrapper_class_style:
         "w-auto max-w-8/12 flex items-center justify-end h-full hover:shadow-lg rounded-full cursor-pointer border-[#001f3f] border-2 overflow-hidden",
 
-    image_class_style: "w-[45px] h-[45px] border-4 border-white bg-gray-200 object-fit rounded-full",
+    image_class_style:
+        "w-[45px] h-[45px] border-4 border-white bg-gray-200 object-fit rounded-full",
 
     content_wrapper_class_style: "flex items-center justify-center w-[30px] h-full",
 
@@ -83,7 +85,8 @@ const MemberAvatarDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
 
     active_menu_class_style: "bg-[#f0f4f8]",
 
-    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
+    icon_img_wrapper_class_style:
+        "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
 
     icon_img_class_style: "w-full h-auto text-black",
 
@@ -96,11 +99,13 @@ const DeleteDropdownMenuListClassStyle: NavLinkUIClassStylesInterface = {
 
     active_menu_class_style: "bg-[#f0f4f8] hover:rounded-lg",
 
-    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
+    icon_img_wrapper_class_style:
+        "flex items-center justify-center overflow-hidden w-[24px] h-[24px] mr-2",
 
     icon_img_class_style: "w-full h-auto text-red-700",
 
-    content_class_style: "flex items-center justify-start text-red-700 text-[16px] text-start w-full"
+    content_class_style:
+        "flex items-center justify-start text-red-700 text-[16px] text-start w-full"
 };
 
 const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
@@ -153,7 +158,8 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 
     active_menu_class_style: "bg-[#6f7e8d6e]",
 
-    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden  w-3/12 h-full p-2",
+    icon_img_wrapper_class_style:
+        "flex items-center justify-center overflow-hidden  w-3/12 h-full p-2",
 
     icon_img_class_style: "w-[24px] h-[24px] text-white",
 
@@ -161,20 +167,24 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 };
 
 const ModalClassStyle: ModalUIClassStylesInterface = {
-    wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
+    wrapper_class_style:
+        "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
     modal_class_style:
         "overflow-hidden relative bg-white shadow-lg rounded-lg w-[45%] md:w-[50%] lg:w-[35%] max-w-[90%] min-w-[45%] md:min-w-[50%] lg:min-w-[35%]",
 
-    header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
+    header_class_style:
+        "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
 
-    header_title_wrapper_class_style: "flex items-center justify-start w-10/12 h-full py-2 px-2 overflow-hidden",
+    header_title_wrapper_class_style:
+        "flex items-center justify-start w-10/12 h-full py-2 px-2 overflow-hidden",
 
     header_title_class_style: "font-black uppercase w-full truncate",
 
     header_title_img_icon_class_style: "w-[36px] h-[36px] flex items-center justify-center mr-2",
 
-    header_close_btn_wrapper_class_style: "flex items-center justify-center w-2/12 h-full p-2 overflow-hidden",
+    header_close_btn_wrapper_class_style:
+        "flex items-center justify-center w-2/12 h-full p-2 overflow-hidden",
 
     close_btn_class_style:
         "w-[34px] h-[34px] text-[24px] cursor-pointer font-bold rounded-full hover:shadow-2xl flex items-center justify-center bg-gray-200",
@@ -186,7 +196,8 @@ const ModalClassStyle: ModalUIClassStylesInterface = {
 
 // const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
 const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
-    header_class_style: "fixed top-0 left-0 w-screen p-0 m-0 bg-white shadow-md z-[5] border-gray-100 border-b h-auto",
+    header_class_style:
+        "fixed top-0 left-0 w-screen p-0 m-0 bg-white shadow-md z-[5] border-gray-100 border-b h-auto",
 
     main_class_style: "pt-[92px] pb-[60px] h-screen overflow-y-auto overflow-x-hidden",
 

@@ -5,7 +5,7 @@ export type FieldValidator<FormData> = (
     form_data: Partial<FormData>
 ) => Promise<ActionMethodRetrunInterface> | ActionMethodRetrunInterface;
 
-export interface BaseFormData {
+export interface BaseFormData extends Record<string, any> {
     csrf_token: string | null;
 }
 

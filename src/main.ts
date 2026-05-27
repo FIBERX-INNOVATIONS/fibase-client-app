@@ -31,7 +31,10 @@ class FibaseClientApp {
 
     private readonly router: Router = this.route_manager.getRouter();
 
-    private readonly logger: LoggerUtil = new LoggerUtil({ prefix: this.name, show_timestamp: false });
+    private readonly logger: LoggerUtil = new LoggerUtil({
+        prefix: this.name,
+        show_timestamp: false
+    });
 
     private readonly content_manager: ContentManagerUtil = ContentManagerUtil.getInstance();
 

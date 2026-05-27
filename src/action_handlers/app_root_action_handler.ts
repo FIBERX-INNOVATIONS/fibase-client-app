@@ -149,16 +149,27 @@ class AppRootActionHandler extends BaseActionHandler<
     };
 
     // Method to handle alert status changed event
-    public handleStatusChanged = async (payload: AlertStatusChangedEventPayloadInterface): Promise<void> => {
+    public handleStatusChanged = async (
+        payload: AlertStatusChangedEventPayloadInterface
+    ): Promise<void> => {
         const { status, msg, options = {} } = payload;
 
-        const { duration = 2000, should_reload = false, redirect_url = "", close_modal = false } = options;
+        const {
+            duration = 2000,
+            should_reload = false,
+            redirect_url = "",
+            close_modal = false
+        } = options;
 
         this.clearStatusAlertTimeout();
 
         const current_alert_sequence = ++this.alert_sequence;
         const status_icon = this.getStatusIcon(status);
-        const new_status_alert_props = StatusAlertPropsBuilder.getReactivePropsObject(status, msg, status_icon);
+        const new_status_alert_props = StatusAlertPropsBuilder.getReactivePropsObject(
+            status,
+            msg,
+            status_icon
+        );
 
         this.setState("alert_status", new_status_alert_props?.alert_status ?? null);
 

@@ -120,8 +120,8 @@ class RouterManager {
                 name: "RegisteredAppList",
                 component: RegisteredAppListView,
                 meta: {
-                    page_meta_key: "registered_app_list_page",
-                    title_key: "registered_app_list_page",
+                    page_meta_key: "registered_app_page",
+                    title_key: "registered_app_page",
                     permission_name: "registered_app_module.get_registered_app_list",
                     is_auth_page: false
                 }
@@ -131,8 +131,8 @@ class RouterManager {
                 name: "CurrencyList",
                 component: CurrencyListView,
                 meta: {
-                    page_meta_key: "currency_list_page",
-                    title_key: "currency_list_page",
+                    page_meta_key: "currency_page",
+                    title_key: "currency_page",
                     permission_name: "currency_module.get_currency_list",
                     is_auth_page: false
                 }

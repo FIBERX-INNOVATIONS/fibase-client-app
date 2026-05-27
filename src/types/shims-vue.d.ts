@@ -3,7 +3,12 @@ export {};
 declare global {
     var __VLS_PROPS_FALLBACK: Record<string, unknown>;
 
-    const __VLS_directiveBindingRestFields: { instance: null; oldValue: null; modifiers: any; dir: any };
+    const __VLS_directiveBindingRestFields: {
+        instance: null;
+        oldValue: null;
+        modifiers: any;
+        dir: any;
+    };
     const __VLS_placeholder: any;
     const __VLS_intrinsics: import("vue/jsx-runtime").JSX.IntrinsicElements;
 
@@ -92,7 +97,9 @@ declare global {
     type __VLS_OverloadUnionInner<T, U = unknown> = U & T extends (...args: infer A) => infer R
         ? U extends T
             ? never
-            : __VLS_OverloadUnionInner<T, Pick<T, keyof T> & U & ((...args: A) => R)> | ((...args: A) => R)
+            :
+                  | __VLS_OverloadUnionInner<T, Pick<T, keyof T> & U & ((...args: A) => R)>
+                  | ((...args: A) => R)
         : never;
     type __VLS_OverloadUnion<T> = Exclude<
         __VLS_OverloadUnionInner<(() => never) & T>,
@@ -120,12 +127,18 @@ declare global {
         Comp,
         Emits,
         TypeEmits = {},
-        NormalizedEmits = __VLS_NormalizeEmits<Emits> extends infer E ? (string extends keyof E ? {} : E) : never
+        NormalizedEmits = __VLS_NormalizeEmits<Emits> extends infer E
+            ? string extends keyof E
+                ? {}
+                : E
+            : never
     > = __VLS_SpreadMerge<NormalizedEmits, TypeEmits>;
     type __VLS_ResolveDirectives<T> = {
         [K in keyof T & string as `v${Capitalize<K>}`]: T[K];
     };
-    type __VLS_PrettifyGlobal<T> = (T extends any ? { [K in keyof T]: T[K] } : { [K in keyof T as K]: T[K] }) & {};
+    type __VLS_PrettifyGlobal<T> = (T extends any
+        ? { [K in keyof T]: T[K] }
+        : { [K in keyof T as K]: T[K] }) & {};
     type __VLS_UseTemplateRef<T> = Readonly<import("vue").ShallowRef<T | null>>;
     type __VLS_ProxyRefs<T> = import("vue").ShallowUnwrapRef<T>;
 
@@ -143,7 +156,9 @@ declare global {
                   : any,
         index: number
     ][];
-    function __VLS_getVForSourceType<T>(source: T): [item: T[keyof T], key: keyof T, index: number][];
+    function __VLS_getVForSourceType<T>(
+        source: T
+    ): [item: T[keyof T], key: keyof T, index: number][];
     function __VLS_getSlotParameters<S, D extends S>(
         slot: S,
         decl?: D
@@ -152,12 +167,22 @@ declare global {
         dir: T
     ): T extends import("vue").ObjectDirective
         ? NonNullable<
-              T["created" | "beforeMount" | "mounted" | "beforeUpdate" | "updated" | "beforeUnmount" | "unmounted"]
+              T[
+                  | "created"
+                  | "beforeMount"
+                  | "mounted"
+                  | "beforeUpdate"
+                  | "updated"
+                  | "beforeUnmount"
+                  | "unmounted"]
           >
         : T extends (...args: any) => any
           ? T
           : (arg1: unknown, arg2: unknown, arg3: unknown, arg4: unknown) => void;
-    function __VLS_asFunctionalComponent<T, K = T extends new (...args: any) => any ? InstanceType<T> : unknown>(
+    function __VLS_asFunctionalComponent<
+        T,
+        K = T extends new (...args: any) => any ? InstanceType<T> : unknown
+    >(
         t: T,
         instance?: K
     ): T extends new (...args: any) => any
@@ -170,7 +195,12 @@ declare global {
     function __VLS_functionalComponentArgsRest<T extends (...args: any) => any>(
         t: T
     ): 2 extends Parameters<T>["length"] ? [any] : [];
-    function __VLS_asFunctionalElement<T>(tag: T, endTag?: T): (attrs: T & Record<string, unknown>) => void;
-    function __VLS_asFunctionalSlot<S>(slot: S): S extends () => infer R ? (props: {}) => R : NonNullable<S>;
+    function __VLS_asFunctionalElement<T>(
+        tag: T,
+        endTag?: T
+    ): (attrs: T & Record<string, unknown>) => void;
+    function __VLS_asFunctionalSlot<S>(
+        slot: S
+    ): S extends () => infer R ? (props: {}) => R : NonNullable<S>;
     function __VLS_tryAsConstant<const T>(t: T): T;
 }
