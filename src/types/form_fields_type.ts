@@ -5,6 +5,10 @@ type LoginFieldsType = {
     password_input_group_props: InputGroupUIPropsInterface;
 };
 
+type TwoFactorLoginFieldsType = {
+    otp_input_group_props: InputGroupUIPropsInterface;
+};
+
 type RegisteredAppFieldsType = {
     prefix_input_group_props: InputGroupUIPropsInterface;
     name_input_group_props: InputGroupUIPropsInterface;
@@ -44,4 +48,10 @@ type AppCurrencyFieldsType = {
     currency_code_list_input_group_props: InputGroupUIPropsInterface;
 };
 
-export { LoginFieldsType, RegisteredAppFieldsType, CurrencyFieldsType, AppCurrencyFieldsType };
+export {
+    LoginFieldsType,
+    TwoFactorLoginFieldsType,
+    RegisteredAppFieldsType,
+    CurrencyFieldsType,
+    AppCurrencyFieldsType
+};

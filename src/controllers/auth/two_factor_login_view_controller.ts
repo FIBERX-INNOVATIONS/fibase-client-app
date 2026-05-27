@@ -2,71 +2,85 @@ import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { CSRF_TOKEN_FOR } from "@/configs/constants";
 
+import { TwoFactorLoginFieldsType } from "@/types/form_fields_type";
+
+import { TwoFactorFormDataInterface } from "@/types/form_data_type";
+
 import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
-import {
-    TwoFactorLoginViewPropsInterface,
-    TwoFactorLoginViewStateDataInterface,
-    TwoFactorLoginViewComputedDataInterface,
-    TwoFactorLoginViewComponentsInterface
-} from "@/ui_types/two_factor_login_view_type";
+import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+
+import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
 
 import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
 
 import TwoFactorLoginViewActionHandler from "@/action_handlers/auth/two_factor_login_view_action_handler";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
 import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
-import { TwoFactorFormDataInterface } from "@/types/form_data_type";
+
+import {
+    FormViewComputedDataInterface,
+    FormViewPropsWithClassStyles,
+    TwoFactorLoginViewStateDataInterface,
+    FormViewComponentsInterface
+} from "@/ui_types/form_view_type";
 
 class TwoFactorLoginViewController extends BaseFormViewController<
     TwoFactorFormDataInterface,
-    TwoFactorLoginViewPropsInterface,
+    TwoFactorLoginFieldsType,
+    FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>,
     TwoFactorLoginViewStateDataInterface,
-    TwoFactorLoginViewComputedDataInterface,
-    TwoFactorLoginViewComponentsInterface,
-    AuthsViewClassStylesInterface,
-    TwoFactorLoginViewActionHandler,
+    FormViewComputedDataInterface,
+    FormViewComponentsInterface,
     GlobalEventTypes
 > {
-    constructor(props: TwoFactorLoginViewPropsInterface) {
+    public readonly class_styles: AuthsViewClassStylesInterface =
+        AuthLayoutClassStyles.auth_view_class_style;
+
+    constructor(props: FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>) {
         super("two_factor_login_view", props, AuthLayoutClassStyles.auth_view_class_style);
 
         this.setFormActionHandler(new TwoFactorLoginViewActionHandler(this));
-    }
-
-    // Method to get state data
-    protected getUIStateData(): TwoFactorLoginViewStateDataInterface {
-        const username_content_key = "content_resource.two_factor_login_view_ui.fieldset.otp_field";
-        const btn_content_key = "content_resource.two_factor_login_view_ui.fieldset.btn_text";
 
         this.configureFormUI({
             toaster_id: "two_factor_toaster",
             input_number_props: { length: 6 }
         });
+    }
 
-        const otp_input_props = this.buildInputProps("otp_code", "otp", username_content_key);
+    // Method to build header text ui
+    protected buildHeaderTextUIProps(): HeaderTextUIPropsInterface {
+        return this.buildHeaderTextProps(
+            "content_resource.two_factor_login_view_ui.header_text",
+            "h2"
+        );
+    }
 
-        return {
-            header_text_props: this.buildHeaderTextProps(
-                "content_resource.two_factor_login_view_ui.header_text",
-                "h2"
-            ),
+    // Method to build form fields UI
+    protected buildFormFieldsUI(): TwoFactorLoginFieldsType {
+        const otp_content_key = "content_resource.two_factor_login_view_ui.fieldset.otp_field";
 
-            otp_input_group_props: this.buildInputGroupFromInputProps(
-                otp_input_props,
-                username_content_key
-            ),
+        const otp_input_props = this.buildInputProps("otp_code", "otp", otp_content_key);
 
-            toast_alert_props: this.buildToasterProps(),
+        const otp_input_group_props = this.buildInputGroupFromInputProps(
+            otp_input_props,
+            otp_content_key
+        );
 
-            class_styles: this.class_styles,
+        return { otp_input_group_props } as TwoFactorLoginFieldsType;
+    }
 
-            btn_props: this.buildSubmitButtonProps(
-                "login_submit",
-                btn_content_key,
-                "paper_airplane_send_svg_icon"
-            )
-        } as TwoFactorLoginViewStateDataInterface;
+    // Method to build form button UI
+    protected buildFormBtnUI(): ButtonUIPropsInterface {
+        const btn_content_key = "content_resource.two_factor_login_view_ui.fieldset.btn_text";
+
+        return this.buildSubmitButtonProps(
+            "2fa_login_submit",
+            btn_content_key,
+            "paper_airplane_send_svg_icon"
+        );
     }
 
     protected async handleOnMountedLogic(): Promise<void> {

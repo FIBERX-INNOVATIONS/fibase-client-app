@@ -15,7 +15,7 @@ export interface LoginFormDataInterface extends BaseFormData {
 }
 
 export interface TwoFactorFormDataInterface extends BaseFormData {
-    otp_code: string;
+    otp_code: string | null;
 }
 
 export interface RegisteredAppSocialLinksInterface {

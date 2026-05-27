@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory, Router, RouteRecordRaw, RouteMeta } from "vue-router";
 import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
-const LoginView = () => import("@/views/LoginView.vue");
-const TwoFactorLoginView = () => import("@/views/TwoFactorLoginView.vue");
-const LogoutView = () => import("@/views/LogoutView.vue");
+const LoginView = () => import("@/views/auth/LoginView.vue");
+const TwoFactorLoginView = () => import("@/views/auth/TwoFactorLoginView.vue");
+const LogoutView = () => import("@/views/auth/LogoutView.vue");
 const DashboardView = () => import("@/views/DashboardView.vue");
 const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
 const CurrencyListView = () => import("@/views/currency/ListView.vue");

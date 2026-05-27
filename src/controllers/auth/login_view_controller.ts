@@ -8,11 +8,16 @@ import { LoginFormDataInterface } from "@/types/form_data_type";
 
 import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
+import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+
+import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
+
 import AuthLayoutClassStyles from "@/class_styles/auth_layout_class_styles";
 
 import LoginViewActionHandler from "@/action_handlers/auth/login_view_action_handler";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
 import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
 
 import {
@@ -21,8 +26,6 @@ import {
     LoginViewStateDataInterface,
     FormViewComponentsInterface
 } from "@/ui_types/form_view_type";
-import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-import { HeaderTextUIPropsInterface } from "@ui/version_3/ui_types/header_text_ui_type";
 
 class LoginViewController extends BaseFormViewController<
     LoginFormDataInterface,

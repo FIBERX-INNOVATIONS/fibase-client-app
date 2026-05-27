@@ -1,6 +1,8 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
+import { TwoFactorLoginFieldsType } from "@/types/form_fields_type";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
+
+import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
 import { FieldValidator, TwoFactorFormDataInterface } from "@/types/form_data_type";
 
@@ -8,36 +10,42 @@ import { ButtonActionMethodReturnInterface } from "@ui/version_3/ui_types/button
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
-import {
-    TwoFactorLoginViewPropsInterface,
-    TwoFactorLoginViewStateDataInterface,
-    TwoFactorLoginViewComputedDataInterface,
-    TwoFactorLoginViewComponentsInterface
-} from "@/ui_types/two_factor_login_view_type";
+import BaseController from "@ui/version_3/base_classes/base_controller";
 
-import BaseFormActionHandler from "../base_classes/base_form_action_handler";
+import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
+
+import {
+    FormViewComputedDataInterface,
+    FormViewPropsWithClassStyles,
+    TwoFactorLoginViewStateDataInterface,
+    FormViewComponentsInterface
+} from "@/ui_types/form_view_type";
+
 import TwoFactorLoginValidator from "@/validators/two_factor_login_validator";
+
 import AuthAPIService from "@/api_services/auth_api_service";
+
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
 class TwoFactorLoginViewActionHandler extends BaseFormActionHandler<
     TwoFactorFormDataInterface,
-    TwoFactorLoginViewPropsInterface,
+    TwoFactorLoginFieldsType,
+    FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>,
     TwoFactorLoginViewStateDataInterface,
-    TwoFactorLoginViewComputedDataInterface,
-    TwoFactorLoginViewComponentsInterface,
+    FormViewComputedDataInterface,
+    FormViewComponentsInterface,
     GlobalEventTypes
 > {
     constructor(
         controller: BaseController<
-            TwoFactorLoginViewPropsInterface,
+            FormViewPropsWithClassStyles<AuthsViewClassStylesInterface>,
             TwoFactorLoginViewStateDataInterface,
-            TwoFactorLoginViewComputedDataInterface,
-            TwoFactorLoginViewComponentsInterface,
+            FormViewComputedDataInterface,
+            FormViewComponentsInterface,
             GlobalEventTypes
         >
     ) {
-        const form_data = { csrf_token: null, otp_code: "" };
+        const form_data = { csrf_token: null, otp_code: null };
 
         super(controller, "two_factor_login_view_action_handler", form_data);
 

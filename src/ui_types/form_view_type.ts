@@ -16,7 +16,8 @@ import {
     LoginFieldsType,
     RegisteredAppFieldsType,
     CurrencyFieldsType,
-    AppCurrencyFieldsType
+    AppCurrencyFieldsType,
+    TwoFactorLoginFieldsType
 } from "@/types/form_fields_type";
 
 import {
@@ -130,6 +131,8 @@ interface FormViewStateDataInterface<
 
 type LoginViewStateDataInterface = FormViewStateDataInterface<LoginFieldsType>;
 
+type TwoFactorLoginViewStateDataInterface = FormViewStateDataInterface<TwoFactorLoginFieldsType>;
+
 type RegisteredAppFormState = FormViewStateDataInterface<RegisteredAppFieldsType>;
 
 type CurrencyFormState = FormViewStateDataInterface<CurrencyFieldsType>;
@@ -146,6 +149,7 @@ export {
     FormViewComputedDataInterface,
     FormViewStateDataInterface,
     AssignCurrencyFormViewPropsInterface,
+    TwoFactorLoginViewStateDataInterface,
     LoginViewStateDataInterface,
     RegisteredAppFormState,
     CurrencyFormState,
