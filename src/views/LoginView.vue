@@ -9,7 +9,6 @@
 
                     <InputGroupUI v-bind="state_refs.fields.value.password_input_group_props" />
 
-                    {{ state_refs.toast_alert_props.value }}
                     <ToasterUI v-bind="state_refs.toast_alert_props.value" />
 
                     <ButtonUI v-bind="state_refs.btn_props.value" />
