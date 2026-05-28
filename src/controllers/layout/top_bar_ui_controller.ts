@@ -74,7 +74,8 @@ class TopBarUIController extends BaseController<
                 "button",
                 {
                     class_styles: DashboardLayoutClassStyles.hamburger_btn_class_style,
-                    action_props: { on_click: this.action_handler.toggleSideBar }
+                    action_props: { on_click: this.action_handler.toggleSideBar },
+                    boolean_props: { disabled: false }
                 }
             ),
 
