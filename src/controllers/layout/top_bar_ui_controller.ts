@@ -1,8 +1,4 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
 import { EventBus } from "@/utils/global_event_bus_util";
-
-import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
 
@@ -17,16 +13,23 @@ import {
     TopBarUIComponentsInterface
 } from "@/ui_types/top_bar_ui_type";
 
-import LayoutSectionsUI from "@ui/version_3/components/LayoutSectionsUI.vue";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
+import BaseController from "@ui/version_3/base_classes/base_controller";
+
 import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
+
 import ImageRenderUI from "@ui/version_3/components/ImageRenderUI.vue";
+
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
+import LayoutSectionsUI from "@ui/version_3/components/LayoutSectionsUI.vue";
+
 import TopBarUIActionHandler from "@/action_handlers/layout/top_bar_action_handler";
+
+import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 import ImageRenderUIPropsBuilder from "@ui/version_3/props_builder/image_render_ui_props_builder";
-import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
-import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class TopBarUIController extends BaseController<
@@ -36,17 +39,21 @@ class TopBarUIController extends BaseController<
     TopBarUIComponentsInterface,
     GlobalEventTypes
 > {
-    public class_styles: LayoutSectionsUIClassStylesInterface =
-        DashboardLayoutClassStyles.top_bar_class_style;
+    public readonly class_styles: LayoutSectionsUIClassStylesInterface;
 
-    public action_handler: TopBarUIActionHandler = new TopBarUIActionHandler(this);
+    public action_handler: TopBarUIActionHandler;
 
     constructor(props: TopBarUIPropsInterface) {
         super("top_bar_ui", props, EventBus);
 
+        this.class_styles = props.class_styles ?? DashboardLayoutClassStyles.top_bar_class_style;
+
+        this.action_handler = new TopBarUIActionHandler(this);
+        this.setActionHandler(this.action_handler);
         this.getComponentDefinition();
     }
 
+    // Method to get the UI components
     protected getUIComponents(): TopBarUIComponentsInterface {
         return {
             LayoutSectionsUI,
@@ -56,6 +63,7 @@ class TopBarUIController extends BaseController<
         };
     }
 
+    // Method to get the state data for the UI
     protected getUIStateData(): TopBarUIStateDataInterface {
         const member = MemberAuthenticatorUtil.getLoggedInMember();
 
@@ -86,7 +94,7 @@ class TopBarUIController extends BaseController<
                 {
                     class_styles: DashboardLayoutClassStyles.member_avatar_class_style,
                     action_props: {
-                        on_click: this.action_handler.toggleMemeberAvatarDrodpwn
+                        on_click: this.action_handler.toggleMemberAvatarDropdown
                     }
                 }
             ),
@@ -103,10 +111,6 @@ class TopBarUIController extends BaseController<
                 }
             )
         };
-    }
-
-    protected getUIComputedData(): ComputedDefinitionType<TopBarUIComputedDataInterface> {
-        return {};
     }
 }
 
