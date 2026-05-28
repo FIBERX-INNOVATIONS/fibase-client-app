@@ -50,7 +50,6 @@ class TopBarUIController extends BaseController<
 
         this.action_handler = new TopBarUIActionHandler(this);
         this.setActionHandler(this.action_handler);
-        this.getComponentDefinition();
     }
 
     // Method to get the UI components

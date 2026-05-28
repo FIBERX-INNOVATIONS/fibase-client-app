@@ -1,12 +1,8 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
 import { EventBus } from "@/utils/global_event_bus_util";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { WatchersType } from "@ui/version_3/types/base_type";
-
-import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 
 import {
     SideBarUIPropsInterface,
@@ -16,15 +12,26 @@ import {
     SideBarUIClassStyleInterface
 } from "@/ui_types/side_bar_ui_type";
 
+import BaseController from "@ui/version_3/base_classes/base_controller";
+
+import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
+
 import OverlayUI from "@ui/version_3/components/OverlayUI.vue";
-import LayoutSectionsUI from "@ui/version_3/components/LayoutSectionsUI.vue";
+
 import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
+
 import ImageRenderUI from "@ui/version_3/components/ImageRenderUI.vue";
+
 import DropdownMenuUI from "@ui/version_3/components/DropdownMenuUI.vue";
 
+import LayoutSectionsUI from "@ui/version_3/components/LayoutSectionsUI.vue";
+
 import SideBarUIActionHandler from "@/action_handlers/layout/side_bar_action_handler";
+
 import ImageRenderUIPropsBuilder from "@ui/version_3/props_builder/image_render_ui_props_builder";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
+
 import OverlayUIPropsBuilder from "@ui/version_3/props_builder/overlay_ui_props_builder";
 
 class SideBarUIController extends BaseController<
@@ -34,15 +41,20 @@ class SideBarUIController extends BaseController<
     SideBarUIComponentsInterface,
     GlobalEventTypes
 > {
-    public class_styles: SideBarUIClassStyleInterface =
-        DashboardLayoutClassStyles.side_bar_class_style;
+    public readonly class_styles: SideBarUIClassStyleInterface;
 
-    public action_handler: SideBarUIActionHandler = new SideBarUIActionHandler(this);
+    public action_handler: SideBarUIActionHandler;
 
     constructor(props: SideBarUIPropsInterface) {
-        super("top_bar_ui", props, EventBus);
+        super("side_bar_ui", props, EventBus);
 
-        this.getComponentDefinition();
+        this.class_styles = {
+            ...DashboardLayoutClassStyles.side_bar_class_style,
+            ...(props.class_styles ?? {})
+        };
+
+        this.action_handler = new SideBarUIActionHandler(this);
+        this.setActionHandler(this.action_handler);
     }
 
     protected getUIComponents(): SideBarUIComponentsInterface {
@@ -102,6 +114,10 @@ class SideBarUIController extends BaseController<
 
     protected async handleOnMountedLogic(): Promise<void> {
         this.event_bus?.on("toggle_sidebar", this.action_handler.handleToggleSideBar);
+    }
+
+    protected async handleBeforeUnmountedLogic(): Promise<void> {
+        this.event_bus?.off("toggle_sidebar", this.action_handler.handleToggleSideBar);
     }
 }
 
