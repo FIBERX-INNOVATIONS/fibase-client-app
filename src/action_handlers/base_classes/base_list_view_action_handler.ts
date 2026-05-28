@@ -1,9 +1,6 @@
 import { markRaw } from "vue";
+
 import type { LocationQueryRaw, RouteLocationNormalizedLoaded } from "vue-router";
-
-import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
-
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
@@ -11,14 +8,7 @@ import { FiltersPanelUIActionPropsInterface } from "@ui/version_3/ui_types/filte
 
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
-import {
-    ListViewPropsInterface,
-    ListViewStateDataInterface,
-    ListViewComputedDataInterface,
-    ListViewComponentsInterface,
-    FetchListMethod,
-    ListStateInterface
-} from "@/ui_types/list_view_type";
+import { DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
 import {
     ActionMethodRetrunInterface,
@@ -32,15 +22,28 @@ import {
     ButtonUIPropsInterface
 } from "@ui/version_3/ui_types/button_ui_type";
 
+import {
+    ListViewPropsInterface,
+    ListViewStateDataInterface,
+    ListViewComputedDataInterface,
+    ListViewComponentsInterface,
+    FetchListMethod,
+    ListStateInterface
+} from "@/ui_types/list_view_type";
+
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
+
+import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
+
+import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
+
 import FiltersPanelUIPropsBuilder from "@ui/version_3/props_builder/filters_panel_ui_props_builder";
+
 import InputUIPropsBuilder from "@ui/version_3/props_builder/input_ui_props_builder";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
-import { DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
-type MutableRecord = Record<string, unknown>;
-type QueryValue = string | number;
+import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
 
 class BaseListViewActionHandler<
     T extends object,
@@ -59,9 +62,9 @@ class BaseListViewActionHandler<
 
     protected content_manager = ContentManagerUtil.getInstance();
 
-    public filter_values: Partial<FilterValues> = {};
-
     protected fetch_list_method?: FetchListMethod<FilterValues, T>;
+
+    public filter_values: Partial<FilterValues> = {};
 
     constructor(
         controller: BaseListViewController<T, K>,
@@ -92,38 +95,33 @@ class BaseListViewActionHandler<
     ): Promise<void> => {};
 
     // Method to get table serial cell
-    private getSerialCell = () => {
+    protected getSerialCell = () => {
         return this.controller.state_refs.table_props.value.table_render_obj?.[0];
     };
 
-    private getFilterKeys = (): string[] => {
+    // Method to get fitler keys
+    protected getFilterKeys = (): string[] => {
         const filter_fields =
             this.controller.state_refs.filters_panel_props?.value?.filter_fields ?? [];
 
         return filter_fields.map((field) => field.key);
     };
 
-    private isEmptyFilterValue = (value: unknown): boolean => {
-        return (
-            value === null ||
-            value === undefined ||
-            value === "" ||
-            (Array.isArray(value) && value.length === 0)
-        );
-    };
-
-    private parsePositiveInteger = (value: unknown, fallback: number): number => {
+    // Method to parse positive integer from string or array value with fallback
+    protected parsePositiveInteger = (value: unknown, fallback: number): number => {
         const raw_value = Array.isArray(value) ? value[0] : value;
         const parsed = Number(raw_value);
 
         return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
     };
 
-    private getFilterRecord = (): MutableRecord => {
-        return this.filter_values as MutableRecord;
+    // Method to get current filter record
+    protected getFilterRecord = (): Record<string, unknown> => {
+        return this.filter_values as Record<string, unknown>;
     };
 
-    private serializeQueryValue = (value: unknown): QueryValue => {
+    // Method to serialize the value for route query Parameters
+    protected serializeValueForRoute = (value: unknown): string | number => {
         if (typeof value === "object" && value !== null) {
             return JSON.stringify(value);
         }
@@ -132,28 +130,30 @@ class BaseListViewActionHandler<
             return value.toString();
         }
 
-        return value as QueryValue;
+        return value as string | number;
     };
 
-    private buildFilterQuery = (base_query: LocationQueryRaw = {}): LocationQueryRaw => {
+    // Method to build filter query for route based on current filter values
+    protected buildFilterQuery = (base_query: LocationQueryRaw = {}): LocationQueryRaw => {
         const next_query = { ...base_query };
         const filter_values = this.getFilterRecord();
 
         this.getFilterKeys().forEach((key) => {
             const value = filter_values[key];
 
-            if (this.isEmptyFilterValue(value)) {
+            if (InputValidatorUtil.isEmpty(value)) {
                 delete next_query[key];
                 return;
             }
 
-            next_query[key] = this.serializeQueryValue(value);
+            next_query[key] = this.serializeValueForRoute(value);
         });
 
         return next_query;
     };
 
-    private buildListStateFromRoute = (
+    // Method to build list state from route query
+    protected buildListStateFromRoute = (
         query: RouteLocationNormalizedLoaded["query"]
     ): Partial<ListStateInterface<T>> => {
         const current_state = this.controller.getListState();
@@ -171,9 +171,10 @@ class BaseListViewActionHandler<
         };
     };
 
-    private setFilterValues = (values: Partial<FilterValues>): void => {
+    // Method to set filter values based on provided values and current filter keys
+    protected setFilterValues = (values: Partial<FilterValues>): void => {
         const current_values = this.getFilterRecord();
-        const next_values = values as MutableRecord;
+        const next_values = values as Record<string, unknown>;
 
         Object.keys(current_values).forEach((key) => {
             delete current_values[key];
@@ -182,15 +183,20 @@ class BaseListViewActionHandler<
         this.getFilterKeys().forEach((key) => {
             const value = next_values[key];
 
-            if (!this.isEmptyFilterValue(value)) {
+            if (!InputValidatorUtil.isEmpty(value)) {
                 current_values[key] = value;
             }
         });
     };
 
-    private syncFilterPanelValues = (): void => {
-        const panel_props = this.controller.state_refs.filters_panel_props.value;
+    // Method to sync filter panel input values with current filter values
+    protected syncFilterPanelValues = (): void => {
+        const panel_props = this.getState("filters_panel_props");
         const filter_values = { ...this.filter_values };
+
+        if (!panel_props) {
+            return;
+        }
 
         panel_props.props_filter_values = filter_values;
 
@@ -201,13 +207,14 @@ class BaseListViewActionHandler<
                 return;
             }
 
-            const value = (filter_values as MutableRecord)[field.key] ?? null;
+            const value = (filter_values as Record<string, unknown>)[field.key] ?? null;
 
             InputUIPropsBuilder.updateValue(input_props, value as InputValue);
         });
     };
 
-    private updateRouteQuery = async (next_query: LocationQueryRaw): Promise<boolean> => {
+    // Method to update route query with provided query and return if route was changed or not
+    protected updateRouteQuery = async (next_query: LocationQueryRaw): Promise<boolean> => {
         const current_query = this.controller.route.query;
         const current_query_string = JSON.stringify(current_query);
         const next_query_string = JSON.stringify(next_query);
@@ -222,7 +229,7 @@ class BaseListViewActionHandler<
     };
 
     // Method to handle on filter input change
-    public handleOnInputChanged = async (
+    protected handleOnInputChanged = async (
         event?: Event,
         input_value?: InputValue,
         input_config?: { props: InputUIPropsInterface }
@@ -245,7 +252,7 @@ class BaseListViewActionHandler<
         const formatted_key = input_id.replace(/_\d+$/, "");
         const filter_values = this.getFilterRecord();
 
-        if (this.isEmptyFilterValue(value)) {
+        if (InputValidatorUtil.isEmpty(value)) {
             delete filter_values[formatted_key];
         } else {
             filter_values[formatted_key] = value;
@@ -260,28 +267,32 @@ class BaseListViewActionHandler<
     };
 
     // Method to hydrate filters from route query
-    public hydrateFiltersFromRoute = (route_query = this.controller.route.query): void => {
+    protected hydrateFiltersFromRoute = (route_query = this.controller.route.query): void => {
         const hydrated_query = FiltersPanelUIPropsBuilder.hydrateFiltersFromRoute(route_query);
         const filter_keys = this.getFilterKeys();
-        const route_filters = filter_keys.reduce((filters, key) => {
-            const value = hydrated_query[key];
+        const route_filters = filter_keys.reduce(
+            (filters, key) => {
+                const value = hydrated_query[key];
 
-            if (!this.isEmptyFilterValue(value)) {
-                filters[key] = value;
-            }
+                if (!InputValidatorUtil.isEmpty(value)) {
+                    filters[key] = value;
+                }
 
-            return filters;
-        }, {} as MutableRecord);
+                return filters;
+            },
+            {} as Record<string, unknown>
+        );
 
         this.setFilterValues(route_filters as FilterValues);
         this.syncFilterPanelValues();
     };
 
     // Method to handle on clear filters
-    public handleOnClearFilters = async (): Promise<void> => {
+    protected handleOnClearFilters = async (): Promise<void> => {
         const next_query = { ...this.controller.route.query };
+        const filter_keys = [...this.getFilterKeys(), "sort_by", "sort_direction"];
 
-        this.getFilterKeys().forEach((key) => {
+        filter_keys.forEach((key) => {
             delete next_query[key];
         });
 
@@ -298,7 +309,7 @@ class BaseListViewActionHandler<
     };
 
     // Method to handle on apply filters
-    public handleOnApplyFilters = async (filters?: MutableRecord): Promise<void> => {
+    protected handleOnApplyFilters = async (filters?: Record<string, unknown>): Promise<void> => {
         if (filters) {
             this.setFilterValues(filters as Partial<FilterValues>);
             this.syncFilterPanelValues();
@@ -408,9 +419,10 @@ class BaseListViewActionHandler<
         } = new_val;
 
         const sn_cell = this.getSerialCell();
-        const bulk_action_selection_props =
-            this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value
-                ?.selection_props;
+        const result_and_bulk_action_bar_props = this.getState(
+            "data_table_result_and_bulk_action_bar_props"
+        );
+        const bulk_action_selection_props = result_and_bulk_action_bar_props?.selection_props;
 
         this.controller.state_refs.table_props.value.is_loading = is_loading;
         this.controller.state_refs.table_props.value.data = records;
@@ -443,7 +455,7 @@ class BaseListViewActionHandler<
         if (bulk_action_selection_props) {
             bulk_action_selection_props.selected_count = 0;
             bulk_action_selection_props.bulk_button_props =
-                this.controller.getBulkActionButtonProps();
+                this.controller.getDefaultBulkActionButtonProps();
         }
     };
 
@@ -585,7 +597,7 @@ class BaseListViewActionHandler<
         input_value?: InputValue
     ): Promise<ActionMethodRetrunInterface> => {
         try {
-            const row_key = this.controller.getTableRowKey();
+            const row_key = this.controller.record_id_key;
             const value = record?.[row_key];
 
             const sn_cell = this.getSerialCell();
@@ -597,10 +609,11 @@ class BaseListViewActionHandler<
                 };
             }
 
-            const selected_records = this.controller.state_refs.selected_records.value;
-            const bulk_action_selection_props =
-                this.controller.state_refs.data_table_result_and_bulk_action_bar_props?.value
-                    ?.selection_props;
+            const selected_records = this.getState("selected_records") ?? [];
+            const result_and_bulk_action_bar_props = this.getState(
+                "data_table_result_and_bulk_action_bar_props"
+            );
+            const bulk_action_selection_props = result_and_bulk_action_bar_props?.selection_props;
 
             const value_str = value.toString();
 
@@ -623,7 +636,7 @@ class BaseListViewActionHandler<
             if (bulk_action_selection_props) {
                 bulk_action_selection_props.selected_count = selected_records.length;
                 bulk_action_selection_props.bulk_button_props =
-                    this.controller.getBulkActionButtonProps();
+                    this.controller.getDefaultBulkActionButtonProps();
             }
 
             return {
@@ -643,7 +656,7 @@ class BaseListViewActionHandler<
     // Method to handle on select all rows
     public handleOnSelectAllRows = async (): Promise<ActionMethodRetrunInterface> => {
         try {
-            const row_key = this.controller.getTableRowKey();
+            const row_key = this.controller.record_id_key;
             const sn_cell = this.getSerialCell();
 
             if (!sn_cell?.header || !sn_cell?.props) {
@@ -684,7 +697,7 @@ class BaseListViewActionHandler<
                 bulk_action_selection_props.selected_count =
                     this.controller.state_refs.selected_records.value.length;
                 bulk_action_selection_props.bulk_button_props =
-                    this.controller.getBulkActionButtonProps();
+                    this.controller.getDefaultBulkActionButtonProps();
             }
 
             return {

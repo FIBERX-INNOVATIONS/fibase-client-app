@@ -1,8 +1,14 @@
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
+
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
+
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-import { getMemberFullName, RegisteredAppRecordInterface } from "@/types/api_service_type";
+import {
+    ButtonUIActionPropsInterface,
+    ButtonUIContentOptionsInterface,
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     ActionMethodRetrunInterface,
@@ -13,34 +19,42 @@ import {
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
-import {
-    ButtonUIActionPropsInterface,
-    ButtonUIContentOptionsInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
 import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
 
-import { ListViewPropsInterface } from "@/ui_types/list_view_type";
+import { getMemberFullName, RegisteredAppRecordInterface } from "@/types/api_service_type";
 
-import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
-import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
-import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
-import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
-import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+
+import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
+
 import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
+
 import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
-import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+
+import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
+
+import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
+
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
+
+import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
 class RegisteredAppListViewController extends BaseListViewController<
     RegisteredAppRecordInterface,
     "public_id"
 > {
+    public readonly content_key: string = "registered_app";
+
+    public readonly record_id_key: "public_id" = "public_id" as const;
+
     public action_handler: RegisteredAppListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
@@ -51,13 +65,10 @@ class RegisteredAppListViewController extends BaseListViewController<
         this.getComponentDefinition();
     }
 
-    public getPageContentKey(): string {
-        return "registered_app";
-    }
-
+    // Method to get page filters
     protected getPageFilters(): ListFilterConfig[] {
-        const page_key = this.getPageContentKey();
-        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`;
+        const page_key = this.content_key;
+        const { filters_content_key } = this.getListViewContentKeys(page_key);
         return [
             {
                 key: "search",
@@ -122,16 +133,14 @@ class RegisteredAppListViewController extends BaseListViewController<
         ];
     }
 
-    public getTableRowKey(): "public_id" {
-        return "public_id";
-    }
-
+    // Method to get table render config
     protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
         const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
             "registered_app_module.update_registered_app_status"
         );
 
         const columns: DataTableColumnRenderType<RegisteredAppRecordInterface>[] = [
+            // s_n column with select chnage
             {
                 key: "public_id",
                 sortable: false,
@@ -190,7 +199,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     }
                 }
             },
-
+            // registered app name, logo, public id column
             {
                 key: "name",
                 sortable: true,
@@ -222,7 +231,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     }
                 }
             },
-
+            // Registered App base url column
             {
                 key: "base_url",
                 sortable: true,
@@ -240,7 +249,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
                 }
             },
-
+            // Creator Base URL column
             {
                 key: "creator",
                 sortable: true,
@@ -273,7 +282,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                         getMemberFullName(record?.creator) ?? ""
                 }
             },
-
+            // Status toggle column
             {
                 key: "is_active",
                 sortable: true,
@@ -332,7 +341,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     }
                 }
             },
-
+            // Created at column
             {
                 key: "created_at",
                 sortable: true,
@@ -360,7 +369,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     }
                 }
             },
-
+            // Action column
             {
                 key: "public_id",
                 sortable: false,

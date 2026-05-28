@@ -1,29 +1,40 @@
 import { markRaw } from "vue";
 
-import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-
-import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
-
 import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
 
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
-import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
-import FormView from "@/views/registered_app/FormView.vue";
-import ProfileView from "@/views/registered_app/ProfileView.vue";
-import DecisionPromptUI from "@ui/version_3/components/DecisionPromptUI.vue";
+import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+
+import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
+
+import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
+
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+
+import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
 
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
-import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
+
 import RegisteredAppActionMenu from "@/action_menus/registered_app_action_menu";
-import DecisionPromptUIPropsBuilder from "@ui/version_3/props_builder/decision_prompt_ui_props_builder";
+
 import DecisionPromptUIClassStyles from "@/class_styles/decision_prompt_ui_class_styles";
+
+import FormView from "@/views/registered_app/FormView.vue";
+
+import ProfileView from "@/views/registered_app/ProfileView.vue";
+
+import DecisionPromptUI from "@ui/version_3/components/DecisionPromptUI.vue";
+
+import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
+
+import DecisionPromptUIPropsBuilder from "@ui/version_3/props_builder/decision_prompt_ui_props_builder";
+
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
-import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
 class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     RegisteredAppRecordInterface,
@@ -41,15 +52,19 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
+    // private getBaseContentKey = (): string => {
+    //     return `content_resource.${this.controller.content_key}_view_ui.list_view_ui`;
+    // };
+
     // Method to handle header button clicked
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui";
+        const { add_new_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.register_app_modal.add_new_registered_app`,
+            content_key: add_new_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -128,7 +143,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         if (!is_open) {
             const updated_menu = RegisteredAppActionMenu.getMenus(record, this);
 
-            this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
+            this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
         return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
@@ -143,10 +158,10 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         record: RegisteredAppRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui";
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.register_app_modal.registered_app_details`,
+            content_key: profile_details_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -163,10 +178,10 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         record: RegisteredAppRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui";
+        const { update_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.register_app_modal.update_registered_app`,
+            content_key: update_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -183,57 +198,54 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         record: RegisteredAppRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key =
-            "content_resource.registered_app_view_ui.list_view_ui.register_app_modal.delete_registered_app";
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const cancel_button_props = ButtonUIPropsBuilder.getReactivePropsObject(
+            `CancelBtn-${record.public_id}`,
+            `${delete_modal_content_key}.content.cancel_btn_text`,
+            "x_circile_svg_icon",
+            "button",
+            {
+                class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
+                action_props: {
+                    on_click: async (): Promise<void> => {
+                        this.controller.event_bus?.emit("close_modal", {});
+                    }
+                }
+            }
+        );
+
+        const confirm_button_props = ButtonUIPropsBuilder.getReactivePropsObject(
+            `ConfirmBtn-${record.public_id}`,
+            `${delete_modal_content_key}.content.confirm_btn_text`,
+            "check_circle_svg_icon",
+            "button",
+            {
+                class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
+                action_props: {
+                    on_click: async (): Promise<void> => {
+                        return await this.handleDeleteARecordAction(record);
+                    }
+                }
+            }
+        );
 
         const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
             record,
 
-            title_text_content_key: `${base_content_key}.content.title_text`,
+            title_text_content_key: `${delete_modal_content_key}.content.title_text`,
 
-            message_text_content_key: `${base_content_key}.content.message_text`,
+            message_text_content_key: `${delete_modal_content_key}.content.message_text`,
 
             class_styles: DecisionPromptUIClassStyles,
 
-            cancel_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `CancelBtn-${record.public_id}`,
-                `${base_content_key}.content.cancel_btn_text`,
-                "x_circile_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            this.controller.event_bus?.emit("close_modal", {});
-                        }
-                    }
-                }
-            ),
+            cancel_button_props,
 
-            confirm_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `ConfirmBtn-${record.public_id}`,
-                `${base_content_key}.content.confirm_btn_text`,
-                "check_circle_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            return await this.handleDeleteARecordAction(record);
-                        }
-                    }
-                }
-            )
+            confirm_button_props
         });
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}`,
+            content_key: delete_modal_content_key,
 
             animation_type: "slide_top",
 
