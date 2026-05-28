@@ -1,34 +1,45 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
-
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
-
-import { FieldValidator, RegisteredAppFromDataInterface } from "@/types/form_data_type";
-
-import { ButtonActionMethodReturnInterface } from "@ui/version_3/ui_types/button_ui_type";
-
-import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-
-import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
+import { RegisteredAppFieldsType } from "@/types/form_fields_type";
+
+import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
+
+import {
+    FieldValidator,
+    RegisteredAppFromDataInterface,
+    RegisteredAppSocialLinksInterface
+} from "@/types/form_data_type";
+
+import {
+    ButtonActionMethodReturnInterface,
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
+
 import {
     FormViewPropsInterface,
-    FormViewStateDataInterface,
+    RegisteredAppFormState,
     FormViewComputedDataInterface,
-    FormViewComponentsInterface,
-    RegisteredAppFormState
+    FormViewComponentsInterface
 } from "@/ui_types/form_view_type";
 
-import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
-import RegisteredAppValidator from "@/validators/registered_app_validator";
-import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
+import BaseController from "@ui/version_3/base_classes/base_controller";
+
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
+
+import RegisteredAppValidator from "@/validators/registered_app_validator";
+
 import FileStorageAPIService from "@/api_services/file_storage_api_service";
 
-class FormViewActionHandler extends BaseFormActionHandler<
+import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
+
+import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
+
+class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
     RegisteredAppFromDataInterface,
-    FormViewPropsInterface,
+    RegisteredAppFieldsType,
+    FormViewPropsInterface<RegisteredAppRecordInterface>,
     RegisteredAppFormState,
     FormViewComputedDataInterface,
     FormViewComponentsInterface,
@@ -36,25 +47,28 @@ class FormViewActionHandler extends BaseFormActionHandler<
 > {
     constructor(
         controller: BaseController<
-            FormViewPropsInterface,
+            FormViewPropsInterface<RegisteredAppRecordInterface>,
             RegisteredAppFormState,
             FormViewComputedDataInterface,
             FormViewComponentsInterface,
             GlobalEventTypes
         >
     ) {
-        super(controller, "registered_app_form_view_action_handler", {});
-
-        this.form_data = this.getFormDataValue();
+        super(
+            controller,
+            "registered_app_form_view_action_handler",
+            RegisteredAppFormViewActionHandler.getFormDataValue(controller.props.record)
+        );
 
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
-    protected getFormDataValue(): RegisteredAppFromDataInterface {
-        const record = this.controller?.props?.record as RegisteredAppRecordInterface;
-
+    // Method to get default form data value based on record
+    private static getFormDataValue(
+        record?: RegisteredAppRecordInterface
+    ): RegisteredAppFromDataInterface {
         return {
             csrf_token: null,
             name: record?.name ?? "",
@@ -62,11 +76,12 @@ class FormViewActionHandler extends BaseFormActionHandler<
             description: record?.description ?? "",
             base_url: record?.base_url ?? "",
             logo_url: record?.logo_url ?? "",
-            social_links: record?.social_links ?? {},
+            social_links: (record?.social_links ?? {}) as RegisteredAppSocialLinksInterface,
             urls: record?.urls?.join(",") ?? ""
         };
     }
 
+    // Method to get field validators
     protected getValidators(): Partial<
         Record<keyof RegisteredAppFromDataInterface, FieldValidator<RegisteredAppFromDataInterface>>
     > {
@@ -87,7 +102,12 @@ class FormViewActionHandler extends BaseFormActionHandler<
         };
     }
 
-    // method to handle on file upload
+    // Method to get required fields for submit
+    protected getSubmitRequiredFields(): (keyof RegisteredAppFromDataInterface & string)[] {
+        return ["prefix", "name", "description", "base_url", "logo_url"];
+    }
+
+    // Method to handle file upload for registered app logo
     public handleOnFileUpload = async (files: File[]): Promise<boolean> => {
         try {
             const form_data = new FormData();
@@ -130,16 +150,17 @@ class FormViewActionHandler extends BaseFormActionHandler<
                 true
             );
 
-            // set the logo url field in the form data
             this.form_data.logo_url = data.url;
+            this.syncSubmitButtonState();
             return true;
         } catch (error: unknown) {
-            this.logger.error(`Failed to submit form`, { error });
+            this.logger.error("Failed to upload registered app logo", { error });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 10, undefined, false);
             return false;
         }
     };
 
+    // Method to handle form submit button click
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
@@ -148,8 +169,8 @@ class FormViewActionHandler extends BaseFormActionHandler<
 
         try {
             const form_data = this.form_data as RegisteredAppFromDataInterface;
-            const record = this.controller?.props?.record as RegisteredAppRecordInterface;
-            const record_id = record.public_id;
+            const record = this.controller.props.record;
+            const record_id = record?.public_id;
             const { v_state, v_msg, v_data } =
                 RegisteredAppValidator.validateRegisteredAppInput(form_data);
 
@@ -158,13 +179,9 @@ class FormViewActionHandler extends BaseFormActionHandler<
                 return { status: false, msg: v_msg };
             }
 
-            let result;
-
-            if (record_id) {
-                result = await RegisteredAppAPIService.updateRegisteredApp(record_id, v_data);
-            } else {
-                result = await RegisteredAppAPIService.createRegisteredApp(v_data);
-            }
+            const result = record_id
+                ? await RegisteredAppAPIService.updateRegisteredApp(record_id, v_data)
+                : await RegisteredAppAPIService.createRegisteredApp(v_data);
 
             if (!result) {
                 this.showErrorAlert("error", "error_occurred");
@@ -175,23 +192,24 @@ class FormViewActionHandler extends BaseFormActionHandler<
 
             if (status !== "success" || !data?.public_id) {
                 this.showErrorAlert("error", msg);
-                return { status: false, msg: v_msg };
+                return { status: false, msg };
             }
 
-            const record_payload = {
-                record: data
-            } as NewRecordCreated<RegisteredAppRecordInterface>;
+            const record_payload: NewRecordCreated<RegisteredAppRecordInterface> = {
+                record: data,
+                re_fetch: true
+            };
 
             StatusAlertTriggerUtil.triggerAlert(status, msg, 5, undefined, true);
             this.controller.event_bus?.emit("on_new_record_created", record_payload);
 
-            return { status: true, msg: "login_successful" };
+            return { status: true, msg };
         } catch (error: unknown) {
-            this.logger.error(`Failed to submit form`, { error });
+            this.logger.error("Failed to submit registered app form", { error });
             this.showErrorAlert("error", "error_occurred");
             return { status: false, msg: "error_occurred" };
         }
     };
 }
 
-export default FormViewActionHandler;
+export default RegisteredAppFormViewActionHandler;
