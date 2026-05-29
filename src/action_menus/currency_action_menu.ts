@@ -168,7 +168,7 @@ class CurrencyActionMenu {
                         event?: MouseEvent,
                         config?: { props: NavLinkUIPropsInterface }
                     ): Promise<void> => {
-                        return await action_handler?.handleOpenConfirmUnAssignView(record, config);
+                        return await action_handler?.handleOpenUnAssignFormView(record, config);
                     }
                 },
 
@@ -198,10 +198,7 @@ class CurrencyActionMenu {
                         event?: MouseEvent,
                         config?: { props: NavLinkUIPropsInterface }
                     ): Promise<void> => {
-                        return await action_handler?.handleOpenConfirmSetAsDefultView(
-                            record,
-                            config
-                        );
+                        return await action_handler?.handleOpenSetAsDefaultFormView(record, config);
                     }
                 },
 
@@ -250,7 +247,7 @@ class CurrencyActionMenu {
     }
 
     public static getBulkActionMenus(
-        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface>,
+        selected_records: FieldArray<CurrencyRecordInterface, "code">,
         action_handler?: CurrencyListViewActionHandler,
         route?: ReturnType<typeof useRoute>
     ): NavLinkUIPropsInterface[] {
@@ -267,7 +264,6 @@ class CurrencyActionMenu {
             `${base_content_key}.un_assign_menu_option`
         );
 
-        console.log({ selected_records });
         const menus: NavLinkUIPropsInterface[] = [
             // assign to app
             {
@@ -317,7 +313,7 @@ class CurrencyActionMenu {
                         event?: MouseEvent,
                         config?: { props: NavLinkUIPropsInterface }
                     ): Promise<void> => {
-                        return await action_handler?.handleOpenConfirmUnAssignView(
+                        return await action_handler?.handleOpenUnAssignFormView(
                             null,
                             config,
                             selected_records
@@ -337,8 +333,6 @@ class CurrencyActionMenu {
                     selected_records?.length > 0
             }
         ];
-
-        console.log({ menus });
 
         return menus.filter((nav_obj: NavLinkUIPropsInterface) => {
             return nav_obj?.has_permission;

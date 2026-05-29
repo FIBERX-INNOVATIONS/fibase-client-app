@@ -10,7 +10,13 @@ import {
     ToasterUIClassStylesInterface
 } from "@ui/version_3/ui_types/toaster_ui_type";
 
-import { RegisteredAppPreviewRecordInterface } from "@/types/api_service_type";
+import {
+    AppCurrencyActionResponseInterface,
+    CurrencyRecordInterface,
+    RegisteredAppPreviewRecordInterface
+} from "@/types/api_service_type";
+
+import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
 import {
     LoginFieldsType,
@@ -97,12 +103,36 @@ interface FormViewPropsInterface<T = any> {
     class_styles?: FormViewClassStylesInterface;
 }
 
-interface AssignCurrencyFormViewPropsInterface extends FormViewPropsInterface {
+type AppCurrencyFormActionType = "assign" | "unassign" | "set_default";
+
+interface AppCurrencyActionSuccessPayloadInterface {
+    action: AppCurrencyFormActionType;
+
+    app_id: string | number;
+
+    currency_codes: (string | number)[];
+
+    record?: CurrencyRecordInterface;
+
+    response?: APIResponseInterface<AppCurrencyActionResponseInterface>;
+}
+
+type AppCurrencyActionSuccessCallback = (
+    payload: AppCurrencyActionSuccessPayloadInterface
+) => Promise<void> | void;
+
+interface AssignCurrencyFormViewPropsInterface extends FormViewPropsInterface<CurrencyRecordInterface> {
     app_id: string;
 
     app?: RegisteredAppPreviewRecordInterface;
 
     currency_codes: string[];
+
+    action?: AppCurrencyFormActionType;
+
+    content_key?: string;
+
+    on_success?: AppCurrencyActionSuccessCallback;
 }
 
 interface FormViewComponentsInterface {
@@ -149,6 +179,9 @@ export {
     FormViewComputedDataInterface,
     FormViewStateDataInterface,
     AssignCurrencyFormViewPropsInterface,
+    AppCurrencyFormActionType,
+    AppCurrencyActionSuccessPayloadInterface,
+    AppCurrencyActionSuccessCallback,
     TwoFactorLoginViewStateDataInterface,
     LoginViewStateDataInterface,
     RegisteredAppFormState,

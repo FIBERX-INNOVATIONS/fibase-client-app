@@ -1,6 +1,7 @@
 import {
     AppCurrencyActionFromDataInterface,
     AppCurrencyActionValidatedFormDataInterface,
+    AppCurrencyFormDataInterface,
     AppCurrencyToggleDefaultFormDataInterface,
     AppCurrencyToggleDefaultValidatedformDataInterface,
     CurrencyFromDataInterface,
@@ -92,17 +93,6 @@ class CurrencyValidator {
         return { status: true, msg: "" };
     };
 
-    // FORMAT
-    public static validateFormat = (value: string | null): ActionMethodRetrunInterface => {
-        if (!value) return { status: true, msg: this.getContentMessage("invalid_currency_format") };
-
-        if (value.length > 50) {
-            return { status: false, msg: this.getContentMessage("invalid_currency_format") };
-        }
-
-        return { status: true, msg: "" };
-    };
-
     // COUNTRY CODE
     public static validateCountryCode = (value: string | null): ActionMethodRetrunInterface => {
         if (!value)
@@ -154,7 +144,6 @@ class CurrencyValidator {
             numeric_code,
             precision,
             minor_unit,
-            format,
             country_code,
             is_fiat,
             logo_url,
@@ -189,10 +178,6 @@ class CurrencyValidator {
 
         if (!this.validateMinorUnit(minor_unit).status) {
             return { v_state: false, v_msg: "invalid_currency_minor_unit" };
-        }
-
-        if (!this.validateFormat(format).status) {
-            return { v_state: false, v_msg: "invalid_currency_format" };
         }
 
         if (!this.validateCountryCode(country_code).status) {
@@ -235,7 +220,6 @@ class CurrencyValidator {
             numeric_code: numeric_code ?? null,
             precision,
             minor_unit: minor_unit ?? null,
-            format: format ?? null,
             country_code: country_code?.toUpperCase() ?? null,
             is_fiat,
             logo_url: logo_url?.trim(),
@@ -250,11 +234,9 @@ class CurrencyValidator {
     }
 
     public static validateAppCurrencyInput(
-        form_data: AppCurrencyActionFromDataInterface
+        form_data: AppCurrencyActionFromDataInterface | AppCurrencyFormDataInterface
     ): ValidationResultInterface<AppCurrencyActionValidatedFormDataInterface> {
         const { csrf_token, currency_code_or_id, currency_list, action } = form_data;
-
-        console.log({ form_data });
 
         const app_id = form_data?.registered_app_id || form_data.app_id;
 
@@ -284,7 +266,7 @@ class CurrencyValidator {
         const v_data: AppCurrencyActionValidatedFormDataInterface = {
             csrf_token,
             currency_list: currency_array,
-            action,
+            action: action as "assign" | "unassign",
             app_id
         };
 

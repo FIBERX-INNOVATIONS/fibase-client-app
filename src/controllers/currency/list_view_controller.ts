@@ -1,8 +1,14 @@
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
+
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
+
 import { DataTableColumnRenderType } from "@ui/version_3/ui_types/data_table_ui_type";
 
-import { getMemberFullName, CurrencyRecordInterface } from "@/types/api_service_type";
+import {
+    ButtonUIActionPropsInterface,
+    ButtonUIContentOptionsInterface,
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     ActionMethodRetrunInterface,
@@ -13,51 +19,55 @@ import {
     InputValue
 } from "@ui/version_3/ui_types/input_ui_type";
 
-import {
-    ButtonUIActionPropsInterface,
-    ButtonUIContentOptionsInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
 import { DEFUALT_CURRENCY_LOGO_URL } from "@/configs/constants";
 
-import { ListViewPropsInterface } from "@/ui_types/list_view_type";
+import { getMemberFullName, CurrencyRecordInterface } from "@/types/api_service_type";
 
-import CurrencyListViewActionHandler from "@/action_handlers/currency/list_view_action_handler";
-import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-
-import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
-import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
-import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
-import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
+import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
+
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
+
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
+
+import CurrencyListViewActionHandler from "@/action_handlers/currency/list_view_action_handler";
+
 import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
+
 import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
-import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+
+import DataTableSerialCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableSerialCellUI.vue";
+
+import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableAvatarInfoCellUI.vue";
+
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
+import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+
 class CurrencyListViewController extends BaseListViewController<CurrencyRecordInterface, "code"> {
+    public readonly content_key: string = "currency";
+
+    public readonly record_id_key: "code" = "code" as const;
+
     public action_handler: CurrencyListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
         super(props, "code");
 
         this.action_handler = new CurrencyListViewActionHandler(this);
-
-        this.getComponentDefinition();
     }
 
-    public getPageContentKey(): string {
-        return "currency";
-    }
-
+    // Method to get page filters
     protected getPageFilters(): ListFilterConfig[] {
-        const page_key = this.getPageContentKey();
-        const filters_content_key = `content_resource.${page_key}_view_ui.list_view_ui.filters_section`;
-        const app_id = this.route.query?.app_id?.toString() ?? "";
+        const page_key = this.content_key;
+        const { filters_content_key } = this.getListViewContentKeys(page_key);
 
         return [
             // Search Filter
@@ -138,7 +148,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 label_content_key: `${filters_content_key}.app_id_filter`,
                 input_content_key: `${filters_content_key}.app_id_filter`,
                 overides: {
-                    model_value: app_id,
+                    model_value: this.route.query?.app_id?.toString() ?? "",
                     content_props: {
                         caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                     },
@@ -167,10 +177,13 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 label_content_key: `${filters_content_key}.created_by_filter`,
                 input_content_key: `${filters_content_key}.created_by_filter`,
                 overides: {
-                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
                     model_value: this.route.query?.created_by ?? "",
                     content_props: {
                         caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                    },
+                    action_props: {
+                        ...this.action_handler.getFilterInputActionHandlersConfig(),
+                        fetch_data_method: PreviewRecordFetcher.fetchMemberPreviewRecords
                     }
                 }
             },
@@ -191,12 +204,10 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
         ];
     }
 
-    public getTableRowKey(): "code" {
-        return "code";
-    }
-
+    // Method to get table render config
     protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyRecordInterface>[] {
         const content_manager = ContentManagerUtil.getInstance();
+
         const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
             "currency_module.update_currency_status"
         );

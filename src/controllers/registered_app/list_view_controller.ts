@@ -46,6 +46,7 @@ import DataTableAvatarInfoCellUI from "@ui/version_3/components/DataTableCellCom
 import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableActionIconCellUI.vue";
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
+import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
 class RegisteredAppListViewController extends BaseListViewController<
     RegisteredAppRecordInterface,
@@ -61,8 +62,6 @@ class RegisteredAppListViewController extends BaseListViewController<
         super(props, "public_id");
 
         this.action_handler = new RegisteredAppListViewActionHandler(this);
-
-        this.getComponentDefinition();
     }
 
     // Method to get page filters
@@ -70,6 +69,7 @@ class RegisteredAppListViewController extends BaseListViewController<
         const page_key = this.content_key;
         const { filters_content_key } = this.getListViewContentKeys(page_key);
         return [
+            // Search Filter
             {
                 key: "search",
                 type: "search",
@@ -83,6 +83,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     model_value: this.route.query?.search ?? ""
                 }
             },
+            // Is Active Filter
             {
                 key: "is_active",
                 type: "select",
@@ -94,19 +95,24 @@ class RegisteredAppListViewController extends BaseListViewController<
                     model_value: this.route.query?.is_active ?? ""
                 }
             },
+            // Created By Filter
             {
                 key: "created_by",
                 type: "select_search",
                 label_content_key: `${filters_content_key}.created_by_filter`,
                 input_content_key: `${filters_content_key}.created_by_filter`,
                 overides: {
-                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
                     model_value: this.route.query?.created_by ?? "",
                     content_props: {
                         caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                    },
+                    action_props: {
+                        ...this.action_handler.getFilterInputActionHandlersConfig(),
+                        fetch_data_method: PreviewRecordFetcher.fetchMemberPreviewRecords
                     }
                 }
             },
+            // Key Version Filter
             {
                 key: "key_version",
                 type: "number",
@@ -117,6 +123,7 @@ class RegisteredAppListViewController extends BaseListViewController<
                     model_value: this.route.query?.key_version ?? ""
                 }
             },
+            // Date Range Filter
             {
                 key: "date_range",
                 type: "date_range",

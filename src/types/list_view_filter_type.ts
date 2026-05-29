@@ -20,3 +20,9 @@ export interface CurrencyListViewFiltersInterface {
     app_id?: string | number | null;
     date_range?: { start_date: string; end_date: string } | null;
 }
+
+export interface MemberListFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean;
+    is_active?: string | null;
+}

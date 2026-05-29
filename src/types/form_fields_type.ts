@@ -33,8 +33,6 @@ type CurrencyFieldsType = {
 
     minor_unit_input_group_props: InputGroupUIPropsInterface;
 
-    format_input_group_props: InputGroupUIPropsInterface;
-
     sort_order_input_group_props: InputGroupUIPropsInterface;
 
     logo_url_input_group_props: InputGroupUIPropsInterface;

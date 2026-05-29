@@ -13,9 +13,9 @@ import {
 
 import {
     AssignCurrencyFormViewPropsInterface,
+    FormViewComputedDataInterface,
     AppCurrencyFormState,
-    FormViewComponentsInterface,
-    FormViewClassStylesInterface
+    FormViewComponentsInterface
 } from "@/ui_types/form_view_type";
 
 import AssignCurrencyFormViewActionHandler from "@/action_handlers/currency/assign_currency_form_view_action_handler";
@@ -26,16 +26,16 @@ import { InputGroupUIPropsInterface } from "@ui/version_3/ui_types/input_group_u
 import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
-import { AppCurrencyActionFromDataInterface } from "@/types/form_data_type";
+import { AppCurrencyFieldsType } from "@/types/form_fields_type";
+import { AppCurrencyFormDataInterface } from "@/types/form_data_type";
 
 class AssignCurrencyFormViewController<T = any> extends BaseFormViewController<
-    AppCurrencyActionFromDataInterface,
+    AppCurrencyFormDataInterface,
+    AppCurrencyFieldsType,
     AssignCurrencyFormViewPropsInterface,
     AppCurrencyFormState,
-    any,
+    FormViewComputedDataInterface,
     FormViewComponentsInterface,
-    FormViewClassStylesInterface,
-    AssignCurrencyFormViewActionHandler,
     GlobalEventTypes
 > {
     constructor(props: AssignCurrencyFormViewPropsInterface) {
@@ -46,20 +46,23 @@ class AssignCurrencyFormViewController<T = any> extends BaseFormViewController<
     }
 
     protected getUIStateData(): AppCurrencyFormState {
-        const { app, app_id, currency_codes } = this.props;
+        const { action = "assign", app, app_id, content_key, currency_codes } = this.props;
+        const is_set_default_action = action === "set_default";
 
         const currency_list = currency_codes.map((code: string): SelectOptionInterface => {
             return { label_text: code, value: code };
         });
         const btn_content_key =
-            "content_resource.currency_view_ui.assign_currency_form_view_ui.fieldset.btn_text";
+            action === "assign" || !content_key
+                ? "content_resource.currency_view_ui.assign_currency_form_view_ui.fieldset.btn_text"
+                : `${content_key}.content.confirm_btn_text`;
 
         this.configureFormUI({
-            toaster_id: "assign_currency_submit_toaster",
+            toaster_id: `${action}_currency_submit_toaster`,
             use_modal_button_styles: true
         });
 
-        const input_group_content_key = (input_id: string) => {
+        const input_group_content_key = (input_id: string): string => {
             return `content_resource.currency_view_ui.assign_currency_form_view_ui.fieldset.${input_id}_field`;
         };
 
@@ -67,12 +70,18 @@ class AssignCurrencyFormViewController<T = any> extends BaseFormViewController<
             key: string,
             type: InputType,
             value: InputValue = "",
-            overrides: Partial<InputUIPropsInterface> = {}
+            overrides: Partial<InputUIPropsInterface> = {},
+            content_key_input_id: string = key
         ): InputGroupUIPropsInterface => {
-            return this.buildInputGroupProps(key, type, input_group_content_key(key), {
-                model_value: value,
-                input_props: overrides
-            });
+            return this.buildInputGroupProps(
+                key,
+                type,
+                input_group_content_key(content_key_input_id),
+                {
+                    model_value: value,
+                    input_props: overrides
+                }
+            );
         };
 
         return {
@@ -92,9 +101,9 @@ class AssignCurrencyFormViewController<T = any> extends BaseFormViewController<
                 ),
 
                 currency_code_list_input_group_props: build(
-                    "currency_list",
-                    "multi_select_search",
-                    currency_codes ?? [],
+                    is_set_default_action ? "currency_code_or_id" : "currency_list",
+                    is_set_default_action ? "select_search" : "multi_select_search",
+                    is_set_default_action ? (currency_codes?.[0] ?? "") : (currency_codes ?? []),
                     {
                         option_props: currency_list,
                         content_props: {
@@ -103,16 +112,17 @@ class AssignCurrencyFormViewController<T = any> extends BaseFormViewController<
                         action_props: {
                             fetch_data_method: PreviewRecordFetcher.fetchCurrenciesPreviewRecords
                         }
-                    }
+                    },
+                    "currency_list"
                 )
             }),
 
             toast_alert_props: this.buildToasterProps(),
 
             btn_props: this.buildSubmitButtonProps(
-                "app_currency_submit",
+                `${action}_app_currency_submit`,
                 btn_content_key,
-                "paper_airplane_send_svg_icon"
+                is_set_default_action ? "check_circle_svg_icon" : "paper_airplane_send_svg_icon"
             )
         } as AppCurrencyFormState;
     }

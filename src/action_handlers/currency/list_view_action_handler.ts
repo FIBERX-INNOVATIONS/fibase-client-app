@@ -1,40 +1,38 @@
 import { markRaw } from "vue";
 
-import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
-
-import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
-
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
-
-import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
-
 import { FieldArray } from "@/ui_types/list_view_type";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
+
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
-import { CurrencyListViewFiltersInterface } from "@/types/list_view_filter_type";
+
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
-import AddEditFormView from "@/views/currency/AddEditFormView.vue";
-import ProfileView from "@/views/currency/ProfileView.vue";
-import DecisionPromptUI from "@ui/version_3/components/DecisionPromptUI.vue";
-import AssignCurrencyFormView from "@/views/currency/AssignCurrencyFormView.vue";
+import { CurrencyListViewFiltersInterface } from "@/types/list_view_filter_type";
+
+import CurrencyAPIService from "@/api_services/currency_api_service";
 
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
-import CurrencyAPIService from "@/api_services/currency_api_service";
-import CurrencyValidator from "@/validators/currency_validator";
-import AuthAPIService from "@/api_services/auth_api_service";
+import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
+
+import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import CurrencyActionMenu from "@/action_menus/currency_action_menu";
 
+import DeleteView from "@/views/currency/DeleteView.vue";
+
+import ProfileView from "@/views/currency/ProfileView.vue";
+
+import AddEditFormView from "@/views/currency/AddEditFormView.vue";
+
+import AssignCurrencyFormView from "@/views/currency/AssignCurrencyFormView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
-import DecisionPromptUIPropsBuilder from "@ui/version_3/props_builder/decision_prompt_ui_props_builder";
-import DecisionPromptUIClassStyles from "@/class_styles/decision_prompt_ui_class_styles";
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
-import ButtonUIClassStyles from "@/class_styles/button_ui_class_styles";
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 class CurrencyListViewActionHandler extends BaseListViewActionHandler<
     CurrencyRecordInterface,
@@ -52,15 +50,96 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
+    // Method to help resolve currency codes
+    private resolveCurrencyCodes = (
+        record: CurrencyRecordInterface | null,
+        selected_records: FieldArray<CurrencyRecordInterface, "code"> = []
+    ): string[] => {
+        if (record?.code) {
+            return [record.code];
+        }
+
+        return selected_records.map((code) => code.toString());
+    };
+
+    // Method to get route app id
+    private getRouteAppId = (): string => {
+        const app_id = this.controller?.route?.query?.app_id;
+
+        return Array.isArray(app_id) ? (app_id[0] ?? "") : (app_id?.toString() ?? "");
+    };
+
+    // Method to clear bulk selection
+    private clearBulkSelection = (): void => {
+        const sn_cell = this.getSerialCell();
+        const data_table_result_and_bulk_action_bar_props = this.getState(
+            "data_table_result_and_bulk_action_bar_props"
+        );
+        const bulk_action_selection_props =
+            data_table_result_and_bulk_action_bar_props?.selection_props;
+
+        this.setState("selected_records", []);
+
+        if (sn_cell?.props) {
+            sn_cell.props.is_selected = false;
+        }
+
+        if (sn_cell?.header) {
+            sn_cell.header.render = undefined;
+        }
+
+        if (bulk_action_selection_props) {
+            bulk_action_selection_props.selected_count = 0;
+            bulk_action_selection_props.bulk_button_props =
+                this.controller.getDefaultBulkActionButtonProps();
+        }
+    };
+
+    private handleAppCurrencyActionSuccess = async (payload: {
+        action: "assign" | "unassign" | "set_default";
+        currency_codes: (string | number)[];
+    }): Promise<void> => {
+        const currency_codes = payload.currency_codes.map((code) => code.toString());
+
+        if (payload.action === "set_default") {
+            const default_currency_code = currency_codes[0];
+            const { records } = this.controller.getListState();
+
+            this.controller.setListState({
+                records: records.map((record) => {
+                    if (!record.app_currencies?.length) {
+                        return record;
+                    }
+
+                    return {
+                        ...record,
+                        app_currencies: record.app_currencies.map((app_currency) => ({
+                            ...app_currency,
+                            is_default: record.code === default_currency_code
+                        }))
+                    };
+                })
+            });
+
+            return;
+        }
+
+        currency_codes.forEach((code) => {
+            this.removeListStateRecord(code, "code");
+        });
+
+        this.clearBulkSelection();
+    };
+
     // Method to handle header button clicked
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.currency_view_ui.list_view_ui";
+        const { add_new_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.currency_modal.add_new_currency`,
+            content_key: add_new_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -70,21 +149,6 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
-    };
-
-    private resolveCurrencyCodes = (
-        record: CurrencyRecordInterface | null,
-        selected_records: CurrencyRecordInterface[] = []
-    ): string[] => {
-        if (record?.code) {
-            return [record.code];
-        }
-
-        if (selected_records?.length) {
-            return selected_records.map((r) => r.code);
-        }
-
-        return [];
     };
 
     // Method to handle row status chnage toglle
@@ -147,7 +211,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         if (!is_open) {
             const updated_menu = CurrencyActionMenu.getMenus(record, this, this.controller.route);
 
-            this.controller.state_refs.action_menu_dropdown_props.value.menu_items = updated_menu;
+            this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
         return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
@@ -162,10 +226,10 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.currency_view_ui.list_view_ui";
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.currency_modal.currency_details`,
+            content_key: profile_details_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -182,10 +246,10 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key = "content_resource.currency_view_ui.list_view_ui";
+        const { update_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.currency_modal.update_currency`,
+            content_key: update_modal_content_key,
 
             animation_type: "slide_top",
 
@@ -202,422 +266,127 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key =
-            "content_resource.currency_view_ui.list_view_ui.currency_modal.delete_currency";
-
-        const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
-            record,
-
-            title_text_content_key: `${base_content_key}.content.title_text`,
-
-            message_text_content_key: `${base_content_key}.content.message_text`,
-
-            class_styles: DecisionPromptUIClassStyles,
-
-            cancel_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `CancelBtn-${record.code}`,
-                `${base_content_key}.content.cancel_btn_text`,
-                "x_circile_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            this.controller.event_bus?.emit("close_modal", {});
-                        }
-                    }
-                }
-            ),
-
-            confirm_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `ConfirmBtn-${record.code}`,
-                `${base_content_key}.content.confirm_btn_text`,
-                "check_circle_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
-
-                    boolean_props: { disabled: false },
-
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            return await this.handleDeleteARecordAction(record);
-                        }
-                    }
-                }
-            )
-        });
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}`,
+            content_key: delete_modal_content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(DecisionPromptUI),
+            body_component: markRaw(DeleteView),
 
-            body_props: decsion_prompt_props
+            body_props: {
+                record,
+                record_id: record.code,
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: CurrencyRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.code, "code");
+                }
+            }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
-    // Method to handle delate a record action
-    public handleDeleteARecordAction = async (
-        record: CurrencyRecordInterface,
-        record_index?: number
-    ): Promise<void> => {
-        try {
-            const code = record.code;
-
-            if (!code) {
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "record_not_found",
-                    4,
-                    undefined,
-                    true
-                );
-            }
-
-            const result = await CurrencyAPIService.deleteCurrency(code);
-            const msg = result?.msg ?? "error_occurred";
-
-            if (!result || result?.status?.toLowerCase() === "error") {
-                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-            } else if (result.status?.toLowerCase() === "logout") {
-                this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "session_expired",
-                    4,
-                    undefined,
-                    true
-                );
-            } else if (result.status?.toLowerCase() === "success") {
-                this.removeListStateRecord(code, "code");
-
-                return StatusAlertTriggerUtil.triggerAlert(result.status, msg, 4, undefined, true);
-            }
-
-            return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-        } catch (error: unknown) {
-            this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error",
-                "error_occurred",
-                4,
-                undefined,
-                true
-            );
-        }
-    };
-
-    // Method to handle opening assign un-assign currency view
+    // Method to handle opening assign currency view
     public handleOpenAssignFormView = async (
         record: CurrencyRecordInterface | null,
         config?: { props: NavLinkUIPropsInterface },
-        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
+        selected_records: FieldArray<CurrencyRecordInterface, "code"> = []
     ): Promise<void> => {
         const base_content_key = "content_resource.currency_view_ui.list_view_ui";
-        const app_id =
-            record?.app_currencies?.[0]?.app?.public_id ??
-            this.controller?.route?.query?.app_id ??
-            "";
+        const content_key = `${base_content_key}.currency_modal.assign_currency`;
+        const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
         const app = record?.app_currencies?.[0]?.app;
-        const currency_codes = record?.code ? [record?.code] : selected_records;
+        const currency_codes = this.resolveCurrencyCodes(record, selected_records);
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}.currency_modal.assign_currency`,
+            content_key,
 
             animation_type: "slide_top",
 
             body_component: markRaw(AssignCurrencyFormView),
 
-            body_props: { app, app_id, currency_codes }
+            body_props: {
+                action: "assign",
+                app,
+                app_id,
+                content_key,
+                currency_codes,
+                record: record ?? undefined,
+                on_success: this.handleAppCurrencyActionSuccess
+            }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
-    // Method to handle opening confirm un-assign view
-    public handleOpenConfirmUnAssignView = async (
+    // Method to handle opening unassign currency view
+    public handleOpenUnAssignFormView = async (
         record: CurrencyRecordInterface | null,
         config?: { props: NavLinkUIPropsInterface },
-        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
+        selected_records: FieldArray<CurrencyRecordInterface, "code"> = []
     ): Promise<void> => {
-        let base_content_key = "";
-        let updated_record = {};
-        const app_name = InputTransformerUtil.capitalize(
-            this.controller?.route?.query?.app_id?.toString() ?? ""
-        );
-
-        if (record?.code) {
-            base_content_key =
-                "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency";
-            updated_record = { ...record, app: record?.app_currencies?.[0].app };
-        } else if (selected_records?.length) {
-            base_content_key =
-                "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
-            updated_record = {
-                currency_count: selected_records?.length,
-                app_name,
-                currencies: selected_records?.join(", ")
-            };
-        }
-
-        const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
-            record: updated_record,
-
-            title_text_content_key: `${base_content_key}.content.title_text`,
-
-            message_text_content_key: `${base_content_key}.content.message_text`,
-
-            class_styles: DecisionPromptUIClassStyles,
-
-            cancel_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `CancelBtn-${record?.code ?? app_name}`,
-                `${base_content_key}.content.cancel_btn_text`,
-                "x_circile_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            this.controller.event_bus?.emit("close_modal", {});
-                        }
-                    }
-                }
-            ),
-
-            confirm_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `ConfirmBtn-${record?.code ?? app_name}`,
-                `${base_content_key}.content.confirm_btn_text`,
-                "check_circle_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
-
-                    boolean_props: { disabled: false },
-
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            return await this.handleUnAssignRecordAction(record, selected_records);
-                        }
-                    }
-                }
-            )
-        });
+        const content_key = record?.code
+            ? "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency"
+            : "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
+        const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
+        const app = record?.app_currencies?.[0]?.app;
+        const currency_codes = this.resolveCurrencyCodes(record, selected_records);
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}`,
+            content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(DecisionPromptUI),
+            body_component: markRaw(AssignCurrencyFormView),
 
-            body_props: decsion_prompt_props
+            body_props: {
+                action: "unassign",
+                app,
+                app_id,
+                content_key,
+                currency_codes,
+                record: record ?? undefined,
+                on_success: this.handleAppCurrencyActionSuccess
+            }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
-    // Method to handle un-assigning api query
-    public handleUnAssignRecordAction = async (
-        record: CurrencyRecordInterface | null,
-        selected_records: FieldArray<CurrencyRecordInterface, keyof CurrencyRecordInterface> = []
-    ): Promise<void> => {
-        try {
-            const action = "unassign" as const;
-            const route_app_id = this.controller?.route?.query?.app_id?.toString() ?? null;
-            const record_app_id = record?.app_currencies?.[0]?.app?.public_id ?? null;
-            const app_id = route_app_id ?? record_app_id ?? "";
-            const currency_code_or_id = record?.code;
-            const currency_list =
-                Array.isArray(selected_records) && selected_records.length
-                    ? (selected_records as string[])
-                    : undefined;
-            const currency_codes =
-                Array.isArray(selected_records) && selected_records.length
-                    ? (selected_records as string[])
-                    : [record?.code ?? ""];
-
-            const csrf_token_result = await AuthAPIService.getFormCSRFToken(
-                CSRF_TOKEN_FOR.APP_CURRECY
-            );
-            const csrf_token = csrf_token_result.data?.token ?? "";
-
-            const form_data = { csrf_token, app_id, action, currency_code_or_id, currency_list };
-
-            const { v_state, v_msg, v_data } =
-                CurrencyValidator.validateAppCurrencyInput(form_data);
-
-            if (!v_state || !v_data) {
-                return StatusAlertTriggerUtil.triggerAlert("error", v_msg, 4, undefined, true);
-            }
-
-            const result = await CurrencyAPIService.handleAppCurrencyAction(v_data);
-            const msg = result?.msg ?? "error_occurred";
-
-            if (!result || result?.status?.toLowerCase() === "error") {
-                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4);
-            } else if (result.status?.toLowerCase() === "logout") {
-                this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4);
-            } else if (result.status?.toLowerCase() === "success") {
-                currency_codes.forEach((code) => {
-                    this.removeListStateRecord(code, "code");
-                });
-
-                return StatusAlertTriggerUtil.triggerAlert(result.status, msg, 4);
-            }
-
-            return StatusAlertTriggerUtil.triggerAlert("error", msg, 4);
-        } catch (error: unknown) {
-            this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4);
-        }
-    };
-
-    // Method to handle opening confirm set as sefult view
-    public handleOpenConfirmSetAsDefultView = async (
+    // Method to handle opening set as default currency view
+    public handleOpenSetAsDefaultFormView = async (
         record: CurrencyRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const base_content_key =
+        const content_key =
             "content_resource.currency_view_ui.list_view_ui.currency_modal.set_default_currency";
-        const updated_record = { ...record, app: record?.app_currencies?.[0].app };
-
-        const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
-            record: updated_record,
-
-            title_text_content_key: `${base_content_key}.content.title_text`,
-
-            message_text_content_key: `${base_content_key}.content.message_text`,
-
-            class_styles: DecisionPromptUIClassStyles,
-
-            cancel_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `CancelBtn-${record.code}`,
-                `${base_content_key}.content.cancel_btn_text`,
-                "x_circile_svg_icon",
-                "button",
-                {
-                    class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            this.controller.event_bus?.emit("close_modal", {});
-                        }
-                    }
-                }
-            ),
-
-            confirm_button_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                `ConfirmBtn-${record.code}`,
-                `${base_content_key}.content.confirm_btn_text`,
-                "check_circle_svg_icon",
-                "button",
-                {
-                    class_styles: ButtonUIClassStyles,
-
-                    boolean_props: { disabled: false },
-
-                    action_props: {
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
-                            return await this.handleSetAppDefaultCurrencyAction(record);
-                        }
-                    }
-                }
-            )
-        });
+        const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
+        const app = record?.app_currencies?.[0]?.app;
+        const currency_codes = this.resolveCurrencyCodes(record);
 
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key: `${base_content_key}`,
+            content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(DecisionPromptUI),
+            body_component: markRaw(AssignCurrencyFormView),
 
-            body_props: decsion_prompt_props
+            body_props: {
+                action: "set_default",
+                app,
+                app_id,
+                content_key,
+                currency_codes,
+                record,
+                on_success: this.handleAppCurrencyActionSuccess
+            }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
-    };
-
-    // Method to handle setting app default currency api query
-    public handleSetAppDefaultCurrencyAction = async (
-        record: CurrencyRecordInterface,
-        record_index?: number
-    ): Promise<void> => {
-        try {
-            const { code: currency_code_or_id, app_currencies } = record;
-
-            const app_id = app_currencies?.[0]?.app?.public_id ?? "";
-            const csrf_token_result = await AuthAPIService.getFormCSRFToken(
-                CSRF_TOKEN_FOR.APP_CURRECY
-            );
-            const csrf_token = csrf_token_result.data?.token ?? "";
-            const form_data = { csrf_token, app_id, currency_code_or_id };
-
-            const { v_state, v_msg, v_data } =
-                CurrencyValidator.validateSetAppDefaultCurrencyInput(form_data);
-
-            if (!v_state || !v_data) {
-                return StatusAlertTriggerUtil.triggerAlert("error", v_msg, 4, undefined, true);
-            }
-
-            const result = await CurrencyAPIService.toggleDefaultCurrency(v_data);
-            const msg = result?.msg ?? "error_occurred";
-
-            if (!result || result?.status?.toLowerCase() === "error") {
-                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-            } else if (result.status?.toLowerCase() === "logout") {
-                this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "session_expired",
-                    4,
-                    undefined,
-                    true
-                );
-            } else if (result.status?.toLowerCase() === "success") {
-                if (app_currencies?.[0]) {
-                    app_currencies[0].is_default = true;
-
-                    this.updateListStateRecord(currency_code_or_id, { app_currencies }, "code");
-                }
-
-                return StatusAlertTriggerUtil.triggerAlert(result.status, msg, 4, undefined, true);
-            }
-
-            return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-        } catch (error: unknown) {
-            this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error",
-                "error_occurred",
-                4,
-                undefined,
-                true
-            );
-        }
     };
 
     // Method to handle on bulk action btn clicked
@@ -625,7 +394,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {
-        const page_key = this.controller.getPageContentKey();
+        const page_key = this.controller.content_key;
         const bulk_actn_btn_id = `${page_key}BulkActionsBtn`;
         const bulk_action_menu_id = "TableBulkActionMeuDropdown";
         const menu_el = document.getElementById(bulk_action_menu_id);
@@ -639,8 +408,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
                 this.controller.route
             );
 
-            this.controller.state_refs.bulk_action_menu_dropdown_props.value.menu_items =
-                updated_menu;
+            this.setState("bulk_action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
         return DropdownMenuUIPropsBuilder.toggleDropdownMenu(

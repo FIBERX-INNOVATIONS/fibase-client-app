@@ -1,13 +1,9 @@
-import BaseAPIService from "@ui/version_3/base_classes/base_api_service";
-
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
 import {
     AppCurrencyActionValidatedFormDataInterface,
     CurrencyValidatedFromDataInterface,
-    AppCurrencyToggleDefaultValidatedformDataInterface,
-    CurrencyFromDataInterface,
-    AppCurrencyActionFromDataInterface
+    AppCurrencyToggleDefaultValidatedformDataInterface
 } from "@/types/form_data_type";
 
 import {
@@ -18,6 +14,8 @@ import {
 } from "@/types/api_service_type";
 
 import { CurrencyListViewFiltersInterface } from "@/types/list_view_filter_type";
+
+import BaseAPIService from "@ui/version_3/base_classes/base_api_service";
 
 class CurrencyAPIService extends BaseAPIService {
     // =========================

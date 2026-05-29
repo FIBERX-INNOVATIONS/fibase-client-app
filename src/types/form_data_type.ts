@@ -63,7 +63,6 @@ export interface CurrencyFromDataInterface extends BaseFormData {
     symbol: string;
     precision: number;
     minor_unit: number | null;
-    format: string | null;
     country_code: string | null;
     is_fiat: boolean;
     sort_order: number | null;
@@ -77,7 +76,6 @@ export interface CurrencyValidatedFromDataInterface extends BaseFormData {
     symbol: string;
     precision: number;
     minor_unit: number | null;
-    format: string | null;
     country_code: string | null;
     is_fiat: boolean;
     sort_order: number | null;
@@ -89,6 +87,14 @@ export interface AppCurrencyActionFromDataInterface extends BaseFormData {
     app_id: string | number;
     registered_app_id?: string | number;
     action: "assign" | "unassign";
+}
+
+export interface AppCurrencyFormDataInterface extends BaseFormData {
+    currency_code_or_id?: string | number;
+    currency_list?: (string | number)[];
+    app_id: string | number;
+    registered_app_id?: string | number;
+    action: "assign" | "unassign" | "set_default";
 }
 
 export interface AppCurrencyActionValidatedFormDataInterface extends BaseFormData {

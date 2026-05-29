@@ -22,7 +22,7 @@ import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 
 import RegisteredAppActionMenu from "@/action_menus/registered_app_action_menu";
 
-import FormView from "@/views/registered_app/FormView.vue";
+import AddEditFormView from "@/views/registered_app/AddEditFormView.vue";
 
 import ProfileView from "@/views/registered_app/ProfileView.vue";
 
@@ -58,7 +58,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
 
             animation_type: "slide_top",
 
-            body_component: markRaw(FormView),
+            body_component: markRaw(AddEditFormView),
 
             body_props: {}
         };
@@ -175,7 +175,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
 
             animation_type: "slide_top",
 
-            body_component: markRaw(FormView),
+            body_component: markRaw(AddEditFormView),
 
             body_props: { record }
         };
