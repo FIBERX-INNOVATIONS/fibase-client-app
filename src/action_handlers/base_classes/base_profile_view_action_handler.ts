@@ -1,62 +1,66 @@
-import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
-
-import LoggerUtil from "@ui/version_3/utils/logger_util";
-
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import {
+    FetchRecordMethod,
     ProfileViewPropsInterface,
     ProfileViewStateDataInterface,
     ProfileViewComputedDataInterface,
-    ProfileViewComponentsInterface,
-    FetchRecordMethod
+    ProfileViewComponentsInterface
 } from "@/ui_types/profile_view_type";
 
+import BaseController from "@ui/version_3/base_classes/base_controller";
+
+import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
+
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
+
+import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
+
 class BaseProfileViewActionHandler<
-    T,
-    Props extends ProfileViewPropsInterface,
-    State extends ProfileViewStateDataInterface,
-    Computed extends ProfileViewComputedDataInterface,
-    Components extends ProfileViewComponentsInterface,
-    Events extends GlobalEventTypes
-> {
+    T extends object = Record<string, unknown>,
+    Props extends ProfileViewPropsInterface<T> = ProfileViewPropsInterface<T>,
+    State extends ProfileViewStateDataInterface<T> = ProfileViewStateDataInterface<T>,
+    Computed extends ProfileViewComputedDataInterface = ProfileViewComputedDataInterface,
+    Components extends ProfileViewComponentsInterface = ProfileViewComponentsInterface,
+    Events extends GlobalEventTypes = GlobalEventTypes
+> extends BaseActionHandler<Props, State, Computed, Components, Events> {
     public readonly name: string;
 
-    protected controller: BaseProfileViewController<T>;
-
-    protected logger: LoggerUtil;
+    protected override controller: BaseProfileViewController<
+        T,
+        Props,
+        State,
+        Computed,
+        Components,
+        Events
+    >;
 
     protected content_manager = ContentManagerUtil.getInstance();
 
     protected fetch_profile_record?: FetchRecordMethod<T>;
 
     constructor(
-        controller: BaseProfileViewController<T>,
+        controller: BaseProfileViewController<T, Props, State, Computed, Components, Events>,
         name: string = "base_profile_view_action_handler",
         fetch_profile_record?: FetchRecordMethod<T>
     ) {
+        super(controller as BaseController<Props, State, Computed, Components, Events>, name);
+
         this.name = name;
 
         this.controller = controller;
 
         this.fetch_profile_record = fetch_profile_record;
-
-        this.logger = new LoggerUtil({
-            prefix: name,
-            show_timestamp: false
-        });
     }
 
-    // Method to get content message
+    // Method to get content message from content manager util
     protected getContentMessage = (message_key: string): string => {
         return this.content_manager.getAPIResponseValue(message_key);
     };
 
-    // Method to fetch records from API
+    // Method to help fetch profile record from API
     public fetchRecord = async (): Promise<void> => {
-        this.controller.state_refs.is_loading.value = true;
+        this.setState("is_loading", true as State["is_loading"]);
 
         try {
             if (!this.fetch_profile_record) {
@@ -77,21 +81,17 @@ class BaseProfileViewActionHandler<
             }
 
             if (response.data) {
-                const props_record = this.controller.props?.record ?? {};
-                const current_record = response.data;
+                const profile_record = {
+                    ...(this.controller.props.record ?? {}),
+                    ...response.data
+                } as T;
 
-                console.log({ props_record, current_record });
-
-                this.controller.state_refs.profile_record.value = {
-                    ...props_record,
-                    ...current_record
-                };
-                return;
+                this.setState("profile_record", profile_record as State["profile_record"]);
             }
         } catch (error: unknown) {
-            this.logger.error("Error fetching record:", error);
+            this.logError("fetchRecord", error);
         } finally {
-            this.controller.state_refs.is_loading.value = false;
+            this.setState("is_loading", false as State["is_loading"]);
         }
     };
 }

@@ -7,12 +7,96 @@ export interface ProfileViewPropsInterface<T = any> {
     record?: T;
 
     record_id: string;
+
+    class_styles?: Partial<ProfileViewClassStylesInterface>;
+}
+
+export interface ProfileViewContentKeysInterface {
+    loading_text: string;
+
+    no_description_text: string;
+
+    [key: string]: string;
+}
+
+export interface ProfileViewContentTextInterface {
+    loading_text: string;
+
+    no_description_text: string;
+
+    [key: string]: string;
+}
+
+// Specific content keys for the registered app profile view.
+export interface RegisteredAppProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    app_logo_alt_text: string;
+    prefix_label_text: string;
+    empty_value_text: string;
+    app_information_title_text: string;
+    app_id_label_text: string;
+    status_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    auth_details_title_text: string;
+    algorithm_label_text: string;
+    version_label_text: string;
+    last_rotated_label_text: string;
+    social_links_title_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    roles_title_text: string;
+    additional_urls_title_text: string;
+    facebook_alt_text: string;
+    twitter_alt_text: string;
+    telegram_alt_text: string;
+    linkedin_alt_text: string;
+    instagram_alt_text: string;
+    whatsapp_alt_text: string;
+    youtube_alt_text: string;
+    [key: string]: string;
+}
+
+// Specific content text values for the registered app profile view.
+export interface RegisteredAppProfileViewContentTextInterface extends ProfileViewContentTextInterface {
+    app_logo_alt_text: string;
+    prefix_label_text: string;
+    empty_value_text: string;
+    app_information_title_text: string;
+    app_id_label_text: string;
+    status_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    auth_details_title_text: string;
+    algorithm_label_text: string;
+    version_label_text: string;
+    last_rotated_label_text: string;
+    social_links_title_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    roles_title_text: string;
+    additional_urls_title_text: string;
+    facebook_alt_text: string;
+    twitter_alt_text: string;
+    telegram_alt_text: string;
+    linkedin_alt_text: string;
+    instagram_alt_text: string;
+    whatsapp_alt_text: string;
+    youtube_alt_text: string;
+    [key: string]: string;
 }
 
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
     profile_record: T;
+
+    content_keys: ProfileViewContentKeysInterface;
+
+    content_text: ProfileViewContentTextInterface;
 }
 
 export interface ProfileViewComputedDataInterface {

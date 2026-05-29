@@ -19,18 +19,21 @@ import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 class CurrencyProfileViewController extends BaseProfileViewController<CurrencyRecordInterface> {
+    public readonly content_key: string = "currency";
+
     public action_handler: CurrencyProfileViewActionHandler;
 
-    constructor(props: ProfileViewPropsInterface) {
+    constructor(props: ProfileViewPropsInterface<CurrencyRecordInterface>) {
         super(props);
 
         this.action_handler = new CurrencyProfileViewActionHandler(this);
+        this.setProfileActionHandler(this.action_handler);
 
         this.getComponentDefinition();
     }
 
-    protected getPageContentKey(): string {
-        return "currency";
+    public getPageContentKey(): string {
+        return this.content_key;
     }
 
     protected getChildUIComputedData(): ComputedDefinitionType<

@@ -2,7 +2,10 @@ import { PropType } from "vue";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
-import { ProfileViewPropsInterface } from "../../ui_types/profile_view_type";
+import {
+    ProfileViewClassStylesInterface,
+    ProfileViewPropsInterface
+} from "../../ui_types/profile_view_type";
 
 const RegisteredAppProfileViewProps = {
     record: {
@@ -13,6 +16,11 @@ const RegisteredAppProfileViewProps = {
     record_id: {
         type: String,
         default: ""
+    },
+
+    class_styles: {
+        type: Object as PropType<Partial<ProfileViewClassStylesInterface>>,
+        default: () => ({})
     }
 } satisfies Record<keyof ProfileViewPropsInterface, any>;
 

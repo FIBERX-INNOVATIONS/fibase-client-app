@@ -656,14 +656,14 @@
   .w-\[40px\] {
     width: 40px;
   }
-  .w-\[45\%\] {
-    width: 45%;
-  }
   .w-\[45px\] {
     width: 45px;
   }
   .w-\[50px\] {
     width: 50px;
+  }
+  .w-\[80\%\] {
+    width: 80%;
   }
   .w-\[170px\] {
     width: 170px;
@@ -710,8 +710,8 @@
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
   }
-  .min-w-\[45\%\] {
-    min-width: 45%;
+  .min-w-\[80\%\] {
+    min-width: 80%;
   }
   .min-w-\[200px\] {
     min-width: 200px;
@@ -1983,9 +1983,9 @@
       text-align: start;
     }
   }
-  .lg\:w-\[35\%\] {
+  .lg\:w-\[45\%\] {
     @media (width >= 64rem) {
-      width: 35%;
+      width: 45%;
     }
   }
   .lg\:w-full {
@@ -1993,9 +1993,9 @@
       width: 100%;
     }
   }
-  .lg\:min-w-\[35\%\] {
+  .lg\:min-w-\[45\%\] {
     @media (width >= 64rem) {
-      min-width: 35%;
+      min-width: 45%;
     }
   }
   .lg\:table-fixed {

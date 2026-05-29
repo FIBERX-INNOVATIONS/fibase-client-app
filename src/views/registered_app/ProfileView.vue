@@ -1,12 +1,12 @@
 <template>
     <template v-if="true">
-        <div v-if="is_loading" :class="class_styles.loading_wrapper_class_style">
+        <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
             <span
                 v-html="getSVGIconValue('loading_svg_icon')"
                 :class="class_styles.link_icon_class_style"
             ></span>
 
-            Loading...
+            {{ content_obj.loading_text }}
         </div>
 
         <div v-else :class="class_styles.wrapper_class_style">
@@ -15,14 +15,15 @@
                 <ImageRenderUI
                     :id="record_id.toString()"
                     :src="app_logo_url"
-                    :alt_text="`${record_id.toString()} App Logo`"
+                    :alt_text="content_obj.app_logo_alt_text"
                     :class_styles="class_styles.image_info_class_style"
                 >
                     <h3 :class="class_styles.h3_class_style">
                         {{ state_refs?.profile_record?.value?.name }}
                     </h3>
                     <p :class="class_styles.p_class_style">
-                        Prefix: {{ state_refs?.profile_record?.value?.prefix }}
+                        {{ content_obj.prefix_label_text }}
+                        {{ state_refs?.profile_record?.value?.prefix }}
                     </p>
 
                     <a
@@ -41,7 +42,7 @@
                     <p :class="class_styles.description_class_style">
                         {{
                             state_refs?.profile_record?.value?.description ||
-                            "No description provided."
+                            content_obj.no_description_text
                         }}
                     </p>
                 </ImageRenderUI>
@@ -54,7 +55,7 @@
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <!-- App Information -->
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">
-                        App Information
+                        {{ content_obj.app_information_title_text }}
                     </h4>
 
                     <!-- App Id -->
@@ -65,7 +66,7 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            App ID:
+                            {{ content_obj.app_id_label_text }}
                         </span>
                         {{ state_refs?.profile_record?.value?.public_id?.toUpperCase() }}
                     </p>
@@ -89,7 +90,7 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Status:
+                            {{ content_obj.status_label_text }}
                         </span>
                         <span
                             :class="
@@ -101,8 +102,8 @@
                         >
                             {{
                                 state_refs?.profile_record?.value?.is_active
-                                    ? " Active"
-                                    : " Inactive"
+                                    ? content_obj.active_status_text
+                                    : content_obj.inactive_status_text
                             }}
                         </span>
                     </p>
@@ -118,7 +119,7 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Created:
+                            {{ content_obj.created_label_text }}
                         </span>
                         {{ readable_created_at }}
                     </p>
@@ -134,7 +135,7 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Updated:
+                            {{ content_obj.updated_label_text }}
                         </span>
                         {{ readable_updated_at }}
                     </p>
@@ -142,7 +143,7 @@
 
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">
-                        Auth Details
+                        {{ content_obj.auth_details_title_text }}
                     </h4>
 
                     <!-- App Auth Key algorithm -->
@@ -153,11 +154,11 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Algorithm:
+                            {{ content_obj.algorithm_label_text }}
                         </span>
                         {{
                             state_refs?.profile_record?.value?.auth?.key_algorithm?.toUpperCase() ||
-                            "-"
+                            content_obj.empty_value_text
                         }}
                     </p>
 
@@ -169,9 +170,12 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Version:
+                            {{ content_obj.version_label_text }}
                         </span>
-                        {{ state_refs?.profile_record?.value?.auth?.key_version || "-" }}
+                        {{
+                            state_refs?.profile_record?.value?.auth?.key_version ||
+                            content_obj.empty_value_text
+                        }}
                     </p>
 
                     <!-- Key Rotated At -->
@@ -185,7 +189,7 @@
                         ></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
-                            Last Rotated:
+                            {{ content_obj.last_rotated_label_text }}
                         </span>
                         {{ readable_last_key_rotated_at }}
                     </p>
@@ -195,7 +199,9 @@
             <!-- 🔹 Social Links -->
             <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                 <!-- Social Links -->
-                <h4 :class="class_styles.small_bold_underlined_text_class_style">Social Links</h4>
+                <h4 :class="class_styles.small_bold_underlined_text_class_style">
+                    {{ content_obj.social_links_title_text }}
+                </h4>
 
                 <div class="flex flex-wrap gap-3">
                     <!-- Facebook Link -->
@@ -207,7 +213,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/facebook_icon.png"
-                            alt="Facebook"
+                            :alt="content_obj.facebook_alt_text"
                             width="24"
                             height="24"
                         />
@@ -222,7 +228,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/twitter_icon.png"
-                            alt="Twitter Link"
+                            :alt="content_obj.twitter_alt_text"
                             width="24"
                             height="24"
                         />
@@ -237,7 +243,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/telegram_icon.png"
-                            alt="Telegram Link"
+                            :alt="content_obj.telegram_alt_text"
                             width="24"
                             height="24"
                         />
@@ -252,7 +258,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/linkedin_icon.png"
-                            alt="LinkedIn Link"
+                            :alt="content_obj.linkedin_alt_text"
                             width="24"
                             height="24"
                         />
@@ -267,7 +273,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/instagram_icon.png"
-                            alt="Instagram Link"
+                            :alt="content_obj.instagram_alt_text"
                             width="24"
                             height="24"
                         />
@@ -282,7 +288,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/whatsapp_icon.png"
-                            alt="WhatsApp Link"
+                            :alt="content_obj.whatsapp_alt_text"
                             width="24"
                             height="24"
                         />
@@ -297,7 +303,7 @@
                     >
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/youtube_icon.png"
-                            alt="YouTube Link"
+                            :alt="content_obj.youtube_alt_text"
                             width="24"
                             height="24"
                         />
@@ -311,7 +317,9 @@
             >
                 <!-- Creator -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
-                    <h4 :class="class_styles.small_bold_underlined_text_class_style">Created By</h4>
+                    <h4 :class="class_styles.small_bold_underlined_text_class_style">
+                        {{ content_obj.created_by_title }}
+                    </h4>
 
                     <div
                         v-if="state_refs?.profile_record?.value?.creator"
@@ -335,7 +343,9 @@
 
                 <!-- Updater -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
-                    <h4 :class="class_styles.small_bold_underlined_text_class_style">Updated By</h4>
+                    <h4 :class="class_styles.small_bold_underlined_text_class_style">
+                        {{ content_obj.updated_by_title }}
+                    </h4>
 
                     <div
                         v-if="state_refs?.profile_record?.value?.updater"
@@ -364,7 +374,9 @@
             >
                 <!-- 🔹 Roles -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
-                    <h4 :class="class_styles.small_bold_underlined_text_class_style">Roles</h4>
+                    <h4 :class="class_styles.small_bold_underlined_text_class_style">
+                        {{ content_obj.roles_title }}
+                    </h4>
 
                     <div
                         v-if="state_refs?.profile_record?.value?.roles?.length"
@@ -383,7 +395,7 @@
                 <!-- 🔹 URLs -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">
-                        Additional URLs
+                        {{ content_obj.additional_urls_title }}
                     </h4>
 
                     <div v-if="state_refs?.profile_record?.value?.urls?.length" class="space-y-1">
@@ -415,14 +427,15 @@ import RegisteredAppProfileViewController from "@/controllers/registered_app/pro
 
 const props = defineProps(RegisteredAppProfileViewProps);
 const controller = new RegisteredAppProfileViewController(props);
+const component_definition = controller.getComponentDefinition();
 
 const { record_id } = props;
 
-const { state_refs, components, class_styles, computed_refs } = controller;
+const { state_refs, components, computed_refs } = component_definition;
 
 const { ImageRenderUI } = components;
 
-const { is_loading, profile_record } = state_refs;
+const { class_styles, content_obj } = controller;
 
 const {
     app_logo_url,
