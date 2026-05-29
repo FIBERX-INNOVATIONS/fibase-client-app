@@ -2,9 +2,10 @@ import { GlobalEventTypes } from "@/types/global_events_type";
 import { ToastStatusType } from "@ui/version_3/ui_types/toaster_ui_type";
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import { EventBusType } from "@ui/version_3/utils/event_bus_util";
+import { EventBus } from "@/utils/global_event_bus_util";
 
 class StatusAlertTriggerUtil {
-    public static event_bus: EventBusType<GlobalEventTypes> | null = null;
+    public static event_bus: EventBusType<GlobalEventTypes> | null = EventBus;
 
     public static content_manager: ContentManagerUtil = ContentManagerUtil.getInstance();
 

@@ -17,21 +17,33 @@ const ScreenLoaderClassStyles: ScreenLoaderUIClassStylesInterface = {
 
 const StatusAlertClassstyles: StatusAlertUIClassStylesInterface = {
     wrapper_class_style:
-        "fixed inset-0 flex items-start justify-end overflow-hidden bg-[#0d0a0ad6] z-[200]",
+        "fixed inset-0 flex items-start justify-end overflow-hidden bg-[#0d0a0a66] z-[200] p-4 pointer-events-none",
     alert_box_class_style:
-        "relative top-6 right-6 max-w-sm w-full flex items-stretch rounded-lg shadow-lg",
+        "relative mt-4 mr-4 w-[min(92vw,28rem)] min-h-24 flex items-stretch overflow-visible rounded-lg shadow-2xl pointer-events-auto",
     close_btn_class_style:
-        "absolute -top-3 -left-3 w-8 h-8 flex items-center text-center rounded-full shadow-md cursor-pointer",
-    status_icon_wrapper_class_style: "flex items-center justify-center w-2/12  h-full p-2",
-    status_icon_class_style: "w-full font-bold",
-    status_content_wrapper_class_style: "flex-1 w-10/12 h-full p-4",
-    status_content_class_style: "text-sm font-medium",
-    sucess_bg_class_style: "bg-gradient-to-r from-green-500 to-green-700",
-    error_bg_class_style: "bg-gradient-to-r from-green-500 from-red-700 to-red-900",
-    info_bg_class_style: "bg-gradient-to-r from-blue-700 to-blue-900",
+        "absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center rounded-full shadow-lg cursor-pointer ring-2 ring-white/80",
+    status_icon_wrapper_class_style:
+        "flex items-center justify-center w-16 shrink-0 min-h-full p-4 border-r border-white/25",
+    status_icon_class_style: "block w-8 h-8 font-bold",
+    status_content_wrapper_class_style: "flex-1 min-w-0 h-full px-4 py-3",
+    status_content_class_style: "text-sm leading-5 font-semibold",
+    sucess_bg_class_style: "bg-gradient-to-r from-emerald-500 via-green-600 to-teal-700",
+    error_bg_class_style: "bg-gradient-to-r from-rose-600 via-red-600 to-red-900",
+    info_bg_class_style: "bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-700",
     sucess_text_class_style: "text-white font-black",
     error_text_class_style: "text-white font-black",
     info_text_class_style: "text-white font-bold"
+};
+
+export const StatusAlertVariantClassStyles = {
+    success_bg_class_style: StatusAlertClassstyles.sucess_bg_class_style,
+    error_bg_class_style: StatusAlertClassstyles.error_bg_class_style,
+    info_bg_class_style: StatusAlertClassstyles.info_bg_class_style,
+    warning_bg_class_style: "bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-700",
+    success_text_class_style: StatusAlertClassstyles.sucess_text_class_style,
+    error_text_class_style: StatusAlertClassstyles.error_text_class_style,
+    info_text_class_style: StatusAlertClassstyles.info_text_class_style,
+    warning_text_class_style: "text-white font-black"
 };
 
 const AppRootClassStyles: AppRootClassStylesInterface = {

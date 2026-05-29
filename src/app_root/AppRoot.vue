@@ -7,6 +7,7 @@
     />
 
     <StatusAlertUI
+        :key="`${state_refs.alert_status.value ?? 'hidden'}-${state_refs.alert_message.value ?? ''}-${state_refs.status_alert_ui_class_style.value?.alert_box_class_style ?? ''}`"
         :alert_box_id="state_refs.alert_box_id.value"
         :class_styles="state_refs.status_alert_ui_class_style.value"
         :close_btn_icon="state_refs.status_alert_close_btn_icon.value"

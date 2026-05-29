@@ -22,19 +22,13 @@ import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 
 import RegisteredAppActionMenu from "@/action_menus/registered_app_action_menu";
 
-import DecisionPromptUIClassStyles from "@/class_styles/decision_prompt_ui_class_styles";
-
 import FormView from "@/views/registered_app/FormView.vue";
 
 import ProfileView from "@/views/registered_app/ProfileView.vue";
 
-import DecisionPromptUI from "@ui/version_3/components/DecisionPromptUI.vue";
+import DeleteView from "@/views/registered_app/DeleteView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
-
-import DecisionPromptUIPropsBuilder from "@ui/version_3/props_builder/decision_prompt_ui_props_builder";
-
-import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
 
 class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     RegisteredAppRecordInterface,
@@ -51,10 +45,6 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
-
-    // private getBaseContentKey = (): string => {
-    //     return `content_resource.${this.controller.content_key}_view_ui.list_view_ui`;
-    // };
 
     // Method to handle header button clicked
     protected handleHeaderBtnClicked = async (
@@ -200,112 +190,26 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     ): Promise<void> => {
         const { delete_modal_content_key } = this.controller.getPageContentKeys();
 
-        const cancel_button_props = ButtonUIPropsBuilder.getReactivePropsObject(
-            `CancelBtn-${record.public_id}`,
-            `${delete_modal_content_key}.content.cancel_btn_text`,
-            "x_circile_svg_icon",
-            "button",
-            {
-                class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                action_props: {
-                    on_click: async (): Promise<void> => {
-                        this.controller.event_bus?.emit("close_modal", {});
-                    }
-                }
-            }
-        );
-
-        const confirm_button_props = ButtonUIPropsBuilder.getReactivePropsObject(
-            `ConfirmBtn-${record.public_id}`,
-            `${delete_modal_content_key}.content.confirm_btn_text`,
-            "check_circle_svg_icon",
-            "button",
-            {
-                class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
-                action_props: {
-                    on_click: async (): Promise<void> => {
-                        return await this.handleDeleteARecordAction(record);
-                    }
-                }
-            }
-        );
-
-        const decsion_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
-            record,
-
-            title_text_content_key: `${delete_modal_content_key}.content.title_text`,
-
-            message_text_content_key: `${delete_modal_content_key}.content.message_text`,
-
-            class_styles: DecisionPromptUIClassStyles,
-
-            cancel_button_props,
-
-            confirm_button_props
-        });
-
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key: delete_modal_content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(DecisionPromptUI),
+            body_component: markRaw(DeleteView),
 
-            body_props: decsion_prompt_props
+            body_props: {
+                record,
+                record_id: record.public_id,
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: RegisteredAppRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.public_id, "public_id");
+                }
+            }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
-    };
-
-    // Method to handle delate a record action
-    public handleDeleteARecordAction = async (
-        record: RegisteredAppRecordInterface,
-        record_index?: number
-    ): Promise<void> => {
-        try {
-            const public_id = record.public_id;
-
-            if (!public_id) {
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "record_not_found",
-                    4,
-                    undefined,
-                    true
-                );
-            }
-
-            const result = await RegisteredAppAPIService.deleteRegisteredApp(public_id);
-            const msg = result?.msg ?? "error_occurred";
-
-            if (!result || result?.status?.toLowerCase() === "error") {
-                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-            } else if (result.status?.toLowerCase() === "logout") {
-                this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "session_expired",
-                    4,
-                    undefined,
-                    true
-                );
-            } else if (result.status?.toLowerCase() === "success") {
-                this.removeListStateRecord(public_id, "public_id");
-
-                return StatusAlertTriggerUtil.triggerAlert(result.status, msg, 4, undefined, true);
-            }
-
-            return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
-        } catch (error: unknown) {
-            this.logger.error("Error deleting a record row: ", { error });
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error",
-                "error_occurred",
-                4,
-                undefined,
-                true
-            );
-        }
     };
 }
 
