@@ -68,6 +68,8 @@ class MemberAuthenticatorUtil {
 
         const member_permissions = MemberAuthenticatorUtil.getLoggedInMemberPermissions();
 
+        console.log({ member_permissions });
+
         return member_permissions.includes(permission);
     };
 

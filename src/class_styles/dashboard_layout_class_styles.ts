@@ -76,6 +76,8 @@ const MemberAvatarDropdownClassStyle: DropdownMenuUIClassStylesInterface = {
 
     menu_item_wrapper_class_style: "w-full px-1 m-0",
 
+    menu_item_has_children_wrapper_class_style: "w-full",
+
     visible_class_style: ""
 };
 
@@ -119,7 +121,7 @@ const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
     },
     layout_section_class_style: {
         wrapper_class_style:
-            "h-screen bg-[#02182e] shadow-lg w-48 z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
+            "h-screen bg-[#02182e] shadow-lg w-[22%] z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
 
         section_1_wrapper_class_style:
             "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",
@@ -149,6 +151,15 @@ const SideBarMenuListClassStyle: DropdownMenuUIClassStylesInterface = {
 
     menu_item_wrapper_class_style: "w-full px-1 m-0",
 
+    menu_item_has_children_wrapper_class_style: "flex items-center justify-between gap-1 w-full",
+
+    caret_button_class_style:
+        "w-[30px] h-[50px] shrink-0 inline-flex items-center justify-center text-white rounded-lg hover:bg-[#6f7e8d6e]",
+
+    caret_icon_class_style: "w-[16px] h-[16px] transition-transform duration-200",
+
+    children_wrapper_class_style: "py-1 px-2 border-2 border-[#6f7e8d6e] bg-[#7d92a626] rounded-md",
+
     visible_class_style: ""
 };
 
@@ -163,7 +174,9 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
 
     icon_img_class_style: "w-[24px] h-[24px] text-white",
 
-    content_class_style: "flex items-center justify-start text-white text-[16px] text-start w-full"
+    content_class_style: "flex items-center justify-start text-white text-[16px] text-start w-full",
+
+    children_caret_class_style: "w-[16px] h-[16px] transition-transform duration-200 text-white"
 };
 
 const ModalClassStyle: ModalUIClassStylesInterface = {
