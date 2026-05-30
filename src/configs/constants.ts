@@ -38,6 +38,7 @@ export const CSRF_TOKEN_FOR = {
     TWO_FACTOR: "two_factor_login",
     REGISTER_APP: "register_app",
     CURRENCY: "currency",
+    PAYMENT_METHOD: "payment_method",
     APP_CURRECY: "app_currency"
 } as const;
 

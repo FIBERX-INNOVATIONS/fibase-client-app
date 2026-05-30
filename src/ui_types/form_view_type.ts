@@ -22,6 +22,7 @@ import {
     LoginFieldsType,
     RegisteredAppFieldsType,
     CurrencyFieldsType,
+    PaymentMethodFieldsType,
     AppCurrencyFieldsType,
     TwoFactorLoginFieldsType
 } from "@/types/form_fields_type";
@@ -169,6 +170,8 @@ type RegisteredAppFormState = FormViewStateDataInterface<RegisteredAppFieldsType
 
 type CurrencyFormState = FormViewStateDataInterface<CurrencyFieldsType>;
 
+type PaymentMethodFormState = FormViewStateDataInterface<PaymentMethodFieldsType>;
+
 type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFieldsType>;
 
 export {
@@ -189,5 +192,6 @@ export {
     LoginViewStateDataInterface,
     RegisteredAppFormState,
     CurrencyFormState,
+    PaymentMethodFormState,
     AppCurrencyFormState
 };

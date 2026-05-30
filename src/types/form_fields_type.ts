@@ -40,6 +40,44 @@ type CurrencyFieldsType = {
     is_fiat_input_group_props: InputGroupUIPropsInterface;
 };
 
+type PaymentMethodFieldsType = {
+    code_input_group_props: InputGroupUIPropsInterface;
+
+    name_input_group_props: InputGroupUIPropsInterface;
+
+    description_input_group_props: InputGroupUIPropsInterface;
+
+    icon_url_input_group_props: InputGroupUIPropsInterface;
+
+    sort_order_input_group_props: InputGroupUIPropsInterface;
+
+    display_name_input_group_props: InputGroupUIPropsInterface;
+
+    display_description_input_group_props: InputGroupUIPropsInterface;
+
+    display_group_input_group_props: InputGroupUIPropsInterface;
+
+    processing_time_text_input_group_props: InputGroupUIPropsInterface;
+
+    fee_label_input_group_props: InputGroupUIPropsInterface;
+
+    supported_country_codes_input_group_props: InputGroupUIPropsInterface;
+
+    supported_currency_codes_input_group_props: InputGroupUIPropsInterface;
+
+    requires_redirect_input_group_props: InputGroupUIPropsInterface;
+
+    supports_deposit_input_group_props: InputGroupUIPropsInterface;
+
+    supports_withdrawal_input_group_props: InputGroupUIPropsInterface;
+
+    supports_refund_input_group_props: InputGroupUIPropsInterface;
+
+    min_amount_input_group_props: InputGroupUIPropsInterface;
+
+    max_amount_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -51,5 +89,6 @@ export {
     TwoFactorLoginFieldsType,
     RegisteredAppFieldsType,
     CurrencyFieldsType,
+    PaymentMethodFieldsType,
     AppCurrencyFieldsType
 };
