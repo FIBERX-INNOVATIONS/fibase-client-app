@@ -103,7 +103,7 @@ interface FormViewPropsInterface<T = any> {
     class_styles?: FormViewClassStylesInterface;
 }
 
-type AppCurrencyFormActionType = "assign" | "unassign" | "set_default";
+type AppCurrencyFormActionType = "assign" | "unassign";
 
 interface AppCurrencyActionSuccessPayloadInterface {
     action: AppCurrencyFormActionType;

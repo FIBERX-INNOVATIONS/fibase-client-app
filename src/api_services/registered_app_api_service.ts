@@ -3,8 +3,8 @@ import BaseAPIService from "@ui/version_3/base_classes/base_api_service";
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
 import {
-    RegisteredAppFromDataInterface,
-    RegisteredAppValidatedFromDataInterface
+    RegisteredAppFormDataInterface,
+    RegisteredAppValidatedFormDataInterface
 } from "@/types/form_data_type";
 
 import {
@@ -66,7 +66,7 @@ class RegisteredAppAPIService extends BaseAPIService {
     // 🔹 CREATE
     // =========================
     public static createRegisteredApp = async (
-        data: RegisteredAppValidatedFromDataInterface
+        data: RegisteredAppValidatedFormDataInterface
     ): Promise<APIResponseInterface<RegisteredAppRecordInterface>> => {
         return await this.queryAPI<RegisteredAppRecordInterface>({
             url: `/registered-app/create`,
@@ -81,7 +81,7 @@ class RegisteredAppAPIService extends BaseAPIService {
     // =========================
     public static updateRegisteredApp = async (
         public_id: string,
-        data: Partial<RegisteredAppValidatedFromDataInterface>
+        data: Partial<RegisteredAppValidatedFormDataInterface>
     ): Promise<APIResponseInterface<RegisteredAppRecordInterface>> => {
         return await this.queryAPI<RegisteredAppRecordInterface>({
             url: `/registered-app/${public_id}/update`,

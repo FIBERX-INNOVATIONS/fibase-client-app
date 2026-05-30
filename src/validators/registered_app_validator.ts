@@ -1,7 +1,7 @@
 import {
-    RegisteredAppFromDataInterface,
+    RegisteredAppFormDataInterface,
     RegisteredAppSocialLinksInterface,
-    RegisteredAppValidatedFromDataInterface
+    RegisteredAppValidatedFormDataInterface
 } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
@@ -175,8 +175,8 @@ class RegisteredAppValidator {
     // =========================
 
     public static validateRegisteredAppInput(
-        form_data: RegisteredAppFromDataInterface
-    ): ValidationResultInterface<RegisteredAppValidatedFromDataInterface> {
+        form_data: RegisteredAppFormDataInterface
+    ): ValidationResultInterface<RegisteredAppValidatedFormDataInterface> {
         const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } =
             form_data;
 
@@ -214,7 +214,7 @@ class RegisteredAppValidator {
             return { v_state: false, v_msg: "invalid_input_app_urls_must_be_valid_links" };
         }
 
-        const v_data: RegisteredAppValidatedFromDataInterface = {
+        const v_data: RegisteredAppValidatedFormDataInterface = {
             csrf_token,
             name,
             prefix,

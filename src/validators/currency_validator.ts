@@ -1,11 +1,11 @@
 import {
-    AppCurrencyActionFromDataInterface,
+    AppCurrencyActionFormDataInterface,
     AppCurrencyActionValidatedFormDataInterface,
     AppCurrencyFormDataInterface,
     AppCurrencyToggleDefaultFormDataInterface,
     AppCurrencyToggleDefaultValidatedformDataInterface,
-    CurrencyFromDataInterface,
-    CurrencyValidatedFromDataInterface
+    CurrencyFormDataInterface,
+    CurrencyValidatedFormDataInterface
 } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
@@ -133,9 +133,29 @@ class CurrencyValidator {
         return { status: true, msg: "" };
     };
 
+    // APP ID
+    public static validateAppIdInput = (value: string | null): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: this.getContentMessage("invalid_input_app_id") };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // CURRENCY LIST
+    public static validateCurrencyListInput = (
+        value: (string | number)[]
+    ): ActionMethodRetrunInterface => {
+        if (value === null || !value.length || !Array.isArray(value)) {
+            return { status: true, msg: this.getContentMessage("no_currency_provided") };
+        }
+
+        return { status: true, msg: "" };
+    };
+
     public static validateCurrencyInput(
-        form_data: CurrencyFromDataInterface
-    ): ValidationResultInterface<CurrencyValidatedFromDataInterface> {
+        form_data: CurrencyFormDataInterface
+    ): ValidationResultInterface<CurrencyValidatedFormDataInterface> {
         const {
             csrf_token,
             code,
@@ -212,7 +232,7 @@ class CurrencyValidator {
         // ✅ CLEAN DATA
         // =========================
 
-        const v_data: CurrencyValidatedFromDataInterface = {
+        const v_data: CurrencyValidatedFormDataInterface = {
             csrf_token,
             code: code?.toUpperCase().trim(),
             name: name?.trim(),
@@ -234,21 +254,25 @@ class CurrencyValidator {
     }
 
     public static validateAppCurrencyInput(
-        form_data: AppCurrencyActionFromDataInterface | AppCurrencyFormDataInterface
+        form_data: AppCurrencyActionFormDataInterface | AppCurrencyFormDataInterface
     ): ValidationResultInterface<AppCurrencyActionValidatedFormDataInterface> {
-        const { csrf_token, currency_code_or_id, currency_list, action } = form_data;
+        const {
+            csrf_token,
+            registered_app_id,
+            app_id,
+            currency_code_or_id,
+            currency_list,
+            action
+        } = form_data;
 
-        const app_id = form_data?.registered_app_id || form_data.app_id;
+        const currency_array = currency_code_or_id
+            ? [currency_code_or_id.toString()]
+            : (currency_list ?? []);
+        const _app_id = registered_app_id?.toString() ?? app_id?.toString() ?? "";
 
         // CSRF
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
-        }
-
-        const currency_array = currency_code_or_id ? [currency_code_or_id] : (currency_list ?? []);
-
-        if (InputValidatorUtil.isEmpty(app_id) || !app_id) {
-            return { v_state: false, v_msg: "invalid_input_app_id" };
         }
 
         if (
@@ -259,7 +283,12 @@ class CurrencyValidator {
             return { v_state: false, v_msg: "invalid_currency_assign_unassign_action_type" };
         }
 
-        if (!currency_array.length) {
+        // FIELD VALIDATIONS
+        if (!this.validateAppIdInput(_app_id).status) {
+            return { v_state: false, v_msg: "invalid_input_app_id" };
+        }
+
+        if (!this.validateCurrencyListInput(currency_array).status) {
             return { v_state: false, v_msg: "no_currency_provided" };
         }
 
@@ -267,7 +296,7 @@ class CurrencyValidator {
             csrf_token,
             currency_list: currency_array,
             action: action as "assign" | "unassign",
-            app_id
+            app_id: _app_id
         };
 
         return {

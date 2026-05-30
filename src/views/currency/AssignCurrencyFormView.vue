@@ -1,15 +1,19 @@
 <template>
     <section id="AssignCurrencyFormView" :class="class_styles.wrapper_class_style">
+        <HeaderTextUI v-bind="state_refs.header_text_props.value" />
+
         <form @submit.prevent :class="class_styles.form_box_wrapper_class_style">
             <fieldset :class="class_styles.fieldset_class_style">
-                <InputGroupUI v-bind="fields.app_id_input_group_props" />
+                <InputGroupUI v-bind="state_refs.fields.value.app_id_input_group_props" />
 
-                <InputGroupUI v-bind="fields.currency_code_list_input_group_props" />
+                <InputGroupUI
+                    v-bind="state_refs.fields.value.currency_code_list_input_group_props"
+                />
             </fieldset>
 
-            <ToasterUI v-bind="toast_alert_props" />
+            <ToasterUI v-bind="state_refs.toast_alert_props.value" />
 
-            <ButtonUI v-bind="btn_props" />
+            <ButtonUI v-bind="state_refs.btn_props.value" />
         </form>
     </section>
 </template>
@@ -21,10 +25,11 @@ import AssignCurrencyFormViewController from "@/controllers/currency/assign_curr
 
 const props = defineProps(AssignCurrencyFormViewProps);
 const controller = new AssignCurrencyFormViewController<CurrencyRecordInterface>(props);
+const component_definition = controller.getComponentDefinition();
 
-const { state_refs, components, class_styles } = controller;
+const { state_refs, components } = component_definition;
 
-const { InputGroupUI, ToasterUI, ButtonUI } = components;
+const { HeaderTextUI, InputGroupUI, ToasterUI, ButtonUI } = components;
 
-const { fields, toast_alert_props, btn_props } = state_refs;
+const class_styles = controller.class_styles;
 </script>

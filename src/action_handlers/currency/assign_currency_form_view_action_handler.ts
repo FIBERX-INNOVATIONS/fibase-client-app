@@ -1,34 +1,50 @@
-import BaseController from "@ui/version_3/base_classes/base_controller";
+import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
-import { GlobalEventTypes } from "@/types/global_events_type";
-
-import {
-    AppCurrencyActionFromDataInterface,
-    AppCurrencyFormDataInterface,
-    AppCurrencyToggleDefaultFormDataInterface,
-    FieldValidator
-} from "@/types/form_data_type";
-
-import { ButtonActionMethodReturnInterface } from "@ui/version_3/ui_types/button_ui_type";
-
-import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
-
-import {
-    AssignCurrencyFormViewPropsInterface,
-    FormViewComputedDataInterface,
-    FormViewComponentsInterface,
-    AppCurrencyFormState
-} from "@/ui_types/form_view_type";
+import { CurrencyRecordInterface } from "@/types/api_service_type";
 
 import { AppCurrencyFieldsType } from "@/types/form_fields_type";
 
-import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
-import CurrencyValidator from "@/validators/currency_validator";
-import CurrencyAPIService from "@/api_services/currency_api_service";
+import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
+
+import {
+    FieldValidator,
+    AppCurrencyActionFormDataInterface,
+    AppCurrencyFormDataInterface
+} from "@/types/form_data_type";
+
+import {
+    ButtonActionMethodReturnInterface,
+    ButtonUIPropsInterface
+} from "@ui/version_3/ui_types/button_ui_type";
+
+import {
+    AssignCurrencyFormViewPropsInterface,
+    AppCurrencyFormState,
+    FormViewComputedDataInterface,
+    FormViewComponentsInterface
+} from "@/ui_types/form_view_type";
+
+import BaseController from "@ui/version_3/base_classes/base_controller";
+
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
+import CurrencyValidator from "@/validators/currency_validator";
+
+import CurrencyAPIService from "@/api_services/currency_api_service";
+
+import FileStorageAPIService from "@/api_services/file_storage_api_service";
+
+import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
+
+// import {
+//     AppCurrencyActionFormDataInterface,
+//     AppCurrencyFormDataInterface,
+//     AppCurrencyToggleDefaultFormDataInterface,
+//     FieldValidator
+// } from "@/types/form_data_type";
+
 class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
-    AppCurrencyFormDataInterface,
+    AppCurrencyActionFormDataInterface,
     AppCurrencyFieldsType,
     AssignCurrencyFormViewPropsInterface,
     AppCurrencyFormState,
@@ -47,15 +63,29 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
     ) {
         super(
             controller,
-            "assign_currency_form_view_action_handler",
-            {} as AppCurrencyFormDataInterface
+            "currency_form_view_action_handler",
+            AssignCurrencyFormViewActionHandler.getFormDataValue(controller.props)
         );
-
-        this.form_data = this.getFormDataValue();
 
         this.validators = this.getValidators();
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
+    }
+
+    // Method to get default form data value based on record
+    private static getFormDataValue(
+        controller_props?: AssignCurrencyFormViewPropsInterface
+    ): AppCurrencyFormDataInterface {
+        const currency_list = controller_props?.currency_codes ?? [];
+        const app_id = controller_props?.app_id ?? controller_props?.app?.public_id ?? "";
+        const action = controller_props?.action ?? "assign";
+
+        return {
+            csrf_token: null,
+            currency_list,
+            app_id,
+            action
+        };
     }
 
     private normalizeCurrencyList = (
@@ -72,131 +102,23 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
         return [];
     };
 
-    protected getFormDataValue(): AppCurrencyFormDataInterface {
-        const currency_list = this.controller?.props?.currency_codes ?? [];
-        const app_id =
-            this.controller?.props?.app_id ?? this.controller.props?.app?.public_id ?? "";
-        const action = this.controller?.props?.action ?? "assign";
-
-        return {
-            csrf_token: null,
-            currency_list,
-            app_id,
-            action,
-            ...(action === "set_default" ? { currency_code_or_id: currency_list[0] } : {})
-        };
-    }
-
+    // Method to get field validators
     protected getValidators(): Partial<
         Record<keyof AppCurrencyFormDataInterface, FieldValidator<AppCurrencyFormDataInterface>>
     > {
-        return {};
+        return {
+            app_id: CurrencyValidator.validateAppIdInput,
+
+            currency_list: CurrencyValidator.validateCurrencyListInput
+        };
     }
 
-    private handleAssignOrUnassignSubmit = async (
-        form_data: AppCurrencyFormDataInterface
-    ): Promise<ButtonActionMethodReturnInterface> => {
-        const action_data: AppCurrencyActionFromDataInterface = {
-            csrf_token: form_data.csrf_token,
-            app_id: form_data.app_id,
-            registered_app_id: form_data.registered_app_id,
-            currency_list: this.normalizeCurrencyList(form_data),
-            action: form_data.action as "assign" | "unassign"
-        };
+    // Method to get required fields for submit
+    protected getSubmitRequiredFields(): (keyof AppCurrencyFormDataInterface & string)[] {
+        return ["app_id", "currency_list"];
+    }
 
-        const { v_state, v_msg, v_data } = CurrencyValidator.validateAppCurrencyInput(action_data);
-
-        if (!v_state || !v_data) {
-            this.showErrorAlert("error", v_msg, 4);
-            return { status: false, msg: v_msg };
-        }
-
-        const result = await CurrencyAPIService.handleAppCurrencyAction(v_data);
-
-        if (!result) {
-            this.showErrorAlert("error", "error_occurred");
-            return { status: false, msg: "error_occurred" };
-        }
-
-        const { status, msg } = result;
-
-        if (status?.toLowerCase() === "logout") {
-            this.controller.router.push("/logout");
-            this.showErrorAlert("error", "session_expired");
-            return { status: false, msg: "session_expired" };
-        }
-
-        if (status?.toLowerCase() !== "success") {
-            this.showErrorAlert("error", msg);
-            return { status: false, msg };
-        }
-
-        await this.controller.props.on_success?.({
-            action: form_data.action,
-            app_id: v_data.app_id,
-            currency_codes: v_data.currency_list,
-            record: this.controller.props.record,
-            response: result
-        });
-
-        StatusAlertTriggerUtil.triggerAlert(status, msg, 5, undefined, true);
-
-        return { status: true, msg };
-    };
-
-    private handleSetDefaultSubmit = async (
-        form_data: AppCurrencyFormDataInterface
-    ): Promise<ButtonActionMethodReturnInterface> => {
-        const currency_code_or_id =
-            form_data.currency_code_or_id ?? this.normalizeCurrencyList(form_data)[0];
-
-        const default_form_data: AppCurrencyToggleDefaultFormDataInterface = {
-            csrf_token: form_data.csrf_token ?? "",
-            app_id: form_data.registered_app_id ?? form_data.app_id,
-            currency_code_or_id: currency_code_or_id ?? ""
-        };
-
-        const { v_state, v_msg, v_data } =
-            CurrencyValidator.validateSetAppDefaultCurrencyInput(default_form_data);
-
-        if (!v_state || !v_data) {
-            this.showErrorAlert("error", v_msg, 4);
-            return { status: false, msg: v_msg };
-        }
-
-        const result = await CurrencyAPIService.toggleDefaultCurrency(v_data);
-
-        if (!result) {
-            this.showErrorAlert("error", "error_occurred");
-            return { status: false, msg: "error_occurred" };
-        }
-
-        const { status, msg } = result;
-
-        if (status?.toLowerCase() === "logout") {
-            this.controller.router.push("/logout");
-            this.showErrorAlert("error", "session_expired");
-            return { status: false, msg: "session_expired" };
-        }
-
-        if (status?.toLowerCase() !== "success") {
-            this.showErrorAlert("error", msg);
-            return { status: false, msg };
-        }
-
-        await this.controller.props.on_success?.({
-            action: form_data.action,
-            app_id: v_data.app_id,
-            currency_codes: [v_data.currency_code_or_id],
-            record: this.controller.props.record,
-            response: result
-        });
-
-        StatusAlertTriggerUtil.triggerAlert(status, msg, 5, undefined, true);
-
-        return { status: true, msg };
-    };
-
+    // Method to handle form submit button click
     public handleOnFormSubmitBtnClick = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
@@ -206,11 +128,33 @@ class AssignCurrencyFormViewActionHandler extends BaseFormActionHandler<
         try {
             const form_data = this.form_data as AppCurrencyFormDataInterface;
 
-            if (form_data.action === "set_default") {
-                return await this.handleSetDefaultSubmit(form_data);
+            const { v_state, v_msg, v_data } =
+                CurrencyValidator.validateAppCurrencyInput(form_data);
+
+            if (!v_state || !v_data) {
+                this.showErrorAlert("error", v_msg, 4);
+                return { status: false, msg: v_msg };
             }
 
-            return await this.handleAssignOrUnassignSubmit(form_data);
+            const result = await CurrencyAPIService.handleAppCurrencyAction(v_data);
+
+            if (!result) {
+                this.showErrorAlert("error", "error_occurred");
+                return { status: false, msg: "error_occurred" };
+            }
+
+            const { status, msg, data } = result;
+            const { action, currency_list: currency_codes, app_id } = v_data;
+
+            if (status !== "success" || !data) {
+                this.showErrorAlert("error", msg);
+                return { status: false, msg: v_msg };
+            }
+
+            await this.props.on_success?.({ action, currency_codes, app_id });
+            StatusAlertTriggerUtil.triggerAlert(status, msg, 5, undefined, true);
+
+            return { status: true, msg: "login_successful" };
         } catch (error: unknown) {
             this.logger.error(`Failed to submit form`, { error });
             this.showErrorAlert("error", "error_occurred");

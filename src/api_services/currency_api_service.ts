@@ -2,7 +2,7 @@ import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
 import {
     AppCurrencyActionValidatedFormDataInterface,
-    CurrencyValidatedFromDataInterface,
+    CurrencyValidatedFormDataInterface,
     AppCurrencyToggleDefaultValidatedformDataInterface
 } from "@/types/form_data_type";
 
@@ -65,7 +65,7 @@ class CurrencyAPIService extends BaseAPIService {
     // 🔹 CREATE
     // =========================
     public static createCurrency = async (
-        data: CurrencyValidatedFromDataInterface
+        data: CurrencyValidatedFormDataInterface
     ): Promise<APIResponseInterface<CurrencyRecordInterface>> => {
         return await this.queryAPI<CurrencyRecordInterface>({
             url: `/currency/create`,
@@ -80,7 +80,7 @@ class CurrencyAPIService extends BaseAPIService {
     // =========================
     public static updateCurrency = async (
         currency_id: string | number,
-        data: Partial<CurrencyValidatedFromDataInterface>
+        data: Partial<CurrencyValidatedFormDataInterface>
     ): Promise<APIResponseInterface<CurrencyRecordInterface>> => {
         return await this.queryAPI<CurrencyRecordInterface>({
             url: `/currency/${currency_id}/update`,

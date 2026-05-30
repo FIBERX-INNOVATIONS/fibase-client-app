@@ -6,7 +6,7 @@ import { CurrencyFieldsType } from "@/types/form_fields_type";
 
 import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
 
-import { FieldValidator, CurrencyFromDataInterface } from "@/types/form_data_type";
+import { FieldValidator, CurrencyFormDataInterface } from "@/types/form_data_type";
 
 import {
     ButtonActionMethodReturnInterface,
@@ -33,7 +33,7 @@ import FileStorageAPIService from "@/api_services/file_storage_api_service";
 import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
 
 class CurrencyFormViewActionHandler extends BaseFormActionHandler<
-    CurrencyFromDataInterface,
+    CurrencyFormDataInterface,
     CurrencyFieldsType,
     FormViewPropsInterface<CurrencyRecordInterface>,
     CurrencyFormState,
@@ -62,7 +62,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get default form data value based on record
-    private static getFormDataValue(record?: CurrencyRecordInterface): CurrencyFromDataInterface {
+    private static getFormDataValue(record?: CurrencyRecordInterface): CurrencyFormDataInterface {
         return {
             csrf_token: null,
             code: record?.code ?? "",
@@ -80,7 +80,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get field validators
     protected getValidators(): Partial<
-        Record<keyof CurrencyFromDataInterface, FieldValidator<CurrencyFromDataInterface>>
+        Record<keyof CurrencyFormDataInterface, FieldValidator<CurrencyFormDataInterface>>
     > {
         return {
             code: CurrencyValidator.validateCurrencyCode,
@@ -104,7 +104,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get required fields for submit
-    protected getSubmitRequiredFields(): (keyof CurrencyFromDataInterface & string)[] {
+    protected getSubmitRequiredFields(): (keyof CurrencyFormDataInterface & string)[] {
         return ["code", "name", "symbol", "precision", "sort_order", "logo_url"];
     }
 
@@ -170,7 +170,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
         this.hideErrorAlert();
 
         try {
-            const form_data = this.form_data as CurrencyFromDataInterface;
+            const form_data = this.form_data as CurrencyFormDataInterface;
             const record = this.controller?.props?.record as CurrencyRecordInterface;
             const record_id = record.code;
             const { v_state, v_msg, v_data } = CurrencyValidator.validateCurrencyInput(form_data);

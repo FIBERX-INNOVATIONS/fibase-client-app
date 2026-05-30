@@ -6,7 +6,7 @@ import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
 import { RegisteredAppFieldsType } from "@/types/form_fields_type";
 
-import { RegisteredAppFromDataInterface } from "@/types/form_data_type";
+import { RegisteredAppFormDataInterface } from "@/types/form_data_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
@@ -26,7 +26,7 @@ import RegisteredAppFormViewActionHandler from "@/action_handlers/registered_app
 import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
 
 class RegisteredAppFormViewController extends BaseFormViewController<
-    RegisteredAppFromDataInterface,
+    RegisteredAppFormDataInterface,
     RegisteredAppFieldsType,
     FormViewPropsInterface<RegisteredAppRecordInterface>,
     RegisteredAppFormState,

@@ -29,7 +29,7 @@ export interface RegisteredAppSocialLinksInterface {
     whatsapp_social_link?: string | null;
 }
 
-export interface RegisteredAppFromDataInterface extends BaseFormData {
+export interface RegisteredAppFormDataInterface extends BaseFormData {
     name: string;
     prefix: string;
     description: string;
@@ -39,7 +39,7 @@ export interface RegisteredAppFromDataInterface extends BaseFormData {
     urls: string | null;
 }
 
-export interface RegisteredAppValidatedFromDataInterface extends BaseFormData {
+export interface RegisteredAppValidatedFormDataInterface extends BaseFormData {
     name: string;
     prefix: string;
     description: string;
@@ -55,7 +55,7 @@ export interface StorageFileUploadFormDataInterface {
     is_public?: boolean;
 }
 
-export interface CurrencyFromDataInterface extends BaseFormData {
+export interface CurrencyFormDataInterface extends BaseFormData {
     code: string;
     logo_url: string;
     numeric_code: string | null;
@@ -68,7 +68,7 @@ export interface CurrencyFromDataInterface extends BaseFormData {
     sort_order: number | null;
 }
 
-export interface CurrencyValidatedFromDataInterface extends BaseFormData {
+export interface CurrencyValidatedFormDataInterface extends BaseFormData {
     code: string;
     logo_url: string;
     numeric_code: string | null;
@@ -81,7 +81,7 @@ export interface CurrencyValidatedFromDataInterface extends BaseFormData {
     sort_order: number | null;
 }
 
-export interface AppCurrencyActionFromDataInterface extends BaseFormData {
+export interface AppCurrencyActionFormDataInterface extends BaseFormData {
     currency_code_or_id?: string | number;
     currency_list?: (string | number)[];
     app_id: string | number;
@@ -94,7 +94,7 @@ export interface AppCurrencyFormDataInterface extends BaseFormData {
     currency_list?: (string | number)[];
     app_id: string | number;
     registered_app_id?: string | number;
-    action: "assign" | "unassign" | "set_default";
+    action: "assign" | "unassign";
 }
 
 export interface AppCurrencyActionValidatedFormDataInterface extends BaseFormData {

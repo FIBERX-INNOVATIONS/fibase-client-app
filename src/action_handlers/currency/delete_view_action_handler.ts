@@ -9,12 +9,13 @@ import {
     DeleteViewStateDataInterface
 } from "@/ui_types/delete_view_type";
 
+import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
+
 import CurrencyAPIService from "@/api_services/currency_api_service";
 
 import type BaseDeleteViewController from "@/controllers/base_classes/base_delete_view_controller";
 
 import BaseDeleteViewActionHandler from "@/action_handlers/base_classes/base_delete_view_action_handler";
-import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 
 class CurrencyDeleteViewActionHandler extends BaseDeleteViewActionHandler<
     CurrencyRecordInterface,

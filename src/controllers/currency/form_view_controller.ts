@@ -6,7 +6,7 @@ import { CurrencyRecordInterface } from "@/types/api_service_type";
 
 import { CurrencyFieldsType } from "@/types/form_fields_type";
 
-import { CurrencyFromDataInterface } from "@/types/form_data_type";
+import { CurrencyFormDataInterface } from "@/types/form_data_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
@@ -26,7 +26,7 @@ import CurrencyFormViewActionHandler from "@/action_handlers/currency/form_view_
 import BaseFormViewController from "@/controllers/base_classes/base_form_view_controller";
 
 class CurrencyFormViewController extends BaseFormViewController<
-    CurrencyFromDataInterface,
+    CurrencyFormDataInterface,
     CurrencyFieldsType,
     FormViewPropsInterface<CurrencyRecordInterface>,
     CurrencyFormState,

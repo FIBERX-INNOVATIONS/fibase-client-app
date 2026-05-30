@@ -1,4 +1,7 @@
-import { SelectOptionInterface } from "@ui/version_3/ui_types/input_ui_type";
+import {
+    InputUIFetchDataParamsInterface,
+    SelectOptionInterface
+} from "@ui/version_3/ui_types/input_ui_type";
 
 import {
     CurrencyRecordInterface,
@@ -19,19 +22,20 @@ class PreviewRecordFetcher {
     protected static logger: LoggerUtil = new LoggerUtil({ prefix: this.name });
 
     // Method to handle fetching registered apps preview records
-    public static fetchRegisteredAppPreviewRecords = async (params: {
-        page: number;
-        search: string | null;
-    }): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
-        const page = params?.page ?? 0;
-        const search = params?.search ?? null;
+    public static fetchRegisteredAppPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
 
         try {
             const result = await RegisteredAppAPIService.getRegisteredAppList({
                 page,
                 filters: {
                     search,
-                    preview_only: true
+                    preview_only: true,
+                    ...extra_params
                 }
             });
 
@@ -67,19 +71,20 @@ class PreviewRecordFetcher {
     };
 
     // Method to handle fetching currencies preview records
-    public static fetchCurrenciesPreviewRecords = async (params: {
-        page: number;
-        search: string | null;
-    }): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
-        const page = params?.page ?? 0;
-        const search = params?.search ?? null;
+    public static fetchCurrenciesPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
 
         try {
             const result = await CurrencyAPIService.getCurrencyList({
                 page,
                 filters: {
                     search,
-                    preview_only: true
+                    preview_only: true,
+                    ...extra_params
                 }
             });
 
@@ -115,19 +120,20 @@ class PreviewRecordFetcher {
     };
 
     // Method to handle fetching members preview records
-    public static fetchMemberPreviewRecords = async (params: {
-        page: number;
-        search: string | null;
-    }): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
-        const page = params?.page ?? 0;
-        const search = params?.search ?? null;
+    public static fetchMemberPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
 
         try {
             const result = await MemberAPIService.getMemberList({
                 page,
                 filters: {
                     search,
-                    preview_only: true
+                    preview_only: true,
+                    ...extra_params
                 }
             });
 
@@ -151,8 +157,6 @@ class PreviewRecordFetcher {
                     };
                 }
             );
-
-            console.log({ result });
 
             return {
                 records,

@@ -8,7 +8,7 @@ import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
 
 import {
     FieldValidator,
-    RegisteredAppFromDataInterface,
+    RegisteredAppFormDataInterface,
     RegisteredAppSocialLinksInterface
 } from "@/types/form_data_type";
 
@@ -37,7 +37,7 @@ import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
 
 class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
-    RegisteredAppFromDataInterface,
+    RegisteredAppFormDataInterface,
     RegisteredAppFieldsType,
     FormViewPropsInterface<RegisteredAppRecordInterface>,
     RegisteredAppFormState,
@@ -68,7 +68,7 @@ class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
     // Method to get default form data value based on record
     private static getFormDataValue(
         record?: RegisteredAppRecordInterface
-    ): RegisteredAppFromDataInterface {
+    ): RegisteredAppFormDataInterface {
         return {
             csrf_token: null,
             name: record?.name ?? "",
@@ -83,7 +83,7 @@ class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get field validators
     protected getValidators(): Partial<
-        Record<keyof RegisteredAppFromDataInterface, FieldValidator<RegisteredAppFromDataInterface>>
+        Record<keyof RegisteredAppFormDataInterface, FieldValidator<RegisteredAppFormDataInterface>>
     > {
         return {
             name: RegisteredAppValidator.validateNameField,
@@ -103,7 +103,7 @@ class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get required fields for submit
-    protected getSubmitRequiredFields(): (keyof RegisteredAppFromDataInterface & string)[] {
+    protected getSubmitRequiredFields(): (keyof RegisteredAppFormDataInterface & string)[] {
         return ["prefix", "name", "description", "base_url", "logo_url"];
     }
 
@@ -168,7 +168,7 @@ class RegisteredAppFormViewActionHandler extends BaseFormActionHandler<
         this.hideErrorAlert();
 
         try {
-            const form_data = this.form_data as RegisteredAppFromDataInterface;
+            const form_data = this.form_data as RegisteredAppFormDataInterface;
             const record = this.controller.props.record;
             const record_id = record?.public_id;
             const { v_state, v_msg, v_data } =
