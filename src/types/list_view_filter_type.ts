@@ -26,3 +26,47 @@ export interface MemberListFiltersInterface {
     preview_only?: boolean;
     is_active?: string | null;
 }
+
+export interface PaymentConfigListViewFiltersInterface {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    search?: string | null;
+    preview_only?: boolean | string;
+    is_active?: string | null;
+    created_by?: string | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
+export interface PaymentMethodListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    display_group?: string | null;
+    requires_redirect?: string | null;
+    supports_deposit?: string | null;
+    supports_withdrawal?: string | null;
+    supports_refund?: string | null;
+}
+
+export interface PaymentProviderListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    provider_type?: string | null;
+}
+
+export interface PaymentProviderConfigListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    provider_id?: string | number | null;
+    environment?: "test" | "live" | string | null;
+    account_reference?: string | null;
+}
+
+export interface PaymentProviderMethodListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    provider_id?: string | number | null;
+    payment_method_id?: string | number | null;
+    direction?: "deposit" | "withdrawal" | string | null;
+}
+
+export interface CurrencyPaymentProviderMethodListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    currency_id?: string | number | null;
+    provider_id?: string | number | null;
+    payment_method_id?: string | number | null;
+    provider_method_id?: string | number | null;
+    direction?: "deposit" | "withdrawal" | string | null;
+}

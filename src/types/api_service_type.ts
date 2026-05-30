@@ -1,3 +1,11 @@
+import {
+    CurrencyPaymentProviderMethodListViewFiltersInterface,
+    PaymentMethodListViewFiltersInterface,
+    PaymentProviderListViewFiltersInterface,
+    PaymentProviderConfigListViewFiltersInterface,
+    PaymentProviderMethodListViewFiltersInterface
+} from "./list_view_filter_type";
+
 export interface CSRFTokenRecordInterface {
     token: string;
     expires_at: string;
@@ -193,3 +201,210 @@ export interface CurrencyStatusUpdateResponseInterface {
 }
 
 export type AppCurrencyActionResponseInterface = boolean;
+
+export type PaymentConfigDirectionType = "deposit" | "withdrawal";
+
+export type PaymentProviderConfigEnvironmentType = "test" | "live";
+
+export interface PaymentMethodMetadataInterface {
+    display_name?: string | null;
+    display_description?: string | null;
+    display_group?: string | null;
+    processing_time_text?: string | null;
+    fee_label?: string | null;
+    supported_country_codes?: string[];
+    supported_currency_codes?: string[];
+    requires_redirect?: boolean;
+    supports_deposit?: boolean;
+    supports_withdrawal?: boolean;
+    supports_refund?: boolean;
+    min_amount?: number | null;
+    max_amount?: number | null;
+    [key: string]: string | number | boolean | string[] | null | undefined;
+}
+
+export interface PaymentMethodRecordInterface {
+    code: string;
+    name: string;
+    description: string | null;
+    icon_url: string | null;
+    sort_order: number;
+    metadata: PaymentMethodMetadataInterface | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string | null;
+    creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export interface PaymentProviderRecordInterface {
+    code: string;
+    name: string;
+    description: string | null;
+    provider_type: string;
+    logo_url: string | null;
+    website_url: string | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string | null;
+    creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export interface PaymentProviderConfigCredentialsInterface {
+    api_key?: string | null;
+    secret_key?: string | null;
+    public_key?: string | null;
+    private_key?: string | null;
+    client_id?: string | null;
+    client_secret?: string | null;
+    merchant_id?: string | null;
+    account_id?: string | null;
+    username?: string | null;
+    password?: string | null;
+    webhook_hash?: string | null;
+    webhook_secret?: string | null;
+    signing_secret?: string | null;
+    [key: string]: string | null | undefined;
+}
+
+export interface PaymentProviderConfigSettingsInterface {
+    webhook_url?: string | null;
+    callback_url?: string | null;
+    redirect_url?: string | null;
+    success_url?: string | null;
+    failure_url?: string | null;
+    settlement_currency?: string | null;
+    default_currency?: string | null;
+    payout_schedule?: string | null;
+    capture_mode?: string | null;
+    timeout_ms?: string | null;
+    [key: string]: string | null | undefined;
+}
+
+export interface PaymentProviderConfigRecordInterface {
+    id?: number;
+    provider_id: number;
+    environment: PaymentProviderConfigEnvironmentType;
+    account_reference: string | null;
+    settings: PaymentProviderConfigSettingsInterface | null;
+    created_at: string;
+    updated_at: string | null;
+    provider?: PaymentProviderRecordInterface;
+    creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export interface PaymentProviderMethodRecordInterface {
+    id?: number;
+    provider_id: number;
+    payment_method_id: number;
+    direction: PaymentConfigDirectionType;
+    provider_method_code: string | null;
+    min_amount: number | null;
+    max_amount: number | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string | null;
+    provider?: PaymentProviderRecordInterface;
+    payment_method?: PaymentMethodRecordInterface;
+    linked_by_user?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export interface CurrencyPaymentProviderMethodRecordInterface {
+    id?: number;
+    currency_id: number;
+    provider_method_id: number;
+    min_amount: number | null;
+    max_amount: number | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string | null;
+    currency?: CurrencyRecordInterface;
+    provider_method?: PaymentProviderMethodRecordInterface;
+    linked_by_user?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+}
+
+export type PaymentMethodListResponseInterface = PaginatedResponseResultInterface<
+    PaymentMethodRecordInterface[]
+>;
+
+export type PaymentProviderListResponseInterface = PaginatedResponseResultInterface<
+    PaymentProviderRecordInterface[]
+>;
+
+export type PaymentProviderConfigListResponseInterface = PaginatedResponseResultInterface<
+    PaymentProviderConfigRecordInterface[]
+>;
+
+export type PaymentProviderMethodListResponseInterface = PaginatedResponseResultInterface<
+    PaymentProviderMethodRecordInterface[]
+>;
+
+export type CurrencyPaymentProviderMethodListResponseInterface = PaginatedResponseResultInterface<
+    CurrencyPaymentProviderMethodRecordInterface[]
+>;
+
+export interface PaymentMethodStatusUpdateResponseInterface {
+    payment_method: PaymentMethodRecordInterface;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
+export interface PaymentProviderStatusUpdateResponseInterface {
+    payment_provider: PaymentProviderRecordInterface;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
+export interface PaymentProviderMethodStatusUpdateResponseInterface {
+    payment_provider_method: PaymentProviderMethodRecordInterface;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
+export interface CurrencyPaymentProviderMethodStatusUpdateResponseInterface {
+    currency_payment_provider_method: CurrencyPaymentProviderMethodRecordInterface;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
+export type CurrencyPaymentProviderMethodListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<CurrencyPaymentProviderMethodListViewFiltersInterface>;
+};
+
+export type PaymentMethodListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<PaymentMethodListViewFiltersInterface>;
+};
+
+export type PaymentProviderListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<PaymentProviderListViewFiltersInterface>;
+};
+
+export type PaymentProviderConfigListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<PaymentProviderConfigListViewFiltersInterface>;
+};
+
+export type PaymentProviderMethodListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<PaymentProviderMethodListViewFiltersInterface>;
+};

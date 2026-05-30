@@ -1,5 +1,13 @@
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
+import type {
+    PaymentConfigDirectionType,
+    PaymentMethodMetadataInterface,
+    PaymentProviderConfigCredentialsInterface,
+    PaymentProviderConfigEnvironmentType,
+    PaymentProviderConfigSettingsInterface
+} from "@/types/api_service_type";
+
 export type FieldValidator<FormData> = (
     value: any,
     form_data: Partial<FormData>
@@ -114,4 +122,98 @@ export interface AppCurrencyToggleDefaultValidatedformDataInterface extends Base
     csrf_token: string;
     app_id: string | number;
     currency_code_or_id: string | number;
+}
+
+export interface CreatePaymentMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    code: string;
+    name: string;
+    description?: string | null;
+    icon_url?: string | null;
+    sort_order?: number | null;
+    metadata?: PaymentMethodMetadataInterface | null;
+}
+
+export interface UpdatePaymentMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    code?: string;
+    name?: string;
+    description?: string | null;
+    icon_url?: string | null;
+    sort_order?: number | null;
+    metadata?: PaymentMethodMetadataInterface | null;
+}
+
+export interface CreatePaymentProviderPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    code: string;
+    name: string;
+    description?: string | null;
+    provider_type?: string;
+    logo_url?: string | null;
+    website_url?: string | null;
+}
+
+export interface UpdatePaymentProviderPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    code?: string;
+    name?: string;
+    description?: string | null;
+    provider_type?: string;
+    logo_url?: string | null;
+    website_url?: string | null;
+}
+
+export interface CreatePaymentProviderConfigPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    provider_id: string | number;
+    environment?: PaymentProviderConfigEnvironmentType;
+    account_reference?: string | null;
+    credentials?: PaymentProviderConfigCredentialsInterface | null;
+    settings?: PaymentProviderConfigSettingsInterface | null;
+}
+
+export interface UpdatePaymentProviderConfigPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    provider_id?: string | number;
+    environment?: PaymentProviderConfigEnvironmentType;
+    account_reference?: string | null;
+    credentials?: PaymentProviderConfigCredentialsInterface | null;
+    settings?: PaymentProviderConfigSettingsInterface | null;
+}
+
+export interface CreatePaymentProviderMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    provider_id: string | number;
+    payment_method_id: string | number;
+    direction: PaymentConfigDirectionType;
+    provider_method_code?: string | null;
+    min_amount?: number | null;
+    max_amount?: number | null;
+}
+
+export interface UpdatePaymentProviderMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    provider_id?: string | number;
+    payment_method_id?: string | number;
+    direction?: PaymentConfigDirectionType;
+    provider_method_code?: string | null;
+    min_amount?: number | null;
+    max_amount?: number | null;
+}
+
+export interface CreateCurrencyPaymentProviderMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    currency_id: string | number;
+    provider_method_id: string | number;
+    min_amount?: number | null;
+    max_amount?: number | null;
+}
+
+export interface UpdateCurrencyPaymentProviderMethodPayloadInterface extends BaseFormData {
+    csrf_token: string;
+    currency_id?: string | number;
+    provider_method_id?: string | number;
+    min_amount?: number | null;
+    max_amount?: number | null;
 }
