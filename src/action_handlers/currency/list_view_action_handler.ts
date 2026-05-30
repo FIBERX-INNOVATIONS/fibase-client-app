@@ -32,6 +32,10 @@ import AddEditFormView from "@/views/currency/AddEditFormView.vue";
 
 import AssignCurrencyFormView from "@/views/currency/AssignCurrencyFormView.vue";
 
+import SetDefaultCurrencyView from "@/views/currency/SetDefaultCurrencyView.vue";
+
+import UnAssignCurrencyView from "@/views/currency/UnAssignCurrencyView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class CurrencyListViewActionHandler extends BaseListViewActionHandler<
@@ -330,26 +334,34 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         selected_records: FieldArray<CurrencyRecordInterface, "code"> = []
     ): Promise<void> => {
         const content_key = record?.code
-            ? "content_resource.currency_view_ui.list_view_ui.currency_modal.unassign_currency"
-            : "content_resource.currency_view_ui.list_view_ui.currency_modal.bulk_unassign_currency";
+            ? "content_resource.currency_view_ui.modals_ui.unassign_currency_modal_ui"
+            : "content_resource.currency_view_ui.modals_ui.bulk_unassign_currency_modal_ui";
         const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
         const app = record?.app_currencies?.[0]?.app;
         const currency_codes = this.resolveCurrencyCodes(record, selected_records);
+        const prompt_record = record?.code
+            ? { ...record, app }
+            : {
+                  app_name: app_id,
+                  currencies: currency_codes.join(", "),
+                  currency_count: currency_codes.length
+              };
 
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(AssignCurrencyFormView),
+            body_component: markRaw(UnAssignCurrencyView),
 
             body_props: {
                 action: "unassign",
-                app,
                 app_id,
                 content_key,
                 currency_codes,
-                record: record ?? undefined,
+                currency_record: record ?? undefined,
+                record: prompt_record,
+                record_id: record?.code ?? app_id,
                 on_success: this.handleAppCurrencyActionSuccess
             }
         };
@@ -367,21 +379,23 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
         const app = record?.app_currencies?.[0]?.app;
         const currency_codes = this.resolveCurrencyCodes(record);
+        const prompt_record = { ...record, app };
 
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key,
 
             animation_type: "slide_top",
 
-            body_component: markRaw(AssignCurrencyFormView),
+            body_component: markRaw(SetDefaultCurrencyView),
 
             body_props: {
                 action: "set_default",
-                app,
                 app_id,
                 content_key,
                 currency_codes,
-                record,
+                currency_record: record,
+                record: prompt_record,
+                record_id: record.code,
                 on_success: this.handleAppCurrencyActionSuccess
             }
         };

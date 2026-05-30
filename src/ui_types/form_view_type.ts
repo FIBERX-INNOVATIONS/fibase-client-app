@@ -103,10 +103,12 @@ interface FormViewPropsInterface<T = any> {
     class_styles?: FormViewClassStylesInterface;
 }
 
-type AppCurrencyFormActionType = "assign" | "unassign";
+type AppCurrencyActionType = "assign" | "unassign" | "set_default";
+
+type AppCurrencyFormActionType = Extract<AppCurrencyActionType, "assign" | "unassign">;
 
 interface AppCurrencyActionSuccessPayloadInterface {
-    action: AppCurrencyFormActionType;
+    action: AppCurrencyActionType;
 
     app_id: string | number;
 
@@ -179,6 +181,7 @@ export {
     FormViewComputedDataInterface,
     FormViewStateDataInterface,
     AssignCurrencyFormViewPropsInterface,
+    AppCurrencyActionType,
     AppCurrencyFormActionType,
     AppCurrencyActionSuccessPayloadInterface,
     AppCurrencyActionSuccessCallback,

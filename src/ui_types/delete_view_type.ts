@@ -4,6 +4,13 @@ import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
 import { DecisionPromptUIPropsInterface } from "@ui/version_3/ui_types/decision_prompt_ui_type";
 
+import type { CurrencyRecordInterface } from "@/types/api_service_type";
+
+import type {
+    AppCurrencyActionType,
+    AppCurrencyActionSuccessCallback
+} from "@/ui_types/form_view_type";
+
 export type DeleteRecordMethod<TResponse = unknown> = (
     record_id: string
 ) => Promise<APIResponseInterface<TResponse>>;
@@ -46,4 +53,35 @@ export interface DeleteViewContentKeysInterface {
     confirm_button_text: string;
 
     [key: string]: string;
+}
+
+export type AppCurrencyDecisionActionType = Extract<
+    AppCurrencyActionType,
+    "unassign" | "set_default"
+>;
+
+export interface AppCurrencyDecisionPromptRecordInterface extends Record<string, unknown> {
+    code?: string;
+
+    name?: string;
+
+    app?: Record<string, unknown>;
+
+    app_name?: string;
+
+    currencies?: string;
+
+    currency_count?: number;
+}
+
+export interface AppCurrencyDecisionViewPropsInterface extends DeleteViewPropsInterface<AppCurrencyDecisionPromptRecordInterface> {
+    action: AppCurrencyDecisionActionType;
+
+    app_id: string;
+
+    currency_codes: string[];
+
+    currency_record?: CurrencyRecordInterface;
+
+    on_success?: AppCurrencyActionSuccessCallback;
 }
