@@ -375,7 +375,7 @@ class CurrencyListViewActionHandler extends BaseListViewActionHandler<
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
         const content_key =
-            "content_resource.currency_view_ui.list_view_ui.currency_modal.set_default_currency";
+            "content_resource.currency_view_ui.modals_ui.set_default_currency_modal_ui";
         const app_id = record?.app_currencies?.[0]?.app?.public_id ?? this.getRouteAppId();
         const app = record?.app_currencies?.[0]?.app;
         const currency_codes = this.resolveCurrencyCodes(record);

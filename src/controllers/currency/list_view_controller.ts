@@ -231,21 +231,39 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                     is_selected: false,
 
-                    input_model_value: (record: CurrencyRecordInterface): InputValue => {
-                        return this.state_refs.selected_records.value.includes(record.code);
+                    input_model_value: (record?: CurrencyRecordInterface): InputValue => {
+                        const selected_records = this.state_refs.selected_records.value;
+
+                        if (!record?.code) {
+                            const records = this.state_refs.list_state.value.records ?? [];
+                            const currency_codes = records.map((row) => row.code);
+
+                            return (
+                                currency_codes.length > 0 &&
+                                currency_codes.every((code) => selected_records.includes(code))
+                            );
+                        }
+
+                        return selected_records.includes(record.code);
                     },
 
                     input_ui_boolean_props: (
-                        record: CurrencyRecordInterface
+                        record?: CurrencyRecordInterface
                     ): InputUIBooleanPropsInterface => {
+                        const selected_records = this.state_refs.selected_records.value;
+                        const records = this.state_refs.list_state.value.records ?? [];
+                        const currency_codes = records.map((row) => row.code);
+                        const is_checked = record?.code
+                            ? selected_records.includes(record.code)
+                            : currency_codes.length > 0 &&
+                              currency_codes.every((code) => selected_records.includes(code));
+
                         return {
-                            is_checked: this.state_refs.selected_records.value.includes(
-                                record.code
-                            ),
+                            is_checked,
 
                             required: true,
 
-                            disabled: false
+                            disabled: !record?.code && currency_codes.length === 0
                         };
                     },
 
