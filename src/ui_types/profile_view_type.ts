@@ -89,6 +89,68 @@ export interface RegisteredAppProfileViewContentTextInterface extends ProfileVie
     [key: string]: string;
 }
 
+export interface CurrencyProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    currency_logo_alt_text: string;
+    symbol_label_text: string;
+    format_label_text: string;
+    no_format_text: string;
+    empty_value_text: string;
+    currency_information_title_text: string;
+    code_label_text: string;
+    numeric_code_label_text: string;
+    country_code_label_text: string;
+    precision_label_text: string;
+    minor_unit_label_text: string;
+    sort_order_label_text: string;
+    status_title_text: string;
+    type_label_text: string;
+    fiat_type_text: string;
+    crypto_type_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    assigned_apps_title_text: string;
+    app_prefix_label_text: string;
+    default_badge_text: string;
+    no_assigned_apps_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface CurrencyProfileViewContentTextInterface extends ProfileViewContentTextInterface {
+    currency_logo_alt_text: string;
+    symbol_label_text: string;
+    format_label_text: string;
+    no_format_text: string;
+    empty_value_text: string;
+    currency_information_title_text: string;
+    code_label_text: string;
+    numeric_code_label_text: string;
+    country_code_label_text: string;
+    precision_label_text: string;
+    minor_unit_label_text: string;
+    sort_order_label_text: string;
+    status_title_text: string;
+    type_label_text: string;
+    fiat_type_text: string;
+    crypto_type_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    assigned_apps_title_text: string;
+    app_prefix_label_text: string;
+    default_badge_text: string;
+    no_assigned_apps_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
