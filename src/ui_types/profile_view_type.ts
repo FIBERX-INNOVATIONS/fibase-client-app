@@ -151,6 +151,44 @@ export interface CurrencyProfileViewContentTextInterface extends ProfileViewCont
     [key: string]: string;
 }
 
+export interface PaymentMethodProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    payment_method_icon_alt_text: string;
+    code_label_text: string;
+    empty_value_text: string;
+    display_details_title_text: string;
+    display_name_label_text: string;
+    display_group_label_text: string;
+    processing_time_label_text: string;
+    fee_label_text: string;
+    amount_limits_title_text: string;
+    min_amount_label_text: string;
+    max_amount_label_text: string;
+    capabilities_title_text: string;
+    requires_redirect_label_text: string;
+    supports_deposit_label_text: string;
+    supports_withdrawal_label_text: string;
+    supports_refund_label_text: string;
+    enabled_text: string;
+    disabled_text: string;
+    supported_regions_title_text: string;
+    countries_label_text: string;
+    currencies_label_text: string;
+    no_countries_text: string;
+    no_currencies_text: string;
+    status_title_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    sort_order_label_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface PaymentMethodProfileViewContentTextInterface extends PaymentMethodProfileViewContentKeysInterface {}
+
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 

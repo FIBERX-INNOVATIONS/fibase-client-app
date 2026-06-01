@@ -24,6 +24,10 @@ import PaymentMethodActionMenu from "@/action_menus/payment_method_action_menu";
 
 import AddEditFormView from "@/views/payment_method/AddEditFormView.vue";
 
+import ProfileView from "@/views/payment_method/ProfileView.vue";
+
+import DeleteView from "@/views/payment_method/DeleteView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class PaymentMethodListViewActionHandler extends BaseListViewActionHandler<
@@ -139,7 +143,21 @@ class PaymentMethodListViewActionHandler extends BaseListViewActionHandler<
     public handleViewActionMenuClicked = async (
         record: PaymentMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: profile_details_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ProfileView),
+
+            body_props: { record_id: record?.code, record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle edit action menu clicked.
     public handleEditActionMenuClicked = async (
@@ -165,7 +183,30 @@ class PaymentMethodListViewActionHandler extends BaseListViewActionHandler<
     public handleDeleteActionMenuClicked = async (
         record: PaymentMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: delete_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(DeleteView),
+
+            body_props: {
+                record,
+                record_id: record.code,
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: PaymentMethodRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.code, "code");
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 }
 
 export default PaymentMethodListViewActionHandler;
