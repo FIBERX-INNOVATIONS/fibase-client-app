@@ -35,6 +35,8 @@ import PaymentMethodValidator from "@/validators/payment_method_validator";
 import PaymentMethodAPIService from "@/api_services/payment_method_api_service";
 
 import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
+import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
+import FileStorageAPIService from "@/api_services/file_storage_api_service";
 
 class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
     PaymentMethodFormDataInterface,
@@ -83,8 +85,8 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             display_group: metadata?.display_group ?? "",
             processing_time_text: metadata?.processing_time_text ?? "",
             fee_label: metadata?.fee_label ?? "",
-            supported_country_codes: metadata?.supported_country_codes?.join(", ") ?? "",
-            supported_currency_codes: metadata?.supported_currency_codes?.join(", ") ?? "",
+            supported_country_codes: metadata?.supported_country_codes ?? [],
+            supported_currency_codes: metadata?.supported_currency_codes ?? [],
             requires_redirect: metadata?.requires_redirect ?? false,
             supports_deposit: metadata?.supports_deposit ?? false,
             supports_withdrawal: metadata?.supports_withdrawal ?? false,
@@ -109,19 +111,23 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get required fields for submit.
     protected getSubmitRequiredFields(): (keyof PaymentMethodFormDataInterface & string)[] {
-        return ["code", "name"];
+        return [
+            "code",
+            "name",
+            "description",
+            "sort_order",
+            "display_name",
+            "display_description",
+            "display_group",
+            "processing_time_text",
+            "fee_label",
+            "display_group"
+        ];
     }
 
-    // Method to split a comma separated list into a clean string array.
-    private splitListValue(value?: string | null): string[] {
-        if (!value) {
-            return [];
-        }
-
-        return value
-            .split(",")
-            .map((item) => item.trim())
-            .filter(Boolean);
+    // Method to normalize selected codes into a clean string array.
+    private normalizeCodeList(value?: string[] | null): string[] {
+        return (value ?? []).map((item) => item.trim()).filter(Boolean);
     }
 
     // Method to normalize optional numbers from form input.
@@ -145,12 +151,12 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             display_group: form_data.display_group?.trim() || null,
             processing_time_text: form_data.processing_time_text?.trim() || null,
             fee_label: form_data.fee_label?.trim() || null,
-            supported_country_codes: this.splitListValue(form_data.supported_country_codes).map(
+            supported_country_codes: this.normalizeCodeList(form_data.supported_country_codes).map(
                 (code) => code.toUpperCase()
             ),
-            supported_currency_codes: this.splitListValue(form_data.supported_currency_codes).map(
-                (code) => code.toUpperCase()
-            ),
+            supported_currency_codes: this.normalizeCodeList(
+                form_data.supported_currency_codes
+            ).map((code) => code.toUpperCase()),
             requires_redirect: !!form_data.requires_redirect,
             supports_deposit: !!form_data.supports_deposit,
             supports_withdrawal: !!form_data.supports_withdrawal,
@@ -174,6 +180,60 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             metadata: this.buildMetadataPayload(form_data)
         };
     }
+
+    // Method to handle on file upload
+    public handleOnFileUpload = async (files: File[]): Promise<boolean> => {
+        try {
+            const form_data = new FormData();
+
+            form_data.append("file", files[0]);
+            form_data.append("reference_type", FILE_STORAGE_REFERENCE_TYPE.PAYMENT_METHOD_ICON);
+            form_data.append("is_public", "true");
+
+            const result = await FileStorageAPIService.uploadFile(form_data);
+
+            if (!result) {
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
+                return false;
+            }
+
+            const { status, msg, data } = result;
+
+            if (status !== "success" || !data?.url) {
+                StatusAlertTriggerUtil.triggerAlert(
+                    "error",
+                    msg || "file_upload_failed",
+                    10,
+                    undefined,
+                    false
+                );
+                return false;
+            }
+
+            StatusAlertTriggerUtil.triggerAlert(
+                "success",
+                msg || "file_uploaded_successfully",
+                5,
+                undefined,
+                true
+            );
+
+            // set the icon url field in the form data
+            this.form_data.icon_url = data.url;
+            this.syncSubmitButtonState();
+            return true;
+        } catch (error: unknown) {
+            this.logger.error(`Failed to submit form`, { error });
+            StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 10, undefined, false);
+            return false;
+        }
+    };
 
     // Method to handle form submit button click.
     public handleOnFormSubmitBtnClick = async (

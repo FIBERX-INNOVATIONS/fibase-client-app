@@ -5,7 +5,7 @@ import {
     CurrencyProfileViewContentTextInterface
 } from "@/ui_types/profile_view_type";
 
-import { DEFAULT_MEMBER_PROFILE_PHOTO_URL, DEFUALT_CURRENCY_LOGO_URL } from "@/configs/constants";
+import { DEFAULT_MEMBER_PROFILE_PHOTO_URL, DEFUALT_CURRENCY_LOGO_URL } from "@/configs";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
 

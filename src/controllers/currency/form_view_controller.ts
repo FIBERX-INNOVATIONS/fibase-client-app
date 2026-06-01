@@ -1,6 +1,6 @@
 import { GlobalEventTypes } from "@/types/global_events_type";
 
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
+import { CSRF_TOKEN_FOR } from "@/configs";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
 

@@ -144,7 +144,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             // display Ggroup Filter
             {
                 key: "display_group",
-                type: "text",
+                type: "select",
                 label_content_key: `${filters_content_key}.display_group_filter`,
                 input_content_key: `${filters_content_key}.display_group_filter`,
                 overides: {
@@ -237,7 +237,7 @@ class PaymentMethodListViewController extends BaseListViewController<
     // Method to get table render config.
     protected getTableRenderConfig(): DataTableColumnRenderType<PaymentMethodRecordInterface>[] {
         const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "payment_config_module.update_payment_method_status"
+            "payment_method_module.update_payment_method_status"
         );
 
         const columns: DataTableColumnRenderType<PaymentMethodRecordInterface>[] = [

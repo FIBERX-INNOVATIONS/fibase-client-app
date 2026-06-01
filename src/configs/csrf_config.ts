@@ -1,0 +1,10 @@
+export const CSRF_TOKEN_FOR = {
+    LOGIN: "login",
+    TWO_FACTOR: "two_factor_login",
+    REGISTER_APP: "register_app",
+    CURRENCY: "currency",
+    PAYMENT_METHOD: "payment_method",
+    APP_CURRECY: "app_currency"
+} as const;
+
+export type CSRFTokenForType = (typeof CSRF_TOKEN_FOR)[keyof typeof CSRF_TOKEN_FOR];

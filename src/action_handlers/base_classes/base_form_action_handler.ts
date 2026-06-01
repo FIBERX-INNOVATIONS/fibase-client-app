@@ -4,7 +4,7 @@ import { FieldValidator } from "@/types/form_data_type";
 
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-import { CSRFTokenForType } from "@/configs/constants";
+import { CSRFTokenForType } from "@/configs";
 
 import { GlobalEventTypes, OpenModalEventPayloadInterface } from "@/types/global_events_type";
 

@@ -2,10 +2,7 @@ import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
-import {
-    DEFAULT_MEMBER_PROFILE_PHOTO_URL,
-    DEFUALT_REGISTERED_APP_LOGO_URL
-} from "@/configs/constants";
+import { DEFAULT_MEMBER_PROFILE_PHOTO_URL, DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs";
 
 import {
     ProfileViewComputedDataInterface,

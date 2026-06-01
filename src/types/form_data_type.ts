@@ -156,8 +156,8 @@ export interface PaymentMethodFormDataInterface extends BaseFormData {
     display_group?: string | null;
     processing_time_text?: string | null;
     fee_label?: string | null;
-    supported_country_codes?: string | null;
-    supported_currency_codes?: string | null;
+    supported_country_codes?: string[] | null;
+    supported_currency_codes?: string[] | null;
     requires_redirect?: boolean;
     supports_deposit?: boolean;
     supports_withdrawal?: boolean;

@@ -220,7 +220,6 @@ export interface PaymentMethodMetadataInterface {
     supports_refund?: boolean;
     min_amount?: number | null;
     max_amount?: number | null;
-    [key: string]: string | number | boolean | string[] | null | undefined;
 }
 
 export interface PaymentMethodRecordInterface {

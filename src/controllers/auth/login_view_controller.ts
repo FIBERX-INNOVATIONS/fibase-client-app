@@ -1,6 +1,6 @@
 import { GlobalEventTypes } from "@/types/global_events_type";
 
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
+import { CSRF_TOKEN_FOR } from "@/configs";
 
 import { LoginFieldsType } from "@/types/form_fields_type";
 

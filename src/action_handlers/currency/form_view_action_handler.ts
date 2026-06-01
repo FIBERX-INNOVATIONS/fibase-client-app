@@ -4,7 +4,7 @@ import { CurrencyRecordInterface } from "@/types/api_service_type";
 
 import { CurrencyFieldsType } from "@/types/form_fields_type";
 
-import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
+import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
 
 import { FieldValidator, CurrencyFormDataInterface } from "@/types/form_data_type";
 

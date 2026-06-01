@@ -54,7 +54,7 @@ class PaymentMethodActionMenu {
                 },
                 class_styles,
                 has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_config_module.get_payment_method"
+                    "payment_method_module.get_payment_method"
                 )
             },
             {
@@ -89,7 +89,7 @@ class PaymentMethodActionMenu {
                 class_styles,
                 has_permission:
                     MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "payment_config_module.update_payment_method"
+                        "payment_method_module.update_payment_method"
                     ) && !record?.is_active
             },
             {
@@ -108,7 +108,7 @@ class PaymentMethodActionMenu {
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
                     MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "payment_config_module.delete_payment_method"
+                        "payment_method_module.delete_payment_method"
                     ) && !record?.is_active
             }
         ];

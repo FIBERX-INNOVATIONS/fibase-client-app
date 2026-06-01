@@ -1,4 +1,4 @@
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
+import { CSRF_TOKEN_FOR } from "@/configs";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
 

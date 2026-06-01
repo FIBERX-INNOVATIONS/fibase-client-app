@@ -18,7 +18,7 @@ import {
     CHAR_CORPUS,
     DATA_SHIFT_KEY,
     STORAGE_SCHEMA
-} from "@/configs/constants";
+} from "@/configs";
 
 class FibaseClientApp {
     public readonly name = "fibase_client_app";

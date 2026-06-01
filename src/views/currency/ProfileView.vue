@@ -313,7 +313,7 @@
 <script setup lang="ts">
 import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
 import { getMemberFullName } from "@/types/api_service_type";
-import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
+import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs";
 import CurrencyProfileViewProps from "@/props_definition/currency/profile_view_props";
 import CurrencyProfileViewController from "@/controllers/currency/profile_view_controller";
 

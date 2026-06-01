@@ -1,6 +1,6 @@
 import { markRaw } from "vue";
 
-import { CSRFTokenForType } from "@/configs/constants";
+import { CSRFTokenForType } from "@/configs";
 
 import { EventBus } from "@/utils/global_event_bus_util";
 

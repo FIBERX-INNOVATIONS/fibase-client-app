@@ -1,6 +1,6 @@
 import { GlobalEventTypes } from "@/types/global_events_type";
 
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
+import { CSRF_TOKEN_FOR } from "@/configs";
 
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 

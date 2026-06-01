@@ -223,6 +223,7 @@ class BaseListViewController<
             bulk_action_btn_icon,
             "button",
             {
+                // boolean_props: { disabled: true },
                 action_props: {
                     on_click: this.action_handler?.toggleBulkActionMenu
                 },

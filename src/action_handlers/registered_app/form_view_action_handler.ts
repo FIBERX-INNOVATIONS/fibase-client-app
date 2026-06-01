@@ -4,7 +4,7 @@ import { RegisteredAppRecordInterface } from "@/types/api_service_type";
 
 import { RegisteredAppFieldsType } from "@/types/form_fields_type";
 
-import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs/constants";
+import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
 
 import {
     FieldValidator,

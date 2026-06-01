@@ -21,7 +21,7 @@ import {
 
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
-import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs/constants";
+import { DEFUALT_REGISTERED_APP_LOGO_URL } from "@/configs";
 
 import { getMemberFullName, RegisteredAppRecordInterface } from "@/types/api_service_type";
 
@@ -167,19 +167,39 @@ class RegisteredAppListViewController extends BaseListViewController<
                     is_selected: false,
 
                     input_model_value: (record: RegisteredAppRecordInterface): InputValue => {
-                        return this.state_refs.selected_records.value.includes(record.public_id);
+                        const selected_records = this.state_refs.selected_records.value;
+
+                        if (!record?.public_id) {
+                            const records = this.state_refs.list_state.value.records ?? [];
+                            const method_public_ids = records.map((row) => row.public_id);
+
+                            return (
+                                method_public_ids.length > 0 &&
+                                method_public_ids.every((public_id) =>
+                                    selected_records.includes(public_id)
+                                )
+                            );
+                        }
+
+                        return selected_records.includes(record.public_id);
                     },
 
                     input_ui_boolean_props: (
                         record: RegisteredAppRecordInterface
                     ): InputUIBooleanPropsInterface => {
+                        const selected_records = this.state_refs.selected_records.value;
+                        const records = this.state_refs.list_state.value.records ?? [];
+                        const method_public_ids = records.map((row) => row.public_id);
+                        const is_checked = record?.public_id
+                            ? selected_records.includes(record.public_id)
+                            : method_public_ids.length > 0 &&
+                              method_public_ids.every((public_id) =>
+                                  selected_records.includes(public_id)
+                              );
+
                         return {
-                            is_checked: this.state_refs.selected_records.value.includes(
-                                record.public_id
-                            ),
-
+                            is_checked,
                             required: true,
-
                             disabled: false
                         };
                     },

@@ -1,9 +1,4 @@
-import {
-    CHAR_CORPUS,
-    DATA_SHIFT_KEY,
-    InternalStorageSchemaType,
-    STORAGE_SCHEMA
-} from "@/configs/constants";
+import { CHAR_CORPUS, DATA_SHIFT_KEY, InternalStorageSchemaType, STORAGE_SCHEMA } from "@/configs";
 
 import { MemberRecordInterface } from "@/types/api_service_type";
 

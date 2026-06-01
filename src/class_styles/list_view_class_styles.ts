@@ -227,7 +227,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
     },
     button_ui_class_style: {
         button_class_style:
-            "w-[40px] h-[40px] flex items-center justify-center hover:shadow hover:bg-gray-300 rounded-full p-2 cursor-pointer",
+            "w-[40px] h-[40px] flex items-center justify-center hover:shadow hover:bg-gray-300 rounded-full p-2 cursor-pointer hover:cursor-pointer",
 
         disabled_class_style: "",
 

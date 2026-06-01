@@ -1,12 +1,16 @@
 import { GlobalEventTypes } from "@/types/global_events_type";
 
-import { CSRF_TOKEN_FOR } from "@/configs/constants";
+import { CSRF_TOKEN_FOR } from "@/configs";
+
+import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { PaymentMethodRecordInterface } from "@/types/api_service_type";
 
 import { PaymentMethodFieldsType } from "@/types/form_fields_type";
 
 import { PaymentMethodFormDataInterface } from "@/types/form_data_type";
+
+import { SelectOptionInterface } from "@ui/version_3/ui_types/input_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
@@ -20,6 +24,8 @@ import {
 } from "@/ui_types/form_view_type";
 
 import FormViewClassStyles from "@/class_styles/form_view_class_styles";
+
+import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
 import PaymentMethodFormViewActionHandler from "@/action_handlers/payment_method/form_view_action_handler";
 
@@ -59,6 +65,12 @@ class PaymentMethodFormViewController extends BaseFormViewController<
         const field_content_key = (input_id: string): string => {
             return this.getFieldContentKey(this.base_content_key, input_id);
         };
+        const buildSelectedCodeOptions = (codes?: string[]): SelectOptionInterface[] => {
+            return (codes ?? []).map((code) => ({
+                label_text: code,
+                value: code
+            }));
+        };
 
         return {
             code_input_group_props: this.buildInputGroupProps(
@@ -87,9 +99,21 @@ class PaymentMethodFormViewController extends BaseFormViewController<
 
             icon_url_input_group_props: this.buildInputGroupProps(
                 "icon_url",
-                "text",
+                "file",
                 field_content_key("icon_url"),
-                { model_value: record?.icon_url ?? "" }
+                {
+                    model_value: record?.icon_url ?? "",
+                    input_props: {
+                        action_props: {
+                            on_change: this.action_handler.handleOnFileSelected
+                        },
+                        file_props: {
+                            accept: "image/*",
+                            multiple: false,
+                            enable_preview: true
+                        }
+                    }
+                }
             ),
 
             sort_order_input_group_props: this.buildInputGroupProps(
@@ -121,7 +145,7 @@ class PaymentMethodFormViewController extends BaseFormViewController<
 
             display_group_input_group_props: this.buildInputGroupProps(
                 "display_group",
-                "text",
+                "select",
                 field_content_key("display_group"),
                 { model_value: metadata?.display_group ?? "" }
             ),
@@ -135,28 +159,44 @@ class PaymentMethodFormViewController extends BaseFormViewController<
 
             fee_label_input_group_props: this.buildInputGroupProps(
                 "fee_label",
-                "text",
+                "select",
                 field_content_key("fee_label"),
                 { model_value: metadata?.fee_label ?? "" }
             ),
 
             supported_country_codes_input_group_props: this.buildInputGroupProps(
                 "supported_country_codes",
-                "textarea",
+                "multi_select_search",
                 field_content_key("supported_country_codes"),
                 {
-                    model_value: metadata?.supported_country_codes?.join(", ") ?? "",
-                    input_props: { number_props: { rows: 5 } }
+                    model_value: metadata?.supported_country_codes ?? [],
+                    input_props: {
+                        option_props: buildSelectedCodeOptions(metadata?.supported_country_codes),
+                        content_props: {
+                            caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                        },
+                        action_props: {
+                            fetch_data_method: PreviewRecordFetcher.fetchCountriesPreviewRecords
+                        }
+                    }
                 }
             ),
 
             supported_currency_codes_input_group_props: this.buildInputGroupProps(
                 "supported_currency_codes",
-                "textarea",
+                "multi_select_search",
                 field_content_key("supported_currency_codes"),
                 {
-                    model_value: metadata?.supported_currency_codes?.join(", ") ?? "",
-                    input_props: { number_props: { rows: 5 } }
+                    model_value: metadata?.supported_currency_codes ?? [],
+                    input_props: {
+                        option_props: buildSelectedCodeOptions(metadata?.supported_currency_codes),
+                        content_props: {
+                            caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                        },
+                        action_props: {
+                            fetch_data_method: PreviewRecordFetcher.fetchCurrenciesPreviewRecords
+                        }
+                    }
                 }
             ),
 

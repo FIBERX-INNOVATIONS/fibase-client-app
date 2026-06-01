@@ -21,7 +21,7 @@ import {
 
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
-import { DEFUALT_CURRENCY_LOGO_URL } from "@/configs/constants";
+import { DEFUALT_CURRENCY_LOGO_URL } from "@/configs";
 
 import { getMemberFullName, CurrencyRecordInterface } from "@/types/api_service_type";
 

@@ -11,7 +11,7 @@ import {
 
 import { LoginFormDataInterface, TwoFactorFormDataInterface } from "@/types/form_data_type";
 
-import { CSRFTokenForType } from "@/configs/constants";
+import { CSRFTokenForType } from "@/configs";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 class AuthAPIService extends BaseAPIService {

@@ -17,9 +17,20 @@ import CurrencyAPIService from "@/api_services/currency_api_service";
 
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 
+interface RESTCountryRecordInterface {
+    cca2: string;
+    name: {
+        common: string;
+    };
+}
+
 class PreviewRecordFetcher {
     public static name = "preview_record_fetcher";
     protected static logger: LoggerUtil = new LoggerUtil({ prefix: this.name });
+    private static readonly countries_api_url =
+        "https://restcountries.com/v3.1/all?fields=cca2,name";
+    private static readonly countries_page_size = 50;
+    private static countries_options_promise: Promise<SelectOptionInterface[]> | null = null;
 
     // Method to handle fetching registered apps preview records
     public static fetchRegisteredAppPreviewRecords = async <
@@ -115,6 +126,62 @@ class PreviewRecordFetcher {
             };
         } catch (error: unknown) {
             this.logger.error(`Failed to fetch currencies preview records`, { error });
+            return { records: [], total_pages: 0 };
+        }
+    };
+
+    // Method to handle fetching countries preview records
+    public static fetchCountriesPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 1, search = null } = params ?? {};
+
+        try {
+            if (!this.countries_options_promise) {
+                this.countries_options_promise = fetch(this.countries_api_url)
+                    .then(async (response): Promise<RESTCountryRecordInterface[]> => {
+                        if (!response.ok) {
+                            throw new Error(`REST Countries request failed: ${response.status}`);
+                        }
+
+                        return (await response.json()) as RESTCountryRecordInterface[];
+                    })
+                    .then((countries): SelectOptionInterface[] => {
+                        return countries
+                            .map(({ cca2, name }): SelectOptionInterface => {
+                                const code = cca2.toUpperCase();
+
+                                return {
+                                    label_text: `${code} - ${name.common}`,
+                                    value: code
+                                };
+                            })
+                            .sort((a, b) => a.label_text.localeCompare(b.label_text));
+                    })
+                    .catch((error: unknown) => {
+                        this.countries_options_promise = null;
+                        throw error;
+                    });
+            }
+
+            const country_options = await this.countries_options_promise;
+            const normalized_search = search?.trim().toLowerCase() ?? "";
+            const filtered_options = normalized_search
+                ? country_options.filter((option) => {
+                      return option.label_text.toLowerCase().includes(normalized_search);
+                  })
+                : country_options;
+            const normalized_page = Math.max(1, page);
+            const offset = (normalized_page - 1) * this.countries_page_size;
+
+            return {
+                records: filtered_options.slice(offset, offset + this.countries_page_size),
+                total_pages: Math.ceil(filtered_options.length / this.countries_page_size)
+            };
+        } catch (error: unknown) {
+            this.logger.error(`Failed to fetch countries preview records`, { error });
             return { records: [], total_pages: 0 };
         }
     };
