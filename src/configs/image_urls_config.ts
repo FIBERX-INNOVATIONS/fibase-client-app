@@ -6,3 +6,6 @@ export const DEFUALT_CURRENCY_LOGO_URL =
 
 export const DEFUALT_PAYMENT_METHOD_ICON_URL =
     "https://storage.googleapis.com/apps_media/payment_methods/DEFAULT.png";
+
+export const DEFUALT_PAYMENT_PROVIDER_LOGO_URL =
+    "https://storage.googleapis.com/apps_media/payment_providers/DEFAULT.png";

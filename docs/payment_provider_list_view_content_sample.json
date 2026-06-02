@@ -1,0 +1,211 @@
+{
+    "payment_provider_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Payment Providers",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Payment Providers",
+                "header_description": "Manage payment providers that facilitate payment processing across various methods and currencies.",
+                "create_btn": {
+                    "btn_text": "Create Provider"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search code, name, or description"
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Inactive",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "provider_type_filter": {
+                    "label_text": "Provider Type",
+                    "placeholder_text": "Select provider type",
+                    "option_list": [
+                        {
+                            "label_text": "Payment Gateway",
+                            "value": "payment_gateway"
+                        },
+                        {
+                            "label_text": "Banking Partner",
+                            "value": "banking_partner"
+                        },
+                        {
+                            "label_text": "Crypto Exchange",
+                            "value": "crypto_exchange"
+                        },
+                        {
+                            "label_text": "Wallet Provider",
+                            "value": "wallet_provider"
+                        },
+                        {
+                            "label_text": "Other",
+                            "value": "other"
+                        }
+                    ]
+                },
+                "created_by_filter": {
+                    "label_text": "Created By",
+                    "placeholder_text": "Search member"
+                },
+                "date_range_filter": {
+                    "label_text": "Date Range",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} payment provider record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading payment provider records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Payment Provider Record Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "provider_text": "Provider",
+                    "provider_type_text": "Provider Type",
+                    "website_text": "Website",
+                    "status_text": "Status",
+                    "creator_text": "Created By",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    },
+                    "edit_menu_option": {
+                        "menu_text": "Edit",
+                        "menu_icon": "edit_square_pencil_svg_icon",
+                        "menu_link": ""
+                    },
+                    "delete_menu_option": {
+                        "menu_text": "Delete",
+                        "menu_icon": "delete_trash_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Create New Payment Provider",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Payment Provider",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "form_view_ui": {
+            "header_text": "",
+            "fieldset": {
+                "code_field": {
+                    "label_text": "Code",
+                    "placeholder_text": "e.g. stripe, paystack"
+                },
+                "name_field": {
+                    "label_text": "Name",
+                    "placeholder_text": "e.g. Stripe"
+                },
+                "description_field": {
+                    "label_text": "Description",
+                    "placeholder_text": "Optional provider description"
+                },
+                "provider_type_field": {
+                    "label_text": "Provider Type",
+                    "placeholder_text": "Select provider type",
+                    "options_list": [
+                        {
+                            "label_text": "Payment Gateway",
+                            "value": "payment_gateway"
+                        },
+                        {
+                            "label_text": "Banking Partner",
+                            "value": "banking_partner"
+                        },
+                        {
+                            "label_text": "Crypto Exchange",
+                            "value": "crypto_exchange"
+                        },
+                        {
+                            "label_text": "Wallet Provider",
+                            "value": "wallet_provider"
+                        },
+                        {
+                            "label_text": "Other",
+                            "value": "other"
+                        }
+                    ]
+                },
+                "logo_url_field": {
+                    "label_text": "Logo URL",
+                    "placeholder_text": "https://..."
+                },
+                "website_url_field": {
+                    "label_text": "Website URL",
+                    "placeholder_text": "https://..."
+                },
+                "btn_text": "Submit"
+            }
+        }
+    },
+    "api_responses": {
+        "payment_provider_module_responses": {
+            "invalid_payment_provider_description": "Please provide a valid payment provider description.",
+            "invalid_payment_provider_type": "Please choose a valid payment provider type."
+        }
+    }
+}

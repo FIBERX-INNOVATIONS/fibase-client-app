@@ -78,6 +78,20 @@ type PaymentMethodFieldsType = {
     max_amount_input_group_props: InputGroupUIPropsInterface;
 };
 
+type PaymentProviderFieldsType = {
+    code_input_group_props: InputGroupUIPropsInterface;
+
+    name_input_group_props: InputGroupUIPropsInterface;
+
+    description_input_group_props: InputGroupUIPropsInterface;
+
+    provider_type_input_group_props: InputGroupUIPropsInterface;
+
+    logo_url_input_group_props: InputGroupUIPropsInterface;
+
+    website_url_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -90,5 +104,6 @@ export {
     RegisteredAppFieldsType,
     CurrencyFieldsType,
     PaymentMethodFieldsType,
+    PaymentProviderFieldsType,
     AppCurrencyFieldsType
 };

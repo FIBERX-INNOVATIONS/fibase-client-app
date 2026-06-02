@@ -8,6 +8,7 @@ const DashboardView = () => import("@/views/DashboardView.vue");
 const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
+const PaymentProviderListView = () => import("@/views/payment_provider/ListView.vue");
 
 const MyProfileView = () => import("@/views/MyProfileView.vue");
 
@@ -146,6 +147,17 @@ class RouterManager {
                     page_meta_key: "payment_method_page",
                     title_key: "payment_method_page",
                     permission_name: "payment_method_module.get_payment_method_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/payment-config/providers",
+                name: "PaymentProviderList",
+                component: PaymentProviderListView,
+                meta: {
+                    page_meta_key: "payment_provider_page",
+                    title_key: "payment_provider_page",
+                    permission_name: "payment_provider_module.get_payment_provider_list",
                     is_auth_page: false
                 }
             },

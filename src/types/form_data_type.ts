@@ -186,6 +186,16 @@ export interface UpdatePaymentProviderPayloadInterface extends BaseFormData {
     website_url?: string | null;
 }
 
+export interface PaymentProviderFormDataInterface extends BaseFormData {
+    csrf_token: string | null;
+    code: string;
+    name: string;
+    description?: string | null;
+    provider_type?: string;
+    logo_url?: string | null;
+    website_url?: string | null;
+}
+
 export interface CreatePaymentProviderConfigPayloadInterface extends BaseFormData {
     csrf_token: string;
     provider_id: string | number;
