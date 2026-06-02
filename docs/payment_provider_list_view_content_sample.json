@@ -147,6 +147,22 @@
                 "title_text": "Edit Payment Provider",
                 "title_icon": "square_grid_plus_svg_icon",
                 "title_img": "/assets/img/modal_icon.png"
+            },
+            "profile_details_modal_ui": {
+                "title_text": "Payment Provider Details",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "delete_modal_ui": {
+                "title_text": "Delete Payment Provider",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Delete {{name}}?",
+                    "message_text": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Delete"
+                }
             }
         },
         "form_view_ui": {
@@ -199,6 +215,37 @@
                     "placeholder_text": "https://..."
                 },
                 "btn_text": "Submit"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading payment provider...",
+            "no_description_text": "No description provided.",
+            "empty_value_text": "-",
+            "header": {
+                "payment_provider_logo_alt_text": "Payment provider logo",
+                "code_label_text": "Code:"
+            },
+            "sections": {
+                "provider_information": {
+                    "title_text": "Provider Information",
+                    "provider_type_label_text": "Provider Type:",
+                    "website_url_label_text": "Website:",
+                    "no_website_text": "No website configured"
+                },
+                "status": {
+                    "title_text": "Status",
+                    "active_label_text": "Active:",
+                    "active_status_text": "Active",
+                    "inactive_status_text": "Inactive",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                },
+                "created_by": {
+                    "title_text": "Created By"
+                },
+                "updated_by": {
+                    "title_text": "Updated By"
+                }
             }
         }
     },

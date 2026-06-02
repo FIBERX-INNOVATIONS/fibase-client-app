@@ -189,6 +189,27 @@ export interface PaymentMethodProfileViewContentKeysInterface extends ProfileVie
 
 export interface PaymentMethodProfileViewContentTextInterface extends PaymentMethodProfileViewContentKeysInterface {}
 
+export interface PaymentProviderProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    payment_provider_logo_alt_text: string;
+    code_label_text: string;
+    empty_value_text: string;
+    provider_information_title_text: string;
+    provider_type_label_text: string;
+    website_url_label_text: string;
+    no_website_text: string;
+    status_title_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface PaymentProviderProfileViewContentTextInterface extends PaymentProviderProfileViewContentKeysInterface {}
+
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
