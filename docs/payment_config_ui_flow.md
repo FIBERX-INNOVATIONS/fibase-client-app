@@ -216,9 +216,38 @@ API service methods:
 
 - `getPaymentProviderConfigList`
 - `getPaymentProviderConfig`
+- `getPaymentProviderConfigCredentials`
 - `createPaymentProviderConfig`
 - `updatePaymentProviderConfig`
 - `deletePaymentProviderConfig`
+
+Decrypted credentials endpoint:
+
+- `GET /api/payment-config/provider-configs/:config_id/credentials`
+- Path param: `config_id`
+- Required permission: `payment_provider_config_module.get_payment_provider_config_credentials`
+- Response: `{ credentials: PaymentProviderConfigCredentials | null }`
+
+```ts
+interface PaymentProviderConfigCredentials {
+    api_key?: string | null;
+    secret_key?: string | null;
+    public_key?: string | null;
+    private_key?: string | null;
+    client_id?: string | null;
+    client_secret?: string | null;
+    merchant_id?: string | null;
+    account_id?: string | null;
+    username?: string | null;
+    password?: string | null;
+    webhook_hash?: string | null;
+    webhook_secret?: string | null;
+    signing_secret?: string | null;
+}
+```
+
+Fetch decrypted credentials only when a permitted member explicitly requests them. Do not include
+them in list responses or render credential values in table columns.
 
 This module has no `update-status` endpoint, so do not render a status toggle.
 

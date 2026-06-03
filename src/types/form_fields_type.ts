@@ -92,6 +92,60 @@ type PaymentProviderFieldsType = {
     website_url_input_group_props: InputGroupUIPropsInterface;
 };
 
+type PaymentProviderConfigFieldsType = {
+    provider_id_input_group_props: InputGroupUIPropsInterface;
+
+    environment_input_group_props: InputGroupUIPropsInterface;
+
+    account_reference_input_group_props: InputGroupUIPropsInterface;
+
+    api_key_input_group_props: InputGroupUIPropsInterface;
+
+    secret_key_input_group_props: InputGroupUIPropsInterface;
+
+    public_key_input_group_props: InputGroupUIPropsInterface;
+
+    private_key_input_group_props: InputGroupUIPropsInterface;
+
+    client_id_input_group_props: InputGroupUIPropsInterface;
+
+    client_secret_input_group_props: InputGroupUIPropsInterface;
+
+    merchant_id_input_group_props: InputGroupUIPropsInterface;
+
+    account_id_input_group_props: InputGroupUIPropsInterface;
+
+    username_input_group_props: InputGroupUIPropsInterface;
+
+    password_input_group_props: InputGroupUIPropsInterface;
+
+    webhook_hash_input_group_props: InputGroupUIPropsInterface;
+
+    webhook_secret_input_group_props: InputGroupUIPropsInterface;
+
+    signing_secret_input_group_props: InputGroupUIPropsInterface;
+
+    webhook_url_input_group_props: InputGroupUIPropsInterface;
+
+    callback_url_input_group_props: InputGroupUIPropsInterface;
+
+    redirect_url_input_group_props: InputGroupUIPropsInterface;
+
+    success_url_input_group_props: InputGroupUIPropsInterface;
+
+    failure_url_input_group_props: InputGroupUIPropsInterface;
+
+    settlement_currency_input_group_props: InputGroupUIPropsInterface;
+
+    default_currency_input_group_props: InputGroupUIPropsInterface;
+
+    payout_schedule_input_group_props: InputGroupUIPropsInterface;
+
+    capture_mode_input_group_props: InputGroupUIPropsInterface;
+
+    timeout_ms_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -105,5 +159,6 @@ export {
     CurrencyFieldsType,
     PaymentMethodFieldsType,
     PaymentProviderFieldsType,
+    PaymentProviderConfigFieldsType,
     AppCurrencyFieldsType
 };

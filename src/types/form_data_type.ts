@@ -214,6 +214,36 @@ export interface UpdatePaymentProviderConfigPayloadInterface extends BaseFormDat
     settings?: PaymentProviderConfigSettingsInterface | null;
 }
 
+export interface PaymentProviderConfigFormDataInterface extends BaseFormData {
+    csrf_token: string | null;
+    provider_id: string | number;
+    environment: PaymentProviderConfigEnvironmentType;
+    account_reference?: string | null;
+    api_key?: string | null;
+    secret_key?: string | null;
+    public_key?: string | null;
+    private_key?: string | null;
+    client_id?: string | null;
+    client_secret?: string | null;
+    merchant_id?: string | null;
+    account_id?: string | null;
+    username?: string | null;
+    password?: string | null;
+    webhook_hash?: string | null;
+    webhook_secret?: string | null;
+    signing_secret?: string | null;
+    webhook_url?: string | null;
+    callback_url?: string | null;
+    redirect_url?: string | null;
+    success_url?: string | null;
+    failure_url?: string | null;
+    settlement_currency?: string | null;
+    default_currency?: string | null;
+    payout_schedule?: string | null;
+    capture_mode?: string | null;
+    timeout_ms?: string | number | null;
+}
+
 export interface CreatePaymentProviderMethodPayloadInterface extends BaseFormData {
     csrf_token: string;
     provider_id: string | number;

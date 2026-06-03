@@ -71,7 +71,7 @@ class RegisteredAppListViewController extends BaseListViewController<
         return [
             // Search Filter
             {
-                key: "search",
+                key: "search_filter",
                 type: "search",
                 label_content_key: `${filters_content_key}.search_filter`,
                 input_content_key: `${filters_content_key}.search_filter`,
@@ -85,7 +85,7 @@ class RegisteredAppListViewController extends BaseListViewController<
             },
             // Is Active Filter
             {
-                key: "is_active",
+                key: "is_active_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.status_filter`,
                 input_content_key: `${filters_content_key}.status_filter`,
@@ -97,7 +97,7 @@ class RegisteredAppListViewController extends BaseListViewController<
             },
             // Created By Filter
             {
-                key: "created_by",
+                key: "created_by_filter",
                 type: "select_search",
                 label_content_key: `${filters_content_key}.created_by_filter`,
                 input_content_key: `${filters_content_key}.created_by_filter`,
@@ -114,7 +114,7 @@ class RegisteredAppListViewController extends BaseListViewController<
             },
             // Key Version Filter
             {
-                key: "key_version",
+                key: "key_version_filter",
                 type: "number",
                 label_content_key: `${filters_content_key}.key_version_filter`,
                 input_content_key: `${filters_content_key}.key_version_filter`,
@@ -125,7 +125,7 @@ class RegisteredAppListViewController extends BaseListViewController<
             },
             // Date Range Filter
             {
-                key: "date_range",
+                key: "date_range_filter",
                 type: "date_range",
                 label_content_key: `${filters_content_key}.date_range_filter`,
                 input_content_key: `${filters_content_key}.date_range_filter`,

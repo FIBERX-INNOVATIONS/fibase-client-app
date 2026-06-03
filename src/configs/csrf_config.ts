@@ -4,6 +4,7 @@ export const CSRF_TOKEN_FOR = {
     REGISTER_APP: "register_app",
     CURRENCY: "currency",
     PAYMENT_PROVIDER: "payment_provider",
+    PAYMENT_PROVIDER_CONFIG: "payment_provider_config",
     PAYMENT_METHOD: "payment_method",
     APP_CURRECY: "app_currency"
 } as const;

@@ -72,7 +72,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
         return [
             // Search Filter
             {
-                key: "search",
+                key: "search_filter",
                 type: "search",
                 label_content_key: `${filters_content_key}.search_filter`,
                 input_content_key: `${filters_content_key}.search_filter`,
@@ -86,7 +86,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Precision Filter
             {
-                key: "precision",
+                key: "precision_filter",
                 type: "number",
                 label_content_key: `${filters_content_key}.precision_filter`,
                 input_content_key: `${filters_content_key}.precision_filter`,
@@ -97,7 +97,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Minor unit Filter
             {
-                key: "minor_unit",
+                key: "minor_unit_filter",
                 type: "number",
                 label_content_key: `${filters_content_key}.minor_unit_filter`,
                 input_content_key: `${filters_content_key}.minor_unit_filter`,
@@ -108,7 +108,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // numeric Code Filter
             {
-                key: "numeric_code",
+                key: "numeric_code_filter",
                 type: "text",
                 label_content_key: `${filters_content_key}.numeric_code_filter`,
                 input_content_key: `${filters_content_key}.numeric_code_filter`,
@@ -119,7 +119,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Is Active filter
             {
-                key: "is_active",
+                key: "is_active_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.status_filter`,
                 input_content_key: `${filters_content_key}.status_filter`,
@@ -131,7 +131,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Is Fiat Filter
             {
-                key: "is_fiat",
+                key: "is_fiat_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.type_filter`,
                 input_content_key: `${filters_content_key}.type_filter`,
@@ -143,7 +143,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // App Id Filter
             {
-                key: "app_id",
+                key: "app_id_filter",
                 type: "select_search",
                 label_content_key: `${filters_content_key}.app_id_filter`,
                 input_content_key: `${filters_content_key}.app_id_filter`,
@@ -160,7 +160,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Assigned/Unassigned to App
             {
-                key: "unassigned_to_app",
+                key: "unassigned_to_app_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.unassigned_to_app_filter`,
                 input_content_key: `${filters_content_key}.unassigned_to_app_filter`,
@@ -172,7 +172,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Created By Filter
             {
-                key: "created_by",
+                key: "created_by_filter",
                 type: "select_search",
                 label_content_key: `${filters_content_key}.created_by_filter`,
                 input_content_key: `${filters_content_key}.created_by_filter`,
@@ -189,7 +189,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             },
             // Date Range Filter
             {
-                key: "date_range",
+                key: "date_range_filter",
                 type: "date_range",
                 label_content_key: `${filters_content_key}.date_range_filter`,
                 input_content_key: `${filters_content_key}.date_range_filter`,

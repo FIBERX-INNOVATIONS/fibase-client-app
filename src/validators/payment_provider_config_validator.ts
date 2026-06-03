@@ -33,6 +33,10 @@ class PaymentProviderConfigValidator {
             return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
         }
 
+        if (!/^\d+$/.test(String(value))) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
+        }
+
         return { status: true, msg: "" };
     };
 
@@ -62,10 +66,84 @@ class PaymentProviderConfigValidator {
             return { status: true, msg: "" };
         }
 
-        if (value && value.trim().length > 150) {
+        if (value && value.trim().length > 200) {
             return {
                 status: false,
                 msg: this.getContentMessage("invalid_payment_provider_config_account_reference")
+            };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate an optional provider credential value.
+    public static validateCredentialValue = (
+        value?: string | null
+    ): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: "" };
+        }
+
+        if (typeof value !== "string" || value.trim().length > 5000) {
+            return {
+                status: false,
+                msg: this.getContentMessage("invalid_payment_provider_config_credentials")
+            };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate an optional provider setting value.
+    public static validateSettingValue = (
+        value?: string | number | null
+    ): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: "" };
+        }
+
+        if (typeof value !== "string" || value.trim().length > 5000) {
+            return {
+                status: false,
+                msg: this.getContentMessage("invalid_payment_provider_config_settings")
+            };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate an optional provider URL setting.
+    public static validateURLSetting = (value?: string | null): ActionMethodRetrunInterface => {
+        const value_validation = this.validateSettingValue(value);
+
+        if (!value_validation.status || InputValidatorUtil.isEmpty(value)) {
+            return value_validation;
+        }
+
+        if (value && !InputValidatorUtil.isValidURL(value.trim())) {
+            return {
+                status: false,
+                msg: this.getContentMessage("invalid_payment_provider_config_url")
+            };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate an optional timeout in milliseconds.
+    public static validateTimeoutMs = (
+        value?: string | number | null
+    ): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: "" };
+        }
+
+        const timeout_ms = Number(value);
+
+        if (!Number.isInteger(timeout_ms) || timeout_ms < 0) {
+            return {
+                status: false,
+                msg: this.getContentMessage("invalid_payment_provider_config_timeout_ms")
             };
         }
 
@@ -87,9 +165,9 @@ class PaymentProviderConfigValidator {
             };
         }
 
-        const has_invalid_value = Object.values(credentials).some((value) => {
-            return value !== null && value !== undefined && typeof value !== "string";
-        });
+        const has_invalid_value = Object.values(credentials).some(
+            (value) => !this.validateCredentialValue(value).status
+        );
 
         if (has_invalid_value) {
             return {
@@ -117,7 +195,7 @@ class PaymentProviderConfigValidator {
         }
 
         for (const [key, value] of Object.entries(settings)) {
-            if (value !== null && value !== undefined && typeof value !== "string") {
+            if (!this.validateSettingValue(value).status) {
                 return {
                     status: false,
                     msg: this.getContentMessage("invalid_payment_provider_config_settings")
@@ -128,6 +206,13 @@ class PaymentProviderConfigValidator {
                 return {
                     status: false,
                     msg: this.getContentMessage("invalid_payment_provider_config_url")
+                };
+            }
+
+            if (key === "timeout_ms" && !this.validateTimeoutMs(value).status) {
+                return {
+                    status: false,
+                    msg: this.getContentMessage("invalid_payment_provider_config_timeout_ms")
                 };
             }
         }

@@ -8,6 +8,7 @@ import {
 } from "@/types/form_data_type";
 
 import {
+    PaymentProviderConfigCredentialsResponseInterface,
     PaymentProviderConfigListParams,
     PaymentProviderConfigListResponseInterface,
     PaymentProviderConfigRecordInterface
@@ -45,6 +46,16 @@ class PaymentProviderConfigAPIService extends BaseAPIService {
     ): Promise<APIResponseInterface<PaymentProviderConfigRecordInterface>> => {
         return await this.queryAPI<PaymentProviderConfigRecordInterface>({
             url: `/payment-config/provider-configs/${config_id}`,
+            method: "GET"
+        });
+    };
+
+    // Method to query decrypted payment provider config credentials API endpoint
+    public static getPaymentProviderConfigCredentials = async (
+        config_id: string | number
+    ): Promise<APIResponseInterface<PaymentProviderConfigCredentialsResponseInterface>> => {
+        return await this.queryAPI<PaymentProviderConfigCredentialsResponseInterface>({
+            url: `/payment-config/provider-configs/${config_id}/credentials`,
             method: "GET"
         });
     };

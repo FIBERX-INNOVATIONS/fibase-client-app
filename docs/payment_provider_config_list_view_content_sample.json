@@ -1,0 +1,274 @@
+{
+    "payment_provider_config_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Payment Provider Configs",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Payment Provider Configs",
+                "header_description": "Manage environment-specific credentials and settings for payment provider accounts.",
+                "create_btn": {
+                    "btn_text": "Create Provider Config"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search provider, environment, or account reference"
+                },
+                "provider_filter": {
+                    "label_text": "Provider",
+                    "placeholder_text": "Search payment provider"
+                },
+                "environment_filter": {
+                    "label_text": "Environment",
+                    "placeholder_text": "Select environment",
+                    "option_list": [
+                        {
+                            "label_text": "Test",
+                            "value": "test"
+                        },
+                        {
+                            "label_text": "Live",
+                            "value": "live"
+                        }
+                    ]
+                },
+                "account_reference_filter": {
+                    "label_text": "Account Reference",
+                    "placeholder_text": "Enter account reference"
+                },
+                "created_by_filter": {
+                    "label_text": "Created By",
+                    "placeholder_text": "Search member"
+                },
+                "date_range_filter": {
+                    "label_text": "Date Range",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} payment provider config record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading payment provider config records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Payment Provider Config Record Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "provider_text": "Provider",
+                    "environment_text": "Environment",
+                    "account_reference_text": "Account Reference",
+                    "settlement_currency_text": "Settlement Currency",
+                    "default_currency_text": "Default Currency",
+                    "creator_text": "Created By",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    },
+                    "edit_menu_option": {
+                        "menu_text": "Edit",
+                        "menu_icon": "edit_square_pencil_svg_icon",
+                        "menu_link": ""
+                    },
+                    "delete_menu_option": {
+                        "menu_text": "Delete",
+                        "menu_icon": "delete_trash_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Create Payment Provider Config",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Payment Provider Config",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "form_view_ui": {
+            "header_text": "",
+            "fieldset": {
+                "provider_id_field": {
+                    "label_text": "Payment Provider",
+                    "placeholder_text": "Search payment provider"
+                },
+                "environment_field": {
+                    "label_text": "Environment",
+                    "placeholder_text": "Select environment",
+                    "options_list": [
+                        {
+                            "label_text": "Test",
+                            "value": "test"
+                        },
+                        {
+                            "label_text": "Live",
+                            "value": "live"
+                        }
+                    ]
+                },
+                "account_reference_field": {
+                    "label_text": "Account Reference",
+                    "placeholder_text": "Optional merchant or account reference"
+                },
+                "api_key_field": {
+                    "label_text": "API Key",
+                    "placeholder_text": "Enter API key",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "secret_key_field": {
+                    "label_text": "Secret Key",
+                    "placeholder_text": "Enter secret key",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "public_key_field": {
+                    "label_text": "Public Key",
+                    "placeholder_text": "Enter public key",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "private_key_field": {
+                    "label_text": "Private Key",
+                    "placeholder_text": "Enter private key",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "client_id_field": {
+                    "label_text": "Client ID",
+                    "placeholder_text": "Enter client ID"
+                },
+                "client_secret_field": {
+                    "label_text": "Client Secret",
+                    "placeholder_text": "Enter client secret",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "merchant_id_field": {
+                    "label_text": "Merchant ID",
+                    "placeholder_text": "Enter merchant ID"
+                },
+                "account_id_field": {
+                    "label_text": "Account ID",
+                    "placeholder_text": "Enter account ID"
+                },
+                "username_field": {
+                    "label_text": "Username",
+                    "placeholder_text": "Enter username"
+                },
+                "password_field": {
+                    "label_text": "Password",
+                    "placeholder_text": "Enter password",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "webhook_hash_field": {
+                    "label_text": "Webhook Hash",
+                    "placeholder_text": "Enter webhook hash",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "webhook_secret_field": {
+                    "label_text": "Webhook Secret",
+                    "placeholder_text": "Enter webhook secret",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "signing_secret_field": {
+                    "label_text": "Signing Secret",
+                    "placeholder_text": "Enter signing secret",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "webhook_url_field": {
+                    "label_text": "Webhook URL",
+                    "placeholder_text": "https://..."
+                },
+                "callback_url_field": {
+                    "label_text": "Callback URL",
+                    "placeholder_text": "https://..."
+                },
+                "redirect_url_field": {
+                    "label_text": "Redirect URL",
+                    "placeholder_text": "https://..."
+                },
+                "success_url_field": {
+                    "label_text": "Success URL",
+                    "placeholder_text": "https://..."
+                },
+                "failure_url_field": {
+                    "label_text": "Failure URL",
+                    "placeholder_text": "https://..."
+                },
+                "settlement_currency_field": {
+                    "label_text": "Settlement Currency",
+                    "placeholder_text": "Search currency"
+                },
+                "default_currency_field": {
+                    "label_text": "Default Currency",
+                    "placeholder_text": "Search currency"
+                },
+                "payout_schedule_field": {
+                    "label_text": "Payout Schedule",
+                    "placeholder_text": "e.g. daily"
+                },
+                "capture_mode_field": {
+                    "label_text": "Capture Mode",
+                    "placeholder_text": "e.g. automatic"
+                },
+                "timeout_ms_field": {
+                    "label_text": "Timeout (MS)",
+                    "placeholder_text": "e.g. 30000"
+                },
+                "btn_text": "Submit"
+            }
+        }
+    },
+    "api_responses": {
+        "payment_provider_config_module_responses": {
+            "invalid_payment_provider_config_account_reference": "Please provide a valid account reference of at most 200 characters.",
+            "invalid_payment_provider_config_credentials": "Please provide valid payment provider credentials.",
+            "invalid_payment_provider_config_settings": "Please provide valid payment provider settings.",
+            "invalid_payment_provider_config_url": "Please provide a valid URL.",
+            "invalid_payment_provider_config_timeout_ms": "Please provide a valid timeout in milliseconds."
+        }
+    }
+}

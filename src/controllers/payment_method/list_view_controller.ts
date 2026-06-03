@@ -117,7 +117,7 @@ class PaymentMethodListViewController extends BaseListViewController<
         return [
             // Search Filter
             {
-                key: "search",
+                key: "search_filter",
                 type: "search",
                 label_content_key: `${filters_content_key}.search_filter`,
                 input_content_key: `${filters_content_key}.search_filter`,
@@ -131,7 +131,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Is Active Filter
             {
-                key: "is_active",
+                key: "is_active_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.status_filter`,
                 input_content_key: `${filters_content_key}.status_filter`,
@@ -143,7 +143,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // display Ggroup Filter
             {
-                key: "display_group",
+                key: "display_group_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.display_group_filter`,
                 input_content_key: `${filters_content_key}.display_group_filter`,
@@ -154,7 +154,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Supports Deposit Filter
             {
-                key: "supports_deposit",
+                key: "supports_deposit_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.supports_deposit_filter`,
                 input_content_key: `${filters_content_key}.supports_deposit_filter`,
@@ -166,7 +166,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Supports withdrawal Filter
             {
-                key: "supports_withdrawal",
+                key: "supports_withdrawal_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.supports_withdrawal_filter`,
                 input_content_key: `${filters_content_key}.supports_withdrawal_filter`,
@@ -178,7 +178,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Supports Refund Filter
             {
-                key: "supports_refund",
+                key: "supports_refund_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.supports_refund_filter`,
                 input_content_key: `${filters_content_key}.supports_refund_filter`,
@@ -190,7 +190,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Requires Redirect Filter
             {
-                key: "requires_redirect",
+                key: "requires_redirect_filter",
                 type: "select",
                 label_content_key: `${filters_content_key}.requires_redirect_filter`,
                 input_content_key: `${filters_content_key}.requires_redirect_filter`,
@@ -202,7 +202,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Created By Filter
             {
-                key: "created_by",
+                key: "created_by_filter",
                 type: "select_search",
                 label_content_key: `${filters_content_key}.created_by_filter`,
                 input_content_key: `${filters_content_key}.created_by_filter`,
@@ -219,7 +219,7 @@ class PaymentMethodListViewController extends BaseListViewController<
             },
             // Date Range Filter
             {
-                key: "date_range",
+                key: "date_range_filter",
                 type: "date_range",
                 label_content_key: `${filters_content_key}.date_range_filter`,
                 input_content_key: `${filters_content_key}.date_range_filter`,

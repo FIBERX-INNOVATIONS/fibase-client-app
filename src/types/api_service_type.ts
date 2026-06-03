@@ -237,6 +237,7 @@ export interface PaymentMethodRecordInterface {
 }
 
 export interface PaymentProviderRecordInterface {
+    id?: number;
     code: string;
     name: string;
     description: string | null;
@@ -265,6 +266,10 @@ export interface PaymentProviderConfigCredentialsInterface {
     webhook_secret?: string | null;
     signing_secret?: string | null;
     [key: string]: string | null | undefined;
+}
+
+export interface PaymentProviderConfigCredentialsResponseInterface {
+    credentials: PaymentProviderConfigCredentialsInterface | null;
 }
 
 export interface PaymentProviderConfigSettingsInterface {

@@ -66,6 +66,8 @@ class BaseListViewActionHandler<
 
     public filter_values: Partial<FilterValues> = {};
 
+    protected readonly filter_key_suffix = "_filter";
+
     constructor(
         controller: BaseListViewController<T, K>,
         name: string = "base_list_view_action_handler",
@@ -107,6 +109,38 @@ class BaseListViewActionHandler<
         return filter_fields.map((field) => field.key);
     };
 
+    // Method to normalize UI filter keys for route/API params
+    protected normalizeFilterKey = (key: string): string => {
+        let normalized_key = key;
+
+        while (normalized_key.endsWith(this.filter_key_suffix)) {
+            normalized_key = normalized_key.slice(0, -this.filter_key_suffix.length);
+        }
+
+        return normalized_key;
+    };
+
+    // Method to get UI filter keys with their normalized route/API keys
+    protected getFilterKeyPairs = (): Array<{ ui_key: string; filter_key: string }> => {
+        return this.getFilterKeys().map((ui_key) => ({
+            ui_key,
+            filter_key: this.normalizeFilterKey(ui_key)
+        }));
+    };
+
+    // Method to get value from either UI key or normalized filter key
+    protected getFilterValueByKeyPair = (
+        values: Record<string, unknown>,
+        ui_key: string,
+        filter_key: string
+    ): unknown => {
+        if (Object.prototype.hasOwnProperty.call(values, ui_key)) {
+            return values[ui_key];
+        }
+
+        return values[filter_key];
+    };
+
     // Method to parse positive integer from string or array value with fallback
     protected parsePositiveInteger = (value: unknown, fallback: number): number => {
         const raw_value = Array.isArray(value) ? value[0] : value;
@@ -138,15 +172,17 @@ class BaseListViewActionHandler<
         const next_query = { ...base_query };
         const filter_values = this.getFilterRecord();
 
-        this.getFilterKeys().forEach((key) => {
-            const value = filter_values[key];
+        this.getFilterKeyPairs().forEach(({ ui_key, filter_key }) => {
+            const value = filter_values[filter_key];
+
+            delete next_query[ui_key];
 
             if (InputValidatorUtil.isEmpty(value)) {
-                delete next_query[key];
+                delete next_query[filter_key];
                 return;
             }
 
-            next_query[key] = this.serializeValueForRoute(value);
+            next_query[filter_key] = this.serializeValueForRoute(value);
         });
 
         return next_query;
@@ -180,11 +216,11 @@ class BaseListViewActionHandler<
             delete current_values[key];
         });
 
-        this.getFilterKeys().forEach((key) => {
-            const value = next_values[key];
+        this.getFilterKeyPairs().forEach(({ ui_key, filter_key }) => {
+            const value = this.getFilterValueByKeyPair(next_values, ui_key, filter_key);
 
             if (!InputValidatorUtil.isEmpty(value)) {
-                current_values[key] = value;
+                current_values[filter_key] = value;
             }
         });
     };
@@ -192,13 +228,25 @@ class BaseListViewActionHandler<
     // Method to sync filter panel input values with current filter values
     protected syncFilterPanelValues = (): void => {
         const panel_props = this.getState("filters_panel_props");
-        const filter_values = { ...this.filter_values };
+        const filter_values = this.getFilterRecord();
+        const panel_filter_values = this.getFilterKeyPairs().reduce(
+            (values, { ui_key, filter_key }) => {
+                const value = filter_values[filter_key];
+
+                if (!InputValidatorUtil.isEmpty(value)) {
+                    values[ui_key] = value;
+                }
+
+                return values;
+            },
+            {} as Record<string, unknown>
+        );
 
         if (!panel_props) {
             return;
         }
 
-        panel_props.props_filter_values = filter_values;
+        panel_props.props_filter_values = panel_filter_values;
 
         panel_props.filter_fields.forEach((field) => {
             const input_props = field.input_group_props?.input_props;
@@ -207,7 +255,8 @@ class BaseListViewActionHandler<
                 return;
             }
 
-            const value = (filter_values as Record<string, unknown>)[field.key] ?? null;
+            const filter_key = this.normalizeFilterKey(field.key);
+            const value = filter_values[filter_key] ?? null;
 
             InputUIPropsBuilder.updateValue(input_props, value as InputValue);
         });
@@ -240,7 +289,7 @@ class BaseListViewActionHandler<
 
         const value = input_value ?? target?.value;
 
-        const input_id = input_props?.id;
+        const input_id = input_props?.id ?? target?.id;
 
         if (!input_id) {
             return {
@@ -250,12 +299,13 @@ class BaseListViewActionHandler<
         }
 
         const formatted_key = input_id.replace(/_\d+$/, "");
+        const filter_key = this.normalizeFilterKey(formatted_key);
         const filter_values = this.getFilterRecord();
 
         if (InputValidatorUtil.isEmpty(value)) {
-            delete filter_values[formatted_key];
+            delete filter_values[filter_key];
         } else {
-            filter_values[formatted_key] = value;
+            filter_values[filter_key] = value;
         }
 
         this.syncFilterPanelValues();
@@ -269,13 +319,16 @@ class BaseListViewActionHandler<
     // Method to hydrate filters from route query
     protected hydrateFiltersFromRoute = (route_query = this.controller.route.query): void => {
         const hydrated_query = FiltersPanelUIPropsBuilder.hydrateFiltersFromRoute(route_query);
-        const filter_keys = this.getFilterKeys();
-        const route_filters = filter_keys.reduce(
-            (filters, key) => {
-                const value = hydrated_query[key];
+        const route_filters = this.getFilterKeyPairs().reduce(
+            (filters, { ui_key, filter_key }) => {
+                const value = this.getFilterValueByKeyPair(
+                    hydrated_query as Record<string, unknown>,
+                    ui_key,
+                    filter_key
+                );
 
                 if (!InputValidatorUtil.isEmpty(value)) {
-                    filters[key] = value;
+                    filters[filter_key] = value;
                 }
 
                 return filters;
@@ -290,9 +343,12 @@ class BaseListViewActionHandler<
     // Method to handle on clear filters
     protected handleOnClearFilters = async (): Promise<void> => {
         const next_query = { ...this.controller.route.query };
-        const filter_keys = [...this.getFilterKeys(), "sort_by", "sort_direction"];
+        const filter_keys = this.getFilterKeyPairs().flatMap(({ ui_key, filter_key }) => [
+            ui_key,
+            filter_key
+        ]);
 
-        filter_keys.forEach((key) => {
+        [...filter_keys, "sort_by", "sort_direction"].forEach((key) => {
             delete next_query[key];
         });
 
