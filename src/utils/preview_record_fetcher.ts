@@ -6,6 +6,7 @@ import {
 import {
     CurrencyRecordInterface,
     MemberRecordInterface,
+    PaymentMethodRecordInterface,
     PaymentProviderRecordInterface,
     RegisteredAppRecordInterface
 } from "@/types/api_service_type";
@@ -17,6 +18,8 @@ import MemberAPIService from "@/api_services/member_api_service";
 import CurrencyAPIService from "@/api_services/currency_api_service";
 
 import PaymentProviderAPIService from "@/api_services/payment_provider_api_service";
+
+import PaymentMethodAPIService from "@/api_services/payment_method_api_service";
 
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 
@@ -182,6 +185,56 @@ class PreviewRecordFetcher {
             };
         } catch (error: unknown) {
             this.logger.error(`Failed to fetch payment providers preview records`, { error });
+            return { records: [], total_pages: 0 };
+        }
+    };
+
+    // Method to handle fetching payment methods preview records
+    public static fetchPaymentMethodPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
+
+        try {
+            const result = await PaymentMethodAPIService.getPaymentMethodList({
+                page,
+                filters: {
+                    search,
+                    preview_only: true,
+                    ...extra_params
+                }
+            });
+
+            const fallback = { records: [], total_pages: 0 };
+
+            if (result.status === "logout") {
+                return fallback;
+            }
+
+            if (result.status !== "success" || !result.data?.records) {
+                return fallback;
+            }
+
+            const records = result.data.records.map(
+                (obj: PaymentMethodRecordInterface): SelectOptionInterface => {
+                    const { code, name } = obj;
+                    const method_id = (obj as PaymentMethodRecordInterface & { id?: number }).id;
+
+                    return {
+                        label_text: `${code?.toUpperCase?.() ?? ""} - ${name ?? ""}`,
+                        value: method_id ?? code
+                    };
+                }
+            );
+
+            return {
+                records,
+                total_pages: result.data.total_pages ?? 0
+            };
+        } catch (error: unknown) {
+            this.logger.error(`Failed to fetch payment methods preview records`, { error });
             return { records: [], total_pages: 0 };
         }
     };

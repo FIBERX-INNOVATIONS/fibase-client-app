@@ -312,7 +312,7 @@ export interface PaymentProviderMethodRecordInterface {
     updated_at: string | null;
     provider?: PaymentProviderRecordInterface;
     payment_method?: PaymentMethodRecordInterface;
-    linked_by_user?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    linked_by_member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export interface CurrencyPaymentProviderMethodRecordInterface {
@@ -326,7 +326,7 @@ export interface CurrencyPaymentProviderMethodRecordInterface {
     updated_at: string | null;
     currency?: CurrencyRecordInterface;
     provider_method?: PaymentProviderMethodRecordInterface;
-    linked_by_user?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    linked_by_member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export type PaymentMethodListResponseInterface = PaginatedResponseResultInterface<
