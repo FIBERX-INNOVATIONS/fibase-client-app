@@ -58,24 +58,6 @@ class PaymentProviderConfigValidator {
         return { status: true, msg: "" };
     };
 
-    // Method to validate optional provider account reference.
-    public static validateAccountReference = (
-        value?: string | null
-    ): ActionMethodRetrunInterface => {
-        if (InputValidatorUtil.isEmpty(value)) {
-            return { status: true, msg: "" };
-        }
-
-        if (value && value.trim().length > 200) {
-            return {
-                status: false,
-                msg: this.getContentMessage("invalid_payment_provider_config_account_reference")
-            };
-        }
-
-        return { status: true, msg: "" };
-    };
-
     // Method to validate an optional provider credential value.
     public static validateCredentialValue = (
         value?: string | null
@@ -258,8 +240,7 @@ class PaymentProviderConfigValidator {
     public static validateCreatePaymentProviderConfigInput(
         form_data: CreatePaymentProviderConfigPayloadInterface
     ): ValidationResultInterface<CreatePaymentProviderConfigPayloadInterface> {
-        const { csrf_token, provider_id, environment, account_reference, credentials, settings } =
-            form_data;
+        const { csrf_token, provider_id, environment, credentials, settings } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
@@ -270,12 +251,6 @@ class PaymentProviderConfigValidator {
         }
         if (!this.validateEnvironment(environment).status) {
             return { v_state: false, v_msg: "invalid_payment_provider_config_environment" };
-        }
-        if (!this.validateAccountReference(account_reference).status) {
-            return {
-                v_state: false,
-                v_msg: "invalid_payment_provider_config_account_reference"
-            };
         }
         if (!this.validateCredentials(credentials).status) {
             return { v_state: false, v_msg: "invalid_payment_provider_config_credentials" };
@@ -291,7 +266,6 @@ class PaymentProviderConfigValidator {
                 csrf_token,
                 provider_id,
                 environment: environment ?? "test",
-                account_reference: account_reference?.trim() || null,
                 credentials: this.sanitizeCredentials(credentials),
                 settings: this.sanitizeSettings(settings)
             }
@@ -302,8 +276,7 @@ class PaymentProviderConfigValidator {
     public static validateUpdatePaymentProviderConfigInput(
         form_data: UpdatePaymentProviderConfigPayloadInterface
     ): ValidationResultInterface<UpdatePaymentProviderConfigPayloadInterface> {
-        const { csrf_token, provider_id, environment, account_reference, credentials, settings } =
-            form_data;
+        const { csrf_token, provider_id, environment, credentials, settings } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
@@ -314,12 +287,6 @@ class PaymentProviderConfigValidator {
         }
         if (!this.validateEnvironment(environment).status) {
             return { v_state: false, v_msg: "invalid_payment_provider_config_environment" };
-        }
-        if (!this.validateAccountReference(account_reference).status) {
-            return {
-                v_state: false,
-                v_msg: "invalid_payment_provider_config_account_reference"
-            };
         }
         if (!this.validateCredentials(credentials).status) {
             return { v_state: false, v_msg: "invalid_payment_provider_config_credentials" };
@@ -335,9 +302,6 @@ class PaymentProviderConfigValidator {
                 csrf_token,
                 ...(provider_id !== undefined ? { provider_id } : {}),
                 ...(environment !== undefined ? { environment } : {}),
-                ...(account_reference !== undefined
-                    ? { account_reference: account_reference?.trim() || null }
-                    : {}),
                 ...(credentials !== undefined
                     ? { credentials: this.sanitizeCredentials(credentials) }
                     : {}),

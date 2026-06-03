@@ -282,7 +282,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getTextContent: (record: PaymentProviderConfigRecordInterface) =>
-                        record.account_reference || "-"
+                        record.account_reference?.split("_").join(" ") || "-"
                 }
             },
             // Settings Settlement Currency Column

@@ -103,7 +103,6 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             csrf_token: null,
             provider_id: record?.provider_id ?? "",
             environment: record?.environment ?? "test",
-            account_reference: record?.account_reference ?? "",
             api_key: "",
             secret_key: "",
             public_key: "",
@@ -142,7 +141,6 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
         return {
             provider_id: PaymentProviderConfigValidator.validateProviderId,
             environment: PaymentProviderConfigValidator.validateEnvironment,
-            account_reference: PaymentProviderConfigValidator.validateAccountReference,
             api_key: credential_validator,
             secret_key: credential_validator,
             public_key: credential_validator,
@@ -232,7 +230,6 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             csrf_token: form_data.csrf_token ?? "",
             provider_id: form_data.provider_id,
             environment: form_data.environment,
-            account_reference: form_data.account_reference ?? null,
             ...(credentials ? { credentials } : {}),
             ...(settings ? { settings } : {})
         };

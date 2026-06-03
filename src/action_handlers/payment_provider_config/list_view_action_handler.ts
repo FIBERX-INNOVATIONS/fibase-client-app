@@ -22,6 +22,10 @@ import PaymentProviderConfigActionMenu from "@/action_menus/payment_provider_con
 
 import AddEditFormView from "@/views/payment_provider_config/AddEditFormView.vue";
 
+import ProfileView from "@/views/payment_provider_config/ProfileView.vue";
+
+import DeleteView from "@/views/payment_provider_config/DeleteView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandler<
@@ -85,11 +89,24 @@ class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandl
         );
     };
 
-    // These actions are wired when their provider config views are implemented.
     public handleViewActionMenuClicked = async (
         record: PaymentProviderConfigRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: profile_details_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ProfileView),
+
+            body_props: { record_id: record.id?.toString() ?? "", record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     public handleEditActionMenuClicked = async (
         record: PaymentProviderConfigRecordInterface,
@@ -113,7 +130,30 @@ class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandl
     public handleDeleteActionMenuClicked = async (
         record: PaymentProviderConfigRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: delete_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(DeleteView),
+
+            body_props: {
+                record,
+                record_id: record.id?.toString() ?? "",
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: PaymentProviderConfigRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 }
 
 export default PaymentProviderConfigListViewActionHandler;

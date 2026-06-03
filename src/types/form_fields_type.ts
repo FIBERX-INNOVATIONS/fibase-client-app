@@ -97,8 +97,6 @@ type PaymentProviderConfigFieldsType = {
 
     environment_input_group_props: InputGroupUIPropsInterface;
 
-    account_reference_input_group_props: InputGroupUIPropsInterface;
-
     api_key_input_group_props: InputGroupUIPropsInterface;
 
     secret_key_input_group_props: InputGroupUIPropsInterface;

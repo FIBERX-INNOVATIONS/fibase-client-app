@@ -305,6 +305,7 @@ class BaseListViewController<
                 icons.create_button,
                 "button",
                 {
+                    boolean_props: { disabled: false },
                     action_props: this.action_handler?.getActionBtnActionHandlerConfig?.(),
                     class_styles: page_header_class_styles.action_button_class_styles
                 }

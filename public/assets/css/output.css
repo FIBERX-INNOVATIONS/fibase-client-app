@@ -2070,6 +2070,11 @@
       color: var(--color-gray-600);
     }
   }
+  .disabled\:opacity-50 {
+    &:disabled {
+      opacity: 50%;
+    }
+  }
   .md\:order-1 {
     @media (width >= 48rem) {
       order: 1;

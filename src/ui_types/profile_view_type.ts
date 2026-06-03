@@ -210,6 +210,57 @@ export interface PaymentProviderProfileViewContentKeysInterface extends ProfileV
 
 export interface PaymentProviderProfileViewContentTextInterface extends PaymentProviderProfileViewContentKeysInterface {}
 
+export interface PaymentProviderConfigProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    payment_provider_logo_alt_text: string;
+    empty_value_text: string;
+    config_information_title_text: string;
+    provider_name_label_text: string;
+    provider_code_label_text: string;
+    provider_id_label_text: string;
+    environment_label_text: string;
+    account_reference_label_text: string;
+    settings_title_text: string;
+    webhook_url_label_text: string;
+    callback_url_label_text: string;
+    redirect_url_label_text: string;
+    success_url_label_text: string;
+    failure_url_label_text: string;
+    settlement_currency_label_text: string;
+    default_currency_label_text: string;
+    payout_schedule_label_text: string;
+    capture_mode_label_text: string;
+    timeout_ms_label_text: string;
+    no_settings_text: string;
+    credentials_title_text: string;
+    credentials_hidden_text: string;
+    reveal_credentials_btn_text: string;
+    hide_credentials_btn_text: string;
+    credentials_loading_text: string;
+    credentials_permission_denied_text: string;
+    no_credentials_text: string;
+    api_key_label_text: string;
+    secret_key_label_text: string;
+    public_key_label_text: string;
+    private_key_label_text: string;
+    client_id_label_text: string;
+    client_secret_label_text: string;
+    merchant_id_label_text: string;
+    account_id_label_text: string;
+    username_label_text: string;
+    password_label_text: string;
+    webhook_hash_label_text: string;
+    webhook_secret_label_text: string;
+    signing_secret_label_text: string;
+    status_title_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface PaymentProviderConfigProfileViewContentTextInterface extends PaymentProviderConfigProfileViewContentKeysInterface {}
+
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
@@ -218,6 +269,16 @@ export interface ProfileViewStateDataInterface<T = any> {
     content_keys: ProfileViewContentKeysInterface;
 
     content_text: ProfileViewContentTextInterface;
+}
+
+export interface PaymentProviderConfigProfileViewStateDataInterface extends ProfileViewStateDataInterface {
+    credentials: Record<string, string | null | undefined> | null;
+
+    credentials_are_visible: boolean;
+
+    is_loading_credentials: boolean;
+
+    credentials_error_msg: string | null;
 }
 
 export interface ProfileViewComputedDataInterface {
@@ -232,6 +293,8 @@ export interface ProfileViewComputedDataInterface {
     readable_created_at?: string;
 
     readable_updated_at?: string;
+
+    has_credentials_permission?: boolean;
 
     readable_last_key_rotated_at?: string;
 

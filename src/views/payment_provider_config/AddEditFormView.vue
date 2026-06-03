@@ -8,10 +8,6 @@
 
                 <InputGroupUI v-bind="state_refs.fields.value.environment_input_group_props" />
 
-                <InputGroupUI
-                    v-bind="state_refs.fields.value.account_reference_input_group_props"
-                />
-
                 <InputGroupUI v-bind="state_refs.fields.value.api_key_input_group_props" />
 
                 <InputGroupUI v-bind="state_refs.fields.value.secret_key_input_group_props" />

@@ -118,13 +118,6 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
                 { model_value: record?.environment ?? "test" }
             ),
 
-            account_reference_input_group_props: this.buildInputGroupProps(
-                "account_reference",
-                "text",
-                field_content_key("account_reference"),
-                { model_value: record?.account_reference ?? "" }
-            ),
-
             api_key_input_group_props: credentialInput("api_key", "password"),
             secret_key_input_group_props: credentialInput("secret_key", "password"),
             public_key_input_group_props: credentialInput("public_key", "password"),

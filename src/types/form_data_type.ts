@@ -200,7 +200,6 @@ export interface CreatePaymentProviderConfigPayloadInterface extends BaseFormDat
     csrf_token: string;
     provider_id: string | number;
     environment?: PaymentProviderConfigEnvironmentType;
-    account_reference?: string | null;
     credentials?: PaymentProviderConfigCredentialsInterface | null;
     settings?: PaymentProviderConfigSettingsInterface | null;
 }
@@ -209,7 +208,6 @@ export interface UpdatePaymentProviderConfigPayloadInterface extends BaseFormDat
     csrf_token: string;
     provider_id?: string | number;
     environment?: PaymentProviderConfigEnvironmentType;
-    account_reference?: string | null;
     credentials?: PaymentProviderConfigCredentialsInterface | null;
     settings?: PaymentProviderConfigSettingsInterface | null;
 }
@@ -218,7 +216,6 @@ export interface PaymentProviderConfigFormDataInterface extends BaseFormData {
     csrf_token: string | null;
     provider_id: string | number;
     environment: PaymentProviderConfigEnvironmentType;
-    account_reference?: string | null;
     api_key?: string | null;
     secret_key?: string | null;
     public_key?: string | null;
