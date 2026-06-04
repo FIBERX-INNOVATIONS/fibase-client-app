@@ -41,12 +41,15 @@ export default [
     {
         linterOptions: {
             reportUnusedDisableDirectives: "off"
-        },
+        }
+    },
+    {
         ignores: [
             "dist/**",
             "node_modules/**",
             "package-lock.json",
             "public/assets/css/output.css",
+            "scripts/update-dependencies.js",
             "src/types/shims-vue.d.ts"
         ]
     },

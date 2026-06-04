@@ -20,8 +20,8 @@
 
         "paths": {
             "@/*": ["./src/*"],
-            "@ui/*": ["../../fi-ui-toolkit/*"],
-            "@ui_v3/*": ["../../fi-ui-toolkit/version_3/*"]
+            "@ui/*": ["../../fi-ui-toolkit/src/*"],
+            "@ui_v3/*": ["../../fi-ui-toolkit/src/version_3/*"]
         },
 
         "noEmit": true,
@@ -34,9 +34,9 @@
         "src/**/*.ts",
         "src/**/*.d.ts",
         "src/**/*.vue",
-        "../../fi-ui-toolkit/version_3/**/*.ts",
-        "../../fi-ui-toolkit/version_3/**/*.d.ts",
-        "../../fi-ui-toolkit/version_3/**/*.vue"
+        "../../fi-ui-toolkit/src/version_3/**/*.ts",
+        "../../fi-ui-toolkit/src/version_3/**/*.d.ts",
+        "../../fi-ui-toolkit/src/version_3/**/*.vue"
     ],
     "exclude": ["node_modules", "dist", "test"]
 }
