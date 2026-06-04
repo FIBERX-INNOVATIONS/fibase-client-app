@@ -261,6 +261,33 @@ export interface PaymentProviderConfigProfileViewContentKeysInterface extends Pr
 
 export interface PaymentProviderConfigProfileViewContentTextInterface extends PaymentProviderConfigProfileViewContentKeysInterface {}
 
+export interface PaymentProviderMethodProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    payment_provider_logo_alt_text: string;
+    empty_value_text: string;
+    method_information_title_text: string;
+    provider_name_label_text: string;
+    provider_code_label_text: string;
+    provider_id_label_text: string;
+    payment_method_name_label_text: string;
+    payment_method_code_label_text: string;
+    payment_method_id_label_text: string;
+    direction_label_text: string;
+    provider_method_code_label_text: string;
+    amount_limits_title_text: string;
+    min_amount_label_text: string;
+    max_amount_label_text: string;
+    status_title_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    linked_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface PaymentProviderMethodProfileViewContentTextInterface extends PaymentProviderMethodProfileViewContentKeysInterface {}
+
 export interface ProfileViewStateDataInterface<T = any> {
     is_loading: boolean;
 
@@ -293,6 +320,12 @@ export interface ProfileViewComputedDataInterface {
     readable_created_at?: string;
 
     readable_updated_at?: string;
+
+    formatted_min_amount?: string;
+
+    formatted_max_amount?: string;
+
+    linked_by_member_profile_photo_url?: string;
 
     has_credentials_permission?: boolean;
 
