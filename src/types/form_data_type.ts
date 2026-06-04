@@ -241,6 +241,16 @@ export interface PaymentProviderConfigFormDataInterface extends BaseFormData {
     timeout_ms?: string | number | null;
 }
 
+export interface PaymentProviderMethodFormDataInterface extends BaseFormData {
+    csrf_token: string | null;
+    provider_id: string | number;
+    payment_method_id: string | number;
+    direction: PaymentConfigDirectionType;
+    provider_method_code?: string | null;
+    min_amount?: string | number | null;
+    max_amount?: string | number | null;
+}
+
 export interface CreatePaymentProviderMethodPayloadInterface extends BaseFormData {
     csrf_token: string;
     provider_id: string | number;

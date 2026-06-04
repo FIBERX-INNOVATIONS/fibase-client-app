@@ -2100,11 +2100,6 @@
       width: calc(6 / 12 * 100%);
     }
   }
-  .md\:w-\[12\%\] {
-    @media (width >= 48rem) {
-      width: 12%;
-    }
-  }
   .md\:w-\[15\%\] {
     @media (width >= 48rem) {
       width: 15%;

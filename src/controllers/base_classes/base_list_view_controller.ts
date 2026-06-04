@@ -99,6 +99,8 @@ class BaseListViewController<
 
     public action_handler: BaseListViewActionHandler<T, K> | null = null;
 
+    private readonly default_select_search_selected_text_prefix = "Selected";
+
     constructor(props: ListViewPropsInterface, record_id_key: K) {
         super("list_view", props, EventBus);
 
@@ -108,6 +110,32 @@ class BaseListViewController<
     // Method to be overridden by child to provide page specific filters
     protected getPageFilters(): ListFilterConfig[] {
         return [];
+    }
+
+    // Method to add selected text prefix to select search filters.
+    private getFiltersWithSelectSearchPrefix(filters: ListFilterConfig[]): ListFilterConfig[] {
+        const content_manager = ContentManagerUtil.getInstance();
+
+        return filters.map((filter) => {
+            if (filter.type !== "select_search") {
+                return filter;
+            }
+
+            const content_data = content_manager.get<{ selected_text_prefix?: string | null }>(
+                filter.input_content_key ?? ""
+            );
+
+            return {
+                ...filter,
+                overides: {
+                    ...(filter.overides ?? {}),
+                    selected_text_prefix:
+                        filter.overides?.selected_text_prefix ??
+                        content_data?.selected_text_prefix ??
+                        this.default_select_search_selected_text_prefix
+                }
+            };
+        });
     }
 
     // Method to be overridden by child to provide page specific table render configuration
@@ -360,10 +388,13 @@ class BaseListViewController<
             filters_input_ui_class_styles: input_ui_class_style
         } = ListViewClassStyles;
 
-        return FilterConfigBuilderUtil.build(this.getPageFilters(), {
-            input_group_class_style,
-            input_ui_class_style
-        });
+        return FilterConfigBuilderUtil.build(
+            this.getFiltersWithSelectSearchPrefix(this.getPageFilters()),
+            {
+                input_group_class_style,
+                input_ui_class_style
+            }
+        );
     }
 
     // Method to get Filter Pannel props

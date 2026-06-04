@@ -1,3 +1,7 @@
+import { markRaw } from "vue";
+
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -18,6 +22,10 @@ import BaseListViewActionHandler from "../base_classes/base_list_view_action_han
 
 import PaymentProviderMethodActionMenu from "@/action_menus/payment_provider_method_action_menu";
 
+import AddEditFormView from "@/views/payment_provider_method/AddEditFormView.vue";
+
+import DeleteView from "@/views/payment_provider_method/DeleteView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandler<
@@ -25,6 +33,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
     "id",
     PaymentProviderMethodListViewFiltersInterface
 > {
+    // Method to initialize list view action handler.
     constructor(controller: BaseListViewController<PaymentProviderMethodRecordInterface, "id">) {
         super(
             controller,
@@ -40,7 +49,21 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { add_new_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: add_new_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: {}
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle row status change toggle.
     public handleStatusToggleChange = async (
@@ -122,20 +145,60 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
         );
     };
 
+    // Method to handle view action menu clicked.
     public handleViewActionMenuClicked = async (
         record: PaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle edit action menu clicked.
     public handleEditActionMenuClicked = async (
         record: PaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { update_modal_content_key } = this.controller.getPageContentKeys();
 
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: update_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: { record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
+
+    // Method to handle delete action menu clicked.
     public handleDeleteActionMenuClicked = async (
         record: PaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: delete_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(DeleteView),
+
+            body_props: {
+                record,
+                record_id: record.id?.toString() ?? "",
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: PaymentProviderMethodRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 }
 
 export default PaymentProviderMethodListViewActionHandler;

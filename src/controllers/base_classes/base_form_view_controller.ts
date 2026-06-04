@@ -18,6 +18,8 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import BaseFormActionHandler from "@/action_handlers/base_classes/base_form_action_handler";
 
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
+
 import ButtonUI from "@ui/version_3/components/ButtonUI.vue";
 
 import ToasterUI from "@ui/version_3/components/ToasterUI.vue";
@@ -74,6 +76,10 @@ class BaseFormViewController<
     >;
 
     public readonly class_styles: FormViewClassStylesInterface;
+
+    private readonly default_select_search_selected_text_prefix = "Selected";
+
+    private readonly content_manager = ContentManagerUtil.getInstance();
 
     constructor(
         component_name: string,
@@ -166,7 +172,20 @@ class BaseFormViewController<
         content_key: string,
         overrides: Partial<InputUIPropsInterface> = {}
     ): InputUIPropsInterface {
-        return InputUIPropsBuilder.getReactivePropsObject(id, type, content_key, overrides);
+        const content_data = this.content_manager.get<{ selected_text_prefix?: string | null }>(
+            content_key
+        );
+        const selected_text_prefix =
+            type === "select_search"
+                ? (overrides.selected_text_prefix ??
+                  content_data?.selected_text_prefix ??
+                  this.default_select_search_selected_text_prefix)
+                : overrides.selected_text_prefix;
+
+        return InputUIPropsBuilder.getReactivePropsObject(id, type, content_key, {
+            ...overrides,
+            selected_text_prefix
+        });
     }
 
     protected buildInputGroupFromInputProps(

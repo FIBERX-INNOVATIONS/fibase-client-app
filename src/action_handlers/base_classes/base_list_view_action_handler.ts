@@ -272,6 +272,8 @@ class BaseListViewActionHandler<
             return false;
         }
 
+        this.controller.setListState({ current_page: 1 });
+
         await this.controller.router.replace({ query: next_query });
 
         return true;

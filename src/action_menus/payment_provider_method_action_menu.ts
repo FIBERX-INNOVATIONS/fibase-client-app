@@ -14,6 +14,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import PaymentProviderMethodListViewActionHandler from "@/action_handlers/payment_provider_method/list_view_action_handler";
 
 class PaymentProviderMethodActionMenu {
+    // Method to build action menu items.
     public static getMenus(
         record: PaymentProviderMethodRecordInterface,
         action_handler?: PaymentProviderMethodListViewActionHandler
@@ -87,9 +88,10 @@ class PaymentProviderMethodActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_method_module.update_payment_provider_method"
-                )
+                has_permission:
+                    MemberAuthenticatorUtil.memberHasPermissionTo(
+                        "payment_provider_method_module.update_payment_provider_method"
+                    ) && !record?.is_active
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id}`,
@@ -105,9 +107,10 @@ class PaymentProviderMethodActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_method_module.delete_payment_provider_method"
-                )
+                has_permission:
+                    MemberAuthenticatorUtil.memberHasPermissionTo(
+                        "payment_provider_method_module.delete_payment_provider_method"
+                    ) && !record?.is_active
             }
         ];
 

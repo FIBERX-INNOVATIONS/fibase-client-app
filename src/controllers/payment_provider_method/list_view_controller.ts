@@ -180,14 +180,22 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
         ];
     }
 
+    // Method to format limit
+    private formatAmountLimit(amount: number | null): string {
+        if (amount === null) {
+            return "Infinity";
+        }
+
+        return InputTransformerUtil.nFormatter(
+            InputTransformerUtil.roundToTwoDecimalPlaces(amount),
+            2
+        );
+    }
+
     // Method to format min/max limits.
     private formatLimits(record: PaymentProviderMethodRecordInterface): string {
-        const min_amount = record.min_amount ?? "-";
-        const max_amount = record.max_amount ?? "-";
-
-        if (min_amount === "-" && max_amount === "-") {
-            return "-";
-        }
+        const min_amount = this.formatAmountLimit(Number(record.min_amount));
+        const max_amount = this.formatAmountLimit(Number(record.max_amount));
 
         return `${min_amount} - ${max_amount}`;
     }

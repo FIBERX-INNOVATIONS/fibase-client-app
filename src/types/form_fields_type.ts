@@ -144,6 +144,20 @@ type PaymentProviderConfigFieldsType = {
     timeout_ms_input_group_props: InputGroupUIPropsInterface;
 };
 
+type PaymentProviderMethodFieldsType = {
+    provider_id_input_group_props: InputGroupUIPropsInterface;
+
+    payment_method_id_input_group_props: InputGroupUIPropsInterface;
+
+    direction_input_group_props: InputGroupUIPropsInterface;
+
+    provider_method_code_input_group_props: InputGroupUIPropsInterface;
+
+    min_amount_input_group_props: InputGroupUIPropsInterface;
+
+    max_amount_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -158,5 +172,6 @@ export {
     PaymentMethodFieldsType,
     PaymentProviderFieldsType,
     PaymentProviderConfigFieldsType,
+    PaymentProviderMethodFieldsType,
     AppCurrencyFieldsType
 };
