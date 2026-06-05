@@ -193,8 +193,8 @@
                 "title_icon": "square_grid_plus_svg_icon",
                 "title_img": "/assets/img/modal_icon.png",
                 "content": {
-                    "title_text": "Permanently delete {{account_reference}}?",
-                    "message_text": "Are you sure you want to permanently delete this payment provider config? This is not a soft delete and cannot be undone.",
+                    "title_text": "Permanently delete this currency provider method?",
+                    "message_text": "Are you sure you want to permanently delete this currency provider method link? This cannot be undone.",
                     "cancel_btn_text": "Cancel",
                     "confirm_btn_text": "Delete Permanently"
                 }

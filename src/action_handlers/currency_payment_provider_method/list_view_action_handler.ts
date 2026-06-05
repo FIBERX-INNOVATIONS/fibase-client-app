@@ -24,6 +24,8 @@ import CurrencyPaymentProviderMethodActionMenu from "@/action_menus/currency_pay
 
 import AddEditFormView from "@/views/currency_payment_provider_method/AddEditFormView.vue";
 
+import DeleteView from "@/views/currency_payment_provider_method/DeleteView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewActionHandler<
@@ -179,7 +181,30 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     public handleDeleteActionMenuClicked = async (
         record: CurrencyPaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: delete_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(DeleteView),
+
+            body_props: {
+                record,
+                record_id: record.id?.toString() ?? "",
+                content_key: delete_modal_content_key,
+                on_delete_success: async (
+                    deleted_record: CurrencyPaymentProviderMethodRecordInterface
+                ): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 }
 
 export default CurrencyPaymentProviderMethodListViewActionHandler;
