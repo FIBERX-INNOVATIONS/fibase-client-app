@@ -31,7 +31,7 @@ class CurrencyAPIService extends BaseAPIService {
         const {
             page = 0,
             limit = 12,
-            sort_by = "created_at",
+            sort_by = "updated_at",
             sort_direction = "DESC",
             filters
         } = params ?? {};

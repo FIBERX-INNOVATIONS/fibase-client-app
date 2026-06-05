@@ -26,6 +26,7 @@ import {
     PaymentProviderFieldsType,
     PaymentProviderConfigFieldsType,
     PaymentProviderMethodFieldsType,
+    CurrencyPaymentProviderMethodFieldsType,
     AppCurrencyFieldsType,
     TwoFactorLoginFieldsType
 } from "@/types/form_fields_type";
@@ -181,6 +182,9 @@ type PaymentProviderConfigFormState = FormViewStateDataInterface<PaymentProvider
 
 type PaymentProviderMethodFormState = FormViewStateDataInterface<PaymentProviderMethodFieldsType>;
 
+type CurrencyPaymentProviderMethodFormState =
+    FormViewStateDataInterface<CurrencyPaymentProviderMethodFieldsType>;
+
 type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFieldsType>;
 
 export {
@@ -205,5 +209,6 @@ export {
     PaymentProviderFormState,
     PaymentProviderConfigFormState,
     PaymentProviderMethodFormState,
+    CurrencyPaymentProviderMethodFormState,
     AppCurrencyFormState
 };

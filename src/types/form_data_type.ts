@@ -271,6 +271,14 @@ export interface UpdatePaymentProviderMethodPayloadInterface extends BaseFormDat
     max_amount?: number | null;
 }
 
+export interface CurrencyPaymentProviderMethodFormDataInterface extends BaseFormData {
+    csrf_token: string | null;
+    currency_id: string | number;
+    provider_method_id: string | number;
+    min_amount?: string | number | null;
+    max_amount?: string | number | null;
+}
+
 export interface CreateCurrencyPaymentProviderMethodPayloadInterface extends BaseFormData {
     csrf_token: string;
     currency_id: string | number;

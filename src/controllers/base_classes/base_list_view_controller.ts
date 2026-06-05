@@ -152,8 +152,8 @@ class BaseListViewController<
             total_pages: 0,
             total_items: 0,
             limit: 12,
-            sort_by: null,
-            sort_direction: null
+            sort_by: "updated_at",
+            sort_direction: "desc"
         };
     }
 

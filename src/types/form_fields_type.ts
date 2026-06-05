@@ -158,6 +158,16 @@ type PaymentProviderMethodFieldsType = {
     max_amount_input_group_props: InputGroupUIPropsInterface;
 };
 
+type CurrencyPaymentProviderMethodFieldsType = {
+    currency_id_input_group_props: InputGroupUIPropsInterface;
+
+    provider_method_id_input_group_props: InputGroupUIPropsInterface;
+
+    min_amount_input_group_props: InputGroupUIPropsInterface;
+
+    max_amount_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -173,5 +183,6 @@ export {
     PaymentProviderFieldsType,
     PaymentProviderConfigFieldsType,
     PaymentProviderMethodFieldsType,
+    CurrencyPaymentProviderMethodFieldsType,
     AppCurrencyFieldsType
 };

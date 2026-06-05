@@ -147,6 +147,58 @@
                     }
                 }
             }
+        },
+        "form_view_ui": {
+            "header_text": "Currency Provider Method",
+            "fieldset": {
+                "currency_id_field": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Search currency",
+                    "selected_text_prefix": "Currency"
+                },
+                "provider_method_id_field": {
+                    "label_text": "Provider Method",
+                    "placeholder_text": "Search provider method",
+                    "selected_text_prefix": "Provider Method"
+                },
+                "min_amount_field": {
+                    "label_text": "Minimum Amount",
+                    "placeholder_text": "Enter minimum amount"
+                },
+                "max_amount_field": {
+                    "label_text": "Maximum Amount",
+                    "placeholder_text": "Enter maximum amount"
+                },
+                "btn_text": "Submit"
+            }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Create Currency Provider Method",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Currency Provider Method",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "profile_details_modal_ui": {
+                "title_text": "Currency Provider Method Details",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "delete_modal_ui": {
+                "title_text": "Delete Currency Provider Method",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Permanently delete {{account_reference}}?",
+                    "message_text": "Are you sure you want to permanently delete this payment provider config? This is not a soft delete and cannot be undone.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Delete Permanently"
+                }
+            }
         }
     }
 }

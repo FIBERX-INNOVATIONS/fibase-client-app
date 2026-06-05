@@ -1,3 +1,7 @@
+import { markRaw } from "vue";
+
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -17,6 +21,8 @@ import BaseListViewController from "@/controllers/base_classes/base_list_view_co
 import BaseListViewActionHandler from "../base_classes/base_list_view_action_handler";
 
 import CurrencyPaymentProviderMethodActionMenu from "@/action_menus/currency_payment_provider_method_action_menu";
+
+import AddEditFormView from "@/views/currency_payment_provider_method/AddEditFormView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
@@ -43,7 +49,21 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { add_new_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: add_new_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: {}
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle row status change toggle.
     public handleStatusToggleChange = async (
@@ -139,7 +159,21 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     public handleEditActionMenuClicked = async (
         record: CurrencyPaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { update_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: update_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: { record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle delete action menu clicked.
     public handleDeleteActionMenuClicked = async (

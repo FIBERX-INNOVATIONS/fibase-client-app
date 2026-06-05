@@ -22,7 +22,7 @@ class PaymentProviderConfigAPIService extends BaseAPIService {
         const {
             page = 1,
             limit = 10,
-            sort_by = "created_at",
+            sort_by = "updated_at",
             sort_direction = "desc",
             filters
         } = params ?? {};

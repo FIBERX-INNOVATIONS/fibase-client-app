@@ -168,6 +168,7 @@ export interface AppCurrencyRecordinterface {
 }
 
 export interface CurrencyRecordInterface {
+    id?: number;
     code: string;
     numeric_code: string | null;
     logo_url: string | null;
