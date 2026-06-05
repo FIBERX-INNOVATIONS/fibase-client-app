@@ -7,6 +7,7 @@ import {
     CurrencyRecordInterface,
     MemberRecordInterface,
     PaymentMethodRecordInterface,
+    PaymentProviderMethodRecordInterface,
     PaymentProviderRecordInterface,
     RegisteredAppRecordInterface
 } from "@/types/api_service_type";
@@ -20,6 +21,8 @@ import CurrencyAPIService from "@/api_services/currency_api_service";
 import PaymentProviderAPIService from "@/api_services/payment_provider_api_service";
 
 import PaymentMethodAPIService from "@/api_services/payment_method_api_service";
+
+import PaymentProviderMethodAPIService from "@/api_services/payment_provider_method_api_service";
 
 import RegisteredAppAPIService from "@/api_services/registered_app_api_service";
 
@@ -235,6 +238,70 @@ class PreviewRecordFetcher {
             };
         } catch (error: unknown) {
             this.logger.error(`Failed to fetch payment methods preview records`, { error });
+            return { records: [], total_pages: 0 };
+        }
+    };
+
+    // Method to handle fetching payment provider methods preview records
+    public static fetchPaymentProviderMethodPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
+
+        try {
+            const result = await PaymentProviderMethodAPIService.getPaymentProviderMethodList({
+                page,
+                filters: {
+                    search,
+                    preview_only: true,
+                    ...extra_params
+                }
+            });
+
+            const fallback = { records: [], total_pages: 0 };
+
+            if (result.status === "logout") {
+                return fallback;
+            }
+
+            if (result.status !== "success" || !result.data?.records) {
+                return fallback;
+            }
+
+            const records = result.data.records.flatMap(
+                (obj: PaymentProviderMethodRecordInterface): SelectOptionInterface[] => {
+                    const { id, direction, provider, payment_method, provider_method_code } = obj;
+
+                    return id
+                        ? [
+                              {
+                                  label_text: [
+                                      provider?.code?.toUpperCase?.() ?? provider?.name ?? "",
+                                      payment_method?.code?.toUpperCase?.() ??
+                                          payment_method?.name ??
+                                          "",
+                                      direction?.toUpperCase?.() ?? "",
+                                      provider_method_code ?? ""
+                                  ]
+                                      .filter(Boolean)
+                                      .join(" - "),
+                                  value: id
+                              }
+                          ]
+                        : [];
+                }
+            );
+
+            return {
+                records,
+                total_pages: result.data.total_pages ?? 0
+            };
+        } catch (error: unknown) {
+            this.logger.error(`Failed to fetch payment provider methods preview records`, {
+                error
+            });
             return { records: [], total_pages: 0 };
         }
     };

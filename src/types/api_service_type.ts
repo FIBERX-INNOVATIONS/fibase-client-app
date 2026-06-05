@@ -316,9 +316,9 @@ export interface PaymentProviderMethodRecordInterface {
 }
 
 export interface CurrencyPaymentProviderMethodRecordInterface {
-    id?: number;
-    currency_id: number;
-    provider_method_id: number;
+    id: number;
+    currency_id?: number;
+    provider_method_id?: number;
     min_amount: number | null;
     max_amount: number | null;
     is_active: boolean;

@@ -12,13 +12,13 @@ Add a top-level sidebar group named `Payment Config`.
 
 Recommended children:
 
-| Label                     | Route                                       | Permission                                                |
-| ------------------------- | ------------------------------------------- | --------------------------------------------------------- |
-| Payment Methods           | `/payment-config/methods`                   | `payment_config_module.get_payment_method_list`           |
-| Payment Providers         | `/payment-config/providers`                 | `payment_config_module.get_payment_provider_list`         |
-| Provider Configs          | `/payment-config/provider-configs`          | `payment_config_module.get_payment_provider_config_list`  |
-| Provider Methods          | `/payment-config/provider-methods`          | `payment_config_module.get_payment_provider_method_list`  |
-| Currency Provider Methods | `/payment-config/currency-provider-methods` | `payment_config_module.get_currency_provider_method_list` |
+| Label                     | Route                                       | Permission                                                                          |
+| ------------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Payment Methods           | `/payment-config/methods`                   | `payment_config_module.get_payment_method_list`                                     |
+| Payment Providers         | `/payment-config/providers`                 | `payment_config_module.get_payment_provider_list`                                   |
+| Provider Configs          | `/payment-config/provider-configs`          | `payment_config_module.get_payment_provider_config_list`                            |
+| Provider Methods          | `/payment-config/provider-methods`          | `payment_config_module.get_payment_provider_method_list`                            |
+| Currency Provider Methods | `/payment-config/currency-provider-methods` | `currency_payment_provider_method_module.get_currency_payment_provider_method_list` |
 
 Keep the sidebar item structure content-driven through
 `content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list`.
