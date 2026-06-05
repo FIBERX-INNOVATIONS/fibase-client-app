@@ -117,11 +117,15 @@ class PaymentProviderMethodProfileViewController extends BaseProfileViewControll
             },
 
             formatted_min_amount: () => {
-                return this.formatAmountLimit(this.state_refs.profile_record.value?.min_amount);
+                return this.formatAmountLimit(
+                    Number(this.state_refs.profile_record.value?.min_amount)
+                );
             },
 
             formatted_max_amount: () => {
-                return this.formatAmountLimit(this.state_refs.profile_record.value?.max_amount);
+                return this.formatAmountLimit(
+                    Number(this.state_refs.profile_record.value?.max_amount)
+                );
             },
 
             readable_created_at: () => {

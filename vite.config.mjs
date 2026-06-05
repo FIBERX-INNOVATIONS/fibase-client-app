@@ -5,7 +5,7 @@ import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
-const uiToolkitPath = fileURLToPath(new URL("../../fi-ui-toolkit", import.meta.url));
+const uiToolkitPath = fileURLToPath(new URL("../../fi-ui-toolkit/src", import.meta.url));
 
 export default defineConfig({
     root: "./",

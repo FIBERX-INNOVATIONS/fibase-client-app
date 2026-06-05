@@ -33,12 +33,12 @@ class RouterManager {
 
     // Method to set up route gaurds
     private setupRouterGuards(): void {
-        this.router.beforeEach(async (to, from, next) => {
+        this.router.beforeEach(async (to, from) => {
             const route = this.routes.find((el) => el.name === to.name);
 
             if (!route) {
                 console.warn("Route not found, redirecting back...");
-                return next(from.fullPath);
+                return from.fullPath;
             }
 
             const { title_key, permission_name = "" as string } = (route.meta || {}) as RouteMeta;
@@ -50,14 +50,12 @@ class RouterManager {
                 : true;
 
             if (!is_logged_in && route.name !== "Login") {
-                return next("/login");
+                return "/login";
             } else if (is_logged_in && !is_fully_authenticated && route.name !== "TwoFactorLogin") {
-                return next("/two-factor-login");
+                return "/two-factor-login";
             } else if (is_fully_authenticated && !has_permission) {
-                return next("/dashboard"); // change to 404 page later
+                return "/dashboard"; // change to 404 page later
             }
-
-            return next();
         });
     }
 
