@@ -172,6 +172,48 @@
                 "btn_text": "Submit"
             }
         },
+        "profile_view_ui": {
+            "loading_text": "Loading currency provider method...",
+            "no_description_text": "",
+            "empty_value_text": "-",
+            "header": {
+                "currency_logo_alt_text": "Currency logo"
+            },
+            "sections": {
+                "currency_information": {
+                    "title_text": "Currency Information",
+                    "currency_name_label_text": "Currency:",
+                    "currency_code_label_text": "Currency Code:",
+                    "currency_id_label_text": "Currency ID:"
+                },
+                "provider_method_information": {
+                    "title_text": "Provider Method Information",
+                    "provider_name_label_text": "Provider:",
+                    "provider_code_label_text": "Provider Code:",
+                    "payment_method_name_label_text": "Payment Method:",
+                    "payment_method_code_label_text": "Payment Method Code:",
+                    "provider_method_id_label_text": "Provider Method ID:",
+                    "direction_label_text": "Direction:",
+                    "provider_method_code_label_text": "Provider Method Code:"
+                },
+                "amount_limits": {
+                    "title_text": "Amount Limits",
+                    "min_amount_label_text": "Minimum:",
+                    "max_amount_label_text": "Maximum:"
+                },
+                "status": {
+                    "title_text": "Status",
+                    "active_label_text": "Active:",
+                    "active_status_text": "Active",
+                    "inactive_status_text": "Inactive",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                },
+                "linked_by": {
+                    "title_text": "Linked By"
+                }
+            }
+        },
         "modals_ui": {
             "add_new_modal_ui": {
                 "title_text": "Create Currency Provider Method",

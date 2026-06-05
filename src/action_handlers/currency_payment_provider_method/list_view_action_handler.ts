@@ -24,6 +24,8 @@ import CurrencyPaymentProviderMethodActionMenu from "@/action_menus/currency_pay
 
 import AddEditFormView from "@/views/currency_payment_provider_method/AddEditFormView.vue";
 
+import ProfileView from "@/views/currency_payment_provider_method/ProfileView.vue";
+
 import DeleteView from "@/views/currency_payment_provider_method/DeleteView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
@@ -155,7 +157,21 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     public handleViewActionMenuClicked = async (
         record: CurrencyPaymentProviderMethodRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: profile_details_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ProfileView),
+
+            body_props: { record_id: record.id?.toString() ?? "", record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle edit action menu clicked.
     public handleEditActionMenuClicked = async (
