@@ -413,3 +413,145 @@ export type PaymentProviderMethodListParams = {
     sort_direction?: "asc" | "desc";
     filters?: Partial<PaymentProviderMethodListViewFiltersInterface>;
 };
+
+// ==============================
+// MEMBER PROFILE TYPES
+// ==============================
+
+export interface MemberDeviceSessionInterface {
+    session_id: string;
+    device_id: string;
+    device_name: string;
+    request_id: string;
+    ip_address: string;
+    user_agent: string;
+    is_2fa_enabled: boolean;
+    status: "active" | "expired" | "logged_out";
+    expires_at: string;
+    created_at: string;
+}
+
+export type MemberListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<MemberListFiltersInterface>;
+};
+
+export interface MemberListResponseInterface extends PaginatedResponseResultInterface<
+    MemberRecordInterface[]
+> {}
+
+export interface MemberDeviceSessionListResponseInterface extends PaginatedResponseResultInterface<
+    MemberDeviceSessionInterface[]
+> {}
+
+export interface ValidateMemberSetupTokenResponseInterface {
+    member_context: MemberRecordInterface;
+    token_public_id: string;
+    expires_at: string;
+    two_factor_setup: Record<string, any>;
+}
+
+export interface CompleteMemberSetupResponseInterface {
+    member: MemberRecordInterface;
+    access_token: string;
+    expires_in_mins: number;
+    permissions: string[];
+}
+
+// ==============================
+// ACTIVITY TYPES
+// ==============================
+
+export interface ActivityRecordInterface {
+    id: string;
+    actor_type: "member" | "app" | string;
+    actor_id: string;
+    actor_name?: string;
+    request_id: string;
+    action: string;
+    entity_type: string;
+    description: string;
+    ip_address: string;
+    user_agent: string;
+    status: "success" | "failed";
+    created_at: string;
+    updated_at: string;
+}
+
+export type ActivityListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<ActivityListFiltersInterface>;
+};
+
+export interface ActivityListResponseInterface extends PaginatedResponseResultInterface<
+    ActivityRecordInterface[]
+> {}
+
+// ==============================
+// ACCESS CONTROL TYPES
+// ==============================
+
+export interface RoleRecordInterface {
+    id: string | number;
+    name: string;
+    symbol: string;
+    display_name: string;
+    is_system_role: boolean;
+    is_member_group: boolean;
+    created_by?: CreatorUpdatorMemberinterface | null;
+    updated_by?: CreatorUpdatorMemberinterface | null;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface PermissionRecordInterface {
+    id: string | number;
+    name: string;
+    symbol: string;
+    module: string;
+    description?: string;
+}
+
+export type RoleListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<RoleListFiltersInterface>;
+};
+
+export interface RoleListResponseInterface extends PaginatedResponseResultInterface<
+    RoleRecordInterface[]
+> {}
+
+export type RolePermissionListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    assignment_status?: "assigned" | "unassigned";
+    filters?: Record<string, any>;
+};
+
+export interface RolePermissionListResponseInterface extends PaginatedResponseResultInterface<
+    PermissionRecordInterface[]
+> {}
+
+export interface RolePermissionActionResponseInterface {
+    affected_count: number;
+    skipped_count: number;
+    message: string;
+}
+
+export interface ActorRoleActionResponseInterface {
+    actor_type: "member" | "app";
+    actor_id: string | number;
+    assigned_roles: RoleRecordInterface[];
+    message: string;
+}

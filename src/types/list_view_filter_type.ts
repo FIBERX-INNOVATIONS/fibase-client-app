@@ -70,3 +70,28 @@ export interface CurrencyPaymentProviderMethodListViewFiltersInterface extends P
     provider_method_id?: string | number | null;
     direction?: "deposit" | "withdrawal" | string | null;
 }
+
+export interface MemberDeviceSessionListViewFiltersInterface {
+    search?: string | null;
+    is_active?: boolean | string | null;
+    is_2fa_enabled?: boolean | string | null;
+    date_range?: { start_date: string; end_date: string } | null;
+}
+
+export interface ActivityListFiltersInterface {
+    search?: string | null;
+    registered_app_id?: string | number | null;
+    app_id?: string | number | null;
+    member_public_id?: string | null;
+    member_id?: string | number | null;
+    request_id?: string | null;
+    entity_type?: string | null;
+    ip_address?: string | null;
+    status?: "success" | "failed" | null;
+    date_range?: string | null;
+}
+
+export interface RoleListFiltersInterface {
+    search?: string | null;
+    is_member_group?: boolean | string | null;
+}

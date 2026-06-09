@@ -294,3 +294,77 @@ export interface UpdateCurrencyPaymentProviderMethodPayloadInterface extends Bas
     min_amount?: number | null;
     max_amount?: number | null;
 }
+
+// ==============================
+// MEMBER PROFILE PAYLOADS
+// ==============================
+
+export interface CreateMemberPayload extends BaseFormData {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone?: string | null;
+    dob?: string | null;
+    gender?: string | null;
+    profile_photo_link?: string | null;
+}
+
+export interface UpdateMemberPayload extends BaseFormData {
+    first_name?: string;
+    last_name?: string;
+    phone?: string | null;
+    dob?: string | null;
+    gender?: string | null;
+    profile_photo_link?: string | null;
+}
+
+export interface MemberStatusUpdatePayload extends BaseFormData {
+    // Status update may not need additional fields
+}
+
+export interface MemberDeletePayload extends BaseFormData {
+    delete_reason?: string | null;
+}
+
+export interface MemberActivationLinkPayload extends BaseFormData {
+    reason?: string | null;
+}
+
+export interface ValidateMemberSetupTokenPayload {
+    token: string;
+}
+
+export interface CompleteMemberSetupPayload extends BaseFormData {
+    member_public_id: string;
+    password: string;
+    password_confirm: string;
+    otp_code: string;
+    token: string;
+}
+
+// ==============================
+// ACCESS CONTROL PAYLOADS
+// ==============================
+
+export interface CreateRolePayload extends BaseFormData {
+    name: string;
+    symbol: string;
+    is_member_group: boolean;
+}
+
+export interface UpdateRolePayload extends BaseFormData {
+    name?: string;
+    symbol?: string;
+    is_member_group?: boolean;
+}
+
+export interface RolePermissionActionPayload extends BaseFormData {
+    permission_ids: Array<number | string>;
+    action: "assign" | "unassign";
+}
+
+export interface ActorRoleActionPayload extends BaseFormData {
+    actor_type: "member" | "app";
+    actor_id: string | number;
+    role_ids: Array<number | string>;
+}
