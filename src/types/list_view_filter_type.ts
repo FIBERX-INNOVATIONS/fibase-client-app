@@ -25,6 +25,13 @@ export interface MemberListFiltersInterface {
     search?: string | null;
     preview_only?: boolean;
     is_active?: string | null;
+    is_verified?: string | null;
+    is_2fa_enabled?: string | null;
+    is_locked?: string | null;
+    is_deleted?: string | null;
+    role_id?: string | number | null;
+    gender?: string | null;
+    date_range?: { start_date: string; end_date: string } | null;
 }
 
 export interface PaymentConfigListViewFiltersInterface {

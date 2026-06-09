@@ -6,6 +6,7 @@ const TwoFactorLoginView = () => import("@/views/auth/TwoFactorLoginView.vue");
 const LogoutView = () => import("@/views/auth/LogoutView.vue");
 const DashboardView = () => import("@/views/DashboardView.vue");
 const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
+const MemberProfileListView = () => import("@/views/member_profile/ListView.vue");
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
 const PaymentProviderListView = () => import("@/views/payment_provider/ListView.vue");
@@ -127,6 +128,17 @@ class RouterManager {
                     page_meta_key: "registered_app_page",
                     title_key: "registered_app_page",
                     permission_name: "registered_app_module.get_registered_app_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/members",
+                name: "MemberProfileList",
+                component: MemberProfileListView,
+                meta: {
+                    page_meta_key: "member_profile_page",
+                    title_key: "member_profile_page",
+                    permission_name: "member_profile_module.get_member_list",
                     is_auth_page: false
                 }
             },

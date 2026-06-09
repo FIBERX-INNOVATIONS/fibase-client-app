@@ -1,0 +1,217 @@
+{
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_text": "Members",
+                    "menu_icon": "member_icon",
+                    "menu_link": "/members",
+                    "menu_permission_text": "member_profile_module.get_member_list"
+                }
+            ]
+        }
+    },
+    "member_profile_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Members",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Members",
+                "header_description": "Manage member profiles, account state, roles, and security context.",
+                "create_btn": {
+                    "btn_text": "Create Member"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search public ID, username, email, first name, or last name"
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Inactive",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "verified_filter": {
+                    "label_text": "Verified",
+                    "placeholder_text": "Select verification status",
+                    "option_list": [
+                        {
+                            "label_text": "Verified",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Unverified",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "two_factor_filter": {
+                    "label_text": "2FA",
+                    "placeholder_text": "Select 2FA status",
+                    "option_list": [
+                        {
+                            "label_text": "Enabled",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Disabled",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "locked_filter": {
+                    "label_text": "Locked",
+                    "placeholder_text": "Select lock status",
+                    "option_list": [
+                        {
+                            "label_text": "Locked",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Unlocked",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "deleted_filter": {
+                    "label_text": "Deleted",
+                    "placeholder_text": "Select deleted state",
+                    "option_list": [
+                        {
+                            "label_text": "Active Records",
+                            "value": "false"
+                        },
+                        {
+                            "label_text": "Deleted Records",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "role_filter": {
+                    "label_text": "Role",
+                    "placeholder_text": "Enter role ID"
+                },
+                "gender_filter": {
+                    "label_text": "Gender",
+                    "placeholder_text": "Select gender",
+                    "option_list": [
+                        {
+                            "label_text": "Male",
+                            "value": "Male"
+                        },
+                        {
+                            "label_text": "Female",
+                            "value": "Female"
+                        },
+                        {
+                            "label_text": "Other",
+                            "value": "Other"
+                        }
+                    ]
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} member record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading member records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Member Record Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "member_text": "Member",
+                    "username_text": "Username",
+                    "roles_text": "Roles",
+                    "security_text": "Security",
+                    "status_text": "Status",
+                    "deleted_text": "Deleted",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    },
+                    "edit_menu_option": {
+                        "menu_text": "Edit",
+                        "menu_icon": "edit_square_pencil_svg_icon",
+                        "menu_link": ""
+                    },
+                    "activity_menu_option": {
+                        "menu_text": "Activity",
+                        "menu_icon": "clock_svg_icon",
+                        "menu_link": ""
+                    },
+                    "send_activation_link_menu_option": {
+                        "menu_text": "Send Activation Link",
+                        "menu_icon": "paper_airplane_send_svg_icon",
+                        "menu_link": ""
+                    },
+                    "restore_menu_option": {
+                        "menu_text": "Restore",
+                        "menu_icon": "reload_svg_icon",
+                        "menu_link": ""
+                    },
+                    "delete_menu_option": {
+                        "menu_text": "Delete",
+                        "menu_icon": "delete_trash_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        }
+    }
+}

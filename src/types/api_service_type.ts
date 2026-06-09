@@ -1,5 +1,8 @@
 import {
     CurrencyPaymentProviderMethodListViewFiltersInterface,
+    MemberListFiltersInterface,
+    ActivityListFiltersInterface,
+    RoleListFiltersInterface,
     PaymentMethodListViewFiltersInterface,
     PaymentProviderListViewFiltersInterface,
     PaymentProviderConfigListViewFiltersInterface,
@@ -56,7 +59,19 @@ export interface MemberRecordInterface {
 
     roles: ActorRoleInterface[];
 
+    actor_roles: ActorRoleInterface[];
+
     is_fully_authenticated: boolean;
+
+    is_locked?: boolean;
+
+    is_deleted?: boolean;
+
+    delete_reason?: string | null;
+
+    created_at?: string | null;
+
+    updated_at?: string | null;
 }
 
 export interface AuthAccessRecordInterface {
