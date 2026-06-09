@@ -36,11 +36,13 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
+    // Method to handle header button clicked
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle row status chnage toglle
     public handleStatusToggleChange = async (
         record: MemberRecordInterface,
         input_value?: InputValue
@@ -48,6 +50,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
         return { status: false, msg: "not_implemented" };
     };
 
+    // Method to toogle data table action menu
     public toggleActionMenu = (record: MemberRecordInterface, record_index?: number): void => {
         const action_menu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
@@ -67,31 +70,37 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
         );
     };
 
+    // Method to handle view Action menu clicked
     public handleViewActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle on edit action menu clicked
     public handleEditActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle view activity Menu clicked
     public handleActivityActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle Send Activation Link action menu clicked
     public handleSendActivationLinkActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle on delete action menu clicked
     public handleDeleteActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {};
 
+    // Method to handle restore action menu clicked
     public handleRestoreActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
