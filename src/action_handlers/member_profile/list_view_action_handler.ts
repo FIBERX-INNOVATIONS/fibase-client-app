@@ -1,3 +1,7 @@
+import { markRaw } from "vue";
+
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -17,6 +21,8 @@ import BaseListViewController from "@/controllers/base_classes/base_list_view_co
 import BaseListViewActionHandler from "@/action_handlers/base_classes/base_list_view_action_handler";
 
 import MemberProfileActionMenu from "@/action_menus/member_profile_action_menu";
+
+import AddEditFormView from "@/views/member_profile/AddEditFormView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
@@ -40,7 +46,21 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,
         config?: { props: ButtonUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { add_new_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: add_new_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: {}
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle row status chnage toglle
     public handleStatusToggleChange = async (
@@ -80,7 +100,21 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
     public handleEditActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { update_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: update_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(AddEditFormView),
+
+            body_props: { record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle view activity Menu clicked
     public handleActivityActionMenuClicked = async (

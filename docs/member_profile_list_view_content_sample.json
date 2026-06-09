@@ -213,6 +213,76 @@
                     }
                 }
             }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Create New Member",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Member",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "form_view_ui": {
+            "header_text": "",
+            "fieldset": {
+                "first_name_field": {
+                    "label_text": "First Name",
+                    "placeholder_text": "Enter first name"
+                },
+                "last_name_field": {
+                    "label_text": "Last Name",
+                    "placeholder_text": "Enter last name"
+                },
+                "email_field": {
+                    "label_text": "Email",
+                    "placeholder_text": "name@example.com"
+                },
+                "phone_field": {
+                    "label_text": "Phone",
+                    "placeholder_text": "+234 0000 000000"
+                },
+                "dob_field": {
+                    "label_text": "Date of Birth",
+                    "placeholder_text": "Select date of birth"
+                },
+                "gender_field": {
+                    "label_text": "Gender",
+                    "placeholder_text": "Select gender",
+                    "options_list": [
+                        {
+                            "label_text": "Male",
+                            "value": "Male"
+                        },
+                        {
+                            "label_text": "Female",
+                            "value": "Female"
+                        },
+                        {
+                            "label_text": "Other",
+                            "value": "Other"
+                        }
+                    ]
+                },
+                "profile_photo_link_field": {
+                    "label_text": "Profile Photo",
+                    "placeholder_text": "Upload profile photo"
+                },
+                "btn_text": "Submit"
+            }
+        }
+    },
+    "api_responses": {
+        "member_profile_module_responses": {
+            "invalid_member_name": "Please provide a valid member name.",
+            "invalid_member_first_name": "Please provide a valid first name.",
+            "invalid_member_last_name": "Please provide a valid last name.",
+            "invalid_member_email": "Please provide a valid email address.",
+            "invalid_member_input": "Please check the member details and try again.",
+            "invalid_profile_photo_link": "Please upload a valid profile photo."
         }
     }
 }

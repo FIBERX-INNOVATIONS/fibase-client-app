@@ -9,6 +9,7 @@ import {
 
 import {
     RegisteredAppRecordInterface,
+    RegisteredAppStatusUpdateResponseInterface,
     PaginatedResponseResultInterface
 } from "@/types/api_service_type";
 
@@ -96,8 +97,8 @@ class RegisteredAppAPIService extends BaseAPIService {
     // =========================
     public static updateRegisteredAppStatus = async (
         public_id: string
-    ): Promise<APIResponseInterface<RegisteredAppRecordInterface>> => {
-        return await this.queryAPI<RegisteredAppRecordInterface>({
+    ): Promise<APIResponseInterface<RegisteredAppStatusUpdateResponseInterface>> => {
+        return await this.queryAPI<RegisteredAppStatusUpdateResponseInterface>({
             url: `/registered-app/${public_id}/update-status`,
             method: "PATCH",
             disable_retry: true

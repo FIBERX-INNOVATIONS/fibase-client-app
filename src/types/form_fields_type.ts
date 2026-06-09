@@ -168,6 +168,22 @@ type CurrencyPaymentProviderMethodFieldsType = {
     max_amount_input_group_props: InputGroupUIPropsInterface;
 };
 
+type MemberProfileFieldsType = {
+    first_name_input_group_props: InputGroupUIPropsInterface;
+
+    last_name_input_group_props: InputGroupUIPropsInterface;
+
+    email_input_group_props: InputGroupUIPropsInterface;
+
+    phone_input_group_props: InputGroupUIPropsInterface;
+
+    dob_input_group_props: InputGroupUIPropsInterface;
+
+    gender_input_group_props: InputGroupUIPropsInterface;
+
+    profile_photo_link_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -184,5 +200,6 @@ export {
     PaymentProviderConfigFieldsType,
     PaymentProviderMethodFieldsType,
     CurrencyPaymentProviderMethodFieldsType,
+    MemberProfileFieldsType,
     AppCurrencyFieldsType
 };

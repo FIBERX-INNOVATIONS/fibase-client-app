@@ -8,7 +8,10 @@ import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
-import { RegisteredAppRecordInterface } from "@/types/api_service_type";
+import {
+    RegisteredAppRecordInterface,
+    RegisteredAppStatusUpdateResponseInterface
+} from "@/types/api_service_type";
 
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 
@@ -28,6 +31,8 @@ import ProfileView from "@/views/registered_app/ProfileView.vue";
 
 import DeleteView from "@/views/registered_app/DeleteView.vue";
 
+import ActivationCredentialsView from "@/views/registered_app/ActivationCredentialsView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
@@ -45,6 +50,26 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
+
+    // Method to open activation credentials modal once an app is activated
+    private openActivationCredentialsModal = (
+        activation_data: RegisteredAppStatusUpdateResponseInterface
+    ): void => {
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key:
+                "content_resource.registered_app_view_ui.modals_ui.activation_credentials_modal_ui",
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ActivationCredentialsView),
+
+            body_props: {
+                activation_data
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle header button clicked
     protected handleHeaderBtnClicked = async (
@@ -95,11 +120,18 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                     msg: this.getContentMessage("session_expired")
                 };
             } else if (result.status === "success") {
+                const activation_data = result.data;
+                const safe_app = activation_data?.safe_app;
+
                 this.updateListStateRecord(
                     public_id,
-                    { is_active: !record.is_active },
+                    safe_app ?? { is_active: !record.is_active },
                     "public_id"
                 );
+
+                if (activation_data?.new_status === true && activation_data.private_key) {
+                    this.openActivationCredentialsModal(activation_data);
+                }
 
                 return {
                     status: true,

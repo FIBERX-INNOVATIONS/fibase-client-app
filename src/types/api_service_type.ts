@@ -165,6 +165,13 @@ export interface RegisteredAppRecordInterface {
     auth?: RegisteredAppAuthInterface | null;
 }
 
+export interface RegisteredAppStatusUpdateResponseInterface {
+    safe_app: RegisteredAppRecordInterface;
+    private_key?: string | null;
+    previous_status: boolean;
+    new_status: boolean;
+}
+
 export const getMemberFullName = (
     member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null
 ): string => {
