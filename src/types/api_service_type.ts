@@ -26,12 +26,34 @@ export interface ActorRoleInterface {
     id: string;
     name: string;
     symbol: string;
-    display_name: string;
-    is_system_role: boolean;
+    display_name?: string;
+    is_system_role?: boolean;
+    is_member_group?: boolean;
+}
+
+export interface MemberAuthRecordInterface {
+    id: string;
+    login_attempts: number;
+    account_locked_until: string | null;
+    password_changed_at: string | null;
+    last_password_reset_request_at: string | null;
+}
+
+export interface MemberActorRoleInterface {
+    id: string;
+    role_id: string;
+    actor_type: "member" | "app" | string;
+    is_active: boolean;
+    expires_at: string | null;
+    created_at: string | null;
+    updated_at: string | null;
+    role: ActorRoleInterface;
 }
 
 export interface MemberRecordInterface {
     public_id: string;
+
+    id?: string;
 
     username: string;
 
@@ -39,7 +61,7 @@ export interface MemberRecordInterface {
 
     phone: string;
 
-    full_name: string;
+    full_name?: string;
 
     first_name: string;
 
@@ -57,11 +79,13 @@ export interface MemberRecordInterface {
 
     is_verified: boolean;
 
-    roles: ActorRoleInterface[];
+    roles?: ActorRoleInterface[];
 
-    actor_roles: ActorRoleInterface[];
+    actor_roles?: MemberActorRoleInterface[];
 
     is_fully_authenticated: boolean;
+
+    member_auth?: MemberAuthRecordInterface | null;
 
     is_locked?: boolean;
 

@@ -35,7 +35,11 @@ import BaseListViewController from "@/controllers/base_classes/base_list_view_co
 
 import MemberProfileListViewActionHandler from "@/action_handlers/member_profile/list_view_action_handler";
 
+import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
+
 import ButtonUIPropsBuilder from "@ui/version_3/props_builder/button_ui_props_builder";
+
+import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
 
 import DataTableToggleCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableToggleCellUI.vue";
 
@@ -170,11 +174,17 @@ class MemberProfileListViewController extends BaseListViewController<
             // Role Id Filter
             {
                 key: "role_id_filter",
-                type: "text",
+                type: "select_search",
                 label_content_key: `${filters_content_key}.role_filter`,
                 input_content_key: `${filters_content_key}.role_filter`,
                 overides: {
-                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    content_props: {
+                        caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
+                    },
+                    action_props: {
+                        ...this.action_handler.getFilterInputActionHandlersConfig(),
+                        fetch_data_method: PreviewRecordFetcher.fetchRolePreviewRecords
+                    },
                     model_value: this.route.query?.role_id ?? ""
                 }
             },
@@ -222,18 +232,21 @@ class MemberProfileListViewController extends BaseListViewController<
             return "-";
         }
 
-        return roles.map((role) => role.display_name || role.name || role.symbol).join(", ");
+        return roles
+            .map((actor_role) => {
+                const role = actor_role.role;
+                return role?.display_name || role?.name || role?.symbol;
+            })
+            .filter(Boolean)
+            .join(", ");
     }
 
-    private getSecurityText(record: MemberRecordInterface): string {
-        const enabled_text = "Yes";
-        const disabled_text = "No";
-
-        return [
-            `2FA: ${record.is_2fa_enabled ? enabled_text : disabled_text}`,
-            `Verified: ${record.is_verified ? enabled_text : disabled_text}`,
-            `Locked: ${record.is_locked ? enabled_text : disabled_text}`
-        ].join(" | ");
+    // Method to check if member account actions should be blocked
+    private isProtectedMemberRecord(record: MemberRecordInterface): boolean {
+        return (
+            MemberAuthenticatorUtil.memberHasSuperAdminRole(record) ||
+            MemberAuthenticatorUtil.isSameAsLoggedInMember(record)
+        );
     }
 
     // Method to get table render config
@@ -315,7 +328,7 @@ class MemberProfileListViewController extends BaseListViewController<
 
             // Member Name, Public_id and profile photo Column
             {
-                key: "full_name",
+                key: "first_name",
                 sortable: true,
                 width: "w-[22%]",
                 header: {
@@ -372,21 +385,24 @@ class MemberProfileListViewController extends BaseListViewController<
                 }
             },
 
-            // Member Secuirty column
+            // Member Email column
             {
-                key: "is_2fa_enabled",
-                sortable: false,
+                key: "email",
+                sortable: true,
                 width: "w-[16%]",
                 header: {
                     label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.security_text"
+                        "content_resource.member_profile_view_ui.list_view_ui.table.header.email_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => DataTableLinkCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: MemberRecordInterface) => this.getSecurityText(record)
+                    link_target: "_blank",
+                    getLinkURL: (record: MemberRecordInterface) =>
+                        record.email ? `mailto:${record.email}` : "",
+                    getLinkText: (record: MemberRecordInterface) => record.email || "-"
                 }
             },
 
@@ -400,7 +416,13 @@ class MemberProfileListViewController extends BaseListViewController<
                         "content_resource.member_profile_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
-                    render: () => DataTableToggleCellUI
+                    render: (record: MemberRecordInterface) => {
+                        if (MemberAuthenticatorUtil.memberHasSuperAdminRole(record)) {
+                            return "-";
+                        }
+
+                        return DataTableToggleCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -414,7 +436,7 @@ class MemberProfileListViewController extends BaseListViewController<
                     ): InputUIBooleanPropsInterface => ({
                         is_checked: record.is_active,
                         required: true,
-                        disabled: true
+                        disabled: this.isProtectedMemberRecord(record)
                     }),
                     input_action_props: (
                         record: MemberRecordInterface

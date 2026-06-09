@@ -118,7 +118,8 @@
                 },
                 "role_filter": {
                     "label_text": "Role",
-                    "placeholder_text": "Enter role ID"
+                    "placeholder_text": "Search role",
+                    "selected_text_prefix": "Selected role"
                 },
                 "gender_filter": {
                     "label_text": "Gender",
@@ -162,7 +163,7 @@
                     "member_text": "Member",
                     "username_text": "Username",
                     "roles_text": "Roles",
-                    "security_text": "Security",
+                    "email_text": "Email",
                     "status_text": "Status",
                     "deleted_text": "Deleted",
                     "created_at_text": "Created At",

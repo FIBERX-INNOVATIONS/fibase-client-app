@@ -56,6 +56,36 @@ class MemberAuthenticatorUtil {
         return member.is_fully_authenticated;
     };
 
+    // Check if a member record has the super admin role
+    public static memberHasSuperAdminRole = (member?: MemberRecordInterface | null): boolean => {
+        if (!member) {
+            return false;
+        }
+
+        const flat_roles = member.roles ?? [];
+        const actor_roles = member.actor_roles?.map((actor_role) => actor_role.role) ?? [];
+        const roles = [...flat_roles, ...actor_roles];
+
+        return roles.some((role) => {
+            const symbol = role.symbol?.toLowerCase?.() ?? "";
+            const name = role.name?.toLowerCase?.() ?? "";
+            const display_name = role.display_name?.toLowerCase?.() ?? "";
+
+            return symbol === "adms" && name === "super administrator";
+        });
+    };
+
+    // Check if a member record is the currently logged-in member
+    public static isSameAsLoggedInMember = (member?: MemberRecordInterface | null): boolean => {
+        const logged_in_member = MemberAuthenticatorUtil.getLoggedInMember();
+
+        if (!member?.public_id || !logged_in_member?.public_id) {
+            return false;
+        }
+
+        return member.public_id === logged_in_member.public_id;
+    };
+
     // check is member has permisison X
     public static memberHasPermissionTo = (permission: string): boolean => {
         // if(!permission || permission) { return  true }

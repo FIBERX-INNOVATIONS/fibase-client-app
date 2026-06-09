@@ -9,12 +9,15 @@ import {
     PaymentMethodRecordInterface,
     PaymentProviderMethodRecordInterface,
     PaymentProviderRecordInterface,
-    RegisteredAppRecordInterface
+    RegisteredAppRecordInterface,
+    RoleRecordInterface
 } from "@/types/api_service_type";
 
 import LoggerUtil from "@ui/version_3/utils/logger_util";
 
-import MemberAPIService from "@/api_services/member_api_service";
+import MemberProfileAPIService from "@/api_services/member_profile_api_service";
+
+import AccessControlAPIService from "@/api_services/access_control_api_service";
 
 import CurrencyAPIService from "@/api_services/currency_api_service";
 
@@ -371,7 +374,7 @@ class PreviewRecordFetcher {
         const { page = 0, search = null, ...extra_params } = params ?? {};
 
         try {
-            const result = await MemberAPIService.getMemberList({
+            const result = await MemberProfileAPIService.getMemberList({
                 page,
                 filters: {
                     search,
@@ -392,7 +395,12 @@ class PreviewRecordFetcher {
 
             const records = result.data.records.map(
                 (obj: MemberRecordInterface): SelectOptionInterface => {
-                    const label = obj.full_name || obj.username || obj.email || "Unknown Member";
+                    const label =
+                        obj.full_name ||
+                        [obj.first_name, obj.last_name].filter(Boolean).join(" ") ||
+                        obj.username ||
+                        obj.email ||
+                        "Unknown Member";
 
                     return {
                         label_text: label,
@@ -407,6 +415,57 @@ class PreviewRecordFetcher {
             };
         } catch (error: unknown) {
             this.logger.error(`Failed to fetch member preview records`, { error });
+            return { records: [], total_pages: 0 };
+        }
+    };
+
+    // Method to handle fetching role preview records
+    public static fetchRolePreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
+
+        try {
+            const result = await AccessControlAPIService.getRoleList({
+                page,
+                filters: {
+                    search,
+                    preview_only: true,
+                    ...extra_params
+                }
+            });
+
+            const fallback = { records: [], total_pages: 0 };
+
+            if (result.status === "logout") {
+                return fallback;
+            }
+
+            if (result.status !== "success" || !result.data?.records) {
+                return fallback;
+            }
+
+            const records = result.data.records.map(
+                (obj: RoleRecordInterface): SelectOptionInterface => {
+                    const label = [obj.symbol, obj.display_name || obj.name]
+                        .filter(Boolean)
+                        .join(" - ");
+
+                    return {
+                        label_text: label,
+                        value: obj.id
+                    };
+                }
+            );
+
+            return {
+                records,
+                total_pages: result.data.total_pages ?? 0
+            };
+        } catch (error: unknown) {
+            this.logger.error(`Failed to fetch role preview records`, { error });
             return { records: [], total_pages: 0 };
         }
     };

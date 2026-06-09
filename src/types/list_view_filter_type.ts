@@ -100,5 +100,6 @@ export interface ActivityListFiltersInterface {
 
 export interface RoleListFiltersInterface {
     search?: string | null;
+    preview_only?: boolean | string;
     is_member_group?: boolean | string | null;
 }

@@ -66,7 +66,7 @@ class MemberAPIService extends BaseAPIService {
 
             return [member.full_name, member.username, member.email]
                 .filter(Boolean)
-                .some((value) => value.toLowerCase().includes(search));
+                .some((value) => value?.toLowerCase().includes(search));
         });
 
         return {
