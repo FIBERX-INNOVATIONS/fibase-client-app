@@ -7,7 +7,7 @@ import ButtonUIClassStyles from "./button_ui_class_styles";
 
 const FormViewClassStyles: FormViewClassStylesInterface = {
     wrapper_class_style:
-        "w-full h-full flex items-center md:justify-end justify-center py-[5%] px-[4%]",
+        "py-6 px-[2%] space-y-6 w-full h-auto md:max-h-[600px] max-h-[700px] overflow-y-auto overflow-x-hidden",
 
     form_box_class_style:
         "w-full w-sm rounded-lg h-auto bg-white shadow-lg flex items-center justify-start animate-slide-in border-2 border-gray-200 p-6",
@@ -17,8 +17,7 @@ const FormViewClassStyles: FormViewClassStylesInterface = {
     header_text_class_style: "font-semibold tracking-tight text-2xl flex",
 
     // fieldset_class_style: "space-y-6 py-4 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
-    fieldset_class_style:
-        "flex-1 overflow-y-auto overflow-x-hidden space-y-6 py-4 pr-2 touch-pan-y h-auto md:max-h-[500px] max-h-[700px]",
+    fieldset_class_style: "flex-1 space-y-6 w-full h-full",
 
     input_group_class_style,
 
