@@ -25,7 +25,12 @@ export const STORAGE_SCHEMA = {
     current_member_access_expiry_date: {
         encrypted_key: "xraEXP1",
         default_value: null
-    } as StorageFieldType<Date | null>
+    } as StorageFieldType<Date | null>,
+
+    current_member_device_id: {
+        encrypted_key: "jrji868",
+        default_value: null
+    } as StorageFieldType<string | null>
 };
 
 export type InternalStorageSchemaType = typeof STORAGE_SCHEMA;

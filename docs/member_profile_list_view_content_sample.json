@@ -225,6 +225,11 @@
                 "title_icon": "square_grid_plus_svg_icon",
                 "title_img": "/assets/img/modal_icon.png"
             },
+            "profile_details_modal_ui": {
+                "title_text": "Member Profile",
+                "title_icon": "member_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
             "send_activation_link_modal_ui": {
                 "title_text": "Send Activation Link",
                 "title_icon": "paper_airplane_send_svg_icon",
@@ -262,6 +267,123 @@
                     "message_text": "This will restore {{email}} and make the member profile available again.",
                     "cancel_btn_text": "Cancel",
                     "confirm_btn_text": "Restore Member"
+                }
+            },
+            "current_device_logout_modal_ui": {
+                "title_text": "Log Out Current Device",
+                "title_icon": "logout_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Log out this current device?",
+                    "message_text": "{{device_name}} is the device you are currently using. Continuing may end your active session.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Log Device Out"
+                }
+            },
+            "logout_all_devices_modal_ui": {
+                "title_text": "Log Out All Devices",
+                "title_icon": "logout_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Log out all devices?",
+                    "message_text": "This will log out every device currently listed for this member profile.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Log All Devices Out"
+                }
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading member profile...",
+            "no_description_text": "",
+            "empty_value_text": "-",
+            "tabs": {
+                "profile_tab": {
+                    "label_text": "Profile",
+                    "tab_icon": "member_icon"
+                },
+                "devices_tab": {
+                    "label_text": "Devices",
+                    "tab_icon": "identification_card_svg_icon"
+                }
+            },
+            "header": {
+                "member_photo_alt_text": "Member profile photo",
+                "username_label_text": "Username:",
+                "email_label_text": "Email:"
+            },
+            "sections": {
+                "personal_information": {
+                    "title_text": "Profile",
+                    "public_id_label_text": "Public ID:",
+                    "first_name_label_text": "First Name:",
+                    "last_name_label_text": "Last Name:",
+                    "phone_label_text": "Phone:",
+                    "gender_label_text": "Gender:",
+                    "dob_label_text": "Date of Birth:"
+                },
+                "access_status": {
+                    "title_text": "Access",
+                    "active_label_text": "Status:",
+                    "active_status_text": "Active",
+                    "inactive_status_text": "Inactive",
+                    "verified_label_text": "Verification:",
+                    "verified_status_text": "Verified",
+                    "unverified_status_text": "Unverified",
+                    "two_factor_label_text": "2FA:",
+                    "enabled_status_text": "Enabled",
+                    "disabled_status_text": "Disabled",
+                    "locked_label_text": "Lock:",
+                    "locked_status_text": "Locked",
+                    "unlocked_status_text": "Unlocked",
+                    "deleted_label_text": "Deleted:",
+                    "deleted_status_text": "Deleted",
+                    "not_deleted_status_text": "Not Deleted"
+                },
+                "auth_information": {
+                    "title_text": "Authentication",
+                    "login_attempts_label_text": "Login Attempts:",
+                    "account_locked_until_label_text": "Locked Until:",
+                    "password_changed_at_label_text": "Password Changed:",
+                    "last_password_reset_request_at_label_text": "Last Reset Request:"
+                },
+                "roles": {
+                    "title_text": "Roles",
+                    "no_roles_text": "No roles assigned"
+                },
+                "timeline": {
+                    "title_text": "Timeline",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                }
+            },
+            "devices_view": {
+                "loading_text": "Loading devices...",
+                "empty_state_text": "No devices found",
+                "search_placeholder_text": "Search device name, device ID, IP address, or origin",
+                "logout_all_button_text": "Log All Devices Out",
+                "log_device_out_button_text": "Log Device Out",
+                "logged_out_button_text": "Logged Out",
+                "current_device_badge_text": "Current Device",
+                "previous_button_text": "Previous",
+                "next_button_text": "Next",
+                "pagination_result_text": "Page {{current_page}} of {{total_pages}} ({{total_items}} devices)",
+                "pagination_btn_content": {
+                    "prev_btn_text": "Previous",
+                    "next_btn_text": "Next"
+                },
+                "labels": {
+                    "device_id": "Device ID",
+                    "ip_address": "IP Address",
+                    "origin_url": "Origin URL",
+                    "location_info": "Location",
+                    "is_2fa_validated": "2FA Validated",
+                    "created_at": "Created",
+                    "logout_at": "Logged Out",
+                    "status": "Status"
+                },
+                "bool_text": {
+                    "yes": "Yes",
+                    "no": "No"
                 }
             }
         },

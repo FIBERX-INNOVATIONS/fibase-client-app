@@ -170,26 +170,22 @@ class MemberProfileAPIService extends BaseAPIService {
     // Method to query logout member device session API endpoint
     public static logoutMemberDeviceSession = async (
         public_id: string,
-        session_id: string,
-        data: { csrf_token: string }
+        session_id: string
     ): Promise<APIResponseInterface<{ message: string }>> => {
         return await this.queryAPI<{ message: string }>({
             url: `/member/${public_id}/log-out-device/${session_id}`,
             method: "PATCH",
-            data,
             disable_retry: true
         });
     };
 
     // Method to query logout all member device sessions API endpoint
     public static logoutAllMemberDeviceSessions = async (
-        public_id: string,
-        data: { csrf_token: string }
+        public_id: string
     ): Promise<APIResponseInterface<{ message: string }>> => {
         return await this.queryAPI<{ message: string }>({
             url: `/member/${public_id}/log-out-devices`,
             method: "POST",
-            data,
             disable_retry: true
         });
     };

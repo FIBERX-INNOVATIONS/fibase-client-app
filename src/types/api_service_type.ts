@@ -104,6 +104,8 @@ export interface AuthAccessRecordInterface {
     expires_in_mins: number;
 
     permissions: string[];
+
+    device_id: string;
 }
 
 export interface AuthenticatedMemberRecordInterface extends AuthAccessRecordInterface {
@@ -465,14 +467,13 @@ export type PaymentProviderMethodListParams = {
 // ==============================
 
 export interface MemberDeviceSessionInterface {
-    session_id: string;
+    id: string;
     device_id: string;
     device_name: string;
     request_id: string;
     ip_address: string;
     user_agent: string;
     is_2fa_enabled: boolean;
-    status: "active" | "expired" | "logged_out";
     expires_at: string;
     created_at: string;
 }

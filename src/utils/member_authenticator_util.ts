@@ -40,6 +40,11 @@ class MemberAuthenticatorUtil {
         return MemberAuthenticatorUtil.storage.get("current_member_access_expiry_date");
     };
 
+    // Get logged member current device id
+    public static getCurrentDeviceID = (): string => {
+        return MemberAuthenticatorUtil.storage.get("current_member_device_id") ?? "";
+    };
+
     // Check is member logged in
     public static isLoggedIn = (): boolean => {
         return !!MemberAuthenticatorUtil.getLoggedInMember()?.public_id;
@@ -114,7 +119,8 @@ class MemberAuthenticatorUtil {
         current_member: MemberRecordInterface,
         access_token: string,
         expires_in_mins: number,
-        login_challenge_token: string
+        login_challenge_token: string,
+        device_id: string
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
         current_member.is_fully_authenticated = false;
@@ -126,6 +132,7 @@ class MemberAuthenticatorUtil {
             login_challenge_token
         );
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
+        MemberAuthenticatorUtil.storage.set("current_member_device_id", device_id);
 
         return true;
     };
@@ -135,7 +142,8 @@ class MemberAuthenticatorUtil {
         current_member: MemberRecordInterface,
         permissions: string[],
         access_token: string,
-        expires_in_mins: number
+        expires_in_mins: number,
+        device_id: string
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
         current_member.is_fully_authenticated = true;
@@ -144,6 +152,7 @@ class MemberAuthenticatorUtil {
         MemberAuthenticatorUtil.storage.set("current_member_permissions", permissions);
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
+        MemberAuthenticatorUtil.storage.set("current_member_device_id", device_id);
         MemberAuthenticatorUtil.storage.remove("current_member_challenge_token");
 
         return true;
@@ -153,13 +162,15 @@ class MemberAuthenticatorUtil {
     public static onAccessRefreshSuccess = (
         access_token: string,
         expires_in_mins: number,
-        permissions?: string[]
+        permissions?: string[],
+        device_id?: string
     ): boolean => {
         const expiry_date = InputTransformerUtil.getFutureDateFromMinutes(expires_in_mins);
-        console.log({ expiry_date, expires_in_mins });
+        console.log({ expiry_date, expires_in_mins, device_id });
 
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
+        MemberAuthenticatorUtil.storage.set("current_member_device_id", device_id ?? "");
 
         if (permissions && permissions?.length > 1) {
             MemberAuthenticatorUtil.storage.set("current_member_permissions", permissions);

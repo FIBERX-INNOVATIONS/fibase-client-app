@@ -41,14 +41,15 @@ class AuthAPIService extends BaseAPIService {
         const headers = result?.full_response?.headers;
 
         if (result?.data) {
-            const { current_member, access_token, expires_in_mins } = result.data;
+            const { current_member, access_token, expires_in_mins, device_id } = result.data;
             const login_challenge_token = headers?.["x-login-challenge-token"];
 
             MemberAuthenticatorUtil.onLoginSuccess(
                 current_member,
                 access_token,
                 expires_in_mins,
-                login_challenge_token
+                login_challenge_token,
+                device_id
             );
         }
 
@@ -67,13 +68,15 @@ class AuthAPIService extends BaseAPIService {
         });
 
         if (result?.data) {
-            const { current_member, access_token, expires_in_mins, permissions } = result.data;
+            const { current_member, access_token, expires_in_mins, permissions, device_id } =
+                result.data;
 
             MemberAuthenticatorUtil.onTwoFactorLoginSuccess(
                 current_member,
                 permissions,
                 access_token,
-                expires_in_mins
+                expires_in_mins,
+                device_id
             );
         } else if (result.full_response?.status === 401) {
             MemberAuthenticatorUtil.onlogoutSuccess();
@@ -93,11 +96,12 @@ class AuthAPIService extends BaseAPIService {
         });
 
         if (result.data) {
-            const { access_token, expires_in_mins, permissions = [] } = result.data;
+            const { access_token, expires_in_mins, device_id, permissions = [] } = result.data;
             MemberAuthenticatorUtil.onAccessRefreshSuccess(
                 access_token,
                 expires_in_mins,
-                permissions
+                permissions,
+                device_id
             );
         } else if (result.full_response?.status === 401) {
             MemberAuthenticatorUtil.onlogoutSuccess();

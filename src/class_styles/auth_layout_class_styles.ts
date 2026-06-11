@@ -6,7 +6,9 @@ import {
 import FormViewClassStyles from "./form_view_class_styles";
 
 const AuthViewClassStyle: AuthsViewClassStylesInterface = {
-    ...FormViewClassStyles
+    ...FormViewClassStyles,
+    wrapper_class_style:
+        "overflow-y-auto overflow-x-hidden w-full h-full flex flex-col md:items-end items-center justify-center px-[10%] py-[5%]"
 };
 
 const AuthLayoutClassStyles: AuthLayoutClassStylesInterface = {

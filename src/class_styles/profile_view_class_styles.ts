@@ -2,7 +2,7 @@ import { ProfileViewClassStylesInterface } from "@/ui_types/profile_view_type";
 
 const ProfileViewClassStyles: ProfileViewClassStylesInterface = {
     wrapper_class_style:
-        "py-6 px-[2%] space-y-6 w-full h-auto md:max-h-[500px] max-h-[700px] overflow-y-auto overflow-x-hidden",
+        "py-6 px-[2%] space-y-6 w-full h-auto md:max-h-[470px] max-h-[700px] overflow-y-auto overflow-x-hidden",
 
     loading_wrapper_class_style:
         "p-6 w-full flex gap-2 items-center justify-center h-auto max-h-[500px] overflow-y-auto overflow-x-hidden",

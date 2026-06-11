@@ -28,6 +28,7 @@ import MemberProfileActionMenu from "@/action_menus/member_profile_action_menu";
 
 import AddEditFormView from "@/views/member_profile/AddEditFormView.vue";
 import DeleteView from "@/views/member_profile/DeleteView.vue";
+import ProfileView from "@/views/member_profile/ProfileView.vue";
 import RestoreMemberView from "@/views/member_profile/RestoreMemberView.vue";
 import SendActivationLinkView from "@/views/member_profile/SendActivationLinkView.vue";
 
@@ -205,7 +206,21 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
     public handleViewActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: profile_details_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ProfileView),
+
+            body_props: { record_id: record?.public_id, record }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle on edit action menu clicked
     public handleEditActionMenuClicked = async (
