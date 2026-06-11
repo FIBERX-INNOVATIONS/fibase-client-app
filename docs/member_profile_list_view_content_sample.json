@@ -225,6 +225,20 @@
                 "title_icon": "square_grid_plus_svg_icon",
                 "title_img": "/assets/img/modal_icon.png"
             },
+            "send_activation_link_modal_ui": {
+                "title_text": "Send Activation Link",
+                "title_icon": "paper_airplane_send_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Send activation link to {{full_name}}?",
+                    "message_text": "This will send a new activation link to {{email}} so the member can complete account setup.",
+                    "reason_label_text": "Reason",
+                    "reason_placeholder_text": "Enter the reason for sending this activation link",
+                    "reason_helper_text": "This reason will be submitted with the activation link request.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Send Link"
+                }
+            },
             "delete_modal_ui": {
                 "title_text": "Delete Member",
                 "title_icon": "delete_trash_svg_icon",
@@ -308,7 +322,10 @@
             "invalid_member_email": "Please provide a valid email address.",
             "invalid_member_input": "Please check the member details and try again.",
             "invalid_profile_photo_link": "Please upload a valid profile photo.",
-            "permission_denied": "You do not have permission to perform this action."
+            "permission_denied": "You do not have permission to perform this action.",
+            "member_profile_activation_not_allowed": "Member profiles cannot be activated from this action.",
+            "member_profile_deactivation_super_admin_required": "Only a super admin can deactivate a member profile.",
+            "member_profile_super_admin_deactivation_not_allowed": "A super admin profile cannot be deactivated."
         }
     }
 }

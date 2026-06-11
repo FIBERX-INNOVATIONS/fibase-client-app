@@ -102,7 +102,7 @@ class BaseDeleteViewActionHandler<
             const status = result?.status?.toLowerCase();
 
             if (!result || status === "error") {
-                return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
+                return StatusAlertTriggerUtil.triggerAlert("error", msg, 0, undefined, true);
             }
 
             if (status === "logout") {

@@ -9,6 +9,7 @@ export const CSRF_TOKEN_FOR = {
     CURRENCY_PAYMENT_PROVIDER_METHOD: "currency_payment_provider_method",
     PAYMENT_METHOD: "payment_method",
     MEMBER_PROFILE: "member",
+    MEMBER_SETUP_LINK: "member_setup_link",
     APP_CURRECY: "app_currency"
 } as const;
 
