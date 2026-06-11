@@ -1,5 +1,7 @@
 import { GlobalEventTypes } from "@/types/global_events_type";
 
+import { CSRFTokenForType } from "@/configs";
+
 import type BaseDeleteViewController from "@/controllers/base_classes/base_delete_view_controller";
 
 import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
@@ -7,6 +9,8 @@ import BaseActionHandler from "@ui/version_3/base_classes/base_action_handler";
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
+
+import AuthAPIService from "@/api_services/auth_api_service";
 
 import {
     DeleteRecordMethod,
@@ -49,6 +53,20 @@ class BaseDeleteViewActionHandler<
         return this.content_manager.getAPIResponseValue(message_key);
     };
 
+    protected fetchFormCSRFToken = async (token_for: CSRFTokenForType | null): Promise<string> => {
+        if (!token_for) {
+            return "";
+        }
+
+        const result = await AuthAPIService.getFormCSRFToken(token_for);
+
+        if (!result || result.status !== "success" || !result?.data?.token) {
+            return "";
+        }
+
+        return result.data.token;
+    };
+
     // Method to get record id from the record object, which is used to identify the specific record that is being deleted. This method can be overridden in subclasses if the record id is stored in a different way.
     protected getRecordId(record: T): string | null {
         return this.props.record_id?.toString() || null;
@@ -60,7 +78,7 @@ class BaseDeleteViewActionHandler<
     };
 
     // Method to handle the confirm delete action for the delete view, which calls the delete record method and handles the response to show appropriate success or error messages based on the result of the delete operation. It also calls the on_delete_success callback if the delete operation is successful.
-    public handleConfirmDelete = async (): Promise<void> => {
+    public handleConfirmDelete = async (reason_text?: string): Promise<void> => {
         try {
             const record = this.props.record;
             const record_id = this.getRecordId(record);
@@ -79,7 +97,7 @@ class BaseDeleteViewActionHandler<
                 throw new Error("delete_record_method not defined");
             }
 
-            const result = await this.delete_record_method(record_id);
+            const result = await this.delete_record_method(record_id, reason_text);
             const msg = result?.msg ?? "error_occurred";
             const status = result?.status?.toLowerCase();
 

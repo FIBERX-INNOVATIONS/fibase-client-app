@@ -5,6 +5,7 @@ import { EventBus } from "@/utils/global_event_bus_util";
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
+import { DecisionPromptUIBooleanPropsInterface } from "@ui/version_3/ui_types/decision_prompt_ui_type";
 
 import {
     DeleteViewComponentsInterface,
@@ -66,6 +67,9 @@ class BaseDeleteViewController<
         return {
             title_text: `${content_key}.content.title_text`,
             message_text: `${content_key}.content.message_text`,
+            reason_label_text: `${content_key}.content.reason_label_text`,
+            reason_placeholder_text: `${content_key}.content.reason_placeholder_text`,
+            reason_helper_text: `${content_key}.content.reason_helper_text`,
             cancel_button_text: `${content_key}.content.cancel_btn_text`,
             confirm_button_text: `${content_key}.content.confirm_btn_text`
         };
@@ -83,9 +87,7 @@ class BaseDeleteViewController<
             "button",
             {
                 class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                action_props: {
-                    on_click: this.action_handler?.handleCancelDelete
-                }
+                action_props: {}
             }
         );
     }
@@ -103,25 +105,51 @@ class BaseDeleteViewController<
             {
                 class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
                 boolean_props: { disabled: false },
-                action_props: {
-                    on_click: this.action_handler?.handleConfirmDelete
-                }
+                action_props: {}
             }
         );
+    }
+
+    protected getDecisionPromptBooleanProps(): DecisionPromptUIBooleanPropsInterface {
+        return {
+            show_reason_input: false,
+            reason_required: false
+        };
     }
 
     // Method to get the decision prompt props, which compiles all the necessary props for the decision prompt UI component based on the content keys and button props.
     protected getDecisionPromptProps() {
         const content_keys = this.getDeleteContentKeys();
+        const boolean_props = this.getDecisionPromptBooleanProps();
+        const show_reason_input = Boolean(
+            boolean_props.show_reason_input || boolean_props.reason_required
+        );
 
-        return DecisionPromptUIPropsBuilder.buildFromContentKeys({
+        const decision_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
             record: this.props.record,
             title_text_content_key: content_keys.title_text,
             message_text_content_key: content_keys.message_text,
+            reason_label_text_content_key: show_reason_input
+                ? content_keys.reason_label_text
+                : undefined,
+            reason_placeholder_text_content_key: show_reason_input
+                ? content_keys.reason_placeholder_text
+                : undefined,
+            reason_helper_text_content_key: show_reason_input
+                ? content_keys.reason_helper_text
+                : undefined,
             class_styles: DecisionPromptUIClassStyles,
             cancel_button_props: this.getCancelButtonProps(),
-            confirm_button_props: this.getConfirmButtonProps()
+            confirm_button_props: this.getConfirmButtonProps(),
+            boolean_props
         });
+
+        decision_prompt_props.action_props = {
+            on_cancel: this.action_handler?.handleCancelDelete,
+            on_confirm: this.action_handler?.handleConfirmDelete
+        };
+
+        return decision_prompt_props;
     }
 
     // Method to get the UI components for the delete view, which includes the DecisionPromptUI component that is used to display the confirmation prompt when deleting a record.

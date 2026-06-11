@@ -23,6 +23,8 @@ import BaseListViewActionHandler from "@/action_handlers/base_classes/base_list_
 import MemberProfileActionMenu from "@/action_menus/member_profile_action_menu";
 
 import AddEditFormView from "@/views/member_profile/AddEditFormView.vue";
+import DeleteView from "@/views/member_profile/DeleteView.vue";
+import RestoreMemberView from "@/views/member_profile/RestoreMemberView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
@@ -132,13 +134,57 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
     public handleDeleteActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const { delete_modal_content_key } = this.controller.getPageContentKeys();
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: delete_modal_content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(DeleteView),
+
+            body_props: {
+                record,
+                record_id: record.public_id,
+                content_key: delete_modal_content_key,
+                on_delete_success: async (deleted_record: MemberRecordInterface): Promise<void> => {
+                    await this.fetchRecords();
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 
     // Method to handle restore action menu clicked
     public handleRestoreActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
-    ): Promise<void> => {};
+    ): Promise<void> => {
+        const content_key = "content_resource.member_profile_view_ui.modals_ui.restore_modal_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(RestoreMemberView),
+
+            body_props: {
+                record,
+                record_id: record.public_id,
+                content_key,
+                on_delete_success: async (
+                    restored_record: MemberRecordInterface
+                ): Promise<void> => {
+                    await this.fetchRecords();
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
 }
 
 export default MemberProfileListViewActionHandler;

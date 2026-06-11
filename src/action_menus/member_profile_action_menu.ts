@@ -79,6 +79,7 @@ class MemberProfileActionMenu {
 
         const can_restore_deleted_profile =
             is_deleted &&
+            is_current_member_super_admin &&
             !is_record_super_admin &&
             MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.restore_member");
 

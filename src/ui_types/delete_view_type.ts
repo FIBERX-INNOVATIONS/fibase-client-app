@@ -12,7 +12,8 @@ import type {
 } from "@/ui_types/form_view_type";
 
 export type DeleteRecordMethod<TResponse = unknown> = (
-    record_id: string
+    record_id: string,
+    reason_text?: string
 ) => Promise<APIResponseInterface<TResponse>>;
 
 export type DeleteSuccessCallback<

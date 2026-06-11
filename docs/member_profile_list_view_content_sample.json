@@ -224,6 +224,31 @@
                 "title_text": "Edit Member",
                 "title_icon": "square_grid_plus_svg_icon",
                 "title_img": "/assets/img/modal_icon.png"
+            },
+            "delete_modal_ui": {
+                "title_text": "Delete Member",
+                "title_icon": "delete_trash_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Delete {{full_name}}?",
+                    "message_text": "This will delete {{email}} from member profiles. Please provide a reason before continuing.",
+                    "reason_label_text": "Delete reason",
+                    "reason_placeholder_text": "Enter the reason this member profile is being deleted",
+                    "reason_helper_text": "This reason will be stored with the deleted member record.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Delete Member"
+                }
+            },
+            "restore_modal_ui": {
+                "title_text": "Restore Member",
+                "title_icon": "refresh_cycle_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Restore {{full_name}}?",
+                    "message_text": "This will restore {{email}} and make the member profile available again.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Restore Member"
+                }
             }
         },
         "form_view_ui": {
@@ -282,7 +307,8 @@
             "invalid_member_last_name": "Please provide a valid last name.",
             "invalid_member_email": "Please provide a valid email address.",
             "invalid_member_input": "Please check the member details and try again.",
-            "invalid_profile_photo_link": "Please upload a valid profile photo."
+            "invalid_profile_photo_link": "Please upload a valid profile photo.",
+            "permission_denied": "You do not have permission to perform this action."
         }
     }
 }
