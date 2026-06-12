@@ -4,6 +4,7 @@ import { PermissionRecordInterface, RoleRecordInterface } from "@/types/api_serv
 
 import {
     AccessControlPermissionsViewClassStylesInterface,
+    AccessControlPermissionsViewModeType,
     AccessControlPermissionsViewPropsInterface
 } from "@/ui_types/access_control_permissions_view_type";
 
@@ -16,6 +17,11 @@ const AccessControlPermissionsViewProps = {
     record_id: {
         type: [String, Number] as PropType<string>,
         default: ""
+    },
+
+    mode: {
+        type: String as PropType<AccessControlPermissionsViewModeType>,
+        default: "assigned"
     },
 
     content_key: {

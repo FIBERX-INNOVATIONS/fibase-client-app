@@ -13,18 +13,18 @@
             </label>
 
             <button
-                v-if="has_selected_permissions && can_unassign_permissions"
+                v-if="has_selected_permissions && can_manage_permissions"
                 type="button"
-                :class="class_styles.bulk_action_button_class_style"
-                :disabled="is_loading || is_bulk_unassigning"
-                @click="action_handler.handleBulkUnassignClicked"
+                :class="bulk_action_button_class_style"
+                :disabled="is_loading || is_bulk_action_processing"
+                @click="action_handler.handleBulkPermissionActionClicked"
             >
                 <span
-                    :class="[class_styles.bulk_action_button_icon_class_style, is_bulk_unassigning ? 'animate-spin' : '']"
-                    v-html="getSVGIconValue(is_bulk_unassigning ? 'loading_svg_icon' : 'delete_trash_svg_icon')"
+                    :class="[class_styles.bulk_action_button_icon_class_style, is_bulk_action_processing ? 'animate-spin' : '']"
+                    v-html="getSVGIconValue(bulk_action_button_icon as SVGIconKey)"
                 ></span>
 
-                <span>{{ content_obj.bulk_unassign_button_text }}</span>
+                <span>{{ bulk_action_button_text }}</span>
             </button>
         </div>
 
@@ -49,7 +49,7 @@
                 :class="class_styles.permission_row_class_style"
             >
                 <button
-                    v-if="can_unassign_permissions"
+                    v-if="can_manage_permissions"
                     type="button"
                     :class="[
                         class_styles.permission_checkbox_class_style,
@@ -57,7 +57,7 @@
                             ? class_styles.permission_checkbox_selected_class_style
                             : class_styles.permission_checkbox_unselected_class_style
                     ]"
-                    :disabled="is_bulk_unassigning || Boolean(processing_permission_id)"
+                    :disabled="is_bulk_action_processing || Boolean(processing_permission_id)"
                     @click="action_handler.handlePermissionSelectionToggle(permission)"
                 >
                     <span
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
+import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
 import { AccessControlPermissionsViewPropsInterface } from "@/ui_types/access_control_permissions_view_type";
 
@@ -91,8 +91,22 @@ const { state_refs, computed_refs, components } = component_definition;
 const { action_handler } = controller;
 const { ContentCardUI } = components;
 
-const { class_styles, content_obj, permissions, search_query, is_loading, processing_permission_id, is_bulk_unassigning } =
-    state_refs;
+const {
+    class_styles,
+    content_obj,
+    permissions,
+    search_query,
+    is_loading,
+    processing_permission_id,
+    is_bulk_action_processing
+} = state_refs;
 
-const { filtered_permissions, has_selected_permissions, can_unassign_permissions } = computed_refs;
+const {
+    filtered_permissions,
+    has_selected_permissions,
+    can_manage_permissions,
+    bulk_action_button_text,
+    bulk_action_button_icon,
+    bulk_action_button_class_style
+} = computed_refs;
 </script>

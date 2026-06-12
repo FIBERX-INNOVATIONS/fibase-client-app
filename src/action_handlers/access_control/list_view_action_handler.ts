@@ -156,6 +156,7 @@ class AccessControlListViewActionHandler extends BaseListViewActionHandler<
             body_props: {
                 record,
                 record_id: record?.id?.toString() ?? "",
+                mode: "assigned",
                 content_key
             }
         };
@@ -167,8 +168,23 @@ class AccessControlListViewActionHandler extends BaseListViewActionHandler<
         record: RoleRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        void record;
         void config;
+
+        const content_key = "content_resource.access_control_view_ui.modals_ui.permissions_modal_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key,
+            animation_type: "slide_top",
+            body_component: markRaw(PermissionsView),
+            body_props: {
+                record,
+                record_id: record?.id?.toString() ?? "",
+                mode: "unassigned",
+                content_key
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 }
 

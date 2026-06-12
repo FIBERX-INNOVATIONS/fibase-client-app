@@ -15,6 +15,9 @@ const AccessControlPermissionsViewClassStyles: AccessControlPermissionsViewClass
     bulk_action_button_class_style:
         "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-red-700 px-4 py-2 text-xs font-bold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 cursor-pointer",
 
+    bulk_assign_action_button_class_style:
+        "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-green-700 px-4 py-2 text-xs font-bold text-white transition hover:bg-green-600 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 cursor-pointer",
+
     bulk_action_button_icon_class_style: "h-5 w-5 shrink-0",
 
     loading_wrapper_class_style:

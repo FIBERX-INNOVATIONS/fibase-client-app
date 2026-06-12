@@ -13,6 +13,7 @@ import { GlobalEventTypes } from "@/types/global_events_type";
 import {
     AccessControlPermissionsViewComponentsInterface,
     AccessControlPermissionsViewComputedDataInterface,
+    AccessControlPermissionsViewModeType,
     AccessControlPermissionsViewPropsInterface,
     AccessControlPermissionsViewStateDataInterface
 } from "@/ui_types/access_control_permissions_view_type";
@@ -71,8 +72,8 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         );
     }
 
-    // Method to remove unassigned permissions from local state.
-    private removePermissionsFromState(permission_ids: Array<string | number>): void {
+    // Method to remove processed permissions from local state.
+    private removeProcessedPermissionsFromState(permission_ids: Array<string | number>): void {
         const id_set = new Set(permission_ids.map((permission_id) => permission_id.toString()));
 
         this.setState(
@@ -93,6 +94,16 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
             this.controller.props.record,
             this.controller.state_refs.permissions.value
         );
+    }
+
+    // Method to get the active role permission assignment status.
+    private getAssignmentStatus(): AccessControlPermissionsViewModeType {
+        return this.controller.getPermissionsViewMode();
+    }
+
+    // Method to get the active role permission action.
+    private getPermissionAction(): RolePermissionActionPayload["action"] {
+        return this.getAssignmentStatus() === "unassigned" ? "assign" : "unassign";
     }
 
     // Method to normalize search text for permission filtering.
@@ -162,21 +173,21 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
             return { status: false, msg: "session_expired" };
         }
 
-        const msg = result.msg ?? "error_occurred";
+        const msg = result.msg ?? result.data?.message ?? "error_occurred";
 
         if (result.status !== "success") {
             StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
             return { status: false, msg };
         }
 
-        this.removePermissionsFromState(permission_ids);
+        this.removeProcessedPermissionsFromState(permission_ids);
         StatusAlertTriggerUtil.triggerAlert("success", msg, 4, undefined, true);
 
         return { status: true, msg };
     };
 
-    // Method to unassign permissions from the active role.
-    private unassignPermissions = async (
+    // Method to assign or unassign permissions for the active role.
+    private handlePermissionsAction = async (
         permission_ids: Array<string | number>
     ): Promise<APIResponseInterface<RolePermissionActionResponseInterface>> => {
         const role_id = this.getRoleId();
@@ -188,15 +199,15 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
 
         const payload: RolePermissionActionPayload = {
             csrf_token: await this.fetchFormCSRFToken(CSRF_TOKEN_FOR.ACCESS_CONTROL_ROLE_PERMISSION),
-            action: "unassign",
+            action: this.getPermissionAction(),
             permission_ids: normalized_permission_ids
         };
 
         return await AccessControlAPIService.handleRolePermissionAction(role_id, payload);
     };
 
-    // Method to fetch all assigned permissions once.
-    public fetchAssignedPermissions = async (): Promise<void> => {
+    // Method to fetch all permissions for the active mode once.
+    public fetchPermissions = async (): Promise<void> => {
         const role_id = this.getRoleId();
 
         if (!role_id) {
@@ -206,7 +217,7 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         this.setState("is_loading", true);
 
         try {
-            const result = await AccessControlAPIService.getRolePermissionList(role_id, "assigned");
+            const result = await AccessControlAPIService.getRolePermissionList(role_id, this.getAssignmentStatus());
 
             if (!result || result.status === "logout") {
                 await this.controller.router.push("/logout");
@@ -222,7 +233,7 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
             this.applyPermissionSearchFilter();
             this.setState("selected_permission_ids", []);
         } catch (error: unknown) {
-            this.logger.error("Failed to fetch assigned role permissions", { error });
+            this.logger.error("Failed to fetch role permissions", { error, mode: this.getAssignmentStatus() });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
         } finally {
             this.setState("is_loading", false);
@@ -242,18 +253,18 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         );
     };
 
-    // Method to unassign a single permission.
-    public handleUnassignPermissionClicked = async (
+    // Method to assign or unassign a single permission.
+    public handlePermissionActionClicked = async (
         permission: PermissionRecordInterface
     ): Promise<ContentCardUIActionMethodReturnInterface> => {
         this.setState("processing_permission_id", permission.id);
 
         try {
-            const result = await this.unassignPermissions([permission.id]);
+            const result = await this.handlePermissionsAction([permission.id]);
 
             return await this.handleActionResult(result, [permission.id]);
         } catch (error: unknown) {
-            this.logger.error("Failed to unassign role permission", { error });
+            this.logger.error("Failed to handle role permission action", { error, action: this.getPermissionAction() });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
             return { status: false, msg: "error_occurred" };
         } finally {
@@ -261,25 +272,28 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         }
     };
 
-    // Method to unassign all selected permissions.
-    public handleBulkUnassignClicked = async (): Promise<void> => {
+    // Method to assign or unassign all selected permissions.
+    public handleBulkPermissionActionClicked = async (): Promise<void> => {
         const permission_ids = [...this.controller.state_refs.selected_permission_ids.value];
 
         if (!permission_ids.length) {
             return;
         }
 
-        this.setState("is_bulk_unassigning", true);
+        this.setState("is_bulk_action_processing", true);
 
         try {
-            const result = await this.unassignPermissions(permission_ids);
+            const result = await this.handlePermissionsAction(permission_ids);
 
             await this.handleActionResult(result, permission_ids);
         } catch (error: unknown) {
-            this.logger.error("Failed to bulk unassign role permissions", { error });
+            this.logger.error("Failed to handle bulk role permission action", {
+                error,
+                action: this.getPermissionAction()
+            });
             StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
         } finally {
-            this.setState("is_bulk_unassigning", false);
+            this.setState("is_bulk_action_processing", false);
         }
     };
 }

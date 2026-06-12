@@ -1182,6 +1182,9 @@
   .border-gray-950 {
     border-color: var(--color-gray-950);
   }
+  .border-green-100 {
+    border-color: var(--color-green-100);
+  }
   .border-green-600 {
     border-color: var(--color-green-600);
   }
@@ -1316,6 +1319,9 @@
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
+  }
+  .bg-green-700 {
+    background-color: var(--color-green-700);
   }
   .bg-green-900 {
     background-color: var(--color-green-900);
@@ -2162,6 +2168,20 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-950);
+      }
+    }
+  }
+  .hover\:bg-green-200 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-green-200);
+      }
+    }
+  }
+  .hover\:bg-green-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-green-600);
       }
     }
   }
