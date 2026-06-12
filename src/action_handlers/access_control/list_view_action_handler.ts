@@ -24,6 +24,8 @@ import ProfileView from "@/views/access_control/ProfileView.vue";
 
 import DeleteView from "@/views/access_control/DeleteView.vue";
 
+import PermissionsView from "@/views/access_control/PermissionsView.vue";
+
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
 class AccessControlListViewActionHandler extends BaseListViewActionHandler<
@@ -138,12 +140,27 @@ class AccessControlListViewActionHandler extends BaseListViewActionHandler<
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
+    // Method to handle assigned permission action menu click
     public handleAssignedPermissionsActionMenuClicked = async (
         record: RoleRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        void record;
         void config;
+
+        const content_key = "content_resource.access_control_view_ui.modals_ui.permissions_modal_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key,
+            animation_type: "slide_top",
+            body_component: markRaw(PermissionsView),
+            body_props: {
+                record,
+                record_id: record?.id?.toString() ?? "",
+                content_key
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
     public handleAddPermissionsActionMenuClicked = async (

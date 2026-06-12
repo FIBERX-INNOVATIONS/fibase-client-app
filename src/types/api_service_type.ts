@@ -557,6 +557,8 @@ export interface PermissionRecordInterface {
     symbol: string;
     module: string;
     description?: string;
+    created_at?: string | null;
+    updated_at?: string | null;
 }
 
 export type RoleListParams = {
@@ -569,16 +571,13 @@ export type RoleListParams = {
 
 export interface RoleListResponseInterface extends PaginatedResponseResultInterface<RoleRecordInterface[]> {}
 
-export type RolePermissionListParams = {
-    page?: number;
-    limit?: number;
-    sort_by?: string;
-    sort_direction?: "asc" | "desc";
-    assignment_status?: "assigned" | "unassigned";
-    filters?: Record<string, any>;
-};
+export interface RolePermissionListResponseInterface {
+    role: RoleRecordInterface;
 
-export interface RolePermissionListResponseInterface extends PaginatedResponseResultInterface<PermissionRecordInterface[]> {}
+    assigned_status: "assigned" | "unassigned";
+
+    permissions: PermissionRecordInterface[];
+}
 
 export interface RolePermissionActionResponseInterface {
     affected_count: number;

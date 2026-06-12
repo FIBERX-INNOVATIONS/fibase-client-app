@@ -6,8 +6,6 @@ import {
     RoleRecordInterface,
     RoleListParams,
     RoleListResponseInterface,
-    PermissionRecordInterface,
-    RolePermissionListParams,
     RolePermissionListResponseInterface,
     RolePermissionActionResponseInterface,
     ActorRoleActionResponseInterface
@@ -73,33 +71,12 @@ class AccessControlAPIService extends BaseAPIService {
     // Method to query get role permission list API endpoint
     public static getRolePermissionList = async (
         role_id: string | number,
-        params?: RolePermissionListParams
+        assigned_status: "assigned" | "unassigned"
     ): Promise<APIResponseInterface<RolePermissionListResponseInterface>> => {
-        const {
-            page = 1,
-            limit = 20,
-            sort_by = "name",
-            sort_direction = "asc",
-            assignment_status,
-            filters = {}
-        } = params ?? {};
-
-        const queryParams: Record<string, any> = {
-            page,
-            limit,
-            sort_by,
-            sort_direction,
-            ...filters
-        };
-
-        if (assignment_status) {
-            queryParams.assignment_status = assignment_status;
-        }
-
         return await this.queryAPI<RolePermissionListResponseInterface>({
             url: `/access-control/role/${role_id}/permissions/list`,
             method: "GET",
-            params: queryParams
+            params: { assignment_status: assigned_status }
         });
     };
 

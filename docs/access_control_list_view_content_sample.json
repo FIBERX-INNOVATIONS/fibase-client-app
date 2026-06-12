@@ -188,6 +188,20 @@
                 }
             }
         },
+        "permissions_view_ui": {
+            "loading_text": "Loading assigned permissions...",
+            "empty_state_text": "No permissions",
+            "search_placeholder_text": "Search permissions",
+            "bulk_unassign_button_text": "Remove Selected",
+            "unassign_button_text": "Remove",
+            "unassigning_button_text": "Removing",
+            "empty_value_text": "-",
+            "labels": {
+                "description": "Description",
+                "created_at": "Created",
+                "updated_at": "Updated"
+            }
+        },
         "modals_ui": {
             "add_new_modal_ui": {
                 "title_text": "Add Role",
