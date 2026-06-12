@@ -1,0 +1,149 @@
+{
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_text": "Access Control",
+                    "menu_icon": "shield_check_svg_icon",
+                    "menu_link": "/access-control",
+                    "menu_permission_text": "access_control_module.get_role_list"
+                }
+            ]
+        }
+    },
+    "access_control_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Access Control",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Access Control",
+                "header_description": "Manage roles, member groups, role permissions, and future actor role assignments.",
+                "create_btn": {
+                    "btn_text": "Add Role"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search role name, display name, or symbol"
+                },
+                "member_group_filter": {
+                    "label_text": "Member Group",
+                    "placeholder_text": "Select role type",
+                    "option_list": [
+                        {
+                            "label_text": "Member Groups",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Non Member Groups",
+                            "value": "false"
+                        }
+                    ]
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} role record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} role(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading role records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Role Record Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "role_text": "Role",
+                    "type_text": "Type",
+                    "created_by_text": "Created By",
+                    "updated_by_text": "Updated By",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "role_type": {
+                    "system_role_text": "System Role",
+                    "member_group_text": "Member Group",
+                    "custom_role_text": "Custom Role"
+                },
+                "role_badges": {
+                    "system_role_text": "System",
+                    "member_group_text": "Member Group"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    },
+                    "edit_menu_option": {
+                        "menu_text": "Edit",
+                        "menu_icon": "edit_square_pencil_svg_icon",
+                        "menu_link": ""
+                    },
+                    "assigned_permissions_menu_option": {
+                        "menu_text": "Assigned Permissions",
+                        "menu_icon": "shield_check_svg_icon",
+                        "menu_link": ""
+                    },
+                    "add_permissions_menu_option": {
+                        "menu_text": "Add Permissions",
+                        "menu_icon": "square_grid_plus_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Add Role",
+                "title_icon": "square_grid_plus_svg_icon"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Role",
+                "title_icon": "edit_square_pencil_svg_icon"
+            },
+            "profile_details_modal_ui": {
+                "title_text": "Role Details",
+                "title_icon": "shield_check_svg_icon"
+            },
+            "permissions_modal_ui": {
+                "title_text": "Role Permissions",
+                "title_icon": "shield_check_svg_icon"
+            }
+        }
+    }
+}

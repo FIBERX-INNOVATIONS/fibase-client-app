@@ -1,20 +1,34 @@
 import { createRouter, createWebHistory, Router, RouteRecordRaw, RouteMeta } from "vue-router";
+
 import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
 
 const LoginView = () => import("@/views/auth/LoginView.vue");
+
 const TwoFactorLoginView = () => import("@/views/auth/TwoFactorLoginView.vue");
+
 const LogoutView = () => import("@/views/auth/LogoutView.vue");
+
 const DashboardView = () => import("@/views/DashboardView.vue");
+
 const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
+
 const MemberProfileListView = () => import("@/views/member_profile/ListView.vue");
 
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
+
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
+
 const PaymentProviderListView = () => import("@/views/payment_provider/ListView.vue");
+
 const PaymentProviderConfigListView = () => import("@/views/payment_provider_config/ListView.vue");
+
 const PaymentProviderMethodListView = () => import("@/views/payment_provider_method/ListView.vue");
+
 const CurrencyPaymentProviderMethodListView = () => import("@/views/currency_payment_provider_method/ListView.vue");
+
 const ActivityListView = () => import("@/views/activity/ListView.vue");
+
+const AccessControlListView = () => import("@/views/access_control/ListView.vue");
 
 const MyProfileView = () => import("@/views/MyProfileView.vue");
 
@@ -217,6 +231,17 @@ class RouterManager {
                     page_meta_key: "activity_page",
                     title_key: "activity_page",
                     permission_name: "activity_module.get_activity_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/access-control/roles",
+                name: "AccessControlList",
+                component: AccessControlListView,
+                meta: {
+                    page_meta_key: "access_control_page",
+                    title_key: "access_control_page",
+                    permission_name: "access_control_module.get_role_list",
                     is_auth_page: false
                 }
             },

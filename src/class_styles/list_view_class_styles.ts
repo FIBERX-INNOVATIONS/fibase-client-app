@@ -147,7 +147,7 @@ const table_class_styles: DataTableUIClassStylesInterface = {
         "lg:w-full w-[1200px] border-separate rounded-lg table-auto lg:table-fixed border border-gray-400 border-spacing-y-2 text-sm text-left rtl:text-right text-body",
     thead_class_style: "text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default group/head",
     th_class_style: "first:rounded-tl-lg last:rounded-tr-lg p-2 font-bold uppercase align-middle border-b border-gray-300",
-    th_cell_wrapper_class_style: "flex items-center justify-center gap-2 w-full",
+    th_cell_wrapper_class_style: "flex items-center justify-center gap-2 w-full text-xs",
     th_sort_icon_class_style: "",
     tbody_class_style: "",
     tr_class_style: "",
@@ -175,7 +175,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
 
         content_wrapper_class_style: "flex flex-col items-start justify-center w-7/12 h-full",
 
-        content_class_style: "font-bold text-sm text-gray-900 break-word text-start",
+        content_class_style: "font-bold text-xs text-gray-900 break-word text-start",
 
         loading_class_style: "",
 
@@ -209,7 +209,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
         inactive_class_style: "bg-gray-500"
     },
     text_content_class_style: {
-        text_class_style: "text-sm font-bold text-gray-900"
+        text_class_style: "text-xs font-bold text-gray-900"
     },
     button_ui_class_style: {
         button_class_style:

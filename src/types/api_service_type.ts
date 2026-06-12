@@ -545,8 +545,8 @@ export interface RoleRecordInterface {
     display_name: string;
     is_system_role: boolean;
     is_member_group: boolean;
-    created_by?: CreatorUpdatorMemberinterface | null;
-    updated_by?: CreatorUpdatorMemberinterface | null;
+    creator?: CreatorUpdatorMemberinterface | null;
+    updator?: CreatorUpdatorMemberinterface | null;
     created_at?: string;
     updated_at?: string;
 }
