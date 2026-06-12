@@ -22,16 +22,8 @@ import {
 
 class AccessControlAPIService extends BaseAPIService {
     // Method to query get role record list API endpoint
-    public static getRoleList = async (
-        params?: RoleListParams
-    ): Promise<APIResponseInterface<RoleListResponseInterface>> => {
-        const {
-            page = 1,
-            limit = 12,
-            sort_by = "created_at",
-            sort_direction = "desc",
-            filters = {}
-        } = params ?? {};
+    public static getRoleList = async (params?: RoleListParams): Promise<APIResponseInterface<RoleListResponseInterface>> => {
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters = {} } = params ?? {};
 
         return await this.queryAPI<RoleListResponseInterface>({
             url: `/access-control/role/list`,
@@ -47,9 +39,7 @@ class AccessControlAPIService extends BaseAPIService {
     };
 
     // Method to query create role API endpoint
-    public static createRole = async (
-        data: CreateRolePayload
-    ): Promise<APIResponseInterface<RoleRecordInterface>> => {
+    public static createRole = async (data: CreateRolePayload): Promise<APIResponseInterface<RoleRecordInterface>> => {
         return await this.queryAPI<RoleRecordInterface>({
             url: `/access-control/role/create`,
             method: "POST",
@@ -67,6 +57,15 @@ class AccessControlAPIService extends BaseAPIService {
             url: `/access-control/role/${role_id}/update`,
             method: "PATCH",
             data,
+            disable_retry: true
+        });
+    };
+
+    // Method to query delete role API endpoint
+    public static deleteRole = async (role_id: string | number): Promise<APIResponseInterface<RoleRecordInterface>> => {
+        return await this.queryAPI<RoleRecordInterface>({
+            url: `/access-control/role/${role_id}/delete`,
+            method: "DELETE",
             disable_retry: true
         });
     };

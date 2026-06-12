@@ -42,6 +42,9 @@ class AccessControlActionMenu {
         const add_permissions_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
             `${base_content_key}.add_permissions_menu_option`
         );
+        const delete_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
+            `${base_content_key}.delete_menu_option`
+        );
 
         const menus: NavLinkUIPropsInterface[] = [
             // View Role Action Menu
@@ -115,6 +118,21 @@ class AccessControlActionMenu {
                 has_permission: this.memberCanPerformSuperAdminAction(
                     "access_control_module.assign_or_unassign_role_permissions"
                 )
+            },
+            // Delete Role Action Menu
+            {
+                id: `${delete_menu_content?.menu_text ?? ""}ActionMenu${record_id}`,
+                link: delete_menu_content?.menu_link ?? "",
+                icon: delete_menu_content?.menu_icon,
+                content: delete_menu_content?.menu_text ?? "",
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleDeleteActionMenuClicked(record, config);
+                    }
+                },
+                class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
+                has_permission:
+                    record.is_member_group && this.memberCanPerformSuperAdminAction("access_control_module.delete_role")
             }
         ];
 

@@ -190,6 +190,12 @@ type AppCurrencyFieldsType = {
     currency_code_list_input_group_props: InputGroupUIPropsInterface;
 };
 
+type RoleFieldsType = {
+    name_input_group_props: InputGroupUIPropsInterface;
+
+    symbol_input_group_props: InputGroupUIPropsInterface;
+};
+
 export {
     LoginFieldsType,
     TwoFactorLoginFieldsType,
@@ -201,5 +207,6 @@ export {
     PaymentProviderMethodFieldsType,
     CurrencyPaymentProviderMethodFieldsType,
     MemberProfileFieldsType,
-    AppCurrencyFieldsType
+    AppCurrencyFieldsType,
+    RoleFieldsType
 };

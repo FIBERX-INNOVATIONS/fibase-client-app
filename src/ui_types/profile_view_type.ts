@@ -459,3 +459,34 @@ export interface MemberProfileViewComponentsInterface {
 export interface MemberProfileViewStateDataInterface extends ProfileViewStateDataInterface<MemberRecordInterface> {
     tabs_props: TabsUIPropsInterface;
 }
+
+export interface AccessControlProfileViewContentInterface extends ProfileViewContentTextInterface {
+    empty_value_text: string;
+    role_information_title_text: string;
+    role_id_label_text: string;
+    symbol_label_text: string;
+    type_label_text: string;
+    status_title_text: string;
+    system_role_label_text: string;
+    member_group_label_text: string;
+    yes_text: string;
+    no_text: string;
+    system_role_text: string;
+    member_group_text: string;
+    custom_role_text: string;
+    timeline_title_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+}
+
+export interface AccessControlProfileViewComputedInterface extends ProfileViewComputedDataInterface {
+    role_type_text: string;
+    system_role_text: string;
+    member_group_text: string;
+    readable_created_at: string;
+    readable_updated_at: string;
+    created_by_member_profile_photo_url: string;
+    updated_by_member_profile_photo_url: string;
+}

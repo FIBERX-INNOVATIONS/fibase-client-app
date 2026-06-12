@@ -1,14 +1,8 @@
 import { Component, Ref } from "vue";
 
-import {
-    InputGroupUIPropsInterface,
-    InputGroupUIClassStylesInterface
-} from "@ui/version_3/ui_types/input_group_ui_type";
+import { InputGroupUIPropsInterface, InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 
-import {
-    ToasterUIPropsInterface,
-    ToasterUIClassStylesInterface
-} from "@ui/version_3/ui_types/toaster_ui_type";
+import { ToasterUIPropsInterface, ToasterUIClassStylesInterface } from "@ui/version_3/ui_types/toaster_ui_type";
 
 import {
     AppCurrencyActionResponseInterface,
@@ -29,7 +23,8 @@ import {
     CurrencyPaymentProviderMethodFieldsType,
     MemberProfileFieldsType,
     AppCurrencyFieldsType,
-    TwoFactorLoginFieldsType
+    TwoFactorLoginFieldsType,
+    RoleFieldsType
 } from "@/types/form_fields_type";
 
 import {
@@ -125,9 +120,7 @@ interface AppCurrencyActionSuccessPayloadInterface {
     response?: APIResponseInterface<AppCurrencyActionResponseInterface>;
 }
 
-type AppCurrencyActionSuccessCallback = (
-    payload: AppCurrencyActionSuccessPayloadInterface
-) => Promise<void> | void;
+type AppCurrencyActionSuccessCallback = (payload: AppCurrencyActionSuccessPayloadInterface) => Promise<void> | void;
 
 interface AssignCurrencyFormViewPropsInterface extends FormViewPropsInterface<CurrencyRecordInterface> {
     app_id: string;
@@ -153,10 +146,7 @@ interface FormViewComponentsInterface {
 interface FormViewComputedDataInterface {}
 
 interface FormViewStateDataInterface<
-    Fields extends Record<string, InputGroupUIPropsInterface> = Record<
-        string,
-        InputGroupUIPropsInterface
-    >
+    Fields extends Record<string, InputGroupUIPropsInterface> = Record<string, InputGroupUIPropsInterface>
 > {
     header_text_props: HeaderTextUIPropsInterface;
 
@@ -183,12 +173,13 @@ type PaymentProviderConfigFormState = FormViewStateDataInterface<PaymentProvider
 
 type PaymentProviderMethodFormState = FormViewStateDataInterface<PaymentProviderMethodFieldsType>;
 
-type CurrencyPaymentProviderMethodFormState =
-    FormViewStateDataInterface<CurrencyPaymentProviderMethodFieldsType>;
+type CurrencyPaymentProviderMethodFormState = FormViewStateDataInterface<CurrencyPaymentProviderMethodFieldsType>;
 
 type MemberProfileFormState = FormViewStateDataInterface<MemberProfileFieldsType>;
 
 type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFieldsType>;
+
+type RoleFormState = FormViewStateDataInterface<RoleFieldsType>;
 
 export {
     BaseFormUIConfig,
@@ -214,5 +205,6 @@ export {
     PaymentProviderMethodFormState,
     CurrencyPaymentProviderMethodFormState,
     MemberProfileFormState,
-    AppCurrencyFormState
+    AppCurrencyFormState,
+    RoleFormState
 };

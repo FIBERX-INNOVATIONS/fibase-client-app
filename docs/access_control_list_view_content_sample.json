@@ -123,7 +123,68 @@
                         "menu_text": "Add Permissions",
                         "menu_icon": "square_grid_plus_svg_icon",
                         "menu_link": ""
+                    },
+                    "delete_menu_option": {
+                        "menu_text": "Delete",
+                        "menu_icon": "delete_trash_svg_icon",
+                        "menu_link": ""
                     }
+                }
+            }
+        },
+        "form_view_ui": {
+            "header_text": "Role",
+            "fieldset": {
+                "name_field": {
+                    "label_text": "Role Name",
+                    "placeholder_text": "e.g. Operations Manager"
+                },
+                "symbol_field": {
+                    "label_text": "Role Symbol",
+                    "placeholder_text": "e.g. ops_manager"
+                },
+                "is_member_group_field": {
+                    "label_text": "Member Group",
+                    "placeholder_text": "Mark this role as a member group"
+                },
+                "btn_text": "Submit"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading role...",
+            "no_description_text": "",
+            "empty_value_text": "-",
+            "bool_text": {
+                "yes": "Yes",
+                "no": "No"
+            },
+            "role_type": {
+                "system_role_text": "System Role",
+                "member_group_text": "Member Group",
+                "custom_role_text": "Custom Role"
+            },
+            "sections": {
+                "role_information": {
+                    "title_text": "Role Information",
+                    "role_id_label_text": "Role ID:",
+                    "symbol_label_text": "Symbol:",
+                    "type_label_text": "Type:"
+                },
+                "status": {
+                    "title_text": "Role Flags",
+                    "system_role_label_text": "System Role:",
+                    "member_group_label_text": "Member Group:"
+                },
+                "timeline": {
+                    "title_text": "Timeline",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                },
+                "created_by": {
+                    "title_text": "Created By"
+                },
+                "updated_by": {
+                    "title_text": "Updated By"
                 }
             }
         },
@@ -143,6 +204,16 @@
             "permissions_modal_ui": {
                 "title_text": "Role Permissions",
                 "title_icon": "shield_check_svg_icon"
+            },
+            "delete_modal_ui": {
+                "title_text": "Delete Role",
+                "title_icon": "delete_trash_svg_icon",
+                "content": {
+                    "title_text": "Delete {{display_name}}?",
+                    "message_text": "This action will delete the member group role {{display_name}}. This cannot be undone.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Delete Role"
+                }
             }
         }
     }

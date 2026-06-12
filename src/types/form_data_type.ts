@@ -349,13 +349,16 @@ export interface CompleteMemberSetupPayload extends BaseFormData {
 export interface CreateRolePayload extends BaseFormData {
     name: string;
     symbol: string;
-    is_member_group: boolean;
+}
+
+export interface RoleFormDataInterface extends BaseFormData {
+    name: string;
+    symbol: string;
 }
 
 export interface UpdateRolePayload extends BaseFormData {
     name?: string;
     symbol?: string;
-    is_member_group?: boolean;
 }
 
 export interface RolePermissionActionPayload extends BaseFormData {
