@@ -95,7 +95,7 @@ export interface ActivityListFiltersInterface {
     entity_type?: string | null;
     ip_address?: string | null;
     status?: "success" | "failed" | null;
-    date_range?: string | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
 }
 
 export interface RoleListFiltersInterface {

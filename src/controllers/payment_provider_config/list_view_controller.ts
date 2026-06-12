@@ -162,8 +162,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.sn_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: () => DataTableSerialCellUI
@@ -171,33 +170,25 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     is_selected: false,
-                    input_model_value: (
-                        record?: PaymentProviderConfigRecordInterface
-                    ): InputValue => {
+                    input_model_value: (record?: PaymentProviderConfigRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
                         if (!record?.provider_id) {
                             const records = this.state_refs.list_state.value.records ?? [];
                             const provider_ids = records.map((row) => row.provider_id);
 
-                            return (
-                                provider_ids.length > 0 &&
-                                provider_ids.every((id) => selected_records.includes(id))
-                            );
+                            return provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
                         }
 
                         return selected_records.includes(record.provider_id);
                     },
-                    input_ui_boolean_props: (
-                        record?: PaymentProviderConfigRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record?: PaymentProviderConfigRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
                         const provider_ids = records.map((row) => row.provider_id);
                         const is_checked = record?.provider_id
                             ? selected_records.includes(record.provider_id)
-                            : provider_ids.length > 0 &&
-                              provider_ids.every((id) => selected_records.includes(id));
+                            : provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
@@ -205,19 +196,14 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                             disabled: !record?.provider_id && provider_ids.length === 0
                         };
                     },
-                    input_action_props: (
-                        record?: PaymentProviderConfigRecordInterface
-                    ): InputUIActionPropsInterface => ({
+                    input_action_props: (record?: PaymentProviderConfigRecordInterface): InputUIActionPropsInterface => ({
                         on_click: async (
                             event?: Event,
                             input_value?: InputValue,
                             input_config?: { props: InputUIPropsInterface }
                         ): Promise<ActionMethodRetrunInterface> => {
                             if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
                             }
 
                             return this.action_handler.handleOnSelectAllRows();
@@ -231,20 +217,16 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[22%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.provider_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.provider_text"
                 },
                 cell: {
                     render: () => DataTableAvatarInfoCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: PaymentProviderConfigRecordInterface) =>
-                        record.provider?.name ?? "",
-                    getImgSubText: (record: PaymentProviderConfigRecordInterface) =>
-                        record.provider?.code ?? "",
-                    getImgContent: (record: PaymentProviderConfigRecordInterface) =>
-                        record.provider?.name ?? "-",
+                    getImgAltText: (record: PaymentProviderConfigRecordInterface) => record.provider?.name ?? "",
+                    getImgSubText: (record: PaymentProviderConfigRecordInterface) => record.provider?.code ?? "",
+                    getImgContent: (record: PaymentProviderConfigRecordInterface) => record.provider?.name ?? "-",
                     getImgSrc: (record: PaymentProviderConfigRecordInterface) =>
                         record.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL
                 }
@@ -255,16 +237,14 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[10%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.environment_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.environment_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentProviderConfigRecordInterface) =>
-                        record.environment?.toUpperCase?.() ?? "-"
+                    getTextContent: (record: PaymentProviderConfigRecordInterface) => record.environment?.toUpperCase?.() ?? "-"
                 }
             },
             // Account Reference Column
@@ -317,8 +297,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentProviderConfigRecordInterface) =>
-                        record.settings?.default_currency || "-"
+                    getTextContent: (record: PaymentProviderConfigRecordInterface) => record.settings?.default_currency || "-"
                 }
             },
             // Creator column
@@ -327,8 +306,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.creator_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
                     render: () => {
@@ -338,14 +316,10 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     icon_key: "member_icon",
-                    getImgAltText: (record: PaymentProviderConfigRecordInterface) =>
-                        getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: PaymentProviderConfigRecordInterface) => getMemberFullName(record?.creator) ?? "",
                     getLinkURL: (record: PaymentProviderConfigRecordInterface) =>
-                        record?.creator?.public_id
-                            ? `/members?member-profile=${record?.creator?.public_id}`
-                            : "",
-                    getLinkText: (record: PaymentProviderConfigRecordInterface) =>
-                        getMemberFullName(record?.creator) || "-"
+                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
+                    getLinkText: (record: PaymentProviderConfigRecordInterface) => getMemberFullName(record?.creator) || "-"
                 }
             },
             // Created At Column
@@ -354,8 +328,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[16%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
@@ -363,9 +336,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getDateTextContent: (record: PaymentProviderConfigRecordInterface) =>
-                        record.created_at
-                            ? InputTransformerUtil.formatReadableDateTime(record.created_at)
-                            : "-"
+                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
                 }
             },
             // Actions Column
@@ -374,8 +345,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[9%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.actions_text"
+                    label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: () => DataTableActionIconCellUI
@@ -386,26 +356,23 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                         button_html_content: RenderHtmlUtil.renderHtml({
                             icon: "vertical_elipsis_svg_icon",
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.content_class_style,
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.content_class_style,
                             icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         }),
                         loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         })
                     }),
                     button_action_props: (
                         record: PaymentProviderConfigRecordInterface,
                         record_index?: number
                     ): ButtonUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
+                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                             this.action_handler.toggleActionMenu(record, record_index);
                         }
                     })

@@ -14,10 +14,7 @@ import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import { NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
-import {
-    DataTableColumnRenderType,
-    DataTableUIPropsInterface
-} from "@ui/version_3/ui_types/data_table_ui_type";
+import { DataTableColumnRenderType, DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
 import {
     ListViewPropsInterface,
@@ -46,6 +43,8 @@ import BreadcrumbUI from "@ui/version_3/components/BreadcrumbUI.vue";
 import PageHeaderUI from "@ui/version_3/components/PageHeaderUI.vue";
 
 import DataTableUI from "@ui/version_3/components/DataTableUI.vue";
+
+import ContentCardUI from "@ui/version_3/components/ContentCardUI.vue";
 
 import FiltersPanelUI from "@ui/version_3/components/FiltersPanelUI.vue";
 
@@ -81,10 +80,7 @@ interface ListViewIconKeysInterface {
     previous_pagination_button: SVGIconKey;
 }
 
-class BaseListViewController<
-    T extends object = Record<string, unknown>,
-    K extends keyof T = keyof T
-> extends BaseController<
+class BaseListViewController<T extends object = Record<string, unknown>, K extends keyof T = keyof T> extends BaseController<
     ListViewPropsInterface,
     ListViewStateDataInterface<T, K>,
     ListViewComputedDataInterface,
@@ -121,9 +117,7 @@ class BaseListViewController<
                 return filter;
             }
 
-            const content_data = content_manager.get<{ selected_text_prefix?: string | null }>(
-                filter.input_content_key ?? ""
-            );
+            const content_data = content_manager.get<{ selected_text_prefix?: string | null }>(filter.input_content_key ?? "");
 
             return {
                 ...filter,
@@ -160,9 +154,7 @@ class BaseListViewController<
     // Method to retrun list state value
     public getListState(): ListStateInterface<T> {
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<
-                ListStateInterface<T>
-            >;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
         }
 
         return this.state_refs.list_state.value;
@@ -171,33 +163,12 @@ class BaseListViewController<
     // Method to update list state with patch object
     public setListState(patch: Partial<ListStateInterface<T>>): void {
         if (!this.state_refs.list_state) {
-            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<
-                ListStateInterface<T>
-            >;
+            this.state_refs.list_state = ref(this.getDefaultListState()) as Ref<ListStateInterface<T>>;
         }
 
         this.state_refs.list_state.value = {
             ...this.state_refs.list_state.value,
             ...patch
-        };
-    }
-
-    // Method to rerun list view
-    protected getUIComponents(): ListViewComponentsInterface {
-        return {
-            BreadcrumbUI,
-
-            PageHeaderUI,
-
-            FiltersPanelUI,
-
-            DataTableResultAndBulkActionBarUI,
-
-            DataTableUI,
-
-            DropdownMenuUI,
-
-            PaginationUI
         };
     }
 
@@ -267,11 +238,8 @@ class BaseListViewController<
         content_keys: ListViewContentKeysInterface,
         icons: ListViewIconKeysInterface
     ): void {
-        const {
-            table_class_styles,
-            table_result_and_bulk_action_bar_class_styles,
-            table_pagination_ui_class_styles
-        } = ListViewClassStyles;
+        const { table_class_styles, table_result_and_bulk_action_bar_class_styles, table_pagination_ui_class_styles } =
+            ListViewClassStyles;
 
         DataTableUIPropsBuilder.configure({
             section_id: `${page_key}TableSection`,
@@ -305,10 +273,7 @@ class BaseListViewController<
 
         const content_manager = ContentManagerUtil.getInstance();
         const breadcrumb_items =
-            content_manager.get<NavLinkContentPayloadResultInterface[]>(
-                content_keys.breadcrumb_list,
-                []
-            ) ?? [];
+            content_manager.get<NavLinkContentPayloadResultInterface[]>(content_keys.breadcrumb_list, []) ?? [];
 
         return reactive({
             id: "PageBreadcrumb",
@@ -342,9 +307,7 @@ class BaseListViewController<
     }
 
     // Method to get permitted header action buttons based on Member permissions
-    protected getPermittedHeaderActionButtons(
-        buttons: ButtonUIPropsInterface[]
-    ): ButtonUIPropsInterface[] {
+    protected getPermittedHeaderActionButtons(buttons: ButtonUIPropsInterface[]): ButtonUIPropsInterface[] {
         return buttons.filter((btn: ButtonUIPropsInterface) => {
             return MemberAuthenticatorUtil.memberHasPermissionTo(btn?.id ?? "");
         });
@@ -358,19 +321,13 @@ class BaseListViewController<
     ): ListViewStateDataInterface<T, K>["page_header_props"] {
         const { page_header_class_styles } = ListViewClassStyles;
 
-        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject(
-            "h2",
-            content_keys.header_text,
-            {
-                class_styles: page_header_class_styles.header_text_class_styles
-            }
-        );
+        const header_props = HeaderTextUIPropsBuilder.getReactivePropsObject("h2", content_keys.header_text, {
+            class_styles: page_header_class_styles.header_text_class_styles
+        });
 
         return PageHeaderUIPropsBuilder.getReactivePropsObject(
             header_props,
-            this.getPermittedHeaderActionButtons(
-                this.getHeaderActionButtons(page_key, content_keys, icons)
-            ),
+            this.getPermittedHeaderActionButtons(this.getHeaderActionButtons(page_key, content_keys, icons)),
             content_keys.header_description_text,
             {
                 class_styles: page_header_class_styles
@@ -379,22 +336,16 @@ class BaseListViewController<
     }
 
     // Method to get filter pannel filter fields configuration
-    protected getFilterFields(): ListViewStateDataInterface<
-        T,
-        K
-    >["filters_panel_props"]["filter_fields"] {
+    protected getFilterFields(): ListViewStateDataInterface<T, K>["filters_panel_props"]["filter_fields"] {
         const {
             filters_input_group_class_styles: input_group_class_style,
             filters_input_ui_class_styles: input_ui_class_style
         } = ListViewClassStyles;
 
-        return FilterConfigBuilderUtil.build(
-            this.getFiltersWithSelectSearchPrefix(this.getPageFilters()),
-            {
-                input_group_class_style,
-                input_ui_class_style
-            }
-        );
+        return FilterConfigBuilderUtil.build(this.getFiltersWithSelectSearchPrefix(this.getPageFilters()), {
+            input_group_class_style,
+            input_ui_class_style
+        });
     }
 
     // Method to get Filter Pannel props
@@ -436,8 +387,7 @@ class BaseListViewController<
             }
         );
 
-        filters_panel_props.action_props =
-            this.action_handler?.getFiltersPanelActionPropsConfig?.();
+        filters_panel_props.action_props = this.action_handler?.getFiltersPanelActionPropsConfig?.();
         filters_panel_props.sync_route_query = false;
 
         return filters_panel_props;
@@ -475,9 +425,7 @@ class BaseListViewController<
     }
 
     // Method to get table action menu dropdown props
-    protected getDropdownMenuProps(
-        id: string
-    ): ListViewStateDataInterface<T, K>["action_menu_dropdown_props"] {
+    protected getDropdownMenuProps(id: string): ListViewStateDataInterface<T, K>["action_menu_dropdown_props"] {
         return DropdownMenuUIPropsBuilder.getReactivePropsObject(id, {
             class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
@@ -497,9 +445,66 @@ class BaseListViewController<
             list_state.current_page,
             list_state.total_pages,
             {
+                config_props: {
+                    show_numbers: true,
+                    max_visible_pages: 5
+                },
                 action_props: { on_page_change: this?.action_handler?.handleOnPageChange }
             }
         );
+    }
+
+    // Method to build route watcher link
+    protected getRouteQueryLink(route_query_key: string, routw_query_value?: string | null): string {
+        if (!routw_query_value) {
+            return "";
+        }
+
+        const search_params = new URLSearchParams();
+
+        Object.entries(this.route.query).forEach(([key, value]) => {
+            if (key === route_query_key) {
+                return;
+            }
+
+            if (Array.isArray(value)) {
+                value.forEach((item) => {
+                    if (item !== null) {
+                        search_params.append(key, item);
+                    }
+                });
+                return;
+            }
+
+            if (value !== undefined && value !== null) {
+                search_params.set(key, value);
+            }
+        });
+
+        search_params.set(route_query_key, routw_query_value);
+
+        return `${this.route.path}?${search_params.toString()}`;
+    }
+
+    // Method to rerun list view
+    protected getUIComponents(): ListViewComponentsInterface {
+        return {
+            BreadcrumbUI,
+
+            PageHeaderUI,
+
+            FiltersPanelUI,
+
+            DataTableResultAndBulkActionBarUI,
+
+            DataTableUI,
+
+            DropdownMenuUI,
+
+            PaginationUI,
+
+            ContentCardUI
+        };
     }
 
     // Methdo to get child specific UI state data, to be overridden by child if they have additional state data to add
@@ -527,8 +532,7 @@ class BaseListViewController<
 
             filters_panel_props: this.getFiltersPanelProps(page_key, content_keys, icons),
 
-            data_table_result_and_bulk_action_bar_props:
-                this.getDataTableResultAndBulkActionBarProps(page_key, list_state),
+            data_table_result_and_bulk_action_bar_props: this.getDataTableResultAndBulkActionBarProps(page_key, list_state),
 
             table_props: this.getTableProps(),
 
@@ -536,9 +540,7 @@ class BaseListViewController<
 
             action_menu_dropdown_props: this.getDropdownMenuProps("TableActionMeuDropdown"),
 
-            bulk_action_menu_dropdown_props: this.getDropdownMenuProps(
-                "TableBulkActionMeuDropdown"
-            ),
+            bulk_action_menu_dropdown_props: this.getDropdownMenuProps("TableBulkActionMeuDropdown"),
 
             pagination_ui_props: this.getPaginationProps(page_key, content_keys, list_state)
         };
@@ -559,10 +561,7 @@ class BaseListViewController<
         await this.action_handler?.handleRouteChanged?.(this.route);
 
         if (this.action_handler?.handleOnNewRecordCreated) {
-            this.event_bus?.on(
-                "on_new_record_created",
-                this.action_handler.handleOnNewRecordCreated
-            );
+            this.event_bus?.on("on_new_record_created", this.action_handler.handleOnNewRecordCreated);
         }
     }
 
@@ -574,25 +573,16 @@ class BaseListViewController<
         await this.handleChildBeforeUnmountedLogic();
 
         if (this.action_handler?.handleOnNewRecordCreated) {
-            this.event_bus?.off(
-                "on_new_record_created",
-                this.action_handler.handleOnNewRecordCreated
-            );
+            this.event_bus?.off("on_new_record_created", this.action_handler.handleOnNewRecordCreated);
         }
     }
 
     // Method to get child ui watchers, to be overridden by child if they have additional watchers to add
-    protected getChildUIWatchers(): WatchersType<
-        ListViewPropsInterface,
-        ListViewStateDataInterface<T, K>
-    > {
+    protected getChildUIWatchers(): WatchersType<ListViewPropsInterface, ListViewStateDataInterface<T, K>> {
         return {};
     }
 
-    protected getUIWatchers(): WatchersType<
-        ListViewPropsInterface,
-        ListViewStateDataInterface<T, K>
-    > {
+    protected getUIWatchers(): WatchersType<ListViewPropsInterface, ListViewStateDataInterface<T, K>> {
         return {
             list_state: this.action_handler?.handleListStateChangedWatcher,
 

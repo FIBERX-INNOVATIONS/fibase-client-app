@@ -21,16 +21,9 @@ import {
 
 import { ListViewPropsInterface } from "@/ui_types/list_view_type";
 
-import {
-    DEFUALT_CURRENCY_LOGO_URL,
-    DEFUALT_PAYMENT_METHOD_ICON_URL,
-    DEFUALT_PAYMENT_PROVIDER_LOGO_URL
-} from "@/configs";
+import { DEFUALT_CURRENCY_LOGO_URL, DEFUALT_PAYMENT_METHOD_ICON_URL, DEFUALT_PAYMENT_PROVIDER_LOGO_URL } from "@/configs";
 
-import {
-    CurrencyPaymentProviderMethodRecordInterface,
-    getMemberFullName
-} from "@/types/api_service_type";
+import { CurrencyPaymentProviderMethodRecordInterface, getMemberFullName } from "@/types/api_service_type";
 
 import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
@@ -206,10 +199,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             return "Infinity";
         }
 
-        return InputTransformerUtil.nFormatter(
-            InputTransformerUtil.roundToTwoDecimalPlaces(amount),
-            2
-        );
+        return InputTransformerUtil.nFormatter(InputTransformerUtil.roundToTwoDecimalPlaces(amount), 2);
     }
 
     // Method to format min/max limits.
@@ -233,8 +223,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
+                    label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: () => DataTableSerialCellUI
@@ -242,19 +231,14 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     is_selected: false,
-                    input_model_value: (
-                        record?: CurrencyPaymentProviderMethodRecordInterface
-                    ): InputValue => {
+                    input_model_value: (record?: CurrencyPaymentProviderMethodRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
                         if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
                             const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
 
-                            return (
-                                record_ids.length > 0 &&
-                                record_ids.every((id) => selected_records.includes(id))
-                            );
+                            return record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
                         }
 
                         return selected_records.includes(record.id);
@@ -267,8 +251,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
                         const is_checked = record?.id
                             ? selected_records.includes(record.id)
-                            : record_ids.length > 0 &&
-                              record_ids.every((id) => selected_records.includes(id));
+                            : record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
@@ -285,10 +268,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                             input_config?: { props: InputUIPropsInterface }
                         ): Promise<ActionMethodRetrunInterface> => {
                             if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
                             }
 
                             return this.action_handler.handleOnSelectAllRows();
@@ -310,12 +290,9 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.currency?.name ?? "",
-                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.currency?.code ?? "",
-                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.currency?.name ?? "-",
+                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.name ?? "",
+                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.code ?? "",
+                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.name ?? "-",
                     getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
                         record.currency?.logo_url || DEFUALT_CURRENCY_LOGO_URL
                 }
@@ -341,8 +318,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
                         record.provider_method?.provider?.name ?? "-",
                     getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.provider?.logo_url ||
-                        DEFUALT_PAYMENT_PROVIDER_LOGO_URL
+                        record.provider_method?.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL
                 }
             },
             // Payment Method Column
@@ -366,8 +342,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
                         record.provider_method?.payment_method?.name ?? "-",
                     getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.payment_method?.icon_url ||
-                        DEFUALT_PAYMENT_METHOD_ICON_URL
+                        record.provider_method?.payment_method?.icon_url || DEFUALT_PAYMENT_METHOD_ICON_URL
                 }
             },
             // Direction Column
@@ -394,16 +369,14 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 sortable: false,
                 width: "w-[10%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
+                    label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        this.formatLimits(record)
+                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) => this.formatLimits(record)
                 }
             },
             // Is Active Column
@@ -412,17 +385,15 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.status_text"
+                    label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: () => DataTableToggleCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    input_model_value: (
-                        record: CurrencyPaymentProviderMethodRecordInterface
-                    ): InputValue => InputTransformerUtil.resolveTypedValue(record.is_active),
+                    input_model_value: (record: CurrencyPaymentProviderMethodRecordInterface): InputValue =>
+                        InputTransformerUtil.resolveTypedValue(record.is_active),
                     input_content_props: (): InputUIContentOptionsInterface => ({
                         loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                     }),
@@ -464,9 +435,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         return getMemberFullName(record.linked_by_member) ?? "";
                     },
                     getLinkURL: (record: CurrencyPaymentProviderMethodRecordInterface) => {
-                        return record.linked_by_member?.public_id
-                            ? `/members?member-profile=${record.linked_by_member.public_id}`
-                            : "";
+                        return this.getRouteQueryLink("member_profile", record?.linked_by_member?.public_id);
                     },
                     getLinkText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
                         return getMemberFullName(record.linked_by_member) || "-";
@@ -488,9 +457,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getDateTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.created_at
-                            ? InputTransformerUtil.formatReadableDateTime(record.created_at)
-                            : "-"
+                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
                 }
             },
             // Actions Column
@@ -511,26 +478,23 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         button_html_content: RenderHtmlUtil.renderHtml({
                             icon: "vertical_elipsis_svg_icon",
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.content_class_style,
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.content_class_style,
                             icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         }),
                         loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         })
                     }),
                     button_action_props: (
                         record: CurrencyPaymentProviderMethodRecordInterface,
                         record_index?: number
                     ): ButtonUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
+                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                             this.action_handler.toggleActionMenu(record, record_index);
                         }
                     })

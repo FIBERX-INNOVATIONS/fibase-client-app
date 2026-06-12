@@ -49,10 +49,7 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
-class PaymentMethodListViewController extends BaseListViewController<
-    PaymentMethodRecordInterface,
-    "code"
-> {
+class PaymentMethodListViewController extends BaseListViewController<PaymentMethodRecordInterface, "code"> {
     public readonly content_key: string = "payment_method";
 
     public readonly record_id_key: "code" = "code" as const;
@@ -69,44 +66,25 @@ class PaymentMethodListViewController extends BaseListViewController<
 
     // Method to format method capabilities for the table.
     private getCapabilitiesText(record: PaymentMethodRecordInterface): string {
-        const capabilities_content_key =
-            "content_resource.payment_method_view_ui.list_view_ui.table.capabilities";
+        const capabilities_content_key = "content_resource.payment_method_view_ui.list_view_ui.table.capabilities";
         const capabilities = [
             record.metadata?.supports_deposit
-                ? this.content_manager.get<string>(
-                      `${capabilities_content_key}.supports_deposit_text`,
-                      "Deposit"
-                  )
+                ? this.content_manager.get<string>(`${capabilities_content_key}.supports_deposit_text`, "Deposit")
                 : "",
             record.metadata?.supports_withdrawal
-                ? this.content_manager.get<string>(
-                      `${capabilities_content_key}.supports_withdrawal_text`,
-                      "Withdrawal"
-                  )
+                ? this.content_manager.get<string>(`${capabilities_content_key}.supports_withdrawal_text`, "Withdrawal")
                 : "",
             record.metadata?.supports_refund
-                ? this.content_manager.get<string>(
-                      `${capabilities_content_key}.supports_refund_text`,
-                      "Refund"
-                  )
+                ? this.content_manager.get<string>(`${capabilities_content_key}.supports_refund_text`, "Refund")
                 : "",
             record.metadata?.requires_redirect
-                ? this.content_manager.get<string>(
-                      `${capabilities_content_key}.requires_redirect_text`,
-                      "Redirect"
-                  )
+                ? this.content_manager.get<string>(`${capabilities_content_key}.requires_redirect_text`, "Redirect")
                 : ""
         ].filter(Boolean);
 
         return capabilities.length
-            ? capabilities.join(
-                  this.content_manager.get<string>(
-                      `${capabilities_content_key}.separator_text`,
-                      ", "
-                  ) ?? ", "
-              )
-            : (this.content_manager.get<string>(`${capabilities_content_key}.empty_text`, "-") ??
-                  "-");
+            ? capabilities.join(this.content_manager.get<string>(`${capabilities_content_key}.separator_text`, ", ") ?? ", ")
+            : (this.content_manager.get<string>(`${capabilities_content_key}.empty_text`, "-") ?? "-");
     }
 
     // Method to get page filters.
@@ -247,8 +225,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.sn_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: () => {
@@ -265,24 +242,18 @@ class PaymentMethodListViewController extends BaseListViewController<
                             const records = this.state_refs.list_state.value.records ?? [];
                             const method_codes = records.map((row) => row.code);
 
-                            return (
-                                method_codes.length > 0 &&
-                                method_codes.every((code) => selected_records.includes(code))
-                            );
+                            return method_codes.length > 0 && method_codes.every((code) => selected_records.includes(code));
                         }
 
                         return selected_records.includes(record.code);
                     },
-                    input_ui_boolean_props: (
-                        record?: PaymentMethodRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record?: PaymentMethodRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
                         const method_codes = records.map((row) => row.code);
                         const is_checked = record?.code
                             ? selected_records.includes(record.code)
-                            : method_codes.length > 0 &&
-                              method_codes.every((code) => selected_records.includes(code));
+                            : method_codes.length > 0 && method_codes.every((code) => selected_records.includes(code));
 
                         return {
                             is_checked,
@@ -290,9 +261,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                             disabled: false
                         };
                     },
-                    input_action_props: (
-                        record?: PaymentMethodRecordInterface
-                    ): InputUIActionPropsInterface => {
+                    input_action_props: (record?: PaymentMethodRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
@@ -300,10 +269,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
                                 if (record !== undefined) {
-                                    return this.action_handler.handleOnRecordRowSelected(
-                                        record,
-                                        input_value
-                                    );
+                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
                                 }
 
                                 return this.action_handler.handleOnSelectAllRows();
@@ -318,8 +284,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[22%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.method_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.method_text"
                 },
                 cell: {
                     render: () => {
@@ -330,8 +295,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getImgAltText: (record: PaymentMethodRecordInterface) => record.name,
                     getImgSubText: (record: PaymentMethodRecordInterface) => record.code,
-                    getImgContent: (record: PaymentMethodRecordInterface) =>
-                        record.metadata?.display_name || record.name,
+                    getImgContent: (record: PaymentMethodRecordInterface) => record.metadata?.display_name || record.name,
                     getImgSrc: (record: PaymentMethodRecordInterface) => record.icon_url ?? ""
                 }
             },
@@ -341,8 +305,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.display_group_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.display_group_text"
                 },
                 cell: {
                     render: () => {
@@ -351,8 +314,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentMethodRecordInterface) =>
-                        record.metadata?.display_group ?? "-"
+                    getTextContent: (record: PaymentMethodRecordInterface) => record.metadata?.display_group ?? "-"
                 }
             },
             // Capabilites Column
@@ -361,8 +323,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[15%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.capabilities_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.capabilities_text"
                 },
                 cell: {
                     render: () => {
@@ -371,8 +332,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentMethodRecordInterface) =>
-                        this.getCapabilitiesText(record)
+                    getTextContent: (record: PaymentMethodRecordInterface) => this.getCapabilitiesText(record)
                 }
             },
             // Sort Order column
@@ -381,8 +341,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.sort_order_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.sort_order_text"
                 },
                 cell: {
                     render: () => {
@@ -399,8 +358,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[9%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.status_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: () => {
@@ -412,35 +370,26 @@ class PaymentMethodListViewController extends BaseListViewController<
                     input_model_value: (record: PaymentMethodRecordInterface): InputValue => {
                         return InputTransformerUtil.resolveTypedValue(record.is_active);
                     },
-                    input_content_props: (
-                        record: PaymentMethodRecordInterface
-                    ): InputUIContentOptionsInterface => {
+                    input_content_props: (record: PaymentMethodRecordInterface): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                         };
                     },
-                    input_ui_boolean_props: (
-                        record: PaymentMethodRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record: PaymentMethodRecordInterface): InputUIBooleanPropsInterface => {
                         return {
                             is_checked: record.is_active,
                             required: true,
                             disabled: false
                         };
                     },
-                    input_action_props: (
-                        record: PaymentMethodRecordInterface
-                    ): InputUIActionPropsInterface => {
+                    input_action_props: (record: PaymentMethodRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
                                 input_value?: InputValue,
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
-                                return this.action_handler.handleStatusToggleChange(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleStatusToggleChange(record, input_value);
                             }
                         };
                     }
@@ -452,8 +401,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.creator_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
                     render: () => {
@@ -463,14 +411,10 @@ class PaymentMethodListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     icon_key: "member_icon",
-                    getImgAltText: (record: PaymentMethodRecordInterface) =>
-                        getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: PaymentMethodRecordInterface) => getMemberFullName(record?.creator) ?? "",
                     getLinkURL: (record: PaymentMethodRecordInterface) =>
-                        record?.creator?.public_id
-                            ? `/members?member-profile=${record?.creator?.public_id}`
-                            : "",
-                    getLinkText: (record: PaymentMethodRecordInterface) =>
-                        getMemberFullName(record?.creator) || "-"
+                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
+                    getLinkText: (record: PaymentMethodRecordInterface) => getMemberFullName(record?.creator) || "-"
                 }
             },
             // Created At Column
@@ -479,8 +423,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[12%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: () => {
@@ -492,9 +435,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                     getDateTextContent: (record: PaymentMethodRecordInterface) => {
                         const raw_date = record?.created_at;
 
-                        return raw_date
-                            ? InputTransformerUtil.formatReadableDateTime(raw_date)
-                            : "-";
+                        return raw_date ? InputTransformerUtil.formatReadableDateTime(raw_date) : "-";
                     }
                 }
             },
@@ -504,8 +445,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[6%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_method_view_ui.list_view_ui.table.header.actions_text"
+                    label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: () => {
@@ -514,23 +454,21 @@ class PaymentMethodListViewController extends BaseListViewController<
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    button_content_props: (
-                        record: PaymentMethodRecordInterface
-                    ): ButtonUIContentOptionsInterface => {
+                    button_content_props: (record: PaymentMethodRecordInterface): ButtonUIContentOptionsInterface => {
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.content_class_style,
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
                                 icon_class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             }),
                             loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             })
                         };
                     },
@@ -539,10 +477,7 @@ class PaymentMethodListViewController extends BaseListViewController<
                         record_index?: number
                     ): ButtonUIActionPropsInterface => {
                         return {
-                            on_click: async (
-                                event?: MouseEvent,
-                                config?: { props: ButtonUIPropsInterface }
-                            ): Promise<void> => {
+                            on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                                 this.action_handler.toggleActionMenu(record, record_index);
                             }
                         };

@@ -208,9 +208,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
     protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyRecordInterface>[] {
         const content_manager = ContentManagerUtil.getInstance();
 
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "currency_module.update_currency_status"
-        );
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("currency_module.update_currency_status");
 
         const columns: DataTableColumnRenderType<CurrencyRecordInterface>[] = [
             // S/N and Select Checkbox Column
@@ -238,25 +236,19 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                             const records = this.state_refs.list_state.value.records ?? [];
                             const currency_codes = records.map((row) => row.code);
 
-                            return (
-                                currency_codes.length > 0 &&
-                                currency_codes.every((code) => selected_records.includes(code))
-                            );
+                            return currency_codes.length > 0 && currency_codes.every((code) => selected_records.includes(code));
                         }
 
                         return selected_records.includes(record.code);
                     },
 
-                    input_ui_boolean_props: (
-                        record?: CurrencyRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record?: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
                         const currency_codes = records.map((row) => row.code);
                         const is_checked = record?.code
                             ? selected_records.includes(record.code)
-                            : currency_codes.length > 0 &&
-                              currency_codes.every((code) => selected_records.includes(code));
+                            : currency_codes.length > 0 && currency_codes.every((code) => selected_records.includes(code));
 
                         return {
                             is_checked,
@@ -267,9 +259,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         };
                     },
 
-                    input_action_props: (
-                        record?: CurrencyRecordInterface
-                    ): InputUIActionPropsInterface => {
+                    input_action_props: (record?: CurrencyRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
@@ -277,10 +267,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
                                 if (record !== undefined) {
-                                    return this.action_handler.handleOnRecordRowSelected(
-                                        record,
-                                        input_value
-                                    );
+                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
                                 }
 
                                 return this.action_handler.handleOnSelectAllRows();
@@ -296,8 +283,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[24%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.name_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.name_text"
                 },
                 cell: {
                     render: (row) => {
@@ -324,8 +310,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[9%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text"
                 },
                 cell: {
                     render: (row) => {
@@ -343,8 +328,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.type_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.type_text"
                 },
                 cell: {
                     render: (row) => {
@@ -380,8 +364,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.precision_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.precision_text"
                 },
                 cell: {
                     render: (row) => {
@@ -399,8 +382,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[7%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text"
                 },
                 cell: {
                     render: (row) => {
@@ -418,8 +400,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[7%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.status_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: (row) => {
@@ -433,17 +414,13 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         return InputTransformerUtil.resolveTypedValue(record.is_active);
                     },
 
-                    input_content_props: (
-                        record: CurrencyRecordInterface
-                    ): InputUIContentOptionsInterface => {
+                    input_content_props: (record: CurrencyRecordInterface): InputUIContentOptionsInterface => {
                         return {
                             loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                         };
                     },
 
-                    input_ui_boolean_props: (
-                        record: CurrencyRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
                         return {
                             is_checked: record.is_active,
 
@@ -453,19 +430,14 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         };
                     },
 
-                    input_action_props: (
-                        record: CurrencyRecordInterface
-                    ): InputUIActionPropsInterface => {
+                    input_action_props: (record: CurrencyRecordInterface): InputUIActionPropsInterface => {
                         return {
                             on_click: async (
                                 event?: Event,
                                 input_value?: InputValue,
                                 input_config?: { props: InputUIPropsInterface }
                             ): Promise<ActionMethodRetrunInterface> => {
-                                return this.action_handler.handleStatusToggleChange(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleStatusToggleChange(record, input_value);
                             }
                         };
                     }
@@ -478,8 +450,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.creator_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
                     render: (row) => {
@@ -491,18 +462,12 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                     icon_key: "member_icon",
 
-                    link_target: "_blank",
-
-                    getImgAltText: (record: CurrencyRecordInterface) =>
-                        getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? "",
 
                     getLinkURL: (record: CurrencyRecordInterface) =>
-                        record?.creator?.public_id
-                            ? `/members?member-profile=${record?.creator?.public_id}`
-                            : "",
+                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
 
-                    getLinkText: (record: CurrencyRecordInterface) =>
-                        getMemberFullName(record?.creator) ?? ""
+                    getLinkText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? ""
                 }
             },
 
@@ -512,8 +477,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: true,
                 width: "w-[12%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: (row) => {
@@ -541,8 +505,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 sortable: false,
                 width: "w-[7%]",
                 header: {
-                    label_key:
-                        "content_resource.currency_view_ui.list_view_ui.table.header.actions_text"
+                    label_key: "content_resource.currency_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: (row) => {
@@ -552,24 +515,22 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
 
-                    button_content_props: (
-                        record: CurrencyRecordInterface
-                    ): ButtonUIContentOptionsInterface => {
+                    button_content_props: (record: CurrencyRecordInterface): ButtonUIContentOptionsInterface => {
                         return {
                             button_html_content: RenderHtmlUtil.renderHtml({
                                 icon: "vertical_elipsis_svg_icon",
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.content_class_style,
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
                                 icon_class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             }),
 
                             loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                                 class_style:
-                                    this.list_view_class_styles.table_cell_components_class_styles
-                                        .button_ui_class_style?.icon_class_style
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
                             })
                         };
                     },
@@ -579,10 +540,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                         record_index?: number
                     ): ButtonUIActionPropsInterface => {
                         return {
-                            on_click: async (
-                                event?: MouseEvent,
-                                config?: { props: ButtonUIPropsInterface }
-                            ): Promise<void> => {
+                            on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                                 this.action_handler.toggleActionMenu(record, record_index);
                             }
                         };

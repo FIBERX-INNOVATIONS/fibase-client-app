@@ -2,6 +2,9 @@ import { Component, Ref } from "vue";
 
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
+import { TabsUIPropsInterface } from "@ui/version_3/ui_types/tabs_ui_type";
+import { MemberRecordInterface } from "@/types/api_service_type";
+import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
 export interface ProfileViewPropsInterface<T = any> {
     record?: T;
@@ -406,6 +409,53 @@ export interface ProfileViewClassStylesInterface {
     };
 }
 
-export type FetchRecordMethod<TRecord> = (
-    record_id: string
-) => Promise<APIResponseInterface<TRecord>>;
+export type FetchRecordMethod<TRecord> = (record_id: string) => Promise<APIResponseInterface<TRecord>>;
+
+export interface ProfileValuePropsInterface {
+    icon: SVGIconKey;
+    label: string;
+    value: string | number;
+}
+
+export interface StatusValuePropsInterface {
+    label: string;
+    active: boolean;
+    trueText: string;
+    falseText: string;
+    activeIsDanger?: boolean;
+}
+
+export interface MemberRoleChipInterface {
+    key: string | number;
+    label: string;
+}
+
+export interface MemberProfileViewComputedDataInterface extends ProfileViewComputedDataInterface {
+    loading_icon_html: string;
+    profile_photo_url: string;
+    member_full_name: string;
+    display_username: string;
+    display_email: string;
+    profile_status_badge_class: string;
+    profile_status_text: string;
+    profile_is_deleted: boolean;
+    profile_image_props: Record<string, unknown>;
+    member_devices_props: Record<string, unknown>;
+    personal_information_items: ProfileValuePropsInterface[];
+    access_status_items: StatusValuePropsInterface[];
+    auth_information_items: ProfileValuePropsInterface[];
+    timeline_items: ProfileValuePropsInterface[];
+    member_role_items: MemberRoleChipInterface[];
+}
+
+export interface MemberProfileViewComponentsInterface {
+    ImageRenderUI: Component;
+    TabsUI: Component;
+    MemberDevicesView: Component;
+    ProfileValue: Component;
+    StatusValue: Component;
+}
+
+export interface MemberProfileViewStateDataInterface extends ProfileViewStateDataInterface<MemberRecordInterface> {
+    tabs_props: TabsUIPropsInterface;
+}

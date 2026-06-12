@@ -18,6 +18,8 @@ export type GlobalEventTypes = {
 
     open_modal: OpenModalEventPayloadInterface<any, any>;
 
+    clear_route_query_handler_params: ClearRouteQueryHandlerParamsEventPayloadInterface;
+
     on_new_record_created: NewRecordCreated<any>;
 };
 
@@ -40,6 +42,10 @@ export interface CloseModalEventPayloadInterface {
 
 export interface ToggleSidebarEventPayloadInterface {
     toggle_state?: boolean;
+}
+
+export interface ClearRouteQueryHandlerParamsEventPayloadInterface {
+    query_keys?: string[];
 }
 
 export interface OpenModalEventPayloadInterface<

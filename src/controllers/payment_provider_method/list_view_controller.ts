@@ -53,10 +53,7 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
-class PaymentProviderMethodListViewController extends BaseListViewController<
-    PaymentProviderMethodRecordInterface,
-    "id"
-> {
+class PaymentProviderMethodListViewController extends BaseListViewController<PaymentProviderMethodRecordInterface, "id"> {
     public readonly content_key: string = "payment_provider_method";
 
     public readonly record_id_key: "id" = "id" as const;
@@ -186,10 +183,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
             return "Infinity";
         }
 
-        return InputTransformerUtil.nFormatter(
-            InputTransformerUtil.roundToTwoDecimalPlaces(amount),
-            2
-        );
+        return InputTransformerUtil.nFormatter(InputTransformerUtil.roundToTwoDecimalPlaces(amount), 2);
     }
 
     // Method to format min/max limits.
@@ -213,8 +207,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[5%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: () => DataTableSerialCellUI
@@ -222,33 +215,25 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     is_selected: false,
-                    input_model_value: (
-                        record?: PaymentProviderMethodRecordInterface
-                    ): InputValue => {
+                    input_model_value: (record?: PaymentProviderMethodRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
                         if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
                             const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
 
-                            return (
-                                record_ids.length > 0 &&
-                                record_ids.every((id) => selected_records.includes(id))
-                            );
+                            return record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
                         }
 
                         return selected_records.includes(record.id);
                     },
-                    input_ui_boolean_props: (
-                        record?: PaymentProviderMethodRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record?: PaymentProviderMethodRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
                         const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
                         const is_checked = record?.id
                             ? selected_records.includes(record.id)
-                            : record_ids.length > 0 &&
-                              record_ids.every((id) => selected_records.includes(id));
+                            : record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
@@ -256,19 +241,14 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                             disabled: !record?.id && record_ids.length === 0
                         };
                     },
-                    input_action_props: (
-                        record?: PaymentProviderMethodRecordInterface
-                    ): InputUIActionPropsInterface => ({
+                    input_action_props: (record?: PaymentProviderMethodRecordInterface): InputUIActionPropsInterface => ({
                         on_click: async (
                             event?: Event,
                             input_value?: InputValue,
                             input_config?: { props: InputUIPropsInterface }
                         ): Promise<ActionMethodRetrunInterface> => {
                             if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
                             }
 
                             return this.action_handler.handleOnSelectAllRows();
@@ -282,20 +262,16 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[17%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.provider_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.provider_text"
                 },
                 cell: {
                     render: () => DataTableAvatarInfoCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: PaymentProviderMethodRecordInterface) =>
-                        record.provider?.name ?? "",
-                    getImgSubText: (record: PaymentProviderMethodRecordInterface) =>
-                        record.provider?.code ?? "",
-                    getImgContent: (record: PaymentProviderMethodRecordInterface) =>
-                        record.provider?.name ?? "-",
+                    getImgAltText: (record: PaymentProviderMethodRecordInterface) => record.provider?.name ?? "",
+                    getImgSubText: (record: PaymentProviderMethodRecordInterface) => record.provider?.code ?? "",
+                    getImgContent: (record: PaymentProviderMethodRecordInterface) => record.provider?.name ?? "-",
                     getImgSrc: (record: PaymentProviderMethodRecordInterface) =>
                         record.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL
                 }
@@ -306,20 +282,16 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[17%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.payment_method_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.payment_method_text"
                 },
                 cell: {
                     render: () => DataTableAvatarInfoCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: PaymentProviderMethodRecordInterface) =>
-                        record.payment_method?.name ?? "",
-                    getImgSubText: (record: PaymentProviderMethodRecordInterface) =>
-                        record.payment_method?.code ?? "",
-                    getImgContent: (record: PaymentProviderMethodRecordInterface) =>
-                        record.payment_method?.name ?? "-",
+                    getImgAltText: (record: PaymentProviderMethodRecordInterface) => record.payment_method?.name ?? "",
+                    getImgSubText: (record: PaymentProviderMethodRecordInterface) => record.payment_method?.code ?? "",
+                    getImgContent: (record: PaymentProviderMethodRecordInterface) => record.payment_method?.name ?? "-",
                     getImgSrc: (record: PaymentProviderMethodRecordInterface) =>
                         record.payment_method?.icon_url || DEFUALT_PAYMENT_METHOD_ICON_URL
                 }
@@ -330,16 +302,14 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[9%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.direction_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.direction_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentProviderMethodRecordInterface) =>
-                        record.direction?.toUpperCase?.() ?? "-"
+                    getTextContent: (record: PaymentProviderMethodRecordInterface) => record.direction?.toUpperCase?.() ?? "-"
                 }
             },
             // Provider Method Code Column
@@ -356,8 +326,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentProviderMethodRecordInterface) =>
-                        record.provider_method_code || "-"
+                    getTextContent: (record: PaymentProviderMethodRecordInterface) => record.provider_method_code || "-"
                 }
             },
             // Limits Column
@@ -366,16 +335,14 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[10%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentProviderMethodRecordInterface) =>
-                        this.formatLimits(record)
+                    getTextContent: (record: PaymentProviderMethodRecordInterface) => this.formatLimits(record)
                 }
             },
             // Is Active Column
@@ -384,8 +351,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.status_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: () => DataTableToggleCellUI
@@ -397,16 +363,12 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                     input_content_props: (): InputUIContentOptionsInterface => ({
                         loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                     }),
-                    input_ui_boolean_props: (
-                        record: PaymentProviderMethodRecordInterface
-                    ): InputUIBooleanPropsInterface => ({
+                    input_ui_boolean_props: (record: PaymentProviderMethodRecordInterface): InputUIBooleanPropsInterface => ({
                         is_checked: record.is_active,
                         required: true,
                         disabled: false
                     }),
-                    input_action_props: (
-                        record: PaymentProviderMethodRecordInterface
-                    ): InputUIActionPropsInterface => ({
+                    input_action_props: (record: PaymentProviderMethodRecordInterface): InputUIActionPropsInterface => ({
                         on_click: async (
                             event?: Event,
                             input_value?: InputValue,
@@ -422,8 +384,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.linked_by_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.linked_by_text"
                 },
                 cell: {
                     render: () => DataTableLinkCellUI
@@ -435,9 +396,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                         return getMemberFullName(record.linked_by_member) ?? "";
                     },
                     getLinkURL: (record: PaymentProviderMethodRecordInterface) => {
-                        return record.linked_by_member?.public_id
-                            ? `/members?member-profile=${record.linked_by_member.public_id}`
-                            : "";
+                        return this.getRouteQueryLink("member_profile", record?.linked_by_member?.public_id);
                     },
                     getLinkText: (record: PaymentProviderMethodRecordInterface) => {
                         return getMemberFullName(record.linked_by_member) || "-";
@@ -450,8 +409,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: true,
                 width: "w-[13%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
@@ -459,9 +417,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getDateTextContent: (record: PaymentProviderMethodRecordInterface) =>
-                        record.created_at
-                            ? InputTransformerUtil.formatReadableDateTime(record.created_at)
-                            : "-"
+                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
                 }
             },
             // Actions Column
@@ -470,8 +426,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                 sortable: false,
                 width: "w-[8%]",
                 header: {
-                    label_key:
-                        "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.actions_text"
+                    label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: () => DataTableActionIconCellUI
@@ -482,26 +437,23 @@ class PaymentProviderMethodListViewController extends BaseListViewController<
                         button_html_content: RenderHtmlUtil.renderHtml({
                             icon: "vertical_elipsis_svg_icon",
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.content_class_style,
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.content_class_style,
                             icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         }),
                         loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         })
                     }),
                     button_action_props: (
                         record: PaymentProviderMethodRecordInterface,
                         record_index?: number
                     ): ButtonUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
+                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                             this.action_handler.toggleActionMenu(record, record_index);
                         }
                     })

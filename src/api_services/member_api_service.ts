@@ -16,9 +16,7 @@ class MemberAPIService extends BaseAPIService {
         sort_by?: string;
         sort_direction?: string;
         filters?: MemberListFiltersInterface;
-    }): Promise<
-        APIResponseInterface<PaginatedResponseResultInterface<MemberRecordInterface[]>>
-    > => {
+    }): Promise<APIResponseInterface<PaginatedResponseResultInterface<MemberRecordInterface[]>>> => {
         const { page = 0, limit = 12, filters = {} } = params ?? {};
 
         const allDummyMembers: MemberRecordInterface[] = [
@@ -37,7 +35,10 @@ class MemberAPIService extends BaseAPIService {
                 is_2fa_enabled: false,
                 is_verified: true,
                 roles: [],
-                is_fully_authenticated: true
+                is_fully_authenticated: true,
+                last_login_at: null,
+                last_activity_at: null,
+                recent_activity_count: 0
             },
             {
                 public_id: "member_02",
@@ -54,7 +55,10 @@ class MemberAPIService extends BaseAPIService {
                 is_2fa_enabled: true,
                 is_verified: true,
                 roles: [],
-                is_fully_authenticated: true
+                is_fully_authenticated: true,
+                last_login_at: null,
+                last_activity_at: null,
+                recent_activity_count: 0
             }
         ];
 
@@ -84,9 +88,7 @@ class MemberAPIService extends BaseAPIService {
     // =========================
     // 🔹 GET SINGLE MEMBER (DUMMY)
     // =========================
-    public static getMember = async (
-        public_id: string
-    ): Promise<APIResponseInterface<MemberRecordInterface>> => {
+    public static getMember = async (public_id: string): Promise<APIResponseInterface<MemberRecordInterface>> => {
         const dummyMember: MemberRecordInterface = {
             public_id,
             username: "unknown",
@@ -102,7 +104,10 @@ class MemberAPIService extends BaseAPIService {
             is_2fa_enabled: false,
             is_verified: false,
             roles: [],
-            is_fully_authenticated: false
+            is_fully_authenticated: false,
+            last_login_at: null,
+            last_activity_at: null,
+            recent_activity_count: 0
         };
 
         return {

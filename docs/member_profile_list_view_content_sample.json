@@ -353,7 +353,10 @@
                 "timeline": {
                     "title_text": "Timeline",
                     "created_label_text": "Created:",
-                    "updated_label_text": "Updated:"
+                    "updated_label_text": "Updated:",
+                    "last_login_at_label_text": "Last Login:",
+                    "last_activity_at_label_text": "Last Activity:",
+                    "recent_activity_count_label_text": "Recent Activity Count:"
                 }
             },
             "devices_view": {

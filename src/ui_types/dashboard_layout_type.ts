@@ -5,10 +5,7 @@ import { LayoutSectionsUIClassStylesInterface } from "@ui/version_3/ui_types/lay
 import { NavLinkUIClassStylesInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 import { Component, Ref } from "vue";
 import { SideBarUIClassStyleInterface } from "./side_bar_ui_type";
-import {
-    ModalUIClassStylesInterface,
-    ModalUIPropsExtendedInterface
-} from "@ui/version_3/ui_types/modal_ui_type";
+import { ModalUIClassStylesInterface, ModalUIPropsExtendedInterface } from "@ui/version_3/ui_types/modal_ui_type";
 
 export interface DashboardLayoutPropsInterface {
     class_styles?: DashboardLayoutClassStylesInterface;
@@ -56,3 +53,8 @@ export interface DashboardLayoutClassStylesInterface {
 
     modal_class_style: ModalUIClassStylesInterface;
 }
+
+export type DashboardRouteQueryHandler = {
+    query_key: string;
+    handler: (query_value: string) => void;
+};

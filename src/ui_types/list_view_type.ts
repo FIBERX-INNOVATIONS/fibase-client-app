@@ -10,25 +10,13 @@ import { DropdownMenuUIPropsInterface } from "@ui/version_3/ui_types/dropdown_me
 
 import { InputGroupUIClassStylesInterface } from "@ui/version_3/ui_types/input_group_ui_type";
 
-import {
-    BreadcrumbUIClassStylesInterface,
-    BreadcrumbUIPropsInterface
-} from "@ui/version_3/ui_types/breadcrumb_ui_type";
+import { BreadcrumbUIClassStylesInterface, BreadcrumbUIPropsInterface } from "@ui/version_3/ui_types/breadcrumb_ui_type";
 
-import {
-    PageHeaderUIClassStylesInterface,
-    PageHeaderUIPropsInterface
-} from "@ui/version_3/ui_types/page_header_ui_type";
+import { PageHeaderUIClassStylesInterface, PageHeaderUIPropsInterface } from "@ui/version_3/ui_types/page_header_ui_type";
 
-import {
-    FiltersPanelUIClassStylesInterface,
-    FiltersPanelUIPropsInterface
-} from "@ui/version_3/ui_types/filters_panel_ui_type";
+import { FiltersPanelUIClassStylesInterface, FiltersPanelUIPropsInterface } from "@ui/version_3/ui_types/filters_panel_ui_type";
 
-import {
-    DataTableUIClassStylesInterface,
-    DataTableUIPropsInterface
-} from "@ui/version_3/ui_types/data_table_ui_type";
+import { DataTableUIClassStylesInterface, DataTableUIPropsInterface } from "@ui/version_3/ui_types/data_table_ui_type";
 
 import { DataTableCellComponentUIClassStylesInterface } from "@ui/version_3/ui_types/data_table_cell_component_ui_type";
 
@@ -37,10 +25,9 @@ import {
     DataTableResultAndBulkActionBarUIPropsInterface
 } from "@ui/version_3/ui_types/data_table_result_and_bulk_action_bar_ui_type";
 
-import {
-    PaginationUIClassStylesInterface,
-    PaginationUIPropsInterface
-} from "@ui/version_3/ui_types/pagination_ui_type";
+import { PaginationUIClassStylesInterface, PaginationUIPropsInterface } from "@ui/version_3/ui_types/pagination_ui_type";
+
+import { ContentCardUIClassStylesInterface } from "@ui/version_3/ui_types/content_card_ui_type";
 
 export type FieldArray<T, K extends keyof T> = T[K][];
 
@@ -83,10 +70,7 @@ export interface ListStateInterface<T extends object = Record<string, unknown>> 
     sort_direction: "asc" | "desc" | null;
 }
 
-export interface ListViewStateDataInterface<
-    T extends object = Record<string, unknown>,
-    K extends keyof T = keyof T
-> {
+export interface ListViewStateDataInterface<T extends object = Record<string, unknown>, K extends keyof T = keyof T> {
     data_table_key: string;
 
     selected_records: FieldArray<T, K>;
@@ -126,6 +110,8 @@ export interface ListViewComponentsInterface {
     DropdownMenuUI: Component;
 
     PaginationUI: Component;
+
+    ContentCardUI: Component;
 }
 
 export interface ListViewClassStylesInterface {
@@ -148,6 +134,16 @@ export interface ListViewClassStylesInterface {
     table_cell_components_class_styles: DataTableCellComponentUIClassStylesInterface;
 
     table_pagination_ui_class_styles: PaginationUIClassStylesInterface;
+
+    activity_cards_wrapper_class_style: string;
+
+    activity_loading_wrapper_class_style: string;
+
+    activity_loading_icon_class_style: string;
+
+    activity_empty_state_class_style: string;
+
+    activity_card_class_styles: ContentCardUIClassStylesInterface;
 }
 
 export type FetchListMethod<TFilters extends object, TRecord extends object> = (params: {

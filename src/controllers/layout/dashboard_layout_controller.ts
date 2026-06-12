@@ -1,4 +1,4 @@
-import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
+import { WatchersType } from "@ui/version_3/types/base_type";
 
 import { EventBus } from "@/utils/global_event_bus_util";
 
@@ -66,16 +66,19 @@ class DashboardLayoutController extends BaseController<
         });
     }
 
+    // Method to get UI Components
     protected getUIComponents(): DashboardLayoutComponentsInterface {
         return { TopBarUI, SideBarUI, ModalUI };
     }
 
+    // Method to get ui state data
     protected getUIStateData(): DashboardLayoutStateDataInterface {
         return {
             modals: [] as ModalUIPropsExtendedInterface[]
         };
     }
 
+    // Method to handle mounted logic
     protected async handleOnMountedLogic(): Promise<void> {
         const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
 
@@ -86,12 +89,31 @@ class DashboardLayoutController extends BaseController<
         this.event_bus?.on("close_modal", this.action_handler.handleCloseModal);
 
         this.event_bus?.on("open_modal", this.action_handler.handleOpenModal);
+
+        this.event_bus?.on("clear_route_query_handler_params", this.action_handler.handleClearRouteQueryHandlerParams);
+
+        this.action_handler.handleRouteQueryActions(this.route);
     }
 
+    // Method to handle before unmounted logic
     protected async handleBeforeUnmountedLogic(): Promise<void> {
         this.event_bus?.off("close_modal", this.action_handler.handleCloseModal);
 
         this.event_bus?.off("open_modal", this.action_handler.handleOpenModal);
+
+        this.event_bus?.off("clear_route_query_handler_params", this.action_handler.handleClearRouteQueryHandlerParams);
+    }
+
+    // Method to get ui watchers
+    protected getUIWatchers(): WatchersType<DashboardLayoutPropsInterface, DashboardLayoutStateDataInterface> {
+        return {
+            route: {
+                handler: (route) => {
+                    this.action_handler.handleRouteQueryActions(route);
+                },
+                options: { deep: false }
+            }
+        };
     }
 }
 

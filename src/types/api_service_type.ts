@@ -96,6 +96,12 @@ export interface MemberRecordInterface {
     created_at?: string | null;
 
     updated_at?: string | null;
+
+    last_login_at: Date | null;
+
+    last_activity_at: Date | null;
+
+    recent_activity_count: number;
 }
 
 export interface AuthAccessRecordInterface {
@@ -174,9 +180,7 @@ export interface RegisteredAppStatusUpdateResponseInterface {
     new_status: boolean;
 }
 
-export const getMemberFullName = (
-    member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null
-): string => {
+export const getMemberFullName = (member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null): string => {
     if (!member) {
         return "";
     }
@@ -239,9 +243,7 @@ export interface CurrencyRecordInterface {
     updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
-export type CurrencyListResponseInterface = PaginatedResponseResultInterface<
-    CurrencyRecordInterface[]
->;
+export type CurrencyListResponseInterface = PaginatedResponseResultInterface<CurrencyRecordInterface[]>;
 
 export interface CurrencyStatusUpdateResponseInterface {
     safe_app: CurrencyRecordInterface;
@@ -378,13 +380,9 @@ export interface CurrencyPaymentProviderMethodRecordInterface {
     linked_by_member?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
-export type PaymentMethodListResponseInterface = PaginatedResponseResultInterface<
-    PaymentMethodRecordInterface[]
->;
+export type PaymentMethodListResponseInterface = PaginatedResponseResultInterface<PaymentMethodRecordInterface[]>;
 
-export type PaymentProviderListResponseInterface = PaginatedResponseResultInterface<
-    PaymentProviderRecordInterface[]
->;
+export type PaymentProviderListResponseInterface = PaginatedResponseResultInterface<PaymentProviderRecordInterface[]>;
 
 export type PaymentProviderConfigListResponseInterface = PaginatedResponseResultInterface<
     PaymentProviderConfigRecordInterface[]
@@ -486,9 +484,7 @@ export type MemberListParams = {
     filters?: Partial<MemberListFiltersInterface>;
 };
 
-export interface MemberListResponseInterface extends PaginatedResponseResultInterface<
-    MemberRecordInterface[]
-> {}
+export interface MemberListResponseInterface extends PaginatedResponseResultInterface<MemberRecordInterface[]> {}
 
 export interface MemberDeviceSessionListResponseInterface extends PaginatedResponseResultInterface<
     MemberDeviceSessionInterface[]
@@ -516,14 +512,14 @@ export interface ActivityRecordInterface {
     id: string;
     actor_type: "member" | "app" | string;
     actor_id: string;
-    actor_name?: string;
+    action_key?: string;
     request_id: string;
     action: string;
     entity_type: string;
     description: string;
     ip_address: string;
     user_agent: string;
-    status: "success" | "failed";
+    is_success: boolean;
     created_at: string;
     updated_at: string;
 }
@@ -536,9 +532,7 @@ export type ActivityListParams = {
     filters?: Partial<ActivityListFiltersInterface>;
 };
 
-export interface ActivityListResponseInterface extends PaginatedResponseResultInterface<
-    ActivityRecordInterface[]
-> {}
+export interface ActivityListResponseInterface extends PaginatedResponseResultInterface<ActivityRecordInterface[]> {}
 
 // ==============================
 // ACCESS CONTROL TYPES
@@ -573,9 +567,7 @@ export type RoleListParams = {
     filters?: Partial<RoleListFiltersInterface>;
 };
 
-export interface RoleListResponseInterface extends PaginatedResponseResultInterface<
-    RoleRecordInterface[]
-> {}
+export interface RoleListResponseInterface extends PaginatedResponseResultInterface<RoleRecordInterface[]> {}
 
 export type RolePermissionListParams = {
     page?: number;
@@ -586,9 +578,7 @@ export type RolePermissionListParams = {
     filters?: Record<string, any>;
 };
 
-export interface RolePermissionListResponseInterface extends PaginatedResponseResultInterface<
-    PermissionRecordInterface[]
-> {}
+export interface RolePermissionListResponseInterface extends PaginatedResponseResultInterface<PermissionRecordInterface[]> {}
 
 export interface RolePermissionActionResponseInterface {
     affected_count: number;

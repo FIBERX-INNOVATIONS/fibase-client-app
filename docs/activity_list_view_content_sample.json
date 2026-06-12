@@ -1,0 +1,165 @@
+{
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_text": "Activities",
+                    "menu_icon": "clock_svg_icon",
+                    "menu_link": "/activities",
+                    "menu_permission_text": "activity_module.get_activity_list"
+                }
+            ]
+        }
+    },
+    "activity_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Activities",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Activities",
+                "header_description": "Inspect activity and audit logs across members, apps, request IDs, and entity types."
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search activity records"
+                },
+                "registered_app_filter": {
+                    "label_text": "Registered App",
+                    "placeholder_text": "Search registered app",
+                    "selected_text_prefix": "Selected app"
+                },
+                "member_filter": {
+                    "label_text": "Member",
+                    "placeholder_text": "Search member",
+                    "selected_text_prefix": "Selected member"
+                },
+                "request_id_filter": {
+                    "label_text": "Request ID",
+                    "placeholder_text": "Enter request ID"
+                },
+                "entity_type_filter": {
+                    "label_text": "Entity Type",
+                    "placeholder_text": "Select entity type",
+                    "option_list": [
+                        {
+                            "label_text": "Member",
+                            "value": "Member"
+                        },
+                        {
+                            "label_text": "Role",
+                            "value": "Role"
+                        },
+                        {
+                            "label_text": "Actor Role",
+                            "value": "ActorRole"
+                        },
+                        {
+                            "label_text": "Registered App",
+                            "value": "RegisteredApp"
+                        },
+                        {
+                            "label_text": "Permission",
+                            "value": "Permission"
+                        },
+                        {
+                            "label_text": "Member Device",
+                            "value": "MemberDevice"
+                        },
+                        {
+                            "label_text": "App Event",
+                            "value": "AppEvent"
+                        }
+                    ]
+                },
+                "ip_address_filter": {
+                    "label_text": "IP Address",
+                    "placeholder_text": "Enter IP address"
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        {
+                            "label_text": "Success",
+                            "value": "success"
+                        },
+                        {
+                            "label_text": "Failed",
+                            "value": "failed"
+                        }
+                    ]
+                },
+                "date_range_filter": {
+                    "label_text": "Activity Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} activity record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading activity records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Activity Record Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "actor_text": "Actor",
+                    "request_id_text": "Request ID",
+                    "action_text": "Action",
+                    "entity_type_text": "Entity Type",
+                    "description_text": "Description",
+                    "ip_address_text": "IP Address",
+                    "user_agent_text": "User Agent",
+                    "status_text": "Status",
+                    "created_at_text": "Created At",
+                    "updated_at_text": "Updated At"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                }
+            },
+            "card": {
+                "labels": {
+                    "actor_text": "Actor",
+                    "request_id_text": "Request ID",
+                    "entity_type_text": "Entity Type",
+                    "ip_address_text": "IP Address",
+                    "user_agent_text": "User Agent",
+                    "status_text": "Status",
+                    "created_at_text": "Created At",
+                    "updated_at_text": "Updated At"
+                }
+            }
+        }
+    }
+}
