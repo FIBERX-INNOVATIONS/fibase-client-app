@@ -24,6 +24,8 @@ import StatusAlertTriggerUtil from "@/utils/status_alert_trigger_util";
 import AccessControlAPIService from "@/api_services/access_control_api_service";
 
 import type AccessControlPermissionsViewController from "@/controllers/access_control/permissions_view_controller";
+import { CSRF_TOKEN_FOR, CSRFTokenForType } from "@/configs";
+import AuthAPIService from "@/api_services/auth_api_service";
 
 class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
     AccessControlPermissionsViewPropsInterface,
@@ -41,6 +43,21 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         this.controller = controller;
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
+
+    // Method to handle fetching csrf token
+    protected fetchFormCSRFToken = async (token_for: CSRFTokenForType | null): Promise<string> => {
+        if (!token_for) {
+            return "";
+        }
+
+        const result = await AuthAPIService.getFormCSRFToken(token_for);
+
+        if (!result || result.status !== "success" || !result?.data?.token) {
+            return "";
+        }
+
+        return result.data.token;
+    };
 
     // Method to get the active role id.
     private getRoleId(): string | number | null {
@@ -170,7 +187,7 @@ class AccessControlPermissionsViewActionHandler extends BaseActionHandler<
         }
 
         const payload: RolePermissionActionPayload = {
-            csrf_token: null,
+            csrf_token: await this.fetchFormCSRFToken(CSRF_TOKEN_FOR.ACCESS_CONTROL_ROLE_PERMISSION),
             action: "unassign",
             permission_ids: normalized_permission_ids
         };

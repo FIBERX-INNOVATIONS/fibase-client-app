@@ -11,7 +11,8 @@ export const CSRF_TOKEN_FOR = {
     ACCESS_CONTROL_ROLE: "access_control_role",
     MEMBER_PROFILE: "member",
     MEMBER_SETUP_LINK: "member_setup_link",
-    APP_CURRECY: "app_currency"
+    APP_CURRECY: "app_currency",
+    ACCESS_CONTROL_ROLE_PERMISSION: "access_control_role_permission"
 } as const;
 
 export type CSRFTokenForType = (typeof CSRF_TOKEN_FOR)[keyof typeof CSRF_TOKEN_FOR];

@@ -28,10 +28,10 @@ const AccessControlPermissionsViewClassStyles: AccessControlPermissionsViewClass
     permissions_grid_class_style: "grid grid-cols-1 gap-3",
 
     permission_row_class_style:
-        "flex items-stretch gap-3 rounded-full border border-gray-200 bg-white p-2 shadow-sm transition hover:border-gray-300",
+        "flex items-stretch gap-3 rounded-[28px] border border-gray-200 bg-white p-2 shadow-sm transition hover:border-gray-300",
 
     permission_checkbox_class_style:
-        "flex h-auto min-h-16 w-14 shrink-0 items-center justify-center rounded-full border transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-60",
+        "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-60",
 
     permission_checkbox_selected_class_style: "border-green-600 bg-green-600 text-white",
 

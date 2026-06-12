@@ -117,6 +117,7 @@ class AccessControlPermissionsViewController
             can_unassign_permissions: () =>
                 MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.assign_or_unassign_role_permissions") &&
                 MemberAuthenticatorUtil.memberHasSuperAdminRole(MemberAuthenticatorUtil.getLoggedInMember())
+            // this.props.record.symbol !== "ADMS"
         };
     }
 
