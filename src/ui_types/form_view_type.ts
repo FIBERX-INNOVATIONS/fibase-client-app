@@ -6,8 +6,11 @@ import { ToasterUIPropsInterface, ToasterUIClassStylesInterface } from "@ui/vers
 
 import {
     AppCurrencyActionResponseInterface,
+    ActorRoleActionResponseInterface,
     CurrencyRecordInterface,
-    RegisteredAppPreviewRecordInterface
+    RegisteredAppPreviewRecordInterface,
+    MemberRecordInterface,
+    RegisteredAppRecordInterface
 } from "@/types/api_service_type";
 
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
@@ -24,7 +27,8 @@ import {
     MemberProfileFieldsType,
     AppCurrencyFieldsType,
     TwoFactorLoginFieldsType,
-    RoleFieldsType
+    RoleFieldsType,
+    ActorRoleAssignmentFieldsType
 } from "@/types/form_fields_type";
 
 import {
@@ -136,6 +140,38 @@ interface AssignCurrencyFormViewPropsInterface extends FormViewPropsInterface<Cu
     on_success?: AppCurrencyActionSuccessCallback;
 }
 
+type ActorRoleAssignmentActorType = "member" | "app";
+
+interface ActorRoleAssignmentSuccessPayloadInterface {
+    actor_type: ActorRoleAssignmentActorType;
+
+    actor_id: string | number;
+
+    role_ids: Array<string | number>;
+
+    assigned_role_ids: Array<string | number>;
+
+    unassigned_role_ids: Array<string | number>;
+
+    response?: APIResponseInterface<ActorRoleActionResponseInterface>;
+}
+
+type ActorRoleAssignmentSuccessCallback = (payload: ActorRoleAssignmentSuccessPayloadInterface) => Promise<void> | void;
+
+interface ActorRoleAssignmentFormViewPropsInterface<T = any> extends FormViewPropsInterface<T> {
+    actor_type: ActorRoleAssignmentActorType;
+
+    actor_id?: string | number;
+
+    role_ids?: Array<string | number>;
+
+    actor_read_only?: boolean;
+
+    content_key?: string;
+
+    on_success?: ActorRoleAssignmentSuccessCallback;
+}
+
 interface FormViewComponentsInterface {
     HeaderTextUI: Component;
     InputGroupUI: Component;
@@ -181,6 +217,8 @@ type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFieldsType>;
 
 type RoleFormState = FormViewStateDataInterface<RoleFieldsType>;
 
+type ActorRoleAssignmentFormState = FormViewStateDataInterface<ActorRoleAssignmentFieldsType>;
+
 export {
     BaseFormUIConfig,
     BaseFormInputGroupOptions,
@@ -195,6 +233,10 @@ export {
     AppCurrencyFormActionType,
     AppCurrencyActionSuccessPayloadInterface,
     AppCurrencyActionSuccessCallback,
+    ActorRoleAssignmentActorType,
+    ActorRoleAssignmentSuccessPayloadInterface,
+    ActorRoleAssignmentSuccessCallback,
+    ActorRoleAssignmentFormViewPropsInterface,
     TwoFactorLoginViewStateDataInterface,
     LoginViewStateDataInterface,
     RegisteredAppFormState,
@@ -206,5 +248,8 @@ export {
     CurrencyPaymentProviderMethodFormState,
     MemberProfileFormState,
     AppCurrencyFormState,
-    RoleFormState
+    RoleFormState,
+    ActorRoleAssignmentFormState
 };
+
+export type ActorRecord = MemberRecordInterface | RegisteredAppRecordInterface;

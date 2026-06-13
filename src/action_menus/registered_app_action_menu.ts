@@ -1,10 +1,7 @@
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
-import {
-    NavLinkUIPropsInterface,
-    NavLinkContentPayloadResultInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
@@ -15,12 +12,10 @@ class RegisteredAppActionMenu {
         record: RegisteredAppRecordInterface,
         action_handler?: RegisteredAppListViewActionHandler
     ): NavLinkUIPropsInterface[] {
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
-        const base_content_key =
-            "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
-        const record_id = record?.public_id?.toString();
+        const base_content_key = "content_resource.registered_app_view_ui.list_view_ui.table.action_menu_list";
+        const record_id = record?.public_id?.toString() ?? "";
 
         // menu contents
         const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
@@ -31,6 +26,9 @@ class RegisteredAppActionMenu {
         );
         const edit_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.edit_menu_option`
+        );
+        const manage_roles_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
+            `${base_content_key}.manage_roles_menu_option`
         );
         const delete_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.delete_menu_option`
@@ -48,19 +46,14 @@ class RegisteredAppActionMenu {
                 content: view_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleViewActionMenuClicked(record, config);
                     }
                 },
 
                 class_styles,
 
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "registered_app_module.get_registered_app"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.get_registered_app")
             },
             // Select Menu
             {
@@ -73,10 +66,7 @@ class RegisteredAppActionMenu {
                 content: select_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleSelectActionMenuClicked(record, config);
                     }
                 },
@@ -96,10 +86,7 @@ class RegisteredAppActionMenu {
                 content: edit_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleEditActionMenuClicked(record, config);
                     }
                 },
@@ -107,9 +94,30 @@ class RegisteredAppActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "registered_app_module.update_registered_app"
-                    ) && !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app") &&
+                    !record?.is_active
+            },
+            // Manage Roles Menu
+            {
+                id: `${manage_roles_menu_content?.menu_text ?? "ManageRoles"}ActionMenu${record_id.toUpperCase()}`,
+
+                link: manage_roles_menu_content?.menu_link ?? "",
+
+                icon: manage_roles_menu_content?.menu_icon,
+
+                content: manage_roles_menu_content?.menu_text ?? "Manage Roles",
+
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleManageRolesActionMenuClicked(record, config);
+                    }
+                },
+
+                class_styles,
+
+                has_permission:
+                    MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.assign_actor_roles") ||
+                    MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.unassign_actor_roles")
             },
             // Delete Menu
             {
@@ -122,10 +130,7 @@ class RegisteredAppActionMenu {
                 content: delete_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleDeleteActionMenuClicked(record, config);
                     }
                 },
@@ -133,9 +138,8 @@ class RegisteredAppActionMenu {
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "registered_app_module.delete_registered_app"
-                    ) && !record.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.delete_registered_app") &&
+                    !record.is_active
             }
         ];
 

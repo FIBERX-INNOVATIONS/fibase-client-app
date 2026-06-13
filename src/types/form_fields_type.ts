@@ -196,6 +196,12 @@ type RoleFieldsType = {
     symbol_input_group_props: InputGroupUIPropsInterface;
 };
 
+type ActorRoleAssignmentFieldsType = {
+    actor_id_input_group_props: InputGroupUIPropsInterface;
+
+    role_ids_input_group_props: InputGroupUIPropsInterface;
+};
+
 export {
     LoginFieldsType,
     TwoFactorLoginFieldsType,
@@ -208,5 +214,6 @@ export {
     CurrencyPaymentProviderMethodFieldsType,
     MemberProfileFieldsType,
     AppCurrencyFieldsType,
-    RoleFieldsType
+    RoleFieldsType,
+    ActorRoleAssignmentFieldsType
 };

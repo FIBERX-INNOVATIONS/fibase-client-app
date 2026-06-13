@@ -2,10 +2,7 @@ import { MemberRecordInterface } from "@/types/api_service_type";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-import {
-    NavLinkUIPropsInterface,
-    NavLinkContentPayloadResultInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
@@ -26,18 +23,15 @@ class MemberProfileActionMenu {
 
         const current_member = MemberAuthenticatorUtil.getLoggedInMember();
 
-        const is_current_member_super_admin =
-            MemberAuthenticatorUtil.memberHasSuperAdminRole(current_member);
+        const is_current_member_super_admin = MemberAuthenticatorUtil.memberHasSuperAdminRole(current_member);
 
         const is_record_super_admin = MemberAuthenticatorUtil.memberHasSuperAdminRole(record);
 
         const is_same_as_logged_in_member = MemberAuthenticatorUtil.isSameAsLoggedInMember(record);
 
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
 
-        const base_content_key =
-            "content_resource.member_profile_view_ui.list_view_ui.table.action_menu_list";
+        const base_content_key = "content_resource.member_profile_view_ui.list_view_ui.table.action_menu_list";
 
         const getContent = (key: string) =>
             content_manager.get<NavLinkContentPayloadResultInterface>(`${base_content_key}.${key}`);
@@ -46,13 +40,12 @@ class MemberProfileActionMenu {
         const select_menu_content = getContent("select_menu_option");
         const edit_menu_content = getContent("edit_menu_option");
         const activity_menu_content = getContent("activity_menu_option");
+        const manage_roles_menu_content = getContent("manage_roles_menu_option");
         const restore_menu_content = getContent("restore_menu_option");
         const delete_menu_content = getContent("delete_menu_option");
         const send_activation_link_menu_content = getContent("send_activation_link_menu_option");
 
-        const can_view = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "member_profile_module.get_member"
-        );
+        const can_view = MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.get_member");
 
         const can_select = true;
 
@@ -61,21 +54,21 @@ class MemberProfileActionMenu {
             !is_record_super_admin &&
             (is_same_as_logged_in_member ||
                 is_current_member_super_admin ||
-                MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "member_profile_module.update_member"
-                ));
+                MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.update_member"));
 
-        const can_view_activity = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "activity_module.get_activity_list"
-        );
+        const can_view_activity = MemberAuthenticatorUtil.memberHasPermissionTo("activity_module.get_activity_list");
+
+        const can_manage_roles =
+            !is_deleted &&
+            !is_record_super_admin &&
+            (MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.assign_actor_roles") ||
+                MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.unassign_actor_roles"));
 
         const can_send_activation_email =
             !is_deleted &&
             !record.is_active &&
             !is_record_super_admin &&
-            MemberAuthenticatorUtil.memberHasPermissionTo(
-                "member_profile_module.send_member_activation_link"
-            );
+            MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.send_member_activation_link");
 
         const can_restore_deleted_profile =
             is_deleted &&
@@ -96,10 +89,7 @@ class MemberProfileActionMenu {
                 icon: view_menu_content?.menu_icon,
                 content: view_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleViewActionMenuClicked(record, config);
                     }
                 },
@@ -113,10 +103,7 @@ class MemberProfileActionMenu {
                 icon: select_menu_content?.menu_icon,
                 content: select_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleSelectActionMenuClicked(record, config);
                     }
                 },
@@ -130,10 +117,7 @@ class MemberProfileActionMenu {
                 icon: edit_menu_content?.menu_icon,
                 content: edit_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleEditActionMenuClicked(record, config);
                     }
                 },
@@ -147,18 +131,26 @@ class MemberProfileActionMenu {
                 icon: activity_menu_content?.menu_icon,
                 content: activity_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
-                        return await action_handler?.handleActivityActionMenuClicked(
-                            record,
-                            config
-                        );
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleActivityActionMenuClicked(record, config);
                     }
                 },
                 class_styles,
                 has_permission: can_view_activity
+            },
+            // Manage Roles Action Menu
+            {
+                id: `${manage_roles_menu_content?.menu_text ?? "ManageRoles"}ActionMenu${record_id.toUpperCase()}`,
+                link: manage_roles_menu_content?.menu_link ?? "",
+                icon: manage_roles_menu_content?.menu_icon,
+                content: manage_roles_menu_content?.menu_text ?? "Manage Roles",
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleManageRolesActionMenuClicked(record, config);
+                    }
+                },
+                class_styles,
+                has_permission: can_manage_roles
             },
             // Send Activation Email Action Menu
             {
@@ -167,14 +159,8 @@ class MemberProfileActionMenu {
                 icon: send_activation_link_menu_content?.menu_icon,
                 content: send_activation_link_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
-                        return await action_handler?.handleSendActivationLinkActionMenuClicked(
-                            record,
-                            config
-                        );
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleSendActivationLinkActionMenuClicked(record, config);
                     }
                 },
                 class_styles,
@@ -187,10 +173,7 @@ class MemberProfileActionMenu {
                 icon: restore_menu_content?.menu_icon,
                 content: restore_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleRestoreActionMenuClicked(record, config);
                     }
                 },
@@ -204,10 +187,7 @@ class MemberProfileActionMenu {
                 icon: delete_menu_content?.menu_icon,
                 content: delete_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleDeleteActionMenuClicked(record, config);
                     }
                 },

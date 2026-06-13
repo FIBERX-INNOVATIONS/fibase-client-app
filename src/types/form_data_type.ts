@@ -371,3 +371,9 @@ export interface ActorRoleActionPayload extends BaseFormData {
     actor_id: string | number;
     role_ids: Array<number | string>;
 }
+
+export interface ActorRoleAssignmentFormDataInterface extends BaseFormData {
+    actor_type: "member" | "app";
+    actor_id: string | number;
+    role_ids: Array<number | string>;
+}

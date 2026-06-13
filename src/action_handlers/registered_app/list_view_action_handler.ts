@@ -2,16 +2,15 @@ import { markRaw } from "vue";
 
 import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
 
+import { ActorRoleAssignmentSuccessPayloadInterface } from "@/ui_types/form_view_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import { ActionMethodRetrunInterface, InputValue } from "@ui/version_3/ui_types/input_ui_type";
 
-import {
-    RegisteredAppRecordInterface,
-    RegisteredAppStatusUpdateResponseInterface
-} from "@/types/api_service_type";
+import { RegisteredAppRecordInterface, RegisteredAppStatusUpdateResponseInterface } from "@/types/api_service_type";
 
 import { RegisteredAppListViewFiltersInterface } from "@/types/list_view_filter_type";
 
@@ -32,6 +31,7 @@ import ProfileView from "@/views/registered_app/ProfileView.vue";
 import DeleteView from "@/views/registered_app/DeleteView.vue";
 
 import ActivationCredentialsView from "@/views/registered_app/ActivationCredentialsView.vue";
+import ActorRoleAssignmentFormView from "@/views/access_control/ActorRoleAssignmentFormView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
@@ -41,23 +41,15 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     RegisteredAppListViewFiltersInterface
 > {
     constructor(controller: BaseListViewController<RegisteredAppRecordInterface, "public_id">) {
-        super(
-            controller,
-            "registered_app_list_view_action_handler",
-            {},
-            RegisteredAppAPIService.getRegisteredAppList
-        );
+        super(controller, "registered_app_list_view_action_handler", {}, RegisteredAppAPIService.getRegisteredAppList);
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
     // Method to open activation credentials modal once an app is activated
-    private openActivationCredentialsModal = (
-        activation_data: RegisteredAppStatusUpdateResponseInterface
-    ): void => {
+    private openActivationCredentialsModal = (activation_data: RegisteredAppStatusUpdateResponseInterface): void => {
         const modal_payload: OpenModalEventPayloadInterface = {
-            content_key:
-                "content_resource.registered_app_view_ui.modals_ui.activation_credentials_modal_ui",
+            content_key: "content_resource.registered_app_view_ui.modals_ui.activation_credentials_modal_ui",
 
             animation_type: "slide_top",
 
@@ -123,11 +115,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 const activation_data = result.data;
                 const safe_app = activation_data?.safe_app;
 
-                this.updateListStateRecord(
-                    public_id,
-                    safe_app ?? { is_active: !record.is_active },
-                    "public_id"
-                );
+                this.updateListStateRecord(public_id, safe_app ?? { is_active: !record.is_active }, "public_id");
 
                 if (activation_data?.new_status === true && activation_data.private_key) {
                     this.openActivationCredentialsModal(activation_data);
@@ -153,10 +141,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
     };
 
     // Method to toogle data table action menu
-    public toggleActionMenu = (
-        record: RegisteredAppRecordInterface,
-        record_index?: number
-    ): void => {
+    public toggleActionMenu = (record: RegisteredAppRecordInterface, record_index?: number): void => {
         const action_mneu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -168,11 +153,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_mneu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_mneu_btn_id, action_menu_id, true);
     };
 
     // Method to handle view Action menu clicked
@@ -215,6 +196,37 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
+    // Method to handle manage roles action menu clicked
+    public handleManageRolesActionMenuClicked = async (
+        record: RegisteredAppRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        const content_key = "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ActorRoleAssignmentFormView),
+
+            body_props: {
+                actor_type: "app",
+                actor_id: record.public_id,
+                actor_read_only: true,
+                record,
+                content_key,
+                on_success: async (payload: ActorRoleAssignmentSuccessPayloadInterface): Promise<void> => {
+                    await this.fetchRecords();
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
+
     // Method to handle on delete action menu clicked
     public handleDeleteActionMenuClicked = async (
         record: RegisteredAppRecordInterface,
@@ -233,9 +245,7 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 record,
                 record_id: record.public_id,
                 content_key: delete_modal_content_key,
-                on_delete_success: async (
-                    deleted_record: RegisteredAppRecordInterface
-                ): Promise<void> => {
+                on_delete_success: async (deleted_record: RegisteredAppRecordInterface): Promise<void> => {
                     this.removeListStateRecord(deleted_record.public_id, "public_id");
                 }
             }

@@ -4,6 +4,8 @@ import { CSRF_TOKEN_FOR } from "@/configs";
 
 import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
 
+import { ActorRoleAssignmentSuccessPayloadInterface } from "@/ui_types/form_view_type";
+
 import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
@@ -31,6 +33,7 @@ import DeleteView from "@/views/member_profile/DeleteView.vue";
 import ProfileView from "@/views/member_profile/ProfileView.vue";
 import RestoreMemberView from "@/views/member_profile/RestoreMemberView.vue";
 import SendActivationLinkView from "@/views/member_profile/SendActivationLinkView.vue";
+import ActorRoleAssignmentFormView from "@/views/access_control/ActorRoleAssignmentFormView.vue";
 
 import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_menu_ui_props_builder";
 
@@ -86,10 +89,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
             }
 
             if (!record.is_active || input_value === true || input_value === "true") {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "warning",
-                    "member_profile_activation_not_allowed"
-                );
+                StatusAlertTriggerUtil.triggerAlert("warning", "member_profile_activation_not_allowed");
 
                 return {
                     status: false,
@@ -98,14 +98,10 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
             }
 
             const current_member = MemberAuthenticatorUtil.getLoggedInMember();
-            const is_current_member_super_admin =
-                MemberAuthenticatorUtil.memberHasSuperAdminRole(current_member);
+            const is_current_member_super_admin = MemberAuthenticatorUtil.memberHasSuperAdminRole(current_member);
 
             if (!is_current_member_super_admin) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "warning",
-                    "member_profile_deactivation_super_admin_required"
-                );
+                StatusAlertTriggerUtil.triggerAlert("warning", "member_profile_deactivation_super_admin_required");
 
                 return {
                     status: false,
@@ -114,10 +110,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
             }
 
             if (MemberAuthenticatorUtil.memberHasSuperAdminRole(record)) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "warning",
-                    "super_admin_member_cannot_be_deactivated"
-                );
+                StatusAlertTriggerUtil.triggerAlert("warning", "super_admin_member_cannot_be_deactivated");
 
                 return {
                     status: false,
@@ -125,9 +118,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
                 };
             }
 
-            const csrf_token_result = await AuthAPIService.getFormCSRFToken(
-                CSRF_TOKEN_FOR.MEMBER_PROFILE
-            );
+            const csrf_token_result = await AuthAPIService.getFormCSRFToken(CSRF_TOKEN_FOR.MEMBER_PROFILE);
             const csrf_token = csrf_token_result?.data?.token ?? "";
 
             if (!csrf_token) {
@@ -157,11 +148,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
             }
 
             if (result.status === "success") {
-                this.updateListStateRecord(
-                    public_id,
-                    result.data ?? { is_active: false },
-                    "public_id"
-                );
+                this.updateListStateRecord(public_id, result.data ?? { is_active: false }, "public_id");
 
                 return {
                     status: true,
@@ -195,11 +182,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_menu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
     };
 
     // Method to handle view Action menu clicked
@@ -255,13 +238,52 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
         });
     };
 
+    // Method to handle manage roles action menu clicked
+    public handleManageRolesActionMenuClicked = async (
+        record: MemberRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        const content_key = "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui";
+
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key,
+
+            animation_type: "slide_top",
+
+            body_component: markRaw(ActorRoleAssignmentFormView),
+
+            body_props: {
+                actor_type: "member",
+                actor_id: record.public_id,
+                actor_read_only: true,
+                record,
+                content_key,
+                on_success: async (payload: ActorRoleAssignmentSuccessPayloadInterface): Promise<void> => {
+                    const roles = payload.response?.data?.assigned_roles?.map((role) => ({
+                        ...role,
+                        id: role.id.toString()
+                    }));
+
+                    if (roles) {
+                        this.updateListStateRecord(record.public_id, { roles }, "public_id");
+                    } else {
+                        await this.fetchRecords();
+                    }
+                }
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
+
     // Method to handle Send Activation Link action menu clicked
     public handleSendActivationLinkActionMenuClicked = async (
         record: MemberRecordInterface,
         config?: { props: NavLinkUIPropsInterface }
     ): Promise<void> => {
-        const content_key =
-            "content_resource.member_profile_view_ui.modals_ui.send_activation_link_modal_ui";
+        const content_key = "content_resource.member_profile_view_ui.modals_ui.send_activation_link_modal_ui";
 
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key,
@@ -325,9 +347,7 @@ class MemberProfileListViewActionHandler extends BaseListViewActionHandler<
                 record,
                 record_id: record.public_id,
                 content_key,
-                on_delete_success: async (
-                    restored_record: MemberRecordInterface
-                ): Promise<void> => {
+                on_delete_success: async (restored_record: MemberRecordInterface): Promise<void> => {
                     await this.fetchRecords();
                 }
             }

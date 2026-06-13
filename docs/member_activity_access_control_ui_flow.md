@@ -487,6 +487,103 @@ Rules:
 - Use `actor_type = "member"` and `actor_id = member.public_id` from member profile screens.
 - Use `actor_type = "app"` and `actor_id = app.public_id` or app prefix from registered app screens.
 
+Frontend form:
+
+- View: `src/views/access_control/ActorRoleAssignmentFormView.vue`
+- Controller: `src/controllers/access_control/actor_role_assignment_form_view_controller.ts`
+- Action handler: `src/action_handlers/access_control/actor_role_assignment_form_view_action_handler.ts`
+- Fields: `actor_id` select search and `role_ids` multi-select search.
+- When opened from a member or registered app action menu, pass `actor_read_only: true` so the actor is preloaded and locked.
+- Existing role selections can come from `record.roles`, `record.actor_roles[].role`, or an explicit `role_ids` array.
+- On submit, the client diffs existing roles against the selected roles, then calls unassign for removed roles and assign for new roles.
+
+Member profile modal payload sample:
+
+```json
+{
+    "content_key": "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui",
+    "animation_type": "slide_top",
+    "body_component": "ActorRoleAssignmentFormView",
+    "body_props": {
+        "actor_type": "member",
+        "actor_id": "mem_01HZX8M9Q2Y2YF1D7K",
+        "actor_read_only": true,
+        "record": {
+            "public_id": "mem_01HZX8M9Q2Y2YF1D7K",
+            "full_name": "Ada Lovelace",
+            "email": "ada@example.com",
+            "roles": [
+                {
+                    "id": 2,
+                    "name": "Operations Manager",
+                    "symbol": "OPS_MANAGER",
+                    "display_name": "Operations Manager"
+                }
+            ]
+        },
+        "content_key": "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui"
+    }
+}
+```
+
+Registered app modal payload sample:
+
+```json
+{
+    "content_key": "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui",
+    "animation_type": "slide_top",
+    "body_component": "ActorRoleAssignmentFormView",
+    "body_props": {
+        "actor_type": "app",
+        "actor_id": "app_01HZX8N2Y5B9QT7WD",
+        "actor_read_only": true,
+        "record": {
+            "public_id": "app_01HZX8N2Y5B9QT7WD",
+            "prefix": "SHOP",
+            "name": "Shop Portal",
+            "roles": [
+                {
+                    "id": 4,
+                    "name": "Checkout Service",
+                    "symbol": "CHECKOUT_SERVICE",
+                    "display_name": "Checkout Service"
+                }
+            ]
+        },
+        "content_key": "content_resource.access_control_view_ui.modals_ui.actor_role_assignment_modal_ui"
+    }
+}
+```
+
+Content JSON sample:
+
+```json
+{
+    "access_control_view_ui": {
+        "actor_role_assignment_form_view_ui": {
+            "header_text": "Manage Actor Roles",
+            "fieldset": {
+                "actor_id_field": {
+                    "label_text": "Actor",
+                    "placeholder_text": "Search member or registered app",
+                    "selected_text_prefix": "Selected"
+                },
+                "role_ids_field": {
+                    "label_text": "Roles",
+                    "placeholder_text": "Search and select up to 5 roles"
+                },
+                "btn_text": "Update Roles"
+            }
+        },
+        "modals_ui": {
+            "actor_role_assignment_modal_ui": {
+                "title_text": "Manage Actor Roles"
+            }
+        }
+    }
+}
+```
+
 ## Content Manager Shape
 
 Use the existing content-resource naming style:
@@ -535,7 +632,7 @@ src/views/access_control/ListView.vue
 src/views/access_control/AddEditRoleFormView.vue
 src/views/access_control/RoleProfileView.vue
 src/views/access_control/RolePermissionListView.vue
-src/views/access_control/ActorRoleAssignmentView.vue
+src/views/access_control/ActorRoleAssignmentFormView.vue
 ```
 
 Use the existing controller/action-handler pattern:
