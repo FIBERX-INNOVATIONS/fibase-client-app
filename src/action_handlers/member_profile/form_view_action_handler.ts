@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
 import { MemberRecordInterface } from "@/types/api_service_type";
@@ -8,10 +10,7 @@ import { CreateMemberPayload, FieldValidator } from "@/types/form_data_type";
 
 import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -71,16 +70,14 @@ class MemberProfileFormViewActionHandler extends BaseFormActionHandler<
             last_name: record?.last_name ?? "",
             email: record?.email ?? "",
             phone: record?.phone ?? "",
-            dob,
+            dob: dayjs(dob).format("YYYY-MM-DD"),
             gender: record?.gender ?? "",
             profile_photo_link: record?.profile_photo_link ?? ""
         };
     }
 
     // Method to get field validators
-    protected getValidators(): Partial<
-        Record<keyof CreateMemberPayload, FieldValidator<CreateMemberPayload>>
-    > {
+    protected getValidators(): Partial<Record<keyof CreateMemberPayload, FieldValidator<CreateMemberPayload>>> {
         return {
             first_name: MemberProfileValidator.validateFirstNameField,
             last_name: MemberProfileValidator.validateLastNameField,
@@ -111,36 +108,18 @@ class MemberProfileFormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    msg || "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert(
-                "success",
-                msg || "file_uploaded_successfully",
-                5,
-                undefined,
-                true
-            );
+            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
 
             this.form_data.profile_photo_link = data.url;
             this.syncSubmitButtonState();

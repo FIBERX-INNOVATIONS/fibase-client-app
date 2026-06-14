@@ -184,6 +184,28 @@ type MemberProfileFieldsType = {
     profile_photo_link_input_group_props: InputGroupUIPropsInterface;
 };
 
+type MyProfileFieldsType = {
+    first_name_input_group_props: InputGroupUIPropsInterface;
+
+    last_name_input_group_props: InputGroupUIPropsInterface;
+
+    email_input_group_props: InputGroupUIPropsInterface;
+
+    phone_input_group_props: InputGroupUIPropsInterface;
+
+    dob_input_group_props: InputGroupUIPropsInterface;
+
+    gender_input_group_props: InputGroupUIPropsInterface;
+
+    profile_photo_link_input_group_props: InputGroupUIPropsInterface;
+
+    new_password_input_group_props: InputGroupUIPropsInterface;
+
+    password_confirm_input_group_props: InputGroupUIPropsInterface;
+
+    confirm_password_input_group_props: InputGroupUIPropsInterface;
+};
+
 type AppCurrencyFieldsType = {
     app_id_input_group_props: InputGroupUIPropsInterface;
 
@@ -213,6 +235,7 @@ export {
     PaymentProviderMethodFieldsType,
     CurrencyPaymentProviderMethodFieldsType,
     MemberProfileFieldsType,
+    MyProfileFieldsType,
     AppCurrencyFieldsType,
     RoleFieldsType,
     ActorRoleAssignmentFieldsType

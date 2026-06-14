@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { GlobalEventTypes } from "@/types/global_events_type";
 
 import { CSRF_TOKEN_FOR } from "@/configs";
@@ -61,56 +63,34 @@ class MemberProfileFormViewController extends BaseFormViewController<
         const dob = record?.dob?.includes("T") ? record.dob.split("T")[0] : (record?.dob ?? "");
 
         return {
-            first_name_input_group_props: this.buildInputGroupProps(
-                "first_name",
-                "text",
-                field_content_key("first_name"),
-                { model_value: record?.first_name ?? "" }
-            ),
+            first_name_input_group_props: this.buildInputGroupProps("first_name", "text", field_content_key("first_name"), {
+                model_value: record?.first_name ?? ""
+            }),
 
-            last_name_input_group_props: this.buildInputGroupProps(
-                "last_name",
-                "text",
-                field_content_key("last_name"),
-                { model_value: record?.last_name ?? "" }
-            ),
+            last_name_input_group_props: this.buildInputGroupProps("last_name", "text", field_content_key("last_name"), {
+                model_value: record?.last_name ?? ""
+            }),
 
-            email_input_group_props: this.buildInputGroupProps(
-                "email",
-                "email",
-                field_content_key("email"),
-                {
-                    model_value: record?.email ?? "",
-                    input_props: {
-                        boolean_props: {
-                            disabled: !!record?.public_id
-                        }
+            email_input_group_props: this.buildInputGroupProps("email", "email", field_content_key("email"), {
+                model_value: record?.email ?? "",
+                input_props: {
+                    boolean_props: {
+                        disabled: !!record?.public_id
                     }
                 }
-            ),
+            }),
 
-            phone_input_group_props: this.buildInputGroupProps(
-                "phone",
-                "phone_number",
-                field_content_key("phone"),
-                { model_value: record?.phone ?? "" }
-            ),
+            phone_input_group_props: this.buildInputGroupProps("phone", "phone_number", field_content_key("phone"), {
+                model_value: record?.phone ?? ""
+            }),
 
-            dob_input_group_props: this.buildInputGroupProps(
-                "dob",
-                "date",
-                field_content_key("dob"),
-                {
-                    model_value: dob
-                }
-            ),
+            dob_input_group_props: this.buildInputGroupProps("dob", "date", field_content_key("dob"), {
+                model_value: dayjs(dob).format("YYYY-MM-DD")
+            }),
 
-            gender_input_group_props: this.buildInputGroupProps(
-                "gender",
-                "select",
-                field_content_key("gender"),
-                { model_value: record?.gender ?? "" }
-            ),
+            gender_input_group_props: this.buildInputGroupProps("gender", "select", field_content_key("gender"), {
+                model_value: record?.gender ?? ""
+            }),
 
             profile_photo_link_input_group_props: this.buildInputGroupProps(
                 "profile_photo_link",

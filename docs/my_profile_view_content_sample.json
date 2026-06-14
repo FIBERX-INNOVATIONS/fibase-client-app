@@ -1,0 +1,101 @@
+{
+    "my_profile_view_ui": {
+        "form_view_ui": {
+            "header_text": "",
+            "content": {
+                "eyebrow_text": "My account",
+                "fallback_title_text": "Your profile",
+                "description_text": "Keep your contact details, profile image, and account password up to date.",
+                "member_id_label_text": "Member ID",
+                "unavailable_text": "Unavailable",
+                "profile_information_title_text": "Profile information",
+                "profile_information_description_text": "These details are used across member records and activity history.",
+                "password_title_text": "Change password",
+                "password_description_text": "Leave these fields empty when you only want to update your profile details.",
+                "uploading_photo_text": "Uploading photo...",
+                "photo_alt_text": "Member profile photo",
+                "username_label_text": "Username",
+                "roles_label_text": "Roles",
+                "last_login_label_text": "Last login",
+                "password_changed_label_text": "Password",
+                "not_set_text": "Not set",
+                "no_roles_text": "No roles",
+                "not_available_text": "Not available",
+                "save_profile_hint_text": "Password fields are optional for profile-only updates.",
+                "save_password_hint_text": "Profile details and password will be updated together.",
+                "active_account_text": "Active account",
+                "inactive_account_text": "Inactive account",
+                "verified_member_text": "Verified member",
+                "unverified_member_text": "Unverified member",
+                "two_factor_enabled_text": "2FA enabled",
+                "two_factor_disabled_text": "2FA not enabled"
+            },
+            "fieldset": {
+                "first_name_field": {
+                    "label_text": "First Name",
+                    "placeholder_text": "Enter first name"
+                },
+                "last_name_field": {
+                    "label_text": "Last Name",
+                    "placeholder_text": "Enter last name"
+                },
+                "email_field": {
+                    "label_text": "Email",
+                    "placeholder_text": "name@example.com"
+                },
+                "phone_field": {
+                    "label_text": "Phone",
+                    "placeholder_text": "+234 0000 000000"
+                },
+                "dob_field": {
+                    "label_text": "Date of Birth",
+                    "placeholder_text": "Select date of birth"
+                },
+                "gender_field": {
+                    "label_text": "Gender",
+                    "placeholder_text": "Select gender",
+                    "options_list": [
+                        {
+                            "label_text": "Male",
+                            "value": "Male"
+                        },
+                        {
+                            "label_text": "Female",
+                            "value": "Female"
+                        },
+                        {
+                            "label_text": "Other",
+                            "value": "Other"
+                        }
+                    ]
+                },
+                "profile_photo_link_field": {
+                    "label_text": "Profile Photo",
+                    "placeholder_text": "Upload profile photo"
+                },
+                "new_password_field": {
+                    "label_text": "New Password",
+                    "placeholder_text": "Enter new password"
+                },
+                "password_confirm_field": {
+                    "label_text": "Confirm Password",
+                    "placeholder_text": "Confirm new password"
+                },
+                "confirm_password_field": {
+                    "label_text": "Confirm Password Again",
+                    "placeholder_text": "Confirm new password again"
+                },
+                "btn_text": "Update Profile"
+            }
+        }
+    },
+    "api_responses": {
+        "my_profile_not_loaded": "Your profile could not be loaded. Please sign in again.",
+        "my_profile_updated": "Your profile has been updated.",
+        "invalid_csrf_token": "We could not prepare this form. Please refresh and try again.",
+        "invalid_input_password": "Please enter matching passwords with at least 6 characters.",
+        "file_upload_failed": "The profile photo could not be uploaded.",
+        "file_uploaded_successfully": "Profile photo uploaded. Update your profile to save it.",
+        "error_occurred": "Something went wrong. Please try again."
+    }
+}

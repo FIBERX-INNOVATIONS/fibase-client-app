@@ -309,6 +309,22 @@ export interface CreateMemberPayload extends BaseFormData {
     profile_photo_link?: string | null;
 }
 
+export interface UpdateMemberFormDataInterface extends BaseFormData {
+    first_name: string;
+    last_name: string;
+    phone?: string | null;
+    dob?: string | null;
+    gender?: string | null;
+    profile_photo_link?: string | null;
+    new_password?: string | null;
+    password_confirm?: string | null;
+    confirm_password?: string | null;
+}
+
+export interface MyProfileFormDataInterface extends UpdateMemberFormDataInterface {
+    email: string;
+}
+
 export interface UpdateMemberPayload extends BaseFormData {
     first_name?: string;
     last_name?: string;
@@ -316,6 +332,9 @@ export interface UpdateMemberPayload extends BaseFormData {
     dob?: string | null;
     gender?: string | null;
     profile_photo_link?: string | null;
+    new_password?: string;
+    password_confirm?: string;
+    confirm_password?: string;
 }
 
 export interface MemberStatusUpdatePayload extends BaseFormData {

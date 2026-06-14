@@ -12,8 +12,7 @@ EncryptorDecryptorUtil.init({ corpus: CHAR_CORPUS, shift_key: DATA_SHIFT_KEY });
 LocalStorageManagerUtil.init(STORAGE_SCHEMA);
 
 class MemberAuthenticatorUtil {
-    private static readonly storage: LocalStorageManagerUtil<InternalStorageSchemaType> =
-        LocalStorageManagerUtil.getInstance();
+    private static readonly storage: LocalStorageManagerUtil<InternalStorageSchemaType> = LocalStorageManagerUtil.getInstance();
 
     // Get logged in member
     public static getLoggedInMember = (): MemberRecordInterface | null => {
@@ -91,6 +90,27 @@ class MemberAuthenticatorUtil {
         return member.public_id === logged_in_member.public_id;
     };
 
+    // Method to update the cached current member after profile edits
+    public static updateLoggedInMember = (member: MemberRecordInterface): boolean => {
+        if (!member?.public_id) {
+            return false;
+        }
+
+        const current_member = MemberAuthenticatorUtil.getLoggedInMember();
+
+        if (!current_member?.public_id || current_member.public_id !== member.public_id) {
+            return false;
+        }
+
+        MemberAuthenticatorUtil.storage.set("current_member", {
+            ...current_member,
+            ...member,
+            is_fully_authenticated: current_member.is_fully_authenticated
+        });
+
+        return true;
+    };
+
     // check is member has permisison X
     public static memberHasPermissionTo = (permission: string): boolean => {
         // if(!permission || permission) { return  true }
@@ -127,10 +147,7 @@ class MemberAuthenticatorUtil {
 
         MemberAuthenticatorUtil.storage.set("current_member", current_member);
         MemberAuthenticatorUtil.storage.set("current_member_access_token", access_token);
-        MemberAuthenticatorUtil.storage.set(
-            "current_member_challenge_token",
-            login_challenge_token
-        );
+        MemberAuthenticatorUtil.storage.set("current_member_challenge_token", login_challenge_token);
         MemberAuthenticatorUtil.storage.set("current_member_access_expiry_date", expiry_date);
         MemberAuthenticatorUtil.storage.set("current_member_device_id", device_id);
 
