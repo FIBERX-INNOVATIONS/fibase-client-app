@@ -13,10 +13,9 @@ class TwoFactorLoginValidator {
         return TwoFactorLoginValidator.content_manager.getAPIResponseValue(message_key);
     }
 
-    public static validateOtpCodeField = (
-        otp_value: string | string[]
-    ): ActionMethodRetrunInterface => {
-        const otp_code = Array.isArray(otp_value) ? otp_value.join("") : otp_value;
+    // Method to validate the OTP code field.
+    public static validateOtpCodeField = (otp_value: string | string[] | null): ActionMethodRetrunInterface => {
+        const otp_code = Array.isArray(otp_value) ? otp_value.join("") : (otp_value ?? "");
 
         if (!InputValidatorUtil.containsOnlyNumbers(otp_code) || otp_code.length !== 6) {
             return {
@@ -28,19 +27,18 @@ class TwoFactorLoginValidator {
     };
 
     /** Validate TwoFactorLogin input */
-    public static validateTwoFactorLoginInput(
-        form_data: TwoFactorFormDataInterface
-    ): ValidationResultInterface {
+    public static validateTwoFactorLoginInput(form_data: TwoFactorFormDataInterface): ValidationResultInterface {
         const { csrf_token, otp_code } = form_data;
+        const normalized_otp_code = Array.isArray(otp_code) ? otp_code.join("") : (otp_code ?? "");
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
 
         if (
-            InputValidatorUtil.isEmpty(otp_code) ||
-            !InputValidatorUtil.containsOnlyNumbers(otp_code) ||
-            otp_code.length !== 6
+            InputValidatorUtil.isEmpty(normalized_otp_code) ||
+            !InputValidatorUtil.containsOnlyNumbers(normalized_otp_code) ||
+            normalized_otp_code.length !== 6
         ) {
             return { v_state: false, v_msg: "invalid_otp_code" };
         }

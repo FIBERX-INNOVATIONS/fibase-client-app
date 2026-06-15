@@ -361,6 +361,14 @@ export interface CompleteMemberSetupPayload extends BaseFormData {
     token: string;
 }
 
+export interface ActivateAccountFormDataInterface extends BaseFormData {
+    member_public_id: string | null;
+    password: string | null;
+    password_confirm: string | null;
+    otp_code: string | string[] | null;
+    token: string | null;
+}
+
 // ==============================
 // ACCESS CONTROL PAYLOADS
 // ==============================

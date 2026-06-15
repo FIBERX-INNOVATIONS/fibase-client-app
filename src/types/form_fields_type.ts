@@ -9,6 +9,14 @@ type TwoFactorLoginFieldsType = {
     otp_input_group_props: InputGroupUIPropsInterface;
 };
 
+type ActivateAccountFieldsType = {
+    password_input_group_props: InputGroupUIPropsInterface;
+
+    password_confirm_input_group_props: InputGroupUIPropsInterface;
+
+    otp_input_group_props: InputGroupUIPropsInterface;
+};
+
 type RegisteredAppFieldsType = {
     prefix_input_group_props: InputGroupUIPropsInterface;
     name_input_group_props: InputGroupUIPropsInterface;
@@ -227,6 +235,7 @@ type ActorRoleAssignmentFieldsType = {
 export {
     LoginFieldsType,
     TwoFactorLoginFieldsType,
+    ActivateAccountFieldsType,
     RegisteredAppFieldsType,
     CurrencyFieldsType,
     PaymentMethodFieldsType,

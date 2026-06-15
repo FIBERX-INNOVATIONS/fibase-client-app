@@ -8,6 +8,8 @@ const TwoFactorLoginView = () => import("@/views/auth/TwoFactorLoginView.vue");
 
 const LogoutView = () => import("@/views/auth/LogoutView.vue");
 
+const ActivateAccountView = () => import("@/views/activation/ActivateAccountView.vue");
+
 const DashboardView = () => import("@/views/DashboardView.vue");
 
 const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue");
@@ -67,6 +69,18 @@ class RouterManager {
                 ? MemberAuthenticatorUtil.memberHasPermissionTo(permission_name as string)
                 : true;
 
+            if (route.name === "ActivateAccount") {
+                if (is_fully_authenticated) {
+                    return "/dashboard";
+                }
+
+                if (is_logged_in) {
+                    return "/two-factor-login";
+                }
+
+                return;
+            }
+
             if (!is_logged_in && route.name !== "Login") {
                 return "/login";
             } else if (is_logged_in && !is_fully_authenticated && route.name !== "TwoFactorLogin") {
@@ -120,6 +134,17 @@ class RouterManager {
                 meta: {
                     page_meta_key: "logout_page",
                     title_key: "logout_page",
+                    permission_name: "",
+                    is_auth_page: true
+                }
+            },
+            {
+                path: "/activate-account",
+                name: "ActivateAccount",
+                component: ActivateAccountView,
+                meta: {
+                    page_meta_key: "activate_account_page",
+                    title_key: "activate_account_page",
                     permission_name: "",
                     is_auth_page: true
                 }

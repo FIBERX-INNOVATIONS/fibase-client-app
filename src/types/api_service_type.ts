@@ -490,11 +490,16 @@ export interface MemberDeviceSessionListResponseInterface extends PaginatedRespo
     MemberDeviceSessionInterface[]
 > {}
 
+export interface MemberTwoFactorSetupInfoInterface {
+    otpauth_url?: string;
+    secret_display_text?: string;
+}
+
 export interface ValidateMemberSetupTokenResponseInterface {
-    member_context: MemberRecordInterface;
+    member: MemberRecordInterface;
     token_public_id: string;
     expires_at: string;
-    two_factor_setup: Record<string, any>;
+    two_factor: MemberTwoFactorSetupInfoInterface;
 }
 
 export interface CompleteMemberSetupResponseInterface {
@@ -502,6 +507,7 @@ export interface CompleteMemberSetupResponseInterface {
     access_token: string;
     expires_in_mins: number;
     permissions: string[];
+    device_id?: string;
 }
 
 // ==============================
