@@ -46,7 +46,7 @@ const AccessControlPermissionsViewClassStyles: AccessControlPermissionsViewClass
     permission_card_wrapper_class_style: "min-w-0 flex-1",
 
     permission_content_card_class_styles: {
-        wrapper_class_style: "h-full rounded-full border border-gray-100 bg-white px-5 py-4 transition",
+        wrapper_class_style: "h-full rounded-full bg-white px-5 py-4 transition",
         header_class_style: "mb-3",
         title_class_style: "flex items-start gap-2 text-sm font-black text-gray-900",
         title_icon_class_style: "mt-0.5 h-4 w-4 shrink-0 text-gray-600",

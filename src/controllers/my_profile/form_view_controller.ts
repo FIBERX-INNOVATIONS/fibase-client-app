@@ -290,9 +290,8 @@ class MyProfileFormViewController extends BaseFormViewController<
     // Method to build account summary
     public buildAccountSummary(member?: MemberRecordInterface | null): MyProfileSummaryItemInterface[] {
         const content_text = this.state_refs.content_text?.value ?? this.getContentObject();
-        const role_names = [...(member?.roles ?? []), ...(member?.actor_roles?.map((actor_role) => actor_role.role) ?? [])]
-            .map((role) => role.display_name || role.name || role.symbol)
-            .filter(Boolean);
+        const roles_array = member?.roles ?? member?.actor_roles?.map((actor_role) => actor_role.role) ?? [];
+        const role_names = roles_array.map((role) => role.display_name || role.name || role.symbol).filter(Boolean);
 
         return [
             {
