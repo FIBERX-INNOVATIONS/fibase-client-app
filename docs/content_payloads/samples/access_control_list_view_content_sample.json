@@ -5,7 +5,7 @@
                 {
                     "menu_text": "Access Control",
                     "menu_icon": "shield_check_svg_icon",
-                    "menu_link": "/access-control",
+                    "menu_link": "/access-control/roles",
                     "menu_permission_text": "access_control_module.get_role_list"
                 }
             ]

@@ -1,0 +1,36 @@
+# Docs
+
+This directory is organized by documentation purpose.
+
+## Structure
+
+- `ui_flows/`: per-module UI flow notes. Each file describes the module purpose, routes, views, modal flows, permissions, and API interactions.
+- `content_payloads/`: per-module content payload structure notes. Each file describes the expected `content_resource` keys for page copy, filters, table labels, modal copy, form fields, and API response messages.
+- `content_payloads/samples/`: larger JSON examples that can be copied into app content resources.
+- `_legacy/`: older broad notes kept for reference only.
+
+## Module Files
+
+| Module                           | UI Flow                                                                               | Content Payload                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Auth                             | [auth.md](./ui_flows/auth.md)                                                         | [auth.md](./content_payloads/auth.md)                                                         |
+| Activation                       | [activation.md](./ui_flows/activation.md)                                             | [activation.md](./content_payloads/activation.md)                                             |
+| Dashboard/Layout                 | [dashboard_layout.md](./ui_flows/dashboard_layout.md)                                 | [dashboard_layout.md](./content_payloads/dashboard_layout.md)                                 |
+| Registered App                   | [registered_app.md](./ui_flows/registered_app.md)                                     | [registered_app.md](./content_payloads/registered_app.md)                                     |
+| My Profile                       | [my_profile.md](./ui_flows/my_profile.md)                                             | [my_profile.md](./content_payloads/my_profile.md)                                             |
+| Member Profile                   | [member_profile.md](./ui_flows/member_profile.md)                                     | [member_profile.md](./content_payloads/member_profile.md)                                     |
+| Activity                         | [activity.md](./ui_flows/activity.md)                                                 | [activity.md](./content_payloads/activity.md)                                                 |
+| Access Control                   | [access_control.md](./ui_flows/access_control.md)                                     | [access_control.md](./content_payloads/access_control.md)                                     |
+| Currency                         | [currency.md](./ui_flows/currency.md)                                                 | [currency.md](./content_payloads/currency.md)                                                 |
+| Payment Method                   | [payment_method.md](./ui_flows/payment_method.md)                                     | [payment_method.md](./content_payloads/payment_method.md)                                     |
+| Payment Provider                 | [payment_provider.md](./ui_flows/payment_provider.md)                                 | [payment_provider.md](./content_payloads/payment_provider.md)                                 |
+| Payment Provider Config          | [payment_provider_config.md](./ui_flows/payment_provider_config.md)                   | [payment_provider_config.md](./content_payloads/payment_provider_config.md)                   |
+| Payment Provider Method          | [payment_provider_method.md](./ui_flows/payment_provider_method.md)                   | [payment_provider_method.md](./content_payloads/payment_provider_method.md)                   |
+| Currency Payment Provider Method | [currency_payment_provider_method.md](./ui_flows/currency_payment_provider_method.md) | [currency_payment_provider_method.md](./content_payloads/currency_payment_provider_method.md) |
+
+## Conventions
+
+- UI copy should live under `content_resource.<module>_view_ui`.
+- Layout navigation should live under `content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list`.
+- List modules should keep common keys for breadcrumbs, headers, filters, tables, action menus, modals, and API response messages.
+- Mutating forms should include CSRF copy/error response keys because submit handlers request CSRF tokens before create, update, delete, restore, assignment, and status flows.
