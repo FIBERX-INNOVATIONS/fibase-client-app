@@ -41,7 +41,6 @@ export interface MemberAuthRecordInterface {
 
 export interface MemberActorRoleInterface {
     id: string;
-    role_id: string;
     actor_type: "member" | "app" | string;
     is_active: boolean;
     expires_at: string | null;
@@ -166,7 +165,7 @@ export interface RegisteredAppRecordInterface {
 
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 
-    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 
     roles?: ActorRoleInterface[];
 
@@ -240,7 +239,7 @@ export interface CurrencyRecordInterface {
 
     app_currencies?: AppCurrencyRecordinterface[];
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
-    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export type CurrencyListResponseInterface = PaginatedResponseResultInterface<CurrencyRecordInterface[]>;
@@ -274,6 +273,7 @@ export interface PaymentMethodMetadataInterface {
 }
 
 export interface PaymentMethodRecordInterface {
+    id?: number;
     code: string;
     name: string;
     description: string | null;
@@ -284,7 +284,7 @@ export interface PaymentMethodRecordInterface {
     created_at: string;
     updated_at: string | null;
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
-    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export interface PaymentProviderRecordInterface {
@@ -299,7 +299,7 @@ export interface PaymentProviderRecordInterface {
     created_at: string;
     updated_at: string | null;
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
-    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export interface PaymentProviderConfigCredentialsInterface {
@@ -339,7 +339,6 @@ export interface PaymentProviderConfigSettingsInterface {
 
 export interface PaymentProviderConfigRecordInterface {
     id?: number;
-    provider_id: number;
     environment: PaymentProviderConfigEnvironmentType;
     account_reference: string | null;
     settings: PaymentProviderConfigSettingsInterface | null;
@@ -347,13 +346,11 @@ export interface PaymentProviderConfigRecordInterface {
     updated_at: string | null;
     provider?: PaymentProviderRecordInterface;
     creator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
-    updater?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
+    updator?: CreatorUpdatorMemberinterface | MemberRecordInterface | null;
 }
 
 export interface PaymentProviderMethodRecordInterface {
     id?: number;
-    provider_id: number;
-    payment_method_id: number;
     direction: PaymentConfigDirectionType;
     provider_method_code: string | null;
     min_amount: number | null;
@@ -368,8 +365,6 @@ export interface PaymentProviderMethodRecordInterface {
 
 export interface CurrencyPaymentProviderMethodRecordInterface {
     id: number;
-    currency_id?: number;
-    provider_method_id?: number;
     min_amount: number | null;
     max_amount: number | null;
     is_active: boolean;
@@ -397,19 +392,19 @@ export type CurrencyPaymentProviderMethodListResponseInterface = PaginatedRespon
 >;
 
 export interface PaymentMethodStatusUpdateResponseInterface {
-    payment_method: PaymentMethodRecordInterface;
+    payment_method_record: PaymentMethodRecordInterface;
     previous_status: boolean;
     new_status: boolean;
 }
 
 export interface PaymentProviderStatusUpdateResponseInterface {
-    payment_provider: PaymentProviderRecordInterface;
+    payment_provider_record: PaymentProviderRecordInterface;
     previous_status: boolean;
     new_status: boolean;
 }
 
 export interface PaymentProviderMethodStatusUpdateResponseInterface {
-    payment_provider_method: PaymentProviderMethodRecordInterface;
+    payment_provider_method_record: PaymentProviderMethodRecordInterface;
     previous_status: boolean;
     new_status: boolean;
 }

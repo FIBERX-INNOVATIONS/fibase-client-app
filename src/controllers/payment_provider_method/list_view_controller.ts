@@ -258,7 +258,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             },
             // Provider Column
             {
-                key: "provider_id",
+                key: "provider",
                 sortable: true,
                 width: "w-[17%]",
                 header: {
@@ -278,7 +278,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             },
             // Payment Method Column
             {
-                key: "payment_method_id",
+                key: "payment_method",
                 sortable: true,
                 width: "w-[17%]",
                 header: {

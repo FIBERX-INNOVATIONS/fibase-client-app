@@ -1,9 +1,6 @@
 <template>
     <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
-        <span
-            v-html="getSVGIconValue('loading_svg_icon')"
-            :class="class_styles.link_icon_class_style"
-        ></span>
+        <span v-html="getSVGIconValue('loading_svg_icon')" :class="class_styles.link_icon_class_style"></span>
 
         {{ content_obj.loading_text }}
     </div>
@@ -26,10 +23,7 @@
                 </p>
 
                 <p :class="class_styles.description_class_style">
-                    {{
-                        state_refs.profile_record.value?.description ||
-                        content_obj.no_description_text
-                    }}
+                    {{ state_refs.profile_record.value?.description || content_obj.no_description_text }}
                 </p>
             </ImageRenderUI>
         </div>
@@ -43,17 +37,11 @@
                 <ProfileValue
                     icon="identification_card_svg_icon"
                     :label="content_obj.provider_type_label_text"
-                    :value="
-                        state_refs.profile_record.value?.provider_type ||
-                        content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.provider_type || content_obj.empty_value_text"
                 />
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('world_globe_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('world_globe_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.website_url_label_text }}
@@ -77,22 +65,11 @@
                     {{ content_obj.status_title_text }}
                 </h4>
 
-                <StatusValue
-                    :label="content_obj.active_label_text"
-                    :active="!!state_refs.profile_record.value?.is_active"
-                />
+                <StatusValue :label="content_obj.active_label_text" :active="!!state_refs.profile_record.value?.is_active" />
 
-                <ProfileValue
-                    icon="clock_svg_icon"
-                    :label="content_obj.created_label_text"
-                    :value="readable_created_at"
-                />
+                <ProfileValue icon="clock_svg_icon" :label="content_obj.created_label_text" :value="readable_created_at" />
 
-                <ProfileValue
-                    icon="clock_svg_icon"
-                    :label="content_obj.updated_label_text"
-                    :value="readable_updated_at"
-                />
+                <ProfileValue icon="clock_svg_icon" :label="content_obj.updated_label_text" :value="readable_updated_at" />
             </div>
         </div>
 
@@ -105,7 +82,7 @@
 
             <MemberSummary
                 :title="content_obj.updated_by_title_text"
-                :member="state_refs.profile_record.value?.updater"
+                :member="state_refs.profile_record.value?.updator"
                 :photo-url="updator_member_profile_photo_url || ''"
             />
         </div>
@@ -117,11 +94,7 @@ import { defineComponent, h, PropType } from "vue";
 
 import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-import {
-    CreatorUpdatorMemberinterface,
-    getMemberFullName,
-    MemberRecordInterface
-} from "@/types/api_service_type";
+import { CreatorUpdatorMemberinterface, getMemberFullName, MemberRecordInterface } from "@/types/api_service_type";
 
 import PaymentProviderProfileViewProps from "@/props_definition/payment_provider/profile_view_props";
 import PaymentProviderProfileViewController from "@/controllers/payment_provider/profile_view_controller";
@@ -155,11 +128,7 @@ const ProfileValue = defineComponent({
                     class: class_styles.icon_class_style,
                     innerHTML: getSVGIconValue(value_props.icon)
                 }),
-                h(
-                    "span",
-                    { class: class_styles.small_bold_value_text_class_style },
-                    value_props.label
-                ),
+                h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.label),
                 value_props.value
             ]);
     }
@@ -174,30 +143,16 @@ const StatusValue = defineComponent({
         return () =>
             h("p", { class: class_styles.small_bold_value_text_class_style }, [
                 h("span", {
-                    class: [
-                        class_styles.icon_class_style,
-                        status_props.active ? "text-green-400" : "text-red-400"
-                    ],
-                    innerHTML: getSVGIconValue(
-                        status_props.active ? "check_circle_svg_icon" : "x_circile_svg_icon"
-                    )
+                    class: [class_styles.icon_class_style, status_props.active ? "text-green-400" : "text-red-400"],
+                    innerHTML: getSVGIconValue(status_props.active ? "check_circle_svg_icon" : "x_circile_svg_icon")
                 }),
-                h(
-                    "span",
-                    { class: class_styles.small_bold_value_text_class_style },
-                    status_props.label
-                ),
+                h("span", { class: class_styles.small_bold_value_text_class_style }, status_props.label),
                 h(
                     "span",
                     {
-                        class: [
-                            "font-semibold",
-                            status_props.active ? "text-green-400" : "text-red-400"
-                        ]
+                        class: ["font-semibold", status_props.active ? "text-green-400" : "text-red-400"]
                     },
-                    status_props.active
-                        ? content_obj.active_status_text
-                        : content_obj.inactive_status_text
+                    status_props.active ? content_obj.active_status_text : content_obj.inactive_status_text
                 )
             ]);
     }
@@ -207,9 +162,7 @@ const MemberSummary = defineComponent({
     props: {
         title: { type: String, required: true },
         member: {
-            type: Object as PropType<
-                CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined
-            >,
+            type: Object as PropType<CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined>,
             default: null
         },
         photoUrl: { type: String, required: true }
@@ -217,11 +170,7 @@ const MemberSummary = defineComponent({
     setup(member_props) {
         return () =>
             h("div", { class: class_styles.grid_class_style?.grid_wrapper_class_style }, [
-                h(
-                    "h4",
-                    { class: class_styles.small_bold_underlined_text_class_style },
-                    member_props.title
-                ),
+                h("h4", { class: class_styles.small_bold_underlined_text_class_style }, member_props.title),
                 member_props.member
                     ? h("div", { class: "flex items-center gap-3" }, [
                           h("img", {
@@ -229,16 +178,8 @@ const MemberSummary = defineComponent({
                               class: class_styles.member_avatar_img_class_style
                           }),
                           h("div", [
-                              h(
-                                  "h3",
-                                  { class: class_styles.member_name_class_style },
-                                  getMemberFullName(member_props.member)
-                              ),
-                              h(
-                                  "p",
-                                  { class: class_styles.description_class_style },
-                                  member_props.member.email
-                              )
+                              h("h3", { class: class_styles.member_name_class_style }, getMemberFullName(member_props.member)),
+                              h("p", { class: class_styles.description_class_style }, member_props.member.email)
                           ])
                       ])
                     : null

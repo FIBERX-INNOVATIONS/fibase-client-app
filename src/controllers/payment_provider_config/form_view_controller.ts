@@ -40,8 +40,7 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
     FormViewComponentsInterface,
     GlobalEventTypes
 > {
-    private readonly base_content_key =
-        "content_resource.payment_provider_config_view_ui.form_view_ui";
+    private readonly base_content_key = "content_resource.payment_provider_config_view_ui.form_view_ui";
 
     constructor(props: FormViewPropsInterface<PaymentProviderConfigRecordInterface>) {
         super("payment_provider_config_form_view", props, FormViewClassStyles);
@@ -66,20 +65,18 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
         const field_content_key = (input_id: string): string => {
             return this.getFieldContentKey(this.base_content_key, input_id);
         };
-        const selected_provider_options: SelectOptionInterface[] = record?.provider_id
+        const selected_provider_options: SelectOptionInterface[] = record?.provider?.id
             ? [
                   {
                       label_text: `${record.provider?.code?.toUpperCase?.() ?? ""} - ${record.provider?.name ?? ""}`,
-                      value: record.provider_id
+                      value: record.provider.id
                   }
               ]
             : [];
         const currencySelectSearchProps = (model_value?: string | null) => ({
             model_value: model_value ?? "",
             input_props: {
-                option_props: model_value
-                    ? [{ label_text: model_value, value: model_value }]
-                    : undefined,
+                option_props: model_value ? [{ label_text: model_value, value: model_value }] : undefined,
                 content_props: {
                     caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                 },
@@ -97,15 +94,14 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
                 "select_search",
                 field_content_key("provider_id"),
                 {
-                    model_value: record?.provider_id ?? "",
+                    model_value: record?.provider?.id ?? "",
                     input_props: {
                         option_props: selected_provider_options,
                         content_props: {
                             caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                         },
                         action_props: {
-                            fetch_data_method:
-                                PreviewRecordFetcher.fetchPaymentProviderPreviewRecords
+                            fetch_data_method: PreviewRecordFetcher.fetchPaymentProviderPreviewRecords
                         }
                     }
                 }
@@ -132,12 +128,9 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
             webhook_secret_input_group_props: credentialInput("webhook_secret", "password"),
             signing_secret_input_group_props: credentialInput("signing_secret", "password"),
 
-            webhook_url_input_group_props: this.buildInputGroupProps(
-                "webhook_url",
-                "text",
-                field_content_key("webhook_url"),
-                { model_value: settings?.webhook_url ?? "" }
-            ),
+            webhook_url_input_group_props: this.buildInputGroupProps("webhook_url", "text", field_content_key("webhook_url"), {
+                model_value: settings?.webhook_url ?? ""
+            }),
 
             callback_url_input_group_props: this.buildInputGroupProps(
                 "callback_url",
@@ -153,19 +146,13 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
                 { model_value: settings?.redirect_url ?? "" }
             ),
 
-            success_url_input_group_props: this.buildInputGroupProps(
-                "success_url",
-                "text",
-                field_content_key("success_url"),
-                { model_value: settings?.success_url ?? "" }
-            ),
+            success_url_input_group_props: this.buildInputGroupProps("success_url", "text", field_content_key("success_url"), {
+                model_value: settings?.success_url ?? ""
+            }),
 
-            failure_url_input_group_props: this.buildInputGroupProps(
-                "failure_url",
-                "text",
-                field_content_key("failure_url"),
-                { model_value: settings?.failure_url ?? "" }
-            ),
+            failure_url_input_group_props: this.buildInputGroupProps("failure_url", "text", field_content_key("failure_url"), {
+                model_value: settings?.failure_url ?? ""
+            }),
 
             settlement_currency_input_group_props: this.buildInputGroupProps(
                 "settlement_currency",
@@ -195,15 +182,10 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
                 { model_value: settings?.capture_mode ?? "" }
             ),
 
-            timeout_ms_input_group_props: this.buildInputGroupProps(
-                "timeout_ms",
-                "number",
-                field_content_key("timeout_ms"),
-                {
-                    model_value: settings?.timeout_ms ?? "",
-                    input_props: { number_props: { min: 0, step: 1 } }
-                }
-            )
+            timeout_ms_input_group_props: this.buildInputGroupProps("timeout_ms", "number", field_content_key("timeout_ms"), {
+                model_value: settings?.timeout_ms ?? "",
+                input_props: { number_props: { min: 0, step: 1 } }
+            })
         };
     }
 

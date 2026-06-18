@@ -278,7 +278,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             },
             // Currency Column
             {
-                key: "currency_id",
+                key: "currency",
                 sortable: true,
                 width: "w-[12%]",
                 header: {
@@ -323,7 +323,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             },
             // Payment Method Column
             {
-                key: "provider_method_id",
+                key: "provider_method",
                 sortable: true,
                 width: "w-[14%]",
                 header: {

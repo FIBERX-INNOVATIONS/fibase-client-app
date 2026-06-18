@@ -800,11 +800,17 @@
   .w-\[25\%\] {
     width: 25%;
   }
+  .w-\[30\%\] {
+    width: 30%;
+  }
   .w-\[30px\] {
     width: 30px;
   }
   .w-\[34px\] {
     width: 34px;
+  }
+  .w-\[35\%\] {
+    width: 35%;
   }
   .w-\[36px\] {
     width: 36px;
@@ -814,6 +820,12 @@
   }
   .w-\[45px\] {
     width: 45px;
+  }
+  .w-\[50\%\] {
+    width: 50%;
+  }
+  .w-\[50\] {
+    width: 50;
   }
   .w-\[50px\] {
     width: 50px;
@@ -2769,6 +2781,11 @@
       opacity: 60%;
     }
   }
+  .sm\:w-\[35\%\] {
+    @media (width >= 40rem) {
+      width: 35%;
+    }
+  }
   .sm\:grid-cols-2 {
     @media (width >= 40rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2847,6 +2864,11 @@
   .md\:w-\[20\%\] {
     @media (width >= 48rem) {
       width: 20%;
+    }
+  }
+  .md\:w-\[24\%\] {
+    @media (width >= 48rem) {
+      width: 24%;
     }
   }
   .md\:w-\[50\%\] {
@@ -2962,6 +2984,11 @@
   .lg\:w-\[15\%\] {
     @media (width >= 64rem) {
       width: 15%;
+    }
+  }
+  .lg\:w-\[19\%\] {
+    @media (width >= 64rem) {
+      width: 19%;
     }
   }
   .lg\:w-\[45\%\] {

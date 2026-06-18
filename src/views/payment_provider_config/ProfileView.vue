@@ -1,9 +1,6 @@
 <template>
     <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
-        <span
-            v-html="getSVGIconValue('loading_svg_icon')"
-            :class="class_styles.link_icon_class_style"
-        ></span>
+        <span v-html="getSVGIconValue('loading_svg_icon')" :class="class_styles.link_icon_class_style"></span>
 
         {{ content_obj.loading_text }}
     </div>
@@ -17,25 +14,17 @@
                 :class_styles="class_styles.image_info_class_style"
             >
                 <h3 :class="class_styles.h3_class_style">
-                    {{
-                        state_refs.profile_record.value?.provider?.name ||
-                        content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.provider?.name || content_obj.empty_value_text }}
                 </h3>
 
                 <p :class="class_styles.p_class_style">
                     {{ content_obj.account_reference_label_text }}
-                    {{
-                        state_refs.profile_record.value?.account_reference ||
-                        content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.account_reference || content_obj.empty_value_text }}
                 </p>
 
                 <p :class="class_styles.description_class_style">
                     {{ content_obj.environment_label_text }}
-                    {{
-                        state_refs.profile_record.value?.environment || content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.environment || content_obj.empty_value_text }}
                 </p>
             </ImageRenderUI>
         </div>
@@ -49,44 +38,31 @@
                 <ProfileValue
                     icon="identification_card_svg_icon"
                     :label="content_obj.provider_name_label_text"
-                    :value="
-                        state_refs.profile_record.value?.provider?.name ||
-                        content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.provider?.name || content_obj.empty_value_text"
                 />
 
                 <ProfileValue
                     icon="numbered_list_svg_icon"
                     :label="content_obj.provider_code_label_text"
-                    :value="
-                        state_refs.profile_record.value?.provider?.code ||
-                        content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.provider?.code || content_obj.empty_value_text"
                 />
 
                 <ProfileValue
                     icon="identification_card_svg_icon"
                     :label="content_obj.provider_id_label_text"
-                    :value="
-                        state_refs.profile_record.value?.provider_id ?? content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.provider?.id ?? content_obj.empty_value_text"
                 />
 
                 <ProfileValue
                     icon="square_grid_plus_svg_icon"
                     :label="content_obj.environment_label_text"
-                    :value="
-                        state_refs.profile_record.value?.environment || content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.environment || content_obj.empty_value_text"
                 />
 
                 <ProfileValue
                     icon="key_svg_icon"
                     :label="content_obj.account_reference_label_text"
-                    :value="
-                        state_refs.profile_record.value?.account_reference ||
-                        content_obj.empty_value_text
-                    "
+                    :value="state_refs.profile_record.value?.account_reference || content_obj.empty_value_text"
                 />
             </div>
 
@@ -95,17 +71,9 @@
                     {{ content_obj.status_title_text }}
                 </h4>
 
-                <ProfileValue
-                    icon="clock_svg_icon"
-                    :label="content_obj.created_label_text"
-                    :value="readable_created_at"
-                />
+                <ProfileValue icon="clock_svg_icon" :label="content_obj.created_label_text" :value="readable_created_at" />
 
-                <ProfileValue
-                    icon="clock_svg_icon"
-                    :label="content_obj.updated_label_text"
-                    :value="readable_updated_at"
-                />
+                <ProfileValue icon="clock_svg_icon" :label="content_obj.updated_label_text" :value="readable_updated_at" />
             </div>
         </div>
 
@@ -134,10 +102,7 @@
                 {{ content_obj.credentials_title_text }}
             </h4>
 
-            <p
-                v-if="!state_refs.credentials_are_visible.value"
-                :class="class_styles.description_class_style"
-            >
+            <p v-if="!state_refs.credentials_are_visible.value" :class="class_styles.description_class_style">
                 {{ content_obj.credentials_hidden_text }}
             </p>
 
@@ -161,10 +126,7 @@
                 {{ content_obj.credentials_permission_denied_text }}
             </p>
 
-            <p
-                v-if="state_refs.credentials_error_msg.value"
-                class="text-xs font-semibold text-red-500"
-            >
+            <p v-if="state_refs.credentials_error_msg.value" class="text-xs font-semibold text-red-500">
                 {{ state_refs.credentials_error_msg.value }}
             </p>
 
@@ -181,10 +143,7 @@
                 />
             </div>
 
-            <p
-                v-else-if="state_refs.credentials_are_visible.value"
-                :class="class_styles.description_class_style"
-            >
+            <p v-else-if="state_refs.credentials_are_visible.value" :class="class_styles.description_class_style">
                 {{ content_obj.no_credentials_text }}
             </p>
         </div>
@@ -198,7 +157,7 @@
 
             <MemberSummary
                 :title="content_obj.updated_by_title_text"
-                :member="state_refs.profile_record.value?.updater"
+                :member="state_refs.profile_record.value?.updator"
                 :photo-url="updator_member_profile_photo_url || ''"
             />
         </div>
@@ -210,11 +169,7 @@ import { computed, defineComponent, h, PropType } from "vue";
 
 import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-import {
-    CreatorUpdatorMemberinterface,
-    getMemberFullName,
-    MemberRecordInterface
-} from "@/types/api_service_type";
+import { CreatorUpdatorMemberinterface, getMemberFullName, MemberRecordInterface } from "@/types/api_service_type";
 
 import PaymentProviderConfigProfileViewProps from "@/props_definition/payment_provider_config/profile_view_props";
 import PaymentProviderConfigProfileViewController from "@/controllers/payment_provider_config/profile_view_controller";
@@ -306,11 +261,7 @@ const ProfileValue = defineComponent({
                     class: class_styles.icon_class_style,
                     innerHTML: getSVGIconValue(value_props.icon)
                 }),
-                h(
-                    "span",
-                    { class: class_styles.small_bold_value_text_class_style },
-                    value_props.label
-                ),
+                h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.label),
                 value_props.value
             ]);
     }
@@ -320,9 +271,7 @@ const MemberSummary = defineComponent({
     props: {
         title: { type: String, required: true },
         member: {
-            type: Object as PropType<
-                CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined
-            >,
+            type: Object as PropType<CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined>,
             default: null
         },
         photoUrl: { type: String, required: true }
@@ -330,11 +279,7 @@ const MemberSummary = defineComponent({
     setup(member_props) {
         return () =>
             h("div", { class: class_styles.grid_class_style?.grid_wrapper_class_style }, [
-                h(
-                    "h4",
-                    { class: class_styles.small_bold_underlined_text_class_style },
-                    member_props.title
-                ),
+                h("h4", { class: class_styles.small_bold_underlined_text_class_style }, member_props.title),
                 h("div", { class: "flex items-center gap-3" }, [
                     h("img", {
                         src: member_props.photoUrl,

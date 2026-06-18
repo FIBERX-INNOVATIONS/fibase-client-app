@@ -30,12 +30,10 @@ import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_men
 
 class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandler<
     PaymentProviderConfigRecordInterface,
-    "provider_id",
+    "id",
     PaymentProviderConfigListViewFiltersInterface
 > {
-    constructor(
-        controller: BaseListViewController<PaymentProviderConfigRecordInterface, "provider_id">
-    ) {
+    constructor(controller: BaseListViewController<PaymentProviderConfigRecordInterface, "id">) {
         super(
             controller,
             "payment_provider_config_list_view_action_handler",
@@ -67,10 +65,7 @@ class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandl
     };
 
     // Method to toggle data table action menu.
-    public toggleActionMenu = (
-        record: PaymentProviderConfigRecordInterface,
-        record_index?: number
-    ): void => {
+    public toggleActionMenu = (record: PaymentProviderConfigRecordInterface, record_index?: number): void => {
         const action_menu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -82,11 +77,7 @@ class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandl
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_menu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
     };
 
     public handleViewActionMenuClicked = async (
@@ -144,9 +135,7 @@ class PaymentProviderConfigListViewActionHandler extends BaseListViewActionHandl
                 record,
                 record_id: record.id?.toString() ?? "",
                 content_key: delete_modal_content_key,
-                on_delete_success: async (
-                    deleted_record: PaymentProviderConfigRecordInterface
-                ): Promise<void> => {
+                on_delete_success: async (deleted_record: PaymentProviderConfigRecordInterface): Promise<void> => {
                     this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
                 }
             }

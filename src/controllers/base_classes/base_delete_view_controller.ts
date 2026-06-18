@@ -37,14 +37,7 @@ class BaseDeleteViewController<
     Components extends DeleteViewComponentsInterface = DeleteViewComponentsInterface,
     Events extends GlobalEventTypes = GlobalEventTypes
 > extends BaseController<Props, State, Computed, Components, Events> {
-    public action_handler: BaseDeleteViewActionHandler<
-        T,
-        Props,
-        State,
-        Computed,
-        Components,
-        Events
-    > | null = null;
+    public action_handler: BaseDeleteViewActionHandler<T, Props, State, Computed, Components, Events> | null = null;
 
     constructor(props: Props, component_name: string = "delete_view") {
         super(component_name, props, EventBus as any);
@@ -61,9 +54,7 @@ class BaseDeleteViewController<
     }
 
     // Method to get the content keys for the delete view, which are used to fetch the appropriate text content for the UI components.
-    protected getDeleteContentKeys(
-        content_key: string = this.props.content_key
-    ): DeleteViewContentKeysInterface {
+    protected getDeleteContentKeys(content_key: string = this.props.content_key): DeleteViewContentKeysInterface {
         return {
             title_text: `${content_key}.content.title_text`,
             message_text: `${content_key}.content.message_text`,
@@ -87,7 +78,11 @@ class BaseDeleteViewController<
             "button",
             {
                 class_styles: DecisionPromptUIClassStyles.cancel_btn_class_style,
-                action_props: {}
+                boolean_props: { disabled: false },
+                action_props: {
+                    on_click: async () => undefined,
+                    on_hover: async () => undefined
+                }
             }
         );
     }
@@ -105,7 +100,10 @@ class BaseDeleteViewController<
             {
                 class_styles: DecisionPromptUIClassStyles.confirm_btn_class_style,
                 boolean_props: { disabled: false },
-                action_props: {}
+                action_props: {
+                    on_click: async () => undefined,
+                    on_hover: async () => undefined
+                }
             }
         );
     }
@@ -121,23 +119,15 @@ class BaseDeleteViewController<
     protected getDecisionPromptProps() {
         const content_keys = this.getDeleteContentKeys();
         const boolean_props = this.getDecisionPromptBooleanProps();
-        const show_reason_input = Boolean(
-            boolean_props.show_reason_input || boolean_props.reason_required
-        );
+        const show_reason_input = Boolean(boolean_props.show_reason_input || boolean_props.reason_required);
 
         const decision_prompt_props = DecisionPromptUIPropsBuilder.buildFromContentKeys({
             record: this.props.record,
             title_text_content_key: content_keys.title_text,
             message_text_content_key: content_keys.message_text,
-            reason_label_text_content_key: show_reason_input
-                ? content_keys.reason_label_text
-                : undefined,
-            reason_placeholder_text_content_key: show_reason_input
-                ? content_keys.reason_placeholder_text
-                : undefined,
-            reason_helper_text_content_key: show_reason_input
-                ? content_keys.reason_helper_text
-                : undefined,
+            reason_label_text_content_key: show_reason_input ? content_keys.reason_label_text : undefined,
+            reason_placeholder_text_content_key: show_reason_input ? content_keys.reason_placeholder_text : undefined,
+            reason_helper_text_content_key: show_reason_input ? content_keys.reason_helper_text : undefined,
             class_styles: DecisionPromptUIClassStyles,
             cancel_button_props: this.getCancelButtonProps(),
             confirm_button_props: this.getConfirmButtonProps(),

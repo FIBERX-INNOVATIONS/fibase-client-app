@@ -43,6 +43,8 @@ class BaseDeleteViewActionHandler<
 
         this.name = name;
 
+        console.log({ delete_record_method });
+
         this.delete_record_method = delete_record_method;
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
@@ -84,13 +86,7 @@ class BaseDeleteViewActionHandler<
             const record_id = this.getRecordId(record);
 
             if (!record_id) {
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "record_not_found",
-                    4,
-                    undefined,
-                    true
-                );
+                return StatusAlertTriggerUtil.triggerAlert("error", "record_not_found", 4, undefined, true);
             }
 
             if (!this.delete_record_method) {
@@ -107,13 +103,7 @@ class BaseDeleteViewActionHandler<
 
             if (status === "logout") {
                 this.controller.router.push("/logout");
-                return StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "session_expired",
-                    4,
-                    undefined,
-                    true
-                );
+                return StatusAlertTriggerUtil.triggerAlert("error", "session_expired", 4, undefined, true);
             }
 
             if (status === "success") {
@@ -124,13 +114,7 @@ class BaseDeleteViewActionHandler<
             return StatusAlertTriggerUtil.triggerAlert("error", msg, 4, undefined, true);
         } catch (error: unknown) {
             this.logError("handleConfirmDelete", error);
-            return StatusAlertTriggerUtil.triggerAlert(
-                "error",
-                "error_occurred",
-                4,
-                undefined,
-                true
-            );
+            return StatusAlertTriggerUtil.triggerAlert("error", "error_occurred", 4, undefined, true);
         }
     };
 }

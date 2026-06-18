@@ -121,8 +121,7 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             reveal_credentials_btn_text: "Reveal Credentials",
             hide_credentials_btn_text: "Hide Credentials",
             credentials_loading_text: "Loading credentials...",
-            credentials_permission_denied_text:
-                "You do not have permission to view decrypted credentials.",
+            credentials_permission_denied_text: "You do not have permission to view decrypted credentials.",
             no_credentials_text: "No credentials returned for this provider config.",
             api_key_label_text: "API Key:",
             secret_key_label_text: "Secret Key:",
@@ -155,15 +154,10 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         } as PaymentProviderConfigProfileViewStateDataInterface;
     }
 
-    protected getUIComputedData(): ComputedDefinitionType<
-        Partial<ProfileViewComputedDataInterface>
-    > {
+    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
             logo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.provider?.logo_url ||
-                    DEFUALT_PAYMENT_PROVIDER_LOGO_URL
-                );
+                return this.state_refs.profile_record.value?.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL;
             },
 
             readable_created_at: () => {
@@ -181,17 +175,11 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             },
 
             creator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.creator?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.creator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             },
 
             updator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.updater?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.updator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             },
 
             has_credentials_permission: () => {

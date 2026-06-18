@@ -1,9 +1,6 @@
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
-import {
-    PaymentConfigDirectionType,
-    PaymentProviderMethodRecordInterface
-} from "@/types/api_service_type";
+import { PaymentConfigDirectionType, PaymentProviderMethodRecordInterface } from "@/types/api_service_type";
 
 import { PaymentProviderMethodFieldsType } from "@/types/form_fields_type";
 
@@ -14,10 +11,7 @@ import {
     UpdatePaymentProviderMethodPayloadInterface
 } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -67,13 +61,11 @@ class PaymentProviderMethodFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get default form data value based on record.
-    private static getFormDataValue(
-        record?: PaymentProviderMethodRecordInterface
-    ): PaymentProviderMethodFormDataInterface {
+    private static getFormDataValue(record?: PaymentProviderMethodRecordInterface): PaymentProviderMethodFormDataInterface {
         return {
             csrf_token: null,
-            provider_id: record?.provider_id ?? "",
-            payment_method_id: record?.payment_method_id ?? "",
+            provider_id: record?.provider?.id ?? "",
+            payment_method_id: record?.payment_method?.id ?? "",
             direction: record?.direction ?? "deposit",
             provider_method_code: record?.provider_method_code ?? "",
             min_amount: record?.min_amount ?? null,
@@ -83,20 +75,15 @@ class PaymentProviderMethodFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get field validators.
     protected getValidators(): Partial<
-        Record<
-            keyof PaymentProviderMethodFormDataInterface,
-            FieldValidator<PaymentProviderMethodFormDataInterface>
-        >
+        Record<keyof PaymentProviderMethodFormDataInterface, FieldValidator<PaymentProviderMethodFormDataInterface>>
     > {
         return {
             provider_id: PaymentProviderMethodValidator.validateProviderId,
             payment_method_id: PaymentProviderMethodValidator.validatePaymentMethodId,
             direction: PaymentProviderMethodValidator.validateDirection,
             provider_method_code: PaymentProviderMethodValidator.validateProviderMethodCode,
-            min_amount: (value) =>
-                PaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value)),
-            max_amount: (value) =>
-                PaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value))
+            min_amount: (value) => PaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value)),
+            max_amount: (value) => PaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value))
         };
     }
 
@@ -155,10 +142,7 @@ class PaymentProviderMethodFormViewActionHandler extends BaseFormActionHandler<
             }
 
             const result = record_id
-                ? await PaymentProviderMethodAPIService.updatePaymentProviderMethod(
-                      record_id,
-                      v_data
-                  )
+                ? await PaymentProviderMethodAPIService.updatePaymentProviderMethod(record_id, v_data)
                 : await PaymentProviderMethodAPIService.createPaymentProviderMethod(
                       v_data as CreatePaymentProviderMethodPayloadInterface
                   );

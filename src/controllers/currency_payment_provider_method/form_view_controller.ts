@@ -40,8 +40,7 @@ class CurrencyPaymentProviderMethodFormViewController extends BaseFormViewContro
     FormViewComponentsInterface,
     GlobalEventTypes
 > {
-    private readonly base_content_key =
-        "content_resource.currency_payment_provider_method_view_ui.form_view_ui";
+    private readonly base_content_key = "content_resource.currency_payment_provider_method_view_ui.form_view_ui";
 
     // Method to initialize form controller.
     constructor(props: FormViewPropsInterface<CurrencyPaymentProviderMethodRecordInterface>) {
@@ -66,7 +65,7 @@ class CurrencyPaymentProviderMethodFormViewController extends BaseFormViewContro
         const field_content_key = (input_id: string): string => {
             return this.getFieldContentKey(this.base_content_key, input_id);
         };
-        const selected_currency_options: SelectOptionInterface[] = record?.currency_id
+        const selected_currency_options: SelectOptionInterface[] = record?.currency?.code
             ? [
                   {
                       label_text: `${record.currency?.code?.toUpperCase?.() ?? ""} - ${record.currency?.name ?? ""}`,
@@ -74,7 +73,7 @@ class CurrencyPaymentProviderMethodFormViewController extends BaseFormViewContro
                   }
               ]
             : [];
-        const selected_provider_method_options: SelectOptionInterface[] = record?.provider_method_id
+        const selected_provider_method_options: SelectOptionInterface[] = record?.provider_method?.id
             ? [
                   {
                       label_text: [
@@ -125,32 +124,21 @@ class CurrencyPaymentProviderMethodFormViewController extends BaseFormViewContro
                             caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                         },
                         action_props: {
-                            fetch_data_method:
-                                PreviewRecordFetcher.fetchPaymentProviderMethodPreviewRecords
+                            fetch_data_method: PreviewRecordFetcher.fetchPaymentProviderMethodPreviewRecords
                         }
                     }
                 }
             ),
 
-            min_amount_input_group_props: this.buildInputGroupProps(
-                "min_amount",
-                "number",
-                field_content_key("min_amount"),
-                {
-                    model_value: record?.min_amount ?? "",
-                    input_props: { number_props: { min: 0, step: 0.01 } }
-                }
-            ),
+            min_amount_input_group_props: this.buildInputGroupProps("min_amount", "number", field_content_key("min_amount"), {
+                model_value: record?.min_amount ?? "",
+                input_props: { number_props: { min: 0, step: 0.01 } }
+            }),
 
-            max_amount_input_group_props: this.buildInputGroupProps(
-                "max_amount",
-                "number",
-                field_content_key("max_amount"),
-                {
-                    model_value: record?.max_amount ?? "",
-                    input_props: { number_props: { min: 0, step: 0.01 } }
-                }
-            )
+            max_amount_input_group_props: this.buildInputGroupProps("max_amount", "number", field_content_key("max_amount"), {
+                model_value: record?.max_amount ?? "",
+                input_props: { number_props: { min: 0, step: 0.01 } }
+            })
         };
     }
 

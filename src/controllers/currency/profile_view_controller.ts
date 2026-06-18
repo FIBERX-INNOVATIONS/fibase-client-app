@@ -22,8 +22,7 @@ class CurrencyProfileViewController extends BaseProfileViewController<CurrencyRe
 
     public action_handler: CurrencyProfileViewActionHandler;
 
-    public content_obj: CurrencyProfileViewContentTextInterface =
-        {} as CurrencyProfileViewContentTextInterface;
+    public content_obj: CurrencyProfileViewContentTextInterface = {} as CurrencyProfileViewContentTextInterface;
 
     constructor(props: ProfileViewPropsInterface<CurrencyRecordInterface>) {
         super(props);
@@ -107,9 +106,7 @@ class CurrencyProfileViewController extends BaseProfileViewController<CurrencyRe
         };
     }
 
-    protected getUIComputedData(): ComputedDefinitionType<
-        Partial<ProfileViewComputedDataInterface>
-    > {
+    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
             logo_url: () => {
                 const record = this.state_refs.profile_record.value;
@@ -131,17 +128,11 @@ class CurrencyProfileViewController extends BaseProfileViewController<CurrencyRe
             },
 
             creator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.creator?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.creator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             },
 
             updator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.updater?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.updator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             }
         };
     }

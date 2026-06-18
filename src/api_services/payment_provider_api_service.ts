@@ -2,10 +2,7 @@ import BaseAPIService from "@ui/version_3/base_classes/base_api_service";
 
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 
-import {
-    CreatePaymentProviderPayloadInterface,
-    UpdatePaymentProviderPayloadInterface
-} from "@/types/form_data_type";
+import { CreatePaymentProviderPayloadInterface, UpdatePaymentProviderPayloadInterface } from "@/types/form_data_type";
 
 import {
     PaymentProviderListParams,
@@ -19,16 +16,10 @@ class PaymentProviderAPIService extends BaseAPIService {
     public static getPaymentProviderList = async (
         params?: PaymentProviderListParams
     ): Promise<APIResponseInterface<PaymentProviderListResponseInterface>> => {
-        const {
-            page = 1,
-            limit = 10,
-            sort_by = "updated_at",
-            sort_direction = "desc",
-            filters
-        } = params ?? {};
+        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentProviderListResponseInterface>({
-            url: `/payment-config/providers/list`,
+            url: `/payment-config/provider/list`,
             method: "GET",
             params: {
                 page,
@@ -45,7 +36,7 @@ class PaymentProviderAPIService extends BaseAPIService {
         provider_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderRecordInterface>> => {
         return await this.queryAPI<PaymentProviderRecordInterface>({
-            url: `/payment-config/providers/${provider_id}`,
+            url: `/payment-config/provider/${provider_id}`,
             method: "GET"
         });
     };
@@ -55,7 +46,7 @@ class PaymentProviderAPIService extends BaseAPIService {
         data: CreatePaymentProviderPayloadInterface
     ): Promise<APIResponseInterface<PaymentProviderRecordInterface>> => {
         return await this.queryAPI<PaymentProviderRecordInterface>({
-            url: `/payment-config/providers/create`,
+            url: `/payment-config/provider/create`,
             method: "POST",
             data,
             disable_retry: true
@@ -68,7 +59,7 @@ class PaymentProviderAPIService extends BaseAPIService {
         data: UpdatePaymentProviderPayloadInterface
     ): Promise<APIResponseInterface<PaymentProviderRecordInterface>> => {
         return await this.queryAPI<PaymentProviderRecordInterface>({
-            url: `/payment-config/providers/${provider_id}/update`,
+            url: `/payment-config/provider/${provider_id}/update`,
             method: "PATCH",
             data,
             disable_retry: true
@@ -80,7 +71,7 @@ class PaymentProviderAPIService extends BaseAPIService {
         provider_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderStatusUpdateResponseInterface>> => {
         return await this.queryAPI<PaymentProviderStatusUpdateResponseInterface>({
-            url: `/payment-config/providers/${provider_id}/update-status`,
+            url: `/payment-config/provider/${provider_id}/update-status`,
             method: "PATCH",
             disable_retry: true
         });
@@ -91,8 +82,9 @@ class PaymentProviderAPIService extends BaseAPIService {
         provider_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderRecordInterface>> => {
         return await this.queryAPI<PaymentProviderRecordInterface>({
-            url: `/payment-config/providers/${provider_id}/delete`,
-            method: "DELETE"
+            url: `/payment-config/provider/${provider_id}/delete`,
+            method: "DELETE",
+            disable_retry: true
         });
     };
 }

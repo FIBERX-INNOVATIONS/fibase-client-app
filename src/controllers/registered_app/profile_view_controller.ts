@@ -24,8 +24,7 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
 
     public action_handler: RegisteredAppProfileViewActionHandler;
 
-    public content_obj: RegisteredAppProfileViewContentKeysInterface =
-        {} as RegisteredAppProfileViewContentKeysInterface;
+    public content_obj: RegisteredAppProfileViewContentKeysInterface = {} as RegisteredAppProfileViewContentKeysInterface;
 
     constructor(props: ProfileViewPropsInterface<RegisteredAppRecordInterface>) {
         super(props);
@@ -104,9 +103,7 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
     }
 
     // Method to handle getting computed data
-    protected getUIComputedData(): ComputedDefinitionType<
-        Partial<ProfileViewComputedDataInterface>
-    > {
+    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
             app_logo_url: () => {
                 const record = this.getProfileRecord();
@@ -131,8 +128,8 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
             updator_member_profile_photo_url: () => {
                 const record = this.getProfileRecord();
 
-                if (record?.updater?.profile_photo_link) {
-                    return record?.updater?.profile_photo_link;
+                if (record?.updator?.profile_photo_link) {
+                    return record?.updator?.profile_photo_link;
                 }
 
                 return DEFAULT_MEMBER_PROFILE_PHOTO_URL;
@@ -162,9 +159,7 @@ class RegisteredAppProfileViewController extends BaseProfileViewController<Regis
                 const record = this.getProfileRecord();
 
                 if (record?.auth?.last_key_rotated_at) {
-                    return InputTransformerUtil.formatReadableDateTime(
-                        record?.auth?.last_key_rotated_at
-                    );
+                    return InputTransformerUtil.formatReadableDateTime(record?.auth?.last_key_rotated_at);
                 }
 
                 return this.content_obj.empty_value_text;

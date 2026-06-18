@@ -44,18 +44,15 @@ import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellCo
 
 import DataTableLinkCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableLinkCellUI.vue";
 
-class PaymentProviderConfigListViewController extends BaseListViewController<
-    PaymentProviderConfigRecordInterface,
-    "provider_id"
-> {
+class PaymentProviderConfigListViewController extends BaseListViewController<PaymentProviderConfigRecordInterface, "id"> {
     public readonly content_key: string = "payment_provider_config";
 
-    public readonly record_id_key: "provider_id" = "provider_id" as const;
+    public readonly record_id_key: "id" = "id" as const;
 
     public action_handler: PaymentProviderConfigListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
-        super(props, "provider_id");
+        super(props, "id");
 
         this.action_handler = new PaymentProviderConfigListViewActionHandler(this);
     }
@@ -158,7 +155,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
         return [
             // S_N and Select All Column
             {
-                key: "provider_id",
+                key: "id",
                 sortable: false,
                 width: "w-[5%]",
                 header: {
@@ -173,27 +170,27 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
                     input_model_value: (record?: PaymentProviderConfigRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
-                        if (!record?.provider_id) {
+                        if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const provider_ids = records.map((row) => row.provider_id);
+                            const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
 
-                            return provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
+                            return record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
                         }
 
-                        return selected_records.includes(record.provider_id);
+                        return selected_records.includes(record.id);
                     },
                     input_ui_boolean_props: (record?: PaymentProviderConfigRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const provider_ids = records.map((row) => row.provider_id);
-                        const is_checked = record?.provider_id
-                            ? selected_records.includes(record.provider_id)
-                            : provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
+                        const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
+                        const is_checked = record?.id
+                            ? selected_records.includes(record.id)
+                            : record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
                             required: true,
-                            disabled: !record?.provider_id && provider_ids.length === 0
+                            disabled: !record?.id && record_ids.length === 0
                         };
                     },
                     input_action_props: (record?: PaymentProviderConfigRecordInterface): InputUIActionPropsInterface => ({
@@ -213,7 +210,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
             },
             // Provider Column
             {
-                key: "provider_id",
+                key: "provider",
                 sortable: true,
                 width: "w-[22%]",
                 header: {
@@ -341,7 +338,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<
             },
             // Actions Column
             {
-                key: "provider_id",
+                key: "id",
                 sortable: false,
                 width: "w-[9%]",
                 header: {

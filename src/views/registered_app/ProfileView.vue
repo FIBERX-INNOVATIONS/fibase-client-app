@@ -1,10 +1,7 @@
 <template>
     <template v-if="true">
         <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
-            <span
-                v-html="getSVGIconValue('loading_svg_icon')"
-                :class="class_styles.link_icon_class_style"
-            ></span>
+            <span v-html="getSVGIconValue('loading_svg_icon')" :class="class_styles.link_icon_class_style"></span>
 
             {{ content_obj.loading_text }}
         </div>
@@ -40,18 +37,13 @@
                     </a>
 
                     <p :class="class_styles.description_class_style">
-                        {{
-                            state_refs?.profile_record?.value?.description ||
-                            content_obj.no_description_text
-                        }}
+                        {{ state_refs?.profile_record?.value?.description || content_obj.no_description_text }}
                     </p>
                 </ImageRenderUI>
             </div>
 
             <!-- 🔹 Grid Sections -->
-            <div
-                :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style"
-            >
+            <div :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style">
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <!-- App Information -->
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">
@@ -83,9 +75,7 @@
                             "
                             :class="[
                                 class_styles.icon_class_style,
-                                state_refs?.profile_record?.value?.is_active
-                                    ? 'text-green-400'
-                                    : 'text-red-400'
+                                state_refs?.profile_record?.value?.is_active ? 'text-green-400' : 'text-red-400'
                             ]"
                         ></span>
 
@@ -93,11 +83,7 @@
                             {{ content_obj.status_label_text }}
                         </span>
                         <span
-                            :class="
-                                state_refs?.profile_record?.value?.is_active
-                                    ? 'text-green-400'
-                                    : 'text-red-400'
-                            "
+                            :class="state_refs?.profile_record?.value?.is_active ? 'text-green-400' : 'text-red-400'"
                             class="font-semibold"
                         >
                             {{
@@ -109,14 +95,8 @@
                     </p>
 
                     <!-- Created At -->
-                    <p
-                        v-if="readable_created_at"
-                        :class="class_styles.small_bold_value_text_class_style"
-                    >
-                        <span
-                            v-html="getSVGIconValue('clock_svg_icon')"
-                            :class="class_styles.icon_class_style"
-                        ></span>
+                    <p v-if="readable_created_at" :class="class_styles.small_bold_value_text_class_style">
+                        <span v-html="getSVGIconValue('clock_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
                             {{ content_obj.created_label_text }}
@@ -125,14 +105,8 @@
                     </p>
 
                     <!-- Updated At -->
-                    <p
-                        v-if="readable_updated_at"
-                        :class="class_styles.small_bold_value_text_class_style"
-                    >
-                        <span
-                            v-html="getSVGIconValue('clock_svg_icon')"
-                            :class="class_styles.icon_class_style"
-                        ></span>
+                    <p v-if="readable_updated_at" :class="class_styles.small_bold_value_text_class_style">
+                        <span v-html="getSVGIconValue('clock_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
                             {{ content_obj.updated_label_text }}
@@ -148,10 +122,7 @@
 
                     <!-- App Auth Key algorithm -->
                     <p :class="class_styles.small_bold_value_text_class_style">
-                        <span
-                            v-html="getSVGIconValue('key_svg_icon')"
-                            :class="class_styles.icon_class_style"
-                        ></span>
+                        <span v-html="getSVGIconValue('key_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
                             {{ content_obj.algorithm_label_text }}
@@ -164,29 +135,17 @@
 
                     <!-- App Auth Key Version -->
                     <p :class="class_styles.small_bold_value_text_class_style">
-                        <span
-                            v-html="getSVGIconValue('numbered_list_svg_icon')"
-                            :class="class_styles.icon_class_style"
-                        ></span>
+                        <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
                             {{ content_obj.version_label_text }}
                         </span>
-                        {{
-                            state_refs?.profile_record?.value?.auth?.key_version ||
-                            content_obj.empty_value_text
-                        }}
+                        {{ state_refs?.profile_record?.value?.auth?.key_version || content_obj.empty_value_text }}
                     </p>
 
                     <!-- Key Rotated At -->
-                    <p
-                        v-if="readable_last_key_rotated_at"
-                        :class="class_styles.small_bold_value_text_class_style"
-                    >
-                        <span
-                            v-html="getSVGIconValue('clock_svg_icon')"
-                            :class="class_styles.icon_class_style"
-                        ></span>
+                    <p v-if="readable_last_key_rotated_at" :class="class_styles.small_bold_value_text_class_style">
+                        <span v-html="getSVGIconValue('clock_svg_icon')" :class="class_styles.icon_class_style"></span>
 
                         <span :class="class_styles.small_bold_value_text_class_style">
                             {{ content_obj.last_rotated_label_text }}
@@ -205,12 +164,7 @@
 
                 <div class="flex flex-wrap gap-3">
                     <!-- Facebook Link -->
-                    <a
-                        v-if="fb_social_link"
-                        :href="fb_social_link"
-                        target="_blank"
-                        :class="class_styles.link_class_style"
-                    >
+                    <a v-if="fb_social_link" :href="fb_social_link" target="_blank" :class="class_styles.link_class_style">
                         <img
                             src="https://storage.googleapis.com/apps_media/social_icons/facebook_icon.png"
                             :alt="content_obj.facebook_alt_text"
@@ -312,23 +266,15 @@
             </div>
 
             <!-- Creator and Updator -->
-            <div
-                :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style"
-            >
+            <div :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style">
                 <!-- Creator -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">
                         {{ content_obj.created_by_title }}
                     </h4>
 
-                    <div
-                        v-if="state_refs?.profile_record?.value?.creator"
-                        class="flex items-center gap-3"
-                    >
-                        <img
-                            :src="creator_member_profile_photo_url"
-                            :class="class_styles?.member_avatar_img_class_style"
-                        />
+                    <div v-if="state_refs?.profile_record?.value?.creator" class="flex items-center gap-3">
+                        <img :src="creator_member_profile_photo_url" :class="class_styles?.member_avatar_img_class_style" />
 
                         <div>
                             <h3 :class="class_styles.member_name_class_style">
@@ -347,21 +293,15 @@
                         {{ content_obj.updated_by_title }}
                     </h4>
 
-                    <div
-                        v-if="state_refs?.profile_record?.value?.updater"
-                        class="flex items-center gap-3"
-                    >
-                        <img
-                            :src="updator_member_profile_photo_url"
-                            :class="class_styles?.member_avatar_img_class_style"
-                        />
+                    <div v-if="state_refs?.profile_record?.value?.updator" class="flex items-center gap-3">
+                        <img :src="updator_member_profile_photo_url" :class="class_styles?.member_avatar_img_class_style" />
 
                         <div>
                             <h3 :class="class_styles.member_name_class_style">
-                                {{ getMemberFullName(state_refs?.profile_record?.value?.updater) }}
+                                {{ getMemberFullName(state_refs?.profile_record?.value?.updator) }}
                             </h3>
                             <p :class="class_styles.description_class_style">
-                                {{ state_refs?.profile_record?.value?.updater.email }}
+                                {{ state_refs?.profile_record?.value?.updator.email }}
                             </p>
                         </div>
                     </div>
@@ -369,9 +309,7 @@
             </div>
 
             <!-- 🔹 Roles  and 🔹 URLs  -->
-            <div
-                :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style"
-            >
+            <div :class="class_styles.grid_class_style?.two_col_responsive_grid_wrapper_class_style">
                 <!-- 🔹 Roles -->
                 <div :class="class_styles.grid_class_style?.grid_wrapper_class_style">
                     <h4 :class="class_styles.small_bold_underlined_text_class_style">

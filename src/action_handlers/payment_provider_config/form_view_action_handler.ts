@@ -15,10 +15,7 @@ import {
     UpdatePaymentProviderConfigPayloadInterface
 } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -96,12 +93,10 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get default form data value based on record.
-    private static getFormDataValue(
-        record?: PaymentProviderConfigRecordInterface
-    ): PaymentProviderConfigFormDataInterface {
+    private static getFormDataValue(record?: PaymentProviderConfigRecordInterface): PaymentProviderConfigFormDataInterface {
         return {
             csrf_token: null,
-            provider_id: record?.provider_id ?? "",
+            provider_id: record?.provider?.id ?? "",
             environment: record?.environment ?? "test",
             api_key: "",
             secret_key: "",
@@ -131,10 +126,7 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get field validators.
     protected getValidators(): Partial<
-        Record<
-            keyof PaymentProviderConfigFormDataInterface,
-            FieldValidator<PaymentProviderConfigFormDataInterface>
-        >
+        Record<keyof PaymentProviderConfigFormDataInterface, FieldValidator<PaymentProviderConfigFormDataInterface>>
     > {
         const credential_validator = PaymentProviderConfigValidator.validateCredentialValue;
 
@@ -198,23 +190,19 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
         form_data: PaymentProviderConfigFormDataInterface
     ): PaymentProviderConfigSettingsInterface | undefined {
         const original_settings = this.controller.props.record?.settings ?? {};
-        const settings =
-            PaymentProviderConfigFormViewActionHandler.setting_keys.reduce<PaymentProviderConfigSettingsInterface>(
-                (result, key) => {
-                    const raw_value = form_data[key];
-                    const value =
-                        raw_value === null || raw_value === undefined
-                            ? ""
-                            : String(raw_value).trim();
+        const settings = PaymentProviderConfigFormViewActionHandler.setting_keys.reduce<PaymentProviderConfigSettingsInterface>(
+            (result, key) => {
+                const raw_value = form_data[key];
+                const value = raw_value === null || raw_value === undefined ? "" : String(raw_value).trim();
 
-                    if (value || Object.prototype.hasOwnProperty.call(original_settings, key)) {
-                        result[key] = value || null;
-                    }
+                if (value || Object.prototype.hasOwnProperty.call(original_settings, key)) {
+                    result[key] = value || null;
+                }
 
-                    return result;
-                },
-                {}
-            );
+                return result;
+            },
+            {}
+        );
 
         return Object.keys(settings).length ? settings : undefined;
     }
@@ -259,10 +247,7 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             }
 
             const result = record_id
-                ? await PaymentProviderConfigAPIService.updatePaymentProviderConfig(
-                      record_id,
-                      v_data
-                  )
+                ? await PaymentProviderConfigAPIService.updatePaymentProviderConfig(record_id, v_data)
                 : await PaymentProviderConfigAPIService.createPaymentProviderConfig(
                       v_data as CreatePaymentProviderConfigPayloadInterface
                   );
@@ -274,7 +259,7 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
 
             const { status, msg, data } = result;
 
-            if (status !== "success" || !data?.provider_id) {
+            if (status !== "success" || !data?.id) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg };
             }

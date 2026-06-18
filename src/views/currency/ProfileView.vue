@@ -1,9 +1,6 @@
 <template>
     <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
-        <span
-            v-html="getSVGIconValue('loading_svg_icon')"
-            :class="class_styles.link_icon_class_style"
-        ></span>
+        <span v-html="getSVGIconValue('loading_svg_icon')" :class="class_styles.link_icon_class_style"></span>
 
         {{ content_obj.loading_text }}
     </div>
@@ -18,9 +15,7 @@
             >
                 <h3 :class="class_styles.h3_class_style">
                     {{ state_refs.profile_record.value?.name }}
-                    <span v-if="state_refs.profile_record.value?.code">
-                        ({{ state_refs.profile_record.value.code }})
-                    </span>
+                    <span v-if="state_refs.profile_record.value?.code"> ({{ state_refs.profile_record.value.code }}) </span>
                 </h3>
 
                 <p :class="class_styles.p_class_style">
@@ -53,38 +48,23 @@
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('numbered_list_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.numeric_code_label_text }}
                     </span>
-                    {{
-                        state_refs.profile_record.value?.numeric_code ||
-                        content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.numeric_code || content_obj.empty_value_text }}
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('world_globe_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('world_globe_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.country_code_label_text }}
                     </span>
-                    {{
-                        state_refs.profile_record.value?.country_code ||
-                        content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.country_code || content_obj.empty_value_text }}
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('numbered_list_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.precision_label_text }}
                     </span>
@@ -92,29 +72,19 @@
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('numbered_list_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.minor_unit_label_text }}
                     </span>
-                    {{
-                        state_refs.profile_record.value?.minor_unit ?? content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.minor_unit ?? content_obj.empty_value_text }}
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('numbered_list_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.sort_order_label_text }}
                     </span>
-                    {{
-                        state_refs.profile_record.value?.sort_order ?? content_obj.empty_value_text
-                    }}
+                    {{ state_refs.profile_record.value?.sort_order ?? content_obj.empty_value_text }}
                 </p>
             </div>
 
@@ -127,53 +97,37 @@
                     <span
                         v-html="
                             getSVGIconValue(
-                                state_refs.profile_record.value?.is_fiat
-                                    ? 'check_circle_svg_icon'
-                                    : 'x_circile_svg_icon'
+                                state_refs.profile_record.value?.is_fiat ? 'check_circle_svg_icon' : 'x_circile_svg_icon'
                             )
                         "
                         :class="[
                             class_styles.icon_class_style,
-                            state_refs.profile_record.value?.is_fiat
-                                ? 'text-green-400'
-                                : 'text-red-400'
+                            state_refs.profile_record.value?.is_fiat ? 'text-green-400' : 'text-red-400'
                         ]"
                     ></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.type_label_text }}
                     </span>
-                    {{
-                        state_refs.profile_record.value?.is_fiat
-                            ? content_obj.fiat_type_text
-                            : content_obj.crypto_type_text
-                    }}
+                    {{ state_refs.profile_record.value?.is_fiat ? content_obj.fiat_type_text : content_obj.crypto_type_text }}
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
                     <span
                         v-html="
                             getSVGIconValue(
-                                state_refs.profile_record.value?.is_active
-                                    ? 'check_circle_svg_icon'
-                                    : 'x_circile_svg_icon'
+                                state_refs.profile_record.value?.is_active ? 'check_circle_svg_icon' : 'x_circile_svg_icon'
                             )
                         "
                         :class="[
                             class_styles.icon_class_style,
-                            state_refs.profile_record.value?.is_active
-                                ? 'text-green-400'
-                                : 'text-red-400'
+                            state_refs.profile_record.value?.is_active ? 'text-green-400' : 'text-red-400'
                         ]"
                     ></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.active_label_text }}
                     </span>
                     <span
-                        :class="
-                            state_refs.profile_record.value?.is_active
-                                ? 'text-green-400'
-                                : 'text-red-400'
-                        "
+                        :class="state_refs.profile_record.value?.is_active ? 'text-green-400' : 'text-red-400'"
                         class="font-semibold"
                     >
                         {{
@@ -185,10 +139,7 @@
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('clock_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('clock_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.created_label_text }}
                     </span>
@@ -196,10 +147,7 @@
                 </p>
 
                 <p :class="class_styles.small_bold_value_text_class_style">
-                    <span
-                        v-html="getSVGIconValue('clock_svg_icon')"
-                        :class="class_styles.icon_class_style"
-                    ></span>
+                    <span v-html="getSVGIconValue('clock_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.updated_label_text }}
                     </span>
@@ -240,10 +188,7 @@
 
                         <span
                             v-if="appCurrency.is_default"
-                            :class="[
-                                class_styles.small_bold_value_text_class_style,
-                                'text-green-400'
-                            ]"
+                            :class="[class_styles.small_bold_value_text_class_style, 'text-green-400']"
                         >
                             {{ content_obj.default_badge_text }}
                         </span>
@@ -262,14 +207,8 @@
                     {{ content_obj.created_by_title_text }}
                 </h4>
 
-                <div
-                    v-if="state_refs.profile_record.value?.creator"
-                    class="flex items-center gap-3"
-                >
-                    <img
-                        :src="creator_member_profile_photo_url"
-                        :class="class_styles.member_avatar_img_class_style"
-                    />
+                <div v-if="state_refs.profile_record.value?.creator" class="flex items-center gap-3">
+                    <img :src="creator_member_profile_photo_url" :class="class_styles.member_avatar_img_class_style" />
 
                     <div>
                         <h3 :class="class_styles.member_name_class_style">
@@ -287,21 +226,15 @@
                     {{ content_obj.updated_by_title_text }}
                 </h4>
 
-                <div
-                    v-if="state_refs.profile_record.value?.updater"
-                    class="flex items-center gap-3"
-                >
-                    <img
-                        :src="updator_member_profile_photo_url"
-                        :class="class_styles.member_avatar_img_class_style"
-                    />
+                <div v-if="state_refs.profile_record.value?.updator" class="flex items-center gap-3">
+                    <img :src="updator_member_profile_photo_url" :class="class_styles.member_avatar_img_class_style" />
 
                     <div>
                         <h3 :class="class_styles.member_name_class_style">
-                            {{ getMemberFullName(state_refs.profile_record.value.updater) }}
+                            {{ getMemberFullName(state_refs.profile_record.value.updator) }}
                         </h3>
                         <p :class="class_styles.description_class_style">
-                            {{ state_refs.profile_record.value.updater.email }}
+                            {{ state_refs.profile_record.value.updator.email }}
                         </p>
                     </div>
                 </div>

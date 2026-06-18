@@ -40,8 +40,7 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
     FormViewComponentsInterface,
     GlobalEventTypes
 > {
-    private readonly base_content_key =
-        "content_resource.payment_provider_method_view_ui.form_view_ui";
+    private readonly base_content_key = "content_resource.payment_provider_method_view_ui.form_view_ui";
 
     // Method to initialize form controller.
     constructor(props: FormViewPropsInterface<PaymentProviderMethodRecordInterface>) {
@@ -66,19 +65,19 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
         const field_content_key = (input_id: string): string => {
             return this.getFieldContentKey(this.base_content_key, input_id);
         };
-        const selected_provider_options: SelectOptionInterface[] = record?.provider_id
+        const selected_provider_options: SelectOptionInterface[] = record?.provider?.id
             ? [
                   {
                       label_text: `${record.provider?.code?.toUpperCase?.() ?? ""} - ${record.provider?.name ?? ""}`,
-                      value: record.provider_id
+                      value: record.provider.id
                   }
               ]
             : [];
-        const selected_payment_method_options: SelectOptionInterface[] = record?.payment_method_id
+        const selected_payment_method_options: SelectOptionInterface[] = record?.payment_method?.id
             ? [
                   {
                       label_text: `${record.payment_method?.code?.toUpperCase?.() ?? ""} - ${record.payment_method?.name ?? ""}`,
-                      value: record.payment_method_id
+                      value: record.payment_method.id
                   }
               ]
             : [];
@@ -89,15 +88,14 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
                 "select_search",
                 field_content_key("provider_id"),
                 {
-                    model_value: record?.provider_id ?? "",
+                    model_value: record?.provider?.id ?? "",
                     input_props: {
                         option_props: selected_provider_options,
                         content_props: {
                             caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon
                         },
                         action_props: {
-                            fetch_data_method:
-                                PreviewRecordFetcher.fetchPaymentProviderPreviewRecords
+                            fetch_data_method: PreviewRecordFetcher.fetchPaymentProviderPreviewRecords
                         }
                     }
                 }
@@ -108,7 +106,7 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
                 "select_search",
                 field_content_key("payment_method_id"),
                 {
-                    model_value: record?.payment_method_id ?? "",
+                    model_value: record?.payment_method?.id ?? "",
                     input_props: {
                         option_props: selected_payment_method_options,
                         content_props: {
@@ -121,12 +119,9 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
                 }
             ),
 
-            direction_input_group_props: this.buildInputGroupProps(
-                "direction",
-                "select",
-                field_content_key("direction"),
-                { model_value: record?.direction ?? "deposit" }
-            ),
+            direction_input_group_props: this.buildInputGroupProps("direction", "select", field_content_key("direction"), {
+                model_value: record?.direction ?? "deposit"
+            }),
 
             provider_method_code_input_group_props: this.buildInputGroupProps(
                 "provider_method_code",
@@ -135,25 +130,15 @@ class PaymentProviderMethodFormViewController extends BaseFormViewController<
                 { model_value: record?.provider_method_code ?? "" }
             ),
 
-            min_amount_input_group_props: this.buildInputGroupProps(
-                "min_amount",
-                "number",
-                field_content_key("min_amount"),
-                {
-                    model_value: record?.min_amount ?? "",
-                    input_props: { number_props: { min: 0, step: 0.01 } }
-                }
-            ),
+            min_amount_input_group_props: this.buildInputGroupProps("min_amount", "number", field_content_key("min_amount"), {
+                model_value: record?.min_amount ?? "",
+                input_props: { number_props: { min: 0, step: 0.01 } }
+            }),
 
-            max_amount_input_group_props: this.buildInputGroupProps(
-                "max_amount",
-                "number",
-                field_content_key("max_amount"),
-                {
-                    model_value: record?.max_amount ?? "",
-                    input_props: { number_props: { min: 0, step: 0.01 } }
-                }
-            )
+            max_amount_input_group_props: this.buildInputGroupProps("max_amount", "number", field_content_key("max_amount"), {
+                model_value: record?.max_amount ?? "",
+                input_props: { number_props: { min: 0, step: 0.01 } }
+            })
         };
     }
 

@@ -22,8 +22,7 @@ class PaymentMethodProfileViewController extends BaseProfileViewController<Payme
 
     public action_handler: PaymentMethodProfileViewActionHandler;
 
-    public content_obj: PaymentMethodProfileViewContentTextInterface =
-        {} as PaymentMethodProfileViewContentTextInterface;
+    public content_obj: PaymentMethodProfileViewContentTextInterface = {} as PaymentMethodProfileViewContentTextInterface;
 
     constructor(props: ProfileViewPropsInterface<PaymentMethodRecordInterface>) {
         super(props);
@@ -111,15 +110,10 @@ class PaymentMethodProfileViewController extends BaseProfileViewController<Payme
         };
     }
 
-    protected getUIComputedData(): ComputedDefinitionType<
-        Partial<ProfileViewComputedDataInterface>
-    > {
+    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
             logo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.icon_url ||
-                    DEFUALT_PAYMENT_METHOD_ICON_URL
-                );
+                return this.state_refs.profile_record.value?.icon_url || DEFUALT_PAYMENT_METHOD_ICON_URL;
             },
 
             readable_created_at: () => {
@@ -137,17 +131,11 @@ class PaymentMethodProfileViewController extends BaseProfileViewController<Payme
             },
 
             creator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.creator?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.creator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             },
 
             updator_member_profile_photo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.updater?.profile_photo_link ||
-                    DEFAULT_MEMBER_PROFILE_PHOTO_URL
-                );
+                return this.state_refs.profile_record.value?.updator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL;
             }
         };
     }
