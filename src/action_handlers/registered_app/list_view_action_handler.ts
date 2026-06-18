@@ -113,9 +113,10 @@ class RegisteredAppListViewActionHandler extends BaseListViewActionHandler<
                 };
             } else if (result.status === "success") {
                 const activation_data = result.data;
-                const safe_app = activation_data?.safe_app;
 
-                this.updateListStateRecord(public_id, safe_app ?? { is_active: !record.is_active }, "public_id");
+                const registered_app_record = activation_data?.registered_app_record;
+
+                this.updateListStateRecord(public_id, registered_app_record ?? { is_active: !record.is_active }, "public_id");
 
                 if (activation_data?.new_status === true && activation_data.private_key) {
                     this.openActivationCredentialsModal(activation_data);

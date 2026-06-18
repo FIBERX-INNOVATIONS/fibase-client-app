@@ -1,18 +1,9 @@
 import { Component } from "vue";
 
-import {
-    RegisteredAppRecordInterface,
-    RegisteredAppStatusUpdateResponseInterface
-} from "@/types/api_service_type";
+import { RegisteredAppRecordInterface, RegisteredAppStatusUpdateResponseInterface } from "@/types/api_service_type";
 
-import {
-    PageHeaderUIClassStylesInterface,
-    PageHeaderUIPropsInterface
-} from "@ui/version_3/ui_types/page_header_ui_type";
-import {
-    ContentCardUIClassStylesInterface,
-    ContentCardUIPropsInterface
-} from "@ui/version_3/ui_types/content_card_ui_type";
+import { PageHeaderUIClassStylesInterface, PageHeaderUIPropsInterface } from "@ui/version_3/ui_types/page_header_ui_type";
+import { ContentCardUIClassStylesInterface, ContentCardUIPropsInterface } from "@ui/version_3/ui_types/content_card_ui_type";
 
 export interface ActivationCredentialsViewClassStylesInterface {
     wrapper_class_style: string;
@@ -55,7 +46,7 @@ export interface ActivationCredentialsViewStateDataInterface {
 }
 
 export interface ActivationCredentialsViewComputedDataInterface {
-    safe_app: RegisteredAppRecordInterface;
+    registered_app_record: RegisteredAppRecordInterface;
 
     private_key: string;
 

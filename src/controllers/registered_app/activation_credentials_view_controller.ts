@@ -2,10 +2,7 @@ import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_t
 
 import { HeaderTextUIClassStylesInterface } from "@ui/version_3/ui_types/header_text_ui_type";
 
-import {
-    ContentCardUIClassStylesInterface,
-    ContentCardUIPropsInterface
-} from "@ui/version_3/ui_types/content_card_ui_type";
+import { ContentCardUIClassStylesInterface, ContentCardUIPropsInterface } from "@ui/version_3/ui_types/content_card_ui_type";
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
@@ -44,8 +41,7 @@ class RegisteredAppActivationCredentialsViewController extends BaseController<
 
     public action_handler: RegisteredAppActivationCredentialsViewActionHandler;
 
-    private readonly base_content_key =
-        "content_resource.registered_app_view_ui.activation_credentials_view_ui";
+    private readonly base_content_key = "content_resource.registered_app_view_ui.activation_credentials_view_ui";
 
     private readonly content_manager = ContentManagerUtil.getInstance();
 
@@ -74,54 +70,44 @@ class RegisteredAppActivationCredentialsViewController extends BaseController<
 
     protected getUIComputedData() {
         return {
-            safe_app: () => this.props.activation_data.safe_app,
+            registered_app_record: () => this.props.activation_data.registered_app_record,
 
             private_key: () => this.props.activation_data.private_key ?? "",
 
             credential_items: (): ActivationCredentialItemInterface[] => {
-                const safe_app = this.props.activation_data.safe_app;
+                const registered_app_record = this.props.activation_data.registered_app_record;
 
                 return [
                     this.buildCredentialItem(
                         "app_id",
                         "App ID",
-                        safe_app.public_id,
+                        registered_app_record.public_id,
                         "identification_card_svg_icon"
                     ),
-                    this.buildCredentialItem(
-                        "app_prefix",
-                        "App Prefix",
-                        safe_app.prefix,
-                        "key_svg_icon"
-                    ),
+                    this.buildCredentialItem("app_prefix", "App Prefix", registered_app_record.prefix, "key_svg_icon"),
                     this.buildCredentialItem(
                         "app_name",
                         "App Name",
-                        safe_app.name,
+                        registered_app_record.name,
                         "rectangle_window_group_svg_icon"
                     ),
-                    this.buildCredentialItem(
-                        "base_url",
-                        "Base URL",
-                        safe_app.base_url,
-                        "world_globe_svg_icon"
-                    ),
+                    this.buildCredentialItem("base_url", "Base URL", registered_app_record.base_url, "world_globe_svg_icon"),
                     this.buildCredentialItem(
                         "key_algorithm",
                         "Key Algorithm",
-                        safe_app.auth?.key_algorithm,
+                        registered_app_record.auth?.key_algorithm,
                         "padlock_closed_svg_icon"
                     ),
                     this.buildCredentialItem(
                         "key_version",
                         "Key Version",
-                        safe_app.auth?.key_version?.toString(),
+                        registered_app_record.auth?.key_version?.toString(),
                         "numbered_list_svg_icon"
                     ),
                     this.buildCredentialItem(
                         "last_key_rotated_at",
                         "Last Key Rotated At",
-                        safe_app.auth?.last_key_rotated_at,
+                        registered_app_record.auth?.last_key_rotated_at,
                         "clock_svg_icon"
                     )
                 ];
@@ -188,9 +174,7 @@ class RegisteredAppActivationCredentialsViewController extends BaseController<
         };
     }
 
-    private buildCredentialCardProps(
-        credential_item: ActivationCredentialItemInterface
-    ): ContentCardUIPropsInterface {
+    private buildCredentialCardProps(credential_item: ActivationCredentialItemInterface): ContentCardUIPropsInterface {
         const value = credential_item.value ?? "";
         const is_copied = Boolean(value) && this.state_refs.copied_value.value === value;
 
@@ -212,9 +196,7 @@ class RegisteredAppActivationCredentialsViewController extends BaseController<
     private buildPrivateKeyCardProps(): ContentCardUIPropsInterface {
         const private_key = this.props.activation_data.private_key ?? "";
         const private_key_copy_value = this.formatPrivateKeyForCopy(private_key);
-        const is_copied =
-            Boolean(private_key_copy_value) &&
-            this.state_refs.copied_value.value === private_key_copy_value;
+        const is_copied = Boolean(private_key_copy_value) && this.state_refs.copied_value.value === private_key_copy_value;
         const content_key = `${this.base_content_key}.private_key_section`;
 
         return this.buildContentCardProps({

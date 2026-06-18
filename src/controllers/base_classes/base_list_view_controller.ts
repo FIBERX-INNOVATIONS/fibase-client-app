@@ -356,13 +356,18 @@ class BaseListViewController<T extends object = Record<string, unknown>, K exten
     ): ListViewStateDataInterface<T, K>["filters_panel_props"] {
         const { filters_class_styles } = ListViewClassStyles;
 
+        const filter_fields = this.getFilterFields();
+
         const apply_button = ButtonUIPropsBuilder.getReactivePropsObject(
             `apply_${page_key}_filters`,
             content_keys.apply_filters_button_text,
             icons.apply_filters_button,
             "button",
             {
-                class_styles: filters_class_styles.apply_filters_btn_class_style
+                class_styles: filters_class_styles.apply_filters_btn_class_style,
+                boolean_props: {
+                    disabled: filter_fields.length <= 0
+                }
             }
         );
 
@@ -372,14 +377,17 @@ class BaseListViewController<T extends object = Record<string, unknown>, K exten
             icons.clear_filters_button,
             "button",
             {
-                class_styles: filters_class_styles.clear_filters_btn_class_style
+                class_styles: filters_class_styles.clear_filters_btn_class_style,
+                boolean_props: {
+                    disabled: filter_fields.length <= 0
+                }
             }
         );
 
         const filters_panel_props = FiltersPanelUIPropsBuilder.getReactivePropsObject(
             content_keys.filters_toggle_button_text,
             content_keys.filters_toggle_button_icon,
-            this.getFilterFields(),
+            filter_fields,
             apply_button,
             clear_button,
             {

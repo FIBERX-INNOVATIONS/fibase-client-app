@@ -119,7 +119,7 @@ const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
         section_1_wrapper_class_style:
             "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",
 
-        section_2_wrapper_class_style: "h-[85%] overflow-x-hidden overflow-y-auto w-full p-0",
+        section_2_wrapper_class_style: "h-[80%] overflow-x-hidden overflow-y-auto w-full p-0",
 
         section_3_wrapper_class_style: ""
     }

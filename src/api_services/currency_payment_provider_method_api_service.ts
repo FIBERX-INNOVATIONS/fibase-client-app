@@ -19,16 +19,10 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
     public static getCurrencyPaymentProviderMethodList = async (
         params?: CurrencyPaymentProviderMethodListParams
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodListResponseInterface>> => {
-        const {
-            page = 1,
-            limit = 10,
-            sort_by = "updated_at",
-            sort_direction = "desc",
-            filters
-        } = params ?? {};
+        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<CurrencyPaymentProviderMethodListResponseInterface>({
-            url: `/payment-config/currency-provider-methods/list`,
+            url: `/payment-config/currency-provider-method/list`,
             method: "GET",
             params: {
                 page,
@@ -45,7 +39,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
         currency_provider_method_id: string | number
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodRecordInterface>({
-            url: `/payment-config/currency-provider-methods/${currency_provider_method_id}`,
+            url: `/payment-config/currency-provider-method/${currency_provider_method_id}`,
             method: "GET"
         });
     };
@@ -55,7 +49,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
         data: CreateCurrencyPaymentProviderMethodPayloadInterface
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodRecordInterface>({
-            url: `/payment-config/currency-provider-methods/create`,
+            url: `/payment-config/currency-provider-method/create`,
             method: "POST",
             data,
             disable_retry: true
@@ -68,7 +62,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
         data: UpdateCurrencyPaymentProviderMethodPayloadInterface
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodRecordInterface>({
-            url: `/payment-config/currency-provider-methods/${currency_provider_method_id}/update`,
+            url: `/payment-config/currency-provider-method/${currency_provider_method_id}/update`,
             method: "PATCH",
             data,
             disable_retry: true
@@ -78,11 +72,9 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
     // Method to query the update currency payment provider method status API endpoint
     public static updateCurrencyPaymentProviderMethodStatus = async (
         currency_provider_method_id: string | number
-    ): Promise<
-        APIResponseInterface<CurrencyPaymentProviderMethodStatusUpdateResponseInterface>
-    > => {
+    ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodStatusUpdateResponseInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodStatusUpdateResponseInterface>({
-            url: `/payment-config/currency-provider-methods/${currency_provider_method_id}/update-status`,
+            url: `/payment-config/currency-provider-method/${currency_provider_method_id}/update-status`,
             method: "PATCH",
             disable_retry: true
         });
@@ -93,7 +85,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
         currency_provider_method_id: string | number
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodRecordInterface>({
-            url: `/payment-config/currency-provider-methods/${currency_provider_method_id}/delete`,
+            url: `/payment-config/currency-provider-method/${currency_provider_method_id}/delete`,
             method: "DELETE"
         });
     };

@@ -19,16 +19,10 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
     public static getPaymentProviderMethodList = async (
         params?: PaymentProviderMethodListParams
     ): Promise<APIResponseInterface<PaymentProviderMethodListResponseInterface>> => {
-        const {
-            page = 1,
-            limit = 10,
-            sort_by = "updated_at",
-            sort_direction = "desc",
-            filters
-        } = params ?? {};
+        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentProviderMethodListResponseInterface>({
-            url: `/payment-config/provider-methods/list`,
+            url: `/payment-config/provider-method/list`,
             method: "GET",
             params: {
                 page,
@@ -45,7 +39,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
         provider_method_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<PaymentProviderMethodRecordInterface>({
-            url: `/payment-config/provider-methods/${provider_method_id}`,
+            url: `/payment-config/provider-method/${provider_method_id}`,
             method: "GET"
         });
     };
@@ -55,7 +49,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
         data: CreatePaymentProviderMethodPayloadInterface
     ): Promise<APIResponseInterface<PaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<PaymentProviderMethodRecordInterface>({
-            url: `/payment-config/provider-methods/create`,
+            url: `/payment-config/provider-method/create`,
             method: "POST",
             data,
             disable_retry: true
@@ -68,7 +62,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
         data: UpdatePaymentProviderMethodPayloadInterface
     ): Promise<APIResponseInterface<PaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<PaymentProviderMethodRecordInterface>({
-            url: `/payment-config/provider-methods/${provider_method_id}/update`,
+            url: `/payment-config/provider-method/${provider_method_id}/update`,
             method: "PATCH",
             data,
             disable_retry: true
@@ -80,7 +74,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
         provider_method_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderMethodStatusUpdateResponseInterface>> => {
         return await this.queryAPI<PaymentProviderMethodStatusUpdateResponseInterface>({
-            url: `/payment-config/provider-methods/${provider_method_id}/update-status`,
+            url: `/payment-config/provider-method/${provider_method_id}/update-status`,
             method: "PATCH",
             disable_retry: true
         });
@@ -91,7 +85,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
         provider_method_id: string | number
     ): Promise<APIResponseInterface<PaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<PaymentProviderMethodRecordInterface>({
-            url: `/payment-config/provider-methods/${provider_method_id}/delete`,
+            url: `/payment-config/provider-method/${provider_method_id}/delete`,
             method: "DELETE"
         });
     };

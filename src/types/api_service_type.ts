@@ -173,7 +173,7 @@ export interface RegisteredAppRecordInterface {
 }
 
 export interface RegisteredAppStatusUpdateResponseInterface {
-    safe_app: RegisteredAppRecordInterface;
+    registered_app_record: RegisteredAppRecordInterface;
     private_key?: string | null;
     previous_status: boolean;
     new_status: boolean;
@@ -245,7 +245,7 @@ export interface CurrencyRecordInterface {
 export type CurrencyListResponseInterface = PaginatedResponseResultInterface<CurrencyRecordInterface[]>;
 
 export interface CurrencyStatusUpdateResponseInterface {
-    safe_app: CurrencyRecordInterface;
+    currency_record: CurrencyRecordInterface;
     previous_status: boolean;
     new_status: boolean;
 }
@@ -410,7 +410,7 @@ export interface PaymentProviderMethodStatusUpdateResponseInterface {
 }
 
 export interface CurrencyPaymentProviderMethodStatusUpdateResponseInterface {
-    currency_payment_provider_method: CurrencyPaymentProviderMethodRecordInterface;
+    currency_payment_provider_method_record: CurrencyPaymentProviderMethodRecordInterface;
     previous_status: boolean;
     new_status: boolean;
 }
