@@ -114,7 +114,7 @@ const SideBarUIClassStyle: SideBarUIClassStyleInterface = {
     },
     layout_section_class_style: {
         wrapper_class_style:
-            "h-screen bg-[#02182e] shadow-lg lg:w-[19%] md:w-[24%] sm:w-[35%] w-[50%] z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
+            "h-screen bg-[#02182e] shadow-lg lg:w-[16%] md:w-[24%] sm:w-[35%] w-[50%] z-[51] ease-out slide-left-enter-active rounded-r-[50px] z-[42]",
 
         section_1_wrapper_class_style:
             "h-[15%] flex items-center justify-center overflow-hidden w-full border-gray-500 border-b p-2",

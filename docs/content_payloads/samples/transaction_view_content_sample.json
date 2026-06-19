@@ -1,0 +1,483 @@
+{
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_text": "Transactions",
+                    "menu_icon": "clock_svg_icon",
+                    "menu_link": "/transactions",
+                    "menu_permission_text": "transaction_module.get_transaction_list"
+                }
+            ]
+        }
+    },
+    "transaction_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Transactions",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Transactions",
+                "header_description": "Review payment activity, parties, processing state, receipts, and ledger movements."
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "more_filters_btn": {
+                    "show_btn_text": "More Filters",
+                    "hide_btn_text": "Fewer Filters"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "active_filter_chip": {
+                    "remove_btn_text": "Remove {{filter_name}} filter",
+                    "clear_all_btn_text": "Clear all filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search transaction ID, reference, app, wallet, or provider"
+                },
+                "transaction_type_filter": {
+                    "label_text": "Transaction Type",
+                    "placeholder_text": "Select type",
+                    "option_list": [
+                        {
+                            "label_text": "Deposit",
+                            "value": "deposit"
+                        },
+                        {
+                            "label_text": "Withdrawal",
+                            "value": "withdrawal"
+                        },
+                        {
+                            "label_text": "Transfer",
+                            "value": "transfer"
+                        },
+                        {
+                            "label_text": "Payment",
+                            "value": "payment"
+                        },
+                        {
+                            "label_text": "Refund",
+                            "value": "refund"
+                        }
+                    ]
+                },
+                "direction_filter": {
+                    "label_text": "Direction",
+                    "placeholder_text": "Select direction",
+                    "option_list": [
+                        {
+                            "label_text": "Inbound",
+                            "value": "inbound"
+                        },
+                        {
+                            "label_text": "Outbound",
+                            "value": "outbound"
+                        },
+                        {
+                            "label_text": "Internal",
+                            "value": "internal"
+                        }
+                    ]
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        {
+                            "label_text": "Pending",
+                            "value": "pending"
+                        },
+                        {
+                            "label_text": "Processing",
+                            "value": "processing"
+                        },
+                        {
+                            "label_text": "Settled",
+                            "value": "settled"
+                        },
+                        {
+                            "label_text": "Failed",
+                            "value": "failed"
+                        },
+                        {
+                            "label_text": "Cancelled",
+                            "value": "cancelled"
+                        },
+                        {
+                            "label_text": "Reversed",
+                            "value": "reversed"
+                        },
+                        {
+                            "label_text": "Refunded",
+                            "value": "refunded"
+                        }
+                    ]
+                },
+                "app_filter": {
+                    "label_text": "App",
+                    "placeholder_text": "Search app",
+                    "selected_text_prefix": "Selected app"
+                },
+                "currency_filter": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Search currency",
+                    "selected_text_prefix": "Selected currency"
+                },
+                "provider_filter": {
+                    "label_text": "Provider",
+                    "placeholder_text": "Search provider",
+                    "selected_text_prefix": "Selected provider"
+                },
+                "payment_method_filter": {
+                    "label_text": "Payment Method",
+                    "placeholder_text": "Search payment method",
+                    "selected_text_prefix": "Selected method"
+                },
+                "wallet_filter": {
+                    "label_text": "Any Wallet",
+                    "placeholder_text": "Enter source or destination wallet ID"
+                },
+                "source_wallet_filter": {
+                    "label_text": "Source Wallet",
+                    "placeholder_text": "Enter source wallet ID"
+                },
+                "destination_wallet_filter": {
+                    "label_text": "Destination Wallet",
+                    "placeholder_text": "Enter destination wallet ID"
+                },
+                "identity_filter": {
+                    "label_text": "Any Identity",
+                    "placeholder_text": "Enter initiating, source, or destination identity ID"
+                },
+                "initiated_by_identity_filter": {
+                    "label_text": "Initiated By Identity",
+                    "placeholder_text": "Enter initiating identity ID"
+                },
+                "parent_transaction_filter": {
+                    "label_text": "Parent Transaction",
+                    "placeholder_text": "Enter parent transaction ID"
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} transaction(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "selection_section": {
+                    "selected_text": "{{selected_count}} transaction(s) selected",
+                    "clear_btn_text": "Clear selection"
+                },
+                "loading_section": {
+                    "loader_text": "Loading transactions..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Transactions Found",
+                    "description_text": "Try changing or clearing the active filters."
+                },
+                "error_state_section": {
+                    "header_text": "Transactions Could Not Be Loaded",
+                    "retry_btn_text": "Retry"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "transaction_text": "Transaction",
+                    "type_text": "Type",
+                    "parties_text": "Parties",
+                    "amount_text": "Amount",
+                    "currency_text": "Currency",
+                    "provider_text": "Provider",
+                    "status_text": "Status",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "values": {
+                    "fee_label_text": "Fee",
+                    "net_label_text": "Net",
+                    "source_label_text": "From",
+                    "destination_label_text": "To",
+                    "external_destination_text": "External destination"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "ledger_menu_option": {
+                        "menu_text": "Ledger",
+                        "menu_icon": "clock_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "selected_menu_text": "Deselect",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "modals_ui": {
+            "profile_details_modal_ui": {
+                "title_text": "Transaction Details",
+                "title_icon": "view_eye_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading transaction details...",
+            "empty_value_text": "-",
+            "tabs": {
+                "profile_tab": {
+                    "label_text": "Profile",
+                    "tab_icon": "view_eye_svg_icon"
+                },
+                "receipts_tab": {
+                    "label_text": "Receipts",
+                    "tab_icon": "identification_card_svg_icon"
+                }
+            },
+            "header": {
+                "fallback_name_text": "Transaction",
+                "public_id_label_text": "Transaction ID"
+            },
+            "sections": {
+                "amounts": {
+                    "title_text": "Amounts",
+                    "amount_label_text": "Amount",
+                    "fee_amount_label_text": "Fee",
+                    "net_amount_label_text": "Net Amount",
+                    "currency_label_text": "Currency"
+                },
+                "references": {
+                    "title_text": "References",
+                    "public_id_label_text": "Transaction ID",
+                    "app_reference_label_text": "App Reference",
+                    "provider_reference_label_text": "Provider Reference",
+                    "external_reference_label_text": "External Reference"
+                },
+                "parties": {
+                    "title_text": "Parties",
+                    "initiated_by_label_text": "Initiated By",
+                    "source_identity_label_text": "Source Identity",
+                    "source_wallet_label_text": "Source Wallet",
+                    "destination_identity_label_text": "Destination Identity",
+                    "destination_wallet_label_text": "Destination Wallet",
+                    "external_destination_label_text": "External Destination"
+                },
+                "processing": {
+                    "title_text": "Processing",
+                    "app_label_text": "App",
+                    "provider_label_text": "Provider",
+                    "payment_method_label_text": "Payment Method",
+                    "provider_account_label_text": "Provider Account"
+                },
+                "description": {
+                    "title_text": "Description",
+                    "description_label_text": "Description",
+                    "reason_label_text": "Reason"
+                },
+                "relationship": {
+                    "title_text": "Related Records",
+                    "parent_transaction_label_text": "Parent Transaction",
+                    "current_receipt_label_text": "Current Receipt"
+                },
+                "timeline": {
+                    "title_text": "Timeline",
+                    "created_at_label_text": "Created",
+                    "updated_at_label_text": "Updated",
+                    "initiated_at_label_text": "Initiated",
+                    "authorized_at_label_text": "Authorized",
+                    "settled_at_label_text": "Settled",
+                    "failed_at_label_text": "Failed",
+                    "cancelled_at_label_text": "Cancelled",
+                    "reversed_at_label_text": "Reversed",
+                    "refunded_at_label_text": "Refunded"
+                }
+            },
+            "receipts_view": {
+                "loading_text": "Loading receipts...",
+                "empty_state_text": "No receipts found for this transaction.",
+                "error_state_text": "Receipts could not be loaded.",
+                "retry_btn_text": "Retry",
+                "search_placeholder_text": "Search receipt ID, number, status, error, or member",
+                "status_filter_placeholder_text": "All statuses",
+                "generated_by_filter_placeholder_text": "Search generating member",
+                "apply_filters_btn_text": "Apply",
+                "clear_filters_btn_text": "Clear",
+                "view_receipt_btn_text": "View Receipt",
+                "receipt_unavailable_text": "Receipt file unavailable",
+                "previous_button_text": "Previous",
+                "next_button_text": "Next",
+                "pagination_result_text": "Page {{current_page}} of {{total_pages}} ({{total_items}} receipts)",
+                "labels": {
+                    "receipt_number": "Receipt Number",
+                    "public_id": "Receipt ID",
+                    "status": "Status",
+                    "generated_by": "Generated By",
+                    "generated_at": "Generated",
+                    "processor_attempts": "Processor Attempts",
+                    "last_error": "Last Error",
+                    "created_at": "Created",
+                    "updated_at": "Updated"
+                }
+            }
+        },
+        "ledger_list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Transactions",
+                    "menu_icon": "greater_than_caret_svg_icon",
+                    "menu_link": "/transactions"
+                },
+                {
+                    "menu_text": "{{transaction_public_id}}",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                },
+                {
+                    "menu_text": "Ledger",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Transaction Ledger",
+                "header_description": "Review every wallet balance movement created by this transaction.",
+                "view_transaction_btn": {
+                    "btn_text": "View Transaction",
+                    "btn_icon": "view_eye_svg_icon"
+                }
+            },
+            "context_section": {
+                "title_text": "Transaction Summary",
+                "transaction_id_label_text": "Transaction ID",
+                "type_label_text": "Type",
+                "status_label_text": "Status",
+                "amount_label_text": "Amount",
+                "created_at_label_text": "Created"
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search ledger, wallet, identity, or currency"
+                },
+                "entry_type_filter": {
+                    "label_text": "Entry Type",
+                    "placeholder_text": "Select entry type"
+                },
+                "direction_filter": {
+                    "label_text": "Direction",
+                    "placeholder_text": "Select direction"
+                },
+                "balance_field_filter": {
+                    "label_text": "Balance Field",
+                    "placeholder_text": "Select balance field"
+                },
+                "wallet_filter": {
+                    "label_text": "Wallet",
+                    "placeholder_text": "Enter wallet ID"
+                },
+                "identity_filter": {
+                    "label_text": "Identity",
+                    "placeholder_text": "Enter identity ID"
+                },
+                "currency_filter": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Enter currency ID or code"
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} ledger entries (Page {{current_page}} of {{total_pages}})"
+                },
+                "loading_section": {
+                    "loader_text": "Loading transaction ledger..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Transaction Ledger Entries Found",
+                    "description_text": "No ledger entries match the current filters."
+                },
+                "error_state_section": {
+                    "header_text": "Transaction Ledger Could Not Be Loaded",
+                    "retry_btn_text": "Retry"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "created_at_text": "Created At",
+                    "wallet_text": "Wallet",
+                    "identity_text": "Identity",
+                    "entry_text": "Entry",
+                    "balance_field_text": "Balance Field",
+                    "amount_text": "Amount",
+                    "before_text": "Before",
+                    "after_text": "After",
+                    "description_text": "Description",
+                    "created_by_text": "Created By"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "system_actor_text": "System"
+            }
+        },
+        "api_responses": {
+            "transaction_not_found": "The transaction could not be found.",
+            "transaction_records_fetch_failed": "Transactions could not be loaded.",
+            "transaction_record_fetch_failed": "Transaction details could not be loaded.",
+            "transaction_receipt_records_fetch_failed": "Receipts could not be loaded.",
+            "transaction_ledger_records_fetch_failed": "The transaction ledger could not be loaded.",
+            "receipt_url_invalid": "The receipt link is unavailable or invalid.",
+            "permission_denied": "You do not have permission to perform this action.",
+            "session_expired": "Your session has expired. Please sign in again.",
+            "error_occurred": "An unexpected error occurred. Please try again."
+        }
+    }
+}

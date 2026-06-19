@@ -34,6 +34,20 @@ export interface MemberListFiltersInterface {
     date_range?: { start_date: string; end_date: string } | null;
 }
 
+export interface IdentityListViewFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean | string;
+    identity_type?: string | null;
+    status?: string | null;
+    is_verified?: boolean | string | null;
+    is_deleted?: boolean | string | null;
+    source_app_id?: string | number | null;
+    registered_app_id?: string | number | null;
+    currency_id?: number | null;
+    has_wallet?: boolean | string | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface PaymentConfigListViewFiltersInterface {
     page?: number;
     limit?: number;

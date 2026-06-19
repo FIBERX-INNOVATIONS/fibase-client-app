@@ -6,7 +6,8 @@ import {
     PaymentMethodListViewFiltersInterface,
     PaymentProviderListViewFiltersInterface,
     PaymentProviderConfigListViewFiltersInterface,
-    PaymentProviderMethodListViewFiltersInterface
+    PaymentProviderMethodListViewFiltersInterface,
+    IdentityListViewFiltersInterface
 } from "./list_view_filter_type";
 
 export interface CSRFTokenRecordInterface {
@@ -504,6 +505,112 @@ export interface CompleteMemberSetupResponseInterface {
     permissions: string[];
     device_id?: string;
 }
+
+// ==============================
+// IDENTITY TYPES
+// ==============================
+
+export interface IdentityRegisteredAppSummaryInterface {
+    public_id: string;
+    prefix: string;
+    name: string;
+    description?: string | null;
+    base_url?: string | null;
+    logo_url?: string | null;
+    is_active: boolean;
+}
+
+export interface IdentityProfileSummaryInterface {
+    public_id: string;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    display_name?: string | null;
+    dob?: string | null;
+    gender?: string | null;
+    nationality?: string | null;
+    country_of_residence?: string | null;
+    profile_photo_link?: string | null;
+    primary_email?: string | null;
+    primary_phone?: string | null;
+    profile_completeness_score?: number;
+    created_at?: string;
+    updated_at?: string | null;
+}
+
+export interface IdentityContactSummaryInterface {
+    public_id: string;
+    contact_type: string;
+    contact_value: string;
+    is_primary: boolean;
+    is_verified: boolean;
+    verified_at?: string | null;
+    source_app?: IdentityRegisteredAppSummaryInterface | null;
+    created_at?: string;
+    updated_at?: string | null;
+}
+
+export interface IdentityAppAccountSummaryInterface {
+    public_id: string;
+    registered_app?: IdentityRegisteredAppSummaryInterface | null;
+    external_member_id: string;
+    external_public_id?: string | null;
+    external_username?: string | null;
+    external_status: string;
+    registered_at?: string | null;
+    last_seen_at?: string | null;
+    last_synced_at?: string | null;
+    is_active: boolean;
+    is_deleted: boolean;
+    created_at: string;
+    updated_at?: string | null;
+}
+
+export interface IdentityWalletSummaryRecordInterface {
+    public_id: string;
+    status: string;
+    is_active: boolean;
+}
+
+export interface IdentityRecordInterface {
+    public_id: string;
+    identity_type: string;
+    status: string;
+    wallet_count?: number;
+    primary_source_app_id?: number;
+    is_verified: boolean;
+    is_deleted: boolean;
+    merged_into_identity_public_id?: string | null;
+    created_at: string;
+    updated_at?: string | null;
+    primary_source_app?: IdentityRegisteredAppSummaryInterface | null;
+    primary_profile?: IdentityProfileSummaryInterface | null;
+    profile?: IdentityProfileSummaryInterface | null;
+    app_accounts?: IdentityAppAccountSummaryInterface[] | null;
+    contacts?: IdentityContactSummaryInterface[] | null;
+    wallets?: IdentityWalletSummaryRecordInterface[] | null;
+    wallets_summary?: IdentityWalletCountSummaryInterface;
+}
+
+export interface IdentityWalletCountSummaryInterface {
+    total_wallets: number;
+    active_wallets: number;
+}
+
+export interface IdentityDetailResponseInterface {
+    identity: IdentityRecordInterface;
+    wallets_summary: IdentityWalletCountSummaryInterface;
+}
+
+export type IdentityListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<IdentityListViewFiltersInterface>;
+};
+
+export interface IdentityListResponseInterface extends PaginatedResponseResultInterface<IdentityRecordInterface[]> {}
 
 // ==============================
 // ACTIVITY TYPES

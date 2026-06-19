@@ -16,6 +16,8 @@ const RegisteredAppListView = () => import("@/views/registered_app/ListView.vue"
 
 const MemberProfileListView = () => import("@/views/member_profile/ListView.vue");
 
+const IdentityListView = () => import("@/views/identity/ListView.vue");
+
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
@@ -179,6 +181,17 @@ class RouterManager {
                     page_meta_key: "member_profile_page",
                     title_key: "member_profile_page",
                     permission_name: "member_profile_module.get_member_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/identities",
+                name: "IdentityList",
+                component: IdentityListView,
+                meta: {
+                    page_meta_key: "identity_page",
+                    title_key: "identity_page",
+                    permission_name: "identity_module.get_identity_list",
                     is_auth_page: false
                 }
             },

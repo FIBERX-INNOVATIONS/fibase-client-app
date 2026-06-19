@@ -1,0 +1,318 @@
+{
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_text": "Identities",
+                    "menu_icon": "identification_card_svg_icon",
+                    "menu_link": "/identities",
+                    "menu_permission_text": "identity_module.get_identity_list"
+                }
+            ]
+        }
+    },
+    "identity_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Identities",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Identities",
+                "header_description": "Inspect customer and application identities, their source applications, verification state, and wallets."
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search identity, profile, account, or contact"
+                },
+                "identity_type_filter": {
+                    "label_text": "Identity Type",
+                    "placeholder_text": "Select identity type",
+                    "option_list": [
+                        {
+                            "label_text": "Individual",
+                            "value": "individual"
+                        },
+                        {
+                            "label_text": "Business",
+                            "value": "business"
+                        },
+                        {
+                            "label_text": "Application",
+                            "value": "application"
+                        }
+                    ]
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "active"
+                        },
+                        {
+                            "label_text": "Pending",
+                            "value": "pending"
+                        },
+                        {
+                            "label_text": "Suspended",
+                            "value": "suspended"
+                        }
+                    ]
+                },
+                "verified_filter": {
+                    "label_text": "Verified",
+                    "placeholder_text": "All verification states",
+                    "option_list": [
+                        {
+                            "label_text": "Verified",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Unverified",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "deleted_filter": {
+                    "label_text": "Record State",
+                    "placeholder_text": "Select record state",
+                    "option_list": [
+                        {
+                            "label_text": "Active Records",
+                            "value": "false"
+                        },
+                        {
+                            "label_text": "Deleted Records",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "source_app_filter": {
+                    "label_text": "Source App",
+                    "placeholder_text": "Search source app",
+                    "selected_text_prefix": "Selected app"
+                },
+                "registered_app_filter": {
+                    "label_text": "Registered App",
+                    "placeholder_text": "Search registered app",
+                    "selected_text_prefix": "Selected app"
+                },
+                "currency_filter": {
+                    "label_text": "Wallet Currency",
+                    "placeholder_text": "Enter currency numeric ID"
+                },
+                "has_wallet_filter": {
+                    "label_text": "Has Wallet",
+                    "placeholder_text": "All identities",
+                    "option_list": [
+                        {
+                            "label_text": "Has Wallet",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "No Wallet",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} identity record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "selection_section": {
+                    "selected_text": "{{selected_count}} identity record(s) selected",
+                    "clear_btn_text": "Clear selection"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} identity record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading identity records..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Identity Record Found",
+                    "description_text": "Try changing or clearing the active filters."
+                },
+                "error_state_section": {
+                    "header_text": "Identity Records Could Not Be Loaded",
+                    "retry_btn_text": "Retry"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "identity_text": "Identity",
+                    "type_text": "Type",
+                    "source_app_text": "Source App",
+                    "contact_text": "Contact",
+                    "wallets_text": "Wallets",
+                    "verified_text": "Verified",
+                    "status_text": "Status",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "selected_menu_text": "Deselect",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "modals_ui": {
+            "profile_details_modal_ui": {
+                "title_text": "Identity Details",
+                "title_icon": "identification_card_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading identity profile...",
+            "empty_value_text": "-",
+            "tabs": {
+                "profile_tab": {
+                    "label_text": "Profile",
+                    "tab_icon": "identification_card_svg_icon"
+                },
+                "wallets_tab": {
+                    "label_text": "Wallets",
+                    "tab_icon": "identification_card_svg_icon"
+                }
+            },
+            "header": {
+                "fallback_name_text": "Identity",
+                "public_id_label_text": "Public ID"
+            },
+            "sections": {
+                "identity": {
+                    "title_text": "Identity",
+                    "public_id_label_text": "Public ID",
+                    "identity_type_label_text": "Identity Type",
+                    "status_label_text": "Status",
+                    "merged_into_label_text": "Merged Into",
+                    "access_title_text": "Record State",
+                    "verified_label_text": "Verification",
+                    "verified_status_text": "Verified",
+                    "unverified_status_text": "Unverified",
+                    "deleted_label_text": "Record State",
+                    "deleted_status_text": "Deleted",
+                    "not_deleted_status_text": "Active Record"
+                },
+                "source_app": {
+                    "title_text": "Primary Source App",
+                    "name_label_text": "Name",
+                    "prefix_label_text": "Prefix",
+                    "public_id_label_text": "Public ID",
+                    "status_label_text": "Status",
+                    "no_record_text": "No primary source app"
+                },
+                "profile": {
+                    "title_text": "Profile",
+                    "name_label_text": "Name",
+                    "email_label_text": "Email",
+                    "phone_label_text": "Phone",
+                    "dob_label_text": "Date of Birth",
+                    "gender_label_text": "Gender",
+                    "nationality_label_text": "Nationality",
+                    "country_label_text": "Country of Residence",
+                    "completeness_label_text": "Completeness",
+                    "no_record_text": "No profile information"
+                },
+                "app_accounts": {
+                    "title_text": "App Accounts",
+                    "no_record_text": "No linked app accounts"
+                },
+                "contacts": {
+                    "title_text": "Contacts",
+                    "no_record_text": "No contact information"
+                },
+                "wallet_summary": {
+                    "title_text": "Wallet Summary",
+                    "total_wallets_label_text": "Total Wallets",
+                    "active_wallets_label_text": "Active Wallets"
+                },
+                "timeline": {
+                    "title_text": "Timeline",
+                    "created_at_label_text": "Created",
+                    "updated_at_label_text": "Updated"
+                }
+            },
+            "wallets_view": {
+                "loading_text": "Loading wallets...",
+                "empty_state_text": "No wallets found for this identity.",
+                "error_state_text": "Wallets could not be loaded.",
+                "retry_btn_text": "Retry",
+                "search_placeholder_text": "Search wallet ID, status, or currency",
+                "currency_filter_placeholder_text": "All currencies",
+                "status_filter_placeholder_text": "All statuses",
+                "active_filter_placeholder_text": "All active states",
+                "deleted_filter_placeholder_text": "All record states",
+                "apply_filters_btn_text": "Apply",
+                "clear_filters_btn_text": "Clear",
+                "view_wallet_btn_text": "View Wallet Details",
+                "view_wallet_permission_text": "You do not have permission to view this wallet ledger.",
+                "previous_button_text": "Previous",
+                "next_button_text": "Next",
+                "pagination_result_text": "Page {{current_page}} of {{total_pages}} ({{total_items}} wallets)",
+                "labels": {
+                    "wallet_id": "Wallet ID",
+                    "status": "Status",
+                    "available_balance": "Available",
+                    "locked_balance": "Locked",
+                    "pending_balance": "Pending",
+                    "refunded_balance": "Refunded",
+                    "total_credit": "Total Credit",
+                    "total_debit": "Total Debit",
+                    "created_at": "Created",
+                    "updated_at": "Updated"
+                }
+            }
+        },
+        "api_responses": {
+            "identity_not_found": "The identity record could not be found.",
+            "identity_records_fetch_failed": "Identity records could not be loaded.",
+            "identity_record_fetch_failed": "The identity profile could not be loaded.",
+            "identity_wallet_records_fetch_failed": "Wallet records could not be loaded.",
+            "permission_denied": "You do not have permission to perform this action.",
+            "session_expired": "Your session has expired. Please sign in again.",
+            "error_occurred": "An unexpected error occurred. Please try again."
+        }
+    }
+}

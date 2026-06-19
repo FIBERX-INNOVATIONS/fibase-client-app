@@ -1,0 +1,187 @@
+{
+    "wallet_view_ui": {
+        "details_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Identities",
+                    "menu_icon": "greater_than_caret_svg_icon",
+                    "menu_link": "/identities"
+                },
+                {
+                    "menu_text": "Wallet {{wallet_public_id}}",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Wallet Details",
+                "header_description": "Review wallet balances, status, ownership, and ledger history.",
+                "transactions_link": {
+                    "link_text": "View Wallet Transactions",
+                    "link_icon": "view_eye_svg_icon"
+                }
+            },
+            "loading_text": "Loading wallet details...",
+            "not_found_text": "The wallet could not be found.",
+            "error_state_text": "Wallet details could not be loaded.",
+            "retry_btn_text": "Retry",
+            "summary_section": {
+                "title_text": "Wallet Summary",
+                "empty_value_text": "-",
+                "labels": {
+                    "public_id": "Wallet ID",
+                    "identity": "Identity",
+                    "currency": "Currency",
+                    "status": "Status",
+                    "active": "Active State",
+                    "deleted": "Record State",
+                    "available_balance": "Available Balance",
+                    "locked_balance": "Locked Balance",
+                    "pending_balance": "Pending Balance",
+                    "refunded_balance": "Refunded Balance",
+                    "total_credit": "Total Credit",
+                    "total_debit": "Total Debit",
+                    "created_at": "Created",
+                    "updated_at": "Updated"
+                },
+                "values": {
+                    "active_text": "Active",
+                    "inactive_text": "Inactive",
+                    "deleted_text": "Deleted",
+                    "not_deleted_text": "Active Record"
+                }
+            },
+            "ledger_section": {
+                "header_text": "Wallet Ledger",
+                "header_description": "Trace every balance movement recorded against this wallet.",
+                "permission_denied_text": "You do not have permission to view this wallet ledger.",
+                "filters_section": {
+                    "toggle_btn": {
+                        "btn_text": "Filters",
+                        "btn_icon": "horizontal_filters_svg_icon"
+                    },
+                    "clear_filters_btn": {
+                        "btn_text": "Clear"
+                    },
+                    "apply_filters_btn": {
+                        "btn_text": "Apply Filters"
+                    },
+                    "search_filter": {
+                        "label_text": "Search",
+                        "placeholder_text": "Search ledger description, reason, entry, or direction"
+                    },
+                    "entry_type_filter": {
+                        "label_text": "Entry Type",
+                        "placeholder_text": "Select entry type",
+                        "option_list": [
+                            {
+                                "label_text": "Transaction",
+                                "value": "transaction"
+                            },
+                            {
+                                "label_text": "Fee",
+                                "value": "fee"
+                            },
+                            {
+                                "label_text": "Adjustment",
+                                "value": "adjustment"
+                            },
+                            {
+                                "label_text": "Refund",
+                                "value": "refund"
+                            }
+                        ]
+                    },
+                    "direction_filter": {
+                        "label_text": "Direction",
+                        "placeholder_text": "Select direction",
+                        "option_list": [
+                            {
+                                "label_text": "Credit",
+                                "value": "credit"
+                            },
+                            {
+                                "label_text": "Debit",
+                                "value": "debit"
+                            }
+                        ]
+                    },
+                    "balance_field_filter": {
+                        "label_text": "Balance Field",
+                        "placeholder_text": "Select balance field",
+                        "option_list": [
+                            {
+                                "label_text": "Available",
+                                "value": "available_balance"
+                            },
+                            {
+                                "label_text": "Locked",
+                                "value": "locked_balance"
+                            },
+                            {
+                                "label_text": "Pending",
+                                "value": "pending_balance"
+                            },
+                            {
+                                "label_text": "Refunded",
+                                "value": "refunded_balance"
+                            }
+                        ]
+                    },
+                    "date_range_filter": {
+                        "label_text": "Created Date",
+                        "start_date_placeholder_text": "Start date",
+                        "end_date_placeholder_text": "End date"
+                    }
+                },
+                "table": {
+                    "result_section": {
+                        "result_text": "Showing {{showing}} of {{total_records}} ledger entries (Page {{current_page}} of {{total_pages}})"
+                    },
+                    "loading_section": {
+                        "loader_text": "Loading wallet ledger..."
+                    },
+                    "empty_state_section": {
+                        "header_text": "No Wallet Ledger Entries Found",
+                        "description_text": "No ledger entries match the current filters."
+                    },
+                    "error_state_section": {
+                        "header_text": "Wallet Ledger Could Not Be Loaded",
+                        "retry_btn_text": "Retry"
+                    },
+                    "header": {
+                        "sn_text": "S/N",
+                        "created_at_text": "Created At",
+                        "transaction_text": "Transaction",
+                        "entry_text": "Entry",
+                        "balance_field_text": "Balance Field",
+                        "amount_text": "Amount",
+                        "before_text": "Before",
+                        "after_text": "After",
+                        "description_text": "Description",
+                        "created_by_text": "Created By"
+                    },
+                    "pagination_section": {
+                        "btn_content": {
+                            "prev_btn_text": "Previous",
+                            "next_btn_text": "Next"
+                        }
+                    },
+                    "system_actor_text": "System"
+                }
+            }
+        },
+        "api_responses": {
+            "wallet_not_found": "The wallet could not be found.",
+            "wallet_record_fetch_failed": "Wallet details could not be loaded.",
+            "wallet_ledger_records_fetch_failed": "The wallet ledger could not be loaded.",
+            "permission_denied": "You do not have permission to perform this action.",
+            "session_expired": "Your session has expired. Please sign in again.",
+            "error_occurred": "An unexpected error occurred. Please try again."
+        }
+    }
+}
