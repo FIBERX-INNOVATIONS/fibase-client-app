@@ -187,6 +187,11 @@
                         "menu_icon": "view_eye_svg_icon",
                         "menu_link": ""
                     },
+                    "wallets_menu_option": {
+                        "menu_text": "Wallets",
+                        "menu_icon": "identification_card_svg_icon",
+                        "menu_link": ""
+                    },
                     "select_menu_option": {
                         "menu_text": "Select",
                         "selected_menu_text": "Deselect",
@@ -209,10 +214,6 @@
             "tabs": {
                 "profile_tab": {
                     "label_text": "Profile",
-                    "tab_icon": "identification_card_svg_icon"
-                },
-                "wallets_tab": {
-                    "label_text": "Wallets",
                     "tab_icon": "identification_card_svg_icon"
                 }
             },
@@ -273,42 +274,158 @@
                     "created_at_label_text": "Created",
                     "updated_at_label_text": "Updated"
                 }
-            },
-            "wallets_view": {
-                "loading_text": "Loading wallets...",
-                "empty_state_text": "No wallets found for this identity.",
-                "error_state_text": "Wallets could not be loaded.",
-                "retry_btn_text": "Retry",
-                "search_placeholder_text": "Search wallet ID, status, or currency",
-                "currency_filter_placeholder_text": "All currencies",
-                "status_filter_placeholder_text": "All statuses",
-                "active_filter_placeholder_text": "All active states",
-                "deleted_filter_placeholder_text": "All record states",
-                "apply_filters_btn_text": "Apply",
-                "clear_filters_btn_text": "Clear",
-                "view_wallet_btn_text": "View Wallet Details",
-                "view_wallet_permission_text": "You do not have permission to view this wallet ledger.",
-                "previous_button_text": "Previous",
-                "next_button_text": "Next",
-                "pagination_result_text": "Page {{current_page}} of {{total_pages}} ({{total_items}} wallets)",
-                "labels": {
-                    "wallet_id": "Wallet ID",
-                    "status": "Status",
-                    "available_balance": "Available",
-                    "locked_balance": "Locked",
-                    "pending_balance": "Pending",
-                    "refunded_balance": "Refunded",
-                    "total_credit": "Total Credit",
-                    "total_debit": "Total Debit",
-                    "created_at": "Created",
-                    "updated_at": "Updated"
-                }
             }
         },
         "api_responses": {
             "identity_not_found": "The identity record could not be found.",
             "identity_records_fetch_failed": "Identity records could not be loaded.",
             "identity_record_fetch_failed": "The identity profile could not be loaded.",
+            "permission_denied": "You do not have permission to perform this action.",
+            "session_expired": "Your session has expired. Please sign in again.",
+            "error_occurred": "An unexpected error occurred. Please try again."
+        }
+    },
+    "identity_wallet_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Identities",
+                    "menu_icon": "greater_than_caret_svg_icon",
+                    "menu_link": "/identities"
+                },
+                {
+                    "menu_text": "Wallets",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Identity Wallets",
+                "header_description": "Review wallets, balances, status, and currency information for the selected identity."
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search wallet ID, status, or currency"
+                },
+                "currency_filter": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Search currency",
+                    "selected_text_prefix": "Selected currency"
+                },
+                "status_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "All statuses",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "active"
+                        },
+                        {
+                            "label_text": "Pending",
+                            "value": "pending"
+                        },
+                        {
+                            "label_text": "Suspended",
+                            "value": "suspended"
+                        },
+                        {
+                            "label_text": "Closed",
+                            "value": "closed"
+                        }
+                    ]
+                },
+                "active_filter": {
+                    "label_text": "Active State",
+                    "placeholder_text": "All active states",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Inactive",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "deleted_filter": {
+                    "label_text": "Record State",
+                    "placeholder_text": "All record states",
+                    "option_list": [
+                        {
+                            "label_text": "Active Records",
+                            "value": "false"
+                        },
+                        {
+                            "label_text": "Deleted Records",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} wallet record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} wallet record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading wallets..."
+                },
+                "empty_state_section": {
+                    "header_text": "No wallets found for this identity."
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "wallet_text": "Wallet",
+                    "currency_text": "Currency",
+                    "available_balance_text": "Available",
+                    "locked_balance_text": "Locked",
+                    "pending_balance_text": "Pending",
+                    "refunded_balance_text": "Refunded",
+                    "status_text": "Status",
+                    "active_text": "Active",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                },
+                "action_menu_list": {
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "selected_menu_text": "Deselect",
+                        "menu_icon": "check_circle_svg_icon",
+                        "menu_link": ""
+                    }
+                }
+            }
+        },
+        "api_responses": {
             "identity_wallet_records_fetch_failed": "Wallet records could not be loaded.",
             "permission_denied": "You do not have permission to perform this action.",
             "session_expired": "Your session has expired. Please sign in again.",

@@ -7,7 +7,8 @@ import {
     PaymentProviderListViewFiltersInterface,
     PaymentProviderConfigListViewFiltersInterface,
     PaymentProviderMethodListViewFiltersInterface,
-    IdentityListViewFiltersInterface
+    IdentityListViewFiltersInterface,
+    IdentityWalletListViewFiltersInterface
 } from "./list_view_filter_type";
 
 export interface CSRFTokenRecordInterface {
@@ -572,6 +573,32 @@ export interface IdentityWalletSummaryRecordInterface {
     is_active: boolean;
 }
 
+export interface IdentityWalletCurrencySummaryInterface {
+    code: string;
+    name: string;
+    symbol: string;
+    precision: number;
+    minor_unit?: number | null;
+    format?: string | null;
+    is_fiat?: boolean;
+    is_active: boolean;
+}
+
+export interface IdentityWalletRecordInterface extends IdentityWalletSummaryRecordInterface {
+    identity_id?: number;
+    currency_id?: number;
+    available_balance: number;
+    locked_balance: number;
+    refunded_balance?: number;
+    pending_balance?: number;
+    total_credit?: number;
+    total_debit?: number;
+    is_deleted?: boolean;
+    created_at: string;
+    updated_at?: string | null;
+    currency?: IdentityWalletCurrencySummaryInterface | null;
+}
+
 export interface IdentityRecordInterface {
     public_id: string;
     identity_type: string;
@@ -611,6 +638,18 @@ export type IdentityListParams = {
 };
 
 export interface IdentityListResponseInterface extends PaginatedResponseResultInterface<IdentityRecordInterface[]> {}
+
+export type IdentityWalletListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<IdentityWalletListViewFiltersInterface>;
+};
+
+export interface IdentityWalletListResponseInterface extends PaginatedResponseResultInterface<
+    IdentityWalletRecordInterface[]
+> {}
 
 // ==============================
 // ACTIVITY TYPES

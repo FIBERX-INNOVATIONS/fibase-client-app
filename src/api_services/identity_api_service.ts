@@ -6,7 +6,9 @@ import {
     IdentityDetailResponseInterface,
     IdentityListParams,
     IdentityListResponseInterface,
-    IdentityRecordInterface
+    IdentityRecordInterface,
+    IdentityWalletListParams,
+    IdentityWalletListResponseInterface
 } from "@/types/api_service_type";
 
 class IdentityAPIService extends BaseAPIService {
@@ -58,6 +60,36 @@ class IdentityAPIService extends BaseAPIService {
                   }
                 : undefined
         };
+    };
+
+    // Query a zero-based identity wallet list while keeping the modal pagination one-based.
+    public static getIdentityWalletList = async (
+        identity_id: string | number,
+        params?: IdentityWalletListParams
+    ): Promise<APIResponseInterface<IdentityWalletListResponseInterface>> => {
+        const { page = 1, limit = 6, sort_by = "created_at", sort_direction = "desc", filters = {} } = params ?? {};
+
+        const response = await this.queryAPI<IdentityWalletListResponseInterface>({
+            url: `/identity/${identity_id}/wallets`,
+            method: "GET",
+            params: {
+                page: Math.max(0, page - 1),
+                limit,
+                sort_by,
+                sort_direction: sort_direction.toUpperCase(),
+                ...filters,
+                preview_only: filters.preview_only ?? false
+            }
+        });
+
+        if (response.data) {
+            response.data = {
+                ...response.data,
+                current_page: response.data.current_page + 1
+            };
+        }
+
+        return response;
     };
 }
 

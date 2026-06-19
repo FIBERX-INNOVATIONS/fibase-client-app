@@ -48,6 +48,16 @@ export interface IdentityListViewFiltersInterface {
     date_range?: { start_date: string; end_date: string } | string | null;
 }
 
+export interface IdentityWalletListViewFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean | string;
+    currency_id?: string | number | null;
+    status?: string | null;
+    is_active?: boolean | string | null;
+    is_deleted?: boolean | string | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface PaymentConfigListViewFiltersInterface {
     page?: number;
     limit?: number;

@@ -23,6 +23,9 @@ class IdentityActionMenu {
         const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
             `${base_content_key}.view_menu_option`
         );
+        const wallets_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
+            `${base_content_key}.wallets_menu_option`
+        );
         const record_id = record.public_id.toUpperCase();
 
         return [
@@ -40,6 +43,22 @@ class IdentityActionMenu {
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission:
                     !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo("identity_module.get_identity")
+            },
+            {
+                id: `${wallets_menu_content?.menu_text ?? "Wallets"}ActionMenu${record_id}`,
+                link: wallets_menu_content?.menu_link ?? "",
+                icon: wallets_menu_content?.menu_icon ?? "identification_card_svg_icon",
+                content: wallets_menu_content?.menu_text ?? "Wallets",
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        void event;
+                        await action_handler?.handleWalletsActionMenuClicked(record, config);
+                    }
+                },
+                class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
+                has_permission:
+                    !record.is_deleted &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo("identity_module.get_identity_wallet_list")
             },
             {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record_id}`,

@@ -987,6 +987,9 @@
   .items-center {
     align-items: center;
   }
+  .items-end {
+    align-items: flex-end;
+  }
   .items-start {
     align-items: flex-start;
   }
@@ -1267,6 +1270,9 @@
   }
   .border-red-100 {
     border-color: var(--color-red-100);
+  }
+  .border-red-200 {
+    border-color: var(--color-red-200);
   }
   .border-slate-100 {
     border-color: var(--color-slate-100);
@@ -2344,6 +2350,13 @@
       }
     }
   }
+  .hover\:bg-gray-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-700);
+      }
+    }
+  }
   .hover\:bg-gray-800 {
     &:hover {
       @media (hover: hover) {
@@ -2759,6 +2772,11 @@
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
     }
   }
+  .disabled\:text-gray-300 {
+    &:disabled {
+      color: var(--color-gray-300);
+    }
+  }
   .disabled\:text-gray-400 {
     &:disabled {
       color: var(--color-gray-400);
@@ -3027,6 +3045,16 @@
   .lg\:grid-cols-4 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .xl\:col-span-3 {
+    @media (width >= 80rem) {
+      grid-column: span 3 / span 3;
+    }
+  }
+  .xl\:grid-cols-3 {
+    @media (width >= 80rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   .xl\:grid-cols-5 {

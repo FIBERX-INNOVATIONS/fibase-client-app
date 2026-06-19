@@ -68,6 +68,19 @@ class IdentityListViewActionHandler extends BaseListViewActionHandler<
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 
+    // Method to navigate to the selected identity's standalone wallet list.
+    public handleWalletsActionMenuClicked = async (
+        record: IdentityRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        await this.controller.router.push({
+            name: "IdentityWalletList",
+            params: { identity_public_id: record.public_id }
+        });
+    };
+
     // This read-only module has no page-level create action.
     protected handleHeaderBtnClicked = async (
         event?: MouseEvent,

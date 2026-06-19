@@ -18,6 +18,8 @@ const MemberProfileListView = () => import("@/views/member_profile/ListView.vue"
 
 const IdentityListView = () => import("@/views/identity/ListView.vue");
 
+const IdentityWalletListView = () => import("@/views/identity_wallet/ListView.vue");
+
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
@@ -192,6 +194,18 @@ class RouterManager {
                     page_meta_key: "identity_page",
                     title_key: "identity_page",
                     permission_name: "identity_module.get_identity_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/identities/:identity_public_id/wallets",
+                name: "IdentityWalletList",
+                component: IdentityWalletListView,
+                props: true,
+                meta: {
+                    page_meta_key: "identity_wallet_page",
+                    title_key: "identity_wallet_page",
+                    permission_name: "identity_module.get_identity_wallet_list",
                     is_auth_page: false
                 }
             },

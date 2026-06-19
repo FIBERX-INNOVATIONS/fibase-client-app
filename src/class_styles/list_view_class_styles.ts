@@ -209,7 +209,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
         inactive_class_style: "bg-gray-500"
     },
     text_content_class_style: {
-        text_class_style: "text-xs font-bold text-gray-900"
+        text_class_style: "text-xs font-bold text-gray-900 w-full wrap-break-word"
     },
     button_ui_class_style: {
         button_class_style:

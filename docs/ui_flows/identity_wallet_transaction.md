@@ -30,12 +30,13 @@ Configuration.
 
 ### Routes
 
-| Route                                  | Route name              | View                                   | Route permission                                 | Open behavior |
-| -------------------------------------- | ----------------------- | -------------------------------------- | ------------------------------------------------ | ------------- |
-| `/identities`                          | `IdentityList`          | `views/identity/ListView.vue`          | `identity_module.get_identity_list`              | Same tab      |
-| `/wallets/:wallet_id`                  | `WalletDetails`         | `views/wallet/DetailsView.vue`         | `wallet_module.get_wallet`                       | New tab       |
-| `/transactions`                        | `TransactionList`       | `views/transaction/ListView.vue`       | `transaction_module.get_transaction_list`        | Same tab      |
-| `/transactions/:transaction_id/ledger` | `TransactionLedgerList` | `views/transaction/LedgerListView.vue` | `transaction_module.get_transaction_ledger_list` | New tab       |
+| Route                                     | Route name              | View                                   | Route permission                                 | Open behavior |
+| ----------------------------------------- | ----------------------- | -------------------------------------- | ------------------------------------------------ | ------------- |
+| `/identities`                             | `IdentityList`          | `views/identity/ListView.vue`          | `identity_module.get_identity_list`              | Same tab      |
+| `/identities/:identity_public_id/wallets` | `IdentityWalletList`    | `views/identity/WalletListView.vue`    | `identity_module.get_identity_wallet_list`       | Same tab      |
+| `/wallets/:wallet_id`                     | `WalletDetails`         | `views/wallet/DetailsView.vue`         | `wallet_module.get_wallet`                       | New tab       |
+| `/transactions`                           | `TransactionList`       | `views/transaction/ListView.vue`       | `transaction_module.get_transaction_list`        | Same tab      |
+| `/transactions/:transaction_id/ledger`    | `TransactionLedgerList` | `views/transaction/LedgerListView.vue` | `transaction_module.get_transaction_ledger_list` | New tab       |
 
 Use public IDs in generated URLs. Route parameters still accept numeric IDs because the server
 does, but public IDs are safer for visible admin links.
@@ -126,10 +127,11 @@ defensively.
 
 ### Actions
 
-| Action | Behavior                                                                | Permission                     |
-| ------ | ----------------------------------------------------------------------- | ------------------------------ |
-| View   | Open the identity modal with the selected public ID and preview record. | `identity_module.get_identity` |
-| Select | Toggle that row in the existing table selection model.                  | List permission                |
+| Action  | Behavior                                                                | Permission                                 |
+| ------- | ----------------------------------------------------------------------- | ------------------------------------------ |
+| View    | Open the identity modal with the selected public ID and preview record. | `identity_module.get_identity`             |
+| Wallets | Navigate to the selected identity's standalone wallet list.             | `identity_module.get_identity_wallet_list` |
+| Select  | Toggle that row in the existing table selection model.                  | List permission                            |
 
 Selection is intentionally future-facing. Display the selected count and allow clearing selected
 rows, but do not show a bulk-action dropdown or imply that an operation is available.
@@ -142,10 +144,9 @@ depending on profile data being present.
 
 ### Tabs
 
-| Tab     | Request                                  | Load strategy                                                                                  |
-| ------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Profile | `GET /api/identity/:identity_id`         | Load immediately.                                                                              |
-| Wallets | `GET /api/identity/:identity_id/wallets` | Lazy-load the first time the tab opens; retain page/filter state while the modal remains open. |
+| Tab     | Request                          | Load strategy     |
+| ------- | -------------------------------- | ----------------- |
+| Profile | `GET /api/identity/:identity_id` | Load immediately. |
 
 ### Profile tab
 
@@ -164,10 +165,16 @@ Because `profile`, `app_accounts`, and `contacts` are open record shapes, use an
 display-safe keys. Never render tokens, password values, secrets, credentials, raw authentication
 metadata, or unknown nested blobs by default.
 
-### Wallets tab
+## Identity Wallet List Page
 
-Use a compact filter row for search, currency, status, active state, deleted state, and created
-date, followed by a responsive content-card grid and pagination.
+Route: `/identities/:identity_public_id/wallets`.
+
+Open this page from the Identity list's **Wallets** row action. The page uses the shared list-view
+controller and action-handler flow with breadcrumb, page header, filters, result bar, sortable data
+table, row action menu, pagination, and URL-synchronised state.
+
+Filters cover search, preview-backed currency selection, status, active state, deleted state, and
+created date.
 
 Each wallet card shows:
 
@@ -434,11 +441,12 @@ and transaction ledger records have the same balance-field semantics.
 
 ## Content Resource Roots
 
-| Module      | Root key                               | Sample                                                               |
-| ----------- | -------------------------------------- | -------------------------------------------------------------------- |
-| Identity    | `content_resource.identity_view_ui`    | `docs/content_payloads/samples/identity_view_content_sample.json`    |
-| Wallet      | `content_resource.wallet_view_ui`      | `docs/content_payloads/samples/wallet_view_content_sample.json`      |
-| Transaction | `content_resource.transaction_view_ui` | `docs/content_payloads/samples/transaction_view_content_sample.json` |
+| Module               | Root key                                   | Sample                                                               |
+| -------------------- | ------------------------------------------ | -------------------------------------------------------------------- |
+| Identity             | `content_resource.identity_view_ui`        | `docs/content_payloads/samples/identity_view_content_sample.json`    |
+| Identity Wallet List | `content_resource.identity_wallet_view_ui` | `docs/content_payloads/samples/identity_view_content_sample.json`    |
+| Wallet               | `content_resource.wallet_view_ui`          | `docs/content_payloads/samples/wallet_view_content_sample.json`      |
+| Transaction          | `content_resource.transaction_view_ui`     | `docs/content_payloads/samples/transaction_view_content_sample.json` |
 
 The samples are copy/reference payloads. Their select options are illustrative; server-backed
 domain values should replace them when authoritative enums or lookup endpoints are available.
@@ -447,8 +455,9 @@ domain values should replace them when authoritative enums or lookup endpoints a
 
 - Sidebar items and routes are permission-gated.
 - Identity and transaction list filters survive reload and deep links.
-- Identity View opens a two-tab Profile/Wallets modal.
-- Wallet cards paginate and open complete wallet details in a new tab.
+- Identity View opens the Profile modal and exposes a separate Wallets row action.
+- The standalone identity-wallet page preserves filters and pagination in its URL.
+- Wallet table rows paginate, support balance sorting, and can later open complete wallet details.
 - Wallet details include a ledger table and wallet-filtered transaction shortcut.
 - Transaction View opens a two-tab Profile/Receipts modal.
 - Receipt cards paginate and safely open valid receipt URLs.

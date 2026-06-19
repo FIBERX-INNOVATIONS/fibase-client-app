@@ -168,16 +168,21 @@
 
 <script setup lang="ts">
 import IdentityProfileViewProps from "@/props_definition/identity/profile_view_props";
+
 import IdentityProfileViewController from "@/controllers/identity/profile_view_controller";
 
 const props = defineProps(IdentityProfileViewProps);
-const controller = new IdentityProfileViewController(props);
-const component_definition = controller.getComponentDefinition();
 
-const { state_refs, components, computed_refs } = component_definition;
+const controller = new IdentityProfileViewController(props);
+
+const { state_refs, components, computed_refs } = controller.getComponentDefinition();
+
 const { class_styles, content_obj } = controller;
+
 const { ImageRenderUI, TabsUI, ProfileValue, StatusValue } = components;
+
 const { tabs_props } = state_refs;
+
 const {
     loading_icon_html,
     profile_image_props,
