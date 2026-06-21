@@ -33,18 +33,12 @@ Configuration.
 | Route                                     | Route name              | View                                   | Route permission                                 | Open behavior |
 | ----------------------------------------- | ----------------------- | -------------------------------------- | ------------------------------------------------ | ------------- |
 | `/identities`                             | `IdentityList`          | `views/identity/ListView.vue`          | `identity_module.get_identity_list`              | Same tab      |
-| `/identities/:identity_public_id/wallets` | `IdentityWalletList`    | `views/identity/WalletListView.vue`    | `identity_module.get_identity_wallet_list`       | Same tab      |
-| `/wallets/:wallet_id`                     | `WalletDetails`         | `views/wallet/DetailsView.vue`         | `wallet_module.get_wallet`                       | New tab       |
+| `/identities/:identity_public_id/wallets` | `IdentityWalletList`    | `views/identity_wallet/ListView.vue`   | `identity_module.get_identity_wallet_list`       | Same tab      |
 | `/transactions`                           | `TransactionList`       | `views/transaction/ListView.vue`       | `transaction_module.get_transaction_list`        | Same tab      |
 | `/transactions/:transaction_id/ledger`    | `TransactionLedgerList` | `views/transaction/LedgerListView.vue` | `transaction_module.get_transaction_ledger_list` | New tab       |
 
 Use public IDs in generated URLs. Route parameters still accept numeric IDs because the server
 does, but public IDs are safer for visible admin links.
-
-The wallet details page also needs `wallet_module.get_wallet_ledger_list`. Show the wallet action
-only when the member has both wallet permissions so the opened page is complete. On a direct URL,
-load the wallet header when `get_wallet` is allowed and show an inline permission state in place of
-the ledger when the ledger permission is missing.
 
 ## Shared UX Rules
 
@@ -184,26 +178,20 @@ Each wallet card shows:
 - Available, locked, pending, and refunded balances.
 - Total credit and total debit when returned by the full projection.
 - Created/updated dates.
-- **View Wallet Details** button.
+- **View Wallet Details** action.
 
-The button is permission-gated and opens `/wallets/:wallet_id` in a separate tab using
-`router.resolve()` and `window.open(..., "_blank", "noopener,noreferrer")`. If popups are blocked,
-fall back to same-tab router navigation after informing the user.
+The action is permission-gated with `wallet_module.get_wallet` and opens the wallet profile in the
+shared dashboard modal without leaving the identity wallet list.
 
-## 3. Wallet Details and Ledger Page
+## 3. Wallet Details Modal
 
 ### Page composition
 
-1. Breadcrumb: **Home / Identities / Wallet {public_id}**. The Identities crumb links back to the
-   identity list.
-2. Page header with wallet identifier, currency, and status.
-3. Wallet summary content card(s).
-4. **View Wallet Transactions** link when the user has
-   `transaction_module.get_transaction_list`.
-5. Wallet-ledger heading, filters, result bar, table, and pagination.
+1. Shared modal header: **Wallet Details**.
+2. Wallet identifier, currency, and status summary.
+3. Wallet information, balances, lifetime totals, currency, owner, and timeline cards.
 
-Run the wallet and ledger requests together after resolving the route ID, but keep their loading
-and error states independent.
+The modal receives the list preview record immediately and then loads the full wallet projection.
 
 ### Wallet summary API
 
@@ -213,19 +201,7 @@ Show identity public ID, currency, status, active state, available/locked/pendin
 total credit/debit, and created/updated dates. When the linked identity is present and permitted,
 offer a return link to `/identities?search=:identity_public_id`.
 
-### Wallet transaction shortcut
-
-Navigate to:
-
-```txt
-/transactions?wallet_id=:wallet_public_id&page=0
-```
-
-The Transactions page must hydrate the wallet filter from the URL, display it as an active filter
-chip, and include it in the first request. Do not place the wallet ID only in transient component
-state.
-
-### Ledger API and filters
+### Future wallet ledger API and filters
 
 `GET /api/wallet/:wallet_id/ledger`
 

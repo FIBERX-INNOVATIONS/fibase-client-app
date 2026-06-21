@@ -1,10 +1,18 @@
+import { markRaw } from "vue";
+
 import { IdentityWalletRecordInterface } from "@/types/api_service_type";
 
 import { IdentityWalletListViewFiltersInterface } from "@/types/list_view_filter_type";
 
+import { NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
+
+import { OpenModalEventPayloadInterface } from "@/types/global_events_type";
+
 import IdentityAPIService from "@/api_services/identity_api_service";
 
 import IdentityWalletActionMenu from "@/action_menus/identity_wallet_action_menu";
+
+import ProfileView from "@/views/identity_wallet/ProfileView.vue";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
@@ -43,6 +51,27 @@ class IdentityWalletListViewActionHandler extends BaseListViewActionHandler<
         }
 
         DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
+    };
+
+    // Method to open the selected wallet profile in the shared dashboard modal.
+    public handleViewActionMenuClicked = async (
+        record: IdentityWalletRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+        const modal_payload: OpenModalEventPayloadInterface = {
+            content_key: profile_details_modal_content_key,
+            animation_type: "slide_top",
+            body_component: markRaw(ProfileView),
+            body_props: {
+                record_id: record.public_id,
+                record
+            }
+        };
+
+        this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
 }
 

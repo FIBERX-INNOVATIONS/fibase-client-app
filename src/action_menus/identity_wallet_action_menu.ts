@@ -2,6 +2,8 @@ import { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
+import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
+
 import { IdentityWalletRecordInterface } from "@/types/api_service_type";
 
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
@@ -19,9 +21,26 @@ class IdentityWalletActionMenu {
         const select_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
             `${base_content_key}.select_menu_option`
         );
+        const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
+            `${base_content_key}.view_menu_option`
+        );
         const record_id = record.public_id.toUpperCase();
 
         return [
+            {
+                id: `${view_menu_content?.menu_text ?? "View"}ActionMenu${record_id}`,
+                link: view_menu_content?.menu_link ?? "",
+                icon: view_menu_content?.menu_icon ?? "view_eye_svg_icon",
+                content: view_menu_content?.menu_text ?? "View",
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        void event;
+                        await action_handler?.handleViewActionMenuClicked(record, config);
+                    }
+                },
+                class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
+                has_permission: !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo("wallet_module.get_wallet")
+            },
             {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record_id}`,
                 link: select_menu_content?.menu_link ?? "",
@@ -35,7 +54,7 @@ class IdentityWalletActionMenu {
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission: true
             }
-        ];
+        ].filter((menu) => menu.has_permission);
     }
 }
 

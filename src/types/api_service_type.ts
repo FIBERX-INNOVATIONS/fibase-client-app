@@ -597,6 +597,7 @@ export interface IdentityWalletRecordInterface extends IdentityWalletSummaryReco
     created_at: string;
     updated_at?: string | null;
     currency?: IdentityWalletCurrencySummaryInterface | null;
+    identity?: IdentityRecordInterface | null;
 }
 
 export interface IdentityRecordInterface {

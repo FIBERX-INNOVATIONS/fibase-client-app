@@ -416,6 +416,11 @@
                     }
                 },
                 "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View",
+                        "menu_icon": "view_eye_svg_icon",
+                        "menu_link": ""
+                    },
                     "select_menu_option": {
                         "menu_text": "Select",
                         "selected_menu_text": "Deselect",
@@ -425,8 +430,69 @@
                 }
             }
         },
+        "modals_ui": {
+            "profile_details_modal_ui": {
+                "title_text": "Wallet Details",
+                "title_icon": "wallet_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading wallet details...",
+            "empty_value_text": "-",
+            "breadcrumb": {
+                "wallet_text": "Wallet"
+            },
+            "status": {
+                "active_text": "Active",
+                "inactive_text": "Inactive",
+                "deleted_text": "Deleted",
+                "fiat_text": "Fiat",
+                "crypto_text": "Crypto"
+            },
+            "sections": {
+                "information": {
+                    "title_text": "Wallet Information",
+                    "public_id_label_text": "Public ID",
+                    "status_label_text": "Status",
+                    "active_label_text": "Active State"
+                },
+                "balances": {
+                    "title_text": "Balances",
+                    "available_label_text": "Available",
+                    "locked_label_text": "Locked",
+                    "pending_label_text": "Pending",
+                    "refunded_label_text": "Refunded"
+                },
+                "totals": {
+                    "title_text": "Lifetime Totals",
+                    "credit_label_text": "Total Credit",
+                    "debit_label_text": "Total Debit"
+                },
+                "currency": {
+                    "title_text": "Currency",
+                    "code_label_text": "Code",
+                    "name_label_text": "Name",
+                    "precision_label_text": "Precision",
+                    "type_label_text": "Type"
+                },
+                "owner": {
+                    "title_text": "Owner",
+                    "identity_id_label_text": "Identity",
+                    "identity_type_label_text": "Identity Type",
+                    "identity_status_label_text": "Identity Status"
+                },
+                "timeline": {
+                    "title_text": "Timeline",
+                    "created_at_label_text": "Created",
+                    "updated_at_label_text": "Updated"
+                }
+            }
+        },
         "api_responses": {
             "identity_wallet_records_fetch_failed": "Wallet records could not be loaded.",
+            "identity_wallet_record_fetch_failed": "The wallet profile could not be loaded.",
+            "identity_wallet_not_found": "The wallet record could not be found.",
             "permission_denied": "You do not have permission to perform this action.",
             "session_expired": "Your session has expired. Please sign in again.",
             "error_occurred": "An unexpected error occurred. Please try again."

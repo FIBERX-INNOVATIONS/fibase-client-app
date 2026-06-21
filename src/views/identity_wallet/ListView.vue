@@ -21,12 +21,17 @@
 
 <script setup lang="ts">
 import IdentityWalletListViewProps from "@/props_definition/identity_wallet/list_view_props";
+
 import IdentityWalletListViewController from "@/controllers/identity_wallet/list_view_controller";
 
 const props = defineProps(IdentityWalletListViewProps);
+
 const controller = new IdentityWalletListViewController(props);
+
 const { state_refs, components } = controller.getComponentDefinition();
+
 const list_view_class_styles = controller.list_view_class_styles;
+
 const {
     BreadcrumbUI,
     PageHeaderUI,
@@ -36,6 +41,7 @@ const {
     DropdownMenuUI,
     PaginationUI
 } = components;
+
 const {
     breadcrumb_props,
     page_header_props,
