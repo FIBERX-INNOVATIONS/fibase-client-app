@@ -2,6 +2,7 @@ import { InputUIFetchDataParamsInterface, SelectOptionInterface } from "@ui/vers
 
 import {
     CurrencyRecordInterface,
+    IdentityRecordInterface,
     MemberRecordInterface,
     PaymentMethodRecordInterface,
     PaymentProviderMethodRecordInterface,
@@ -28,12 +29,56 @@ import PaymentProviderAPIService from "@/api_services/payment_provider_api_servi
 
 import PaymentProviderMethodAPIService from "@/api_services/payment_provider_method_api_service";
 
+import IdentityAPIService from "@/api_services/identity_api_service";
+
 class PreviewRecordFetcher {
     public static name = "preview_record_fetcher";
 
     protected static logger: LoggerUtil = new LoggerUtil({ prefix: this.name });
 
     private static readonly countries_page_size = 50;
+
+    // Method to handle fetching identity preview records.
+    public static fetchIdentityPreviewRecords = async <TParams extends Record<string, unknown> = Record<string, unknown>>(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const { page = 0, search = null, ...extra_params } = params ?? {};
+
+        try {
+            const result = await IdentityAPIService.getIdentityList({
+                page: page + 1,
+                filters: {
+                    search,
+                    preview_only: true,
+                    ...extra_params
+                }
+            });
+            const fallback = { records: [], total_pages: 0 };
+
+            if (result.status === "logout" || result.status !== "success" || !result.data?.records) {
+                return fallback;
+            }
+
+            const records = result.data.records.map((record: IdentityRecordInterface): SelectOptionInterface => {
+                const profile = record.primary_profile ?? record.profile;
+                const full_name = [profile?.first_name, profile?.middle_name, profile?.last_name].filter(Boolean).join(" ");
+                const display_name = profile?.display_name || full_name;
+
+                return {
+                    label_text: display_name ? `${display_name} — ${record.public_id}` : record.public_id,
+                    value: record.public_id
+                };
+            });
+
+            return {
+                records,
+                total_pages: result.data.total_pages ?? 0
+            };
+        } catch (error: unknown) {
+            this.logger.error("Failed to fetch identity preview records", { error });
+            return { records: [], total_pages: 0 };
+        }
+    };
 
     // Method to handle fetching registered apps preview records
     public static fetchRegisteredAppPreviewRecords = async <TParams extends Record<string, unknown> = Record<string, unknown>>(

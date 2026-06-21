@@ -163,11 +163,13 @@
                 },
                 "identity_filter": {
                     "label_text": "Any Identity",
-                    "placeholder_text": "Enter initiating, source, or destination identity ID"
+                    "placeholder_text": "Search initiating, source, or destination identity",
+                    "selected_text_prefix": "Selected identity"
                 },
                 "initiated_by_identity_filter": {
                     "label_text": "Initiated By Identity",
-                    "placeholder_text": "Enter initiating identity ID"
+                    "placeholder_text": "Search initiating identity",
+                    "selected_text_prefix": "Selected initiating identity"
                 },
                 "parent_transaction_filter": {
                     "label_text": "Parent Transaction",
@@ -186,6 +188,9 @@
                 "selection_section": {
                     "selected_text": "{{selected_count}} transaction(s) selected",
                     "clear_btn_text": "Clear selection"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} transaction(s) selected"
                 },
                 "loading_section": {
                     "loader_text": "Loading transactions..."

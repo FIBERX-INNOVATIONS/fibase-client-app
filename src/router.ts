@@ -22,6 +22,8 @@ const IdentityWalletListView = () => import("@/views/identity_wallet/ListView.vu
 
 const IdentityWalletLedgerListView = () => import("@/views/identity_wallet_ledger/ListView.vue");
 
+const TransactionListView = () => import("@/views/transaction/ListView.vue");
+
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
@@ -100,6 +102,7 @@ class RouterManager {
     // Method to get routes array
     private getRoutes(): RouteRecordRaw[] {
         return [
+            // Home Page
             {
                 path: "/",
                 name: "Home",
@@ -111,6 +114,7 @@ class RouterManager {
                     is_auth_page: true
                 }
             },
+            // Login Page
             {
                 path: "/login",
                 name: "Login",
@@ -122,6 +126,7 @@ class RouterManager {
                     is_auth_page: true
                 }
             },
+            // Two factor Login Page
             {
                 path: "/two-factor-login",
                 name: "TwoFactorLogin",
@@ -133,6 +138,7 @@ class RouterManager {
                     is_auth_page: true
                 }
             },
+            // Logout Page
             {
                 path: "/logout",
                 name: "Logout",
@@ -144,6 +150,7 @@ class RouterManager {
                     is_auth_page: true
                 }
             },
+            // Activate Account Page
             {
                 path: "/activate-account",
                 name: "ActivateAccount",
@@ -155,6 +162,7 @@ class RouterManager {
                     is_auth_page: true
                 }
             },
+            // Dashboard Page
             {
                 path: "/dashboard",
                 name: "Dashboard",
@@ -166,6 +174,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Registered App Page
             {
                 path: "/registered-apps",
                 name: "RegisteredAppList",
@@ -177,6 +186,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Members Page
             {
                 path: "/members",
                 name: "MemberProfileList",
@@ -188,6 +198,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Identities Page
             {
                 path: "/identities",
                 name: "IdentityList",
@@ -199,6 +210,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Identity Wallets Page
             {
                 path: "/identities/:identity_public_id/wallets",
                 name: "IdentityWalletList",
@@ -211,6 +223,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Identity Wallet Ledger Page
             {
                 path: "/identities/:identity_public_id/wallets/:wallet_id/ledger",
                 name: "IdentityWalletLedgerList",
@@ -226,6 +239,19 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Transactions Page
+            {
+                path: "/transactions",
+                name: "TransactionList",
+                component: TransactionListView,
+                meta: {
+                    page_meta_key: "transaction_page",
+                    title_key: "transaction_page",
+                    permission_name: "transaction_module.get_transaction_list",
+                    is_auth_page: false
+                }
+            },
+            // Currencies Page
             {
                 path: "/currencies",
                 name: "CurrencyList",
@@ -237,6 +263,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Payment Config Methods Page
             {
                 path: "/payment-config/methods",
                 name: "PaymentMethodList",
@@ -248,6 +275,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Payment config Providers Page
             {
                 path: "/payment-config/providers",
                 name: "PaymentProviderList",
@@ -259,6 +287,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Payment config Provider configs Page
             {
                 path: "/payment-config/provider-configs",
                 name: "PaymentProviderConfigList",
@@ -270,6 +299,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Payment Config Provider methods Page
             {
                 path: "/payment-config/provider-methods",
                 name: "PaymentProviderMethodList",
@@ -281,6 +311,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Payment config Currency Provider Methods Page
             {
                 path: "/payment-config/currency-provider-methods",
                 name: "CurrencyPaymentProviderMethodList",
@@ -292,6 +323,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Activities Page
             {
                 path: "/activities",
                 name: "ActivityList",
@@ -303,6 +335,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // Access Control Roles Page
             {
                 path: "/access-control/roles",
                 name: "AccessControlList",
@@ -314,6 +347,7 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // My Profile Page
             {
                 path: "/my-profile",
                 name: "MyProfile",

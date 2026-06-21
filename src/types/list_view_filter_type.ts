@@ -67,6 +67,25 @@ export interface IdentityWalletLedgerListViewFiltersInterface {
     date_range?: { start_date: string; end_date: string } | string | null;
 }
 
+export interface TransactionListViewFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean | string;
+    transaction_type?: string | null;
+    direction?: string | null;
+    status?: string | null;
+    app_id?: string | number | null;
+    currency_id?: string | number | null;
+    provider_id?: string | number | null;
+    payment_method_id?: string | number | null;
+    wallet_id?: string | number | null;
+    source_wallet_id?: string | number | null;
+    destination_wallet_id?: string | number | null;
+    identity_id?: string | number | null;
+    initiated_by_identity_id?: string | number | null;
+    parent_transaction_id?: string | number | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface PaymentConfigListViewFiltersInterface {
     page?: number;
     limit?: number;

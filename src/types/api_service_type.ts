@@ -9,7 +9,8 @@ import {
     PaymentProviderMethodListViewFiltersInterface,
     IdentityListViewFiltersInterface,
     IdentityWalletListViewFiltersInterface,
-    IdentityWalletLedgerListViewFiltersInterface
+    IdentityWalletLedgerListViewFiltersInterface,
+    TransactionListViewFiltersInterface
 } from "./list_view_filter_type";
 
 export interface CSRFTokenRecordInterface {
@@ -712,6 +713,55 @@ export type IdentityWalletLedgerListParams = {
 export interface IdentityWalletLedgerListResponseInterface extends PaginatedResponseResultInterface<
     IdentityWalletLedgerRecordInterface[]
 > {}
+
+export interface TransactionProviderSummaryInterface {
+    id?: string | number;
+    public_id?: string;
+    code?: string;
+    name?: string;
+    account_reference?: string | null;
+}
+
+export interface TransactionRecordInterface {
+    public_id: string;
+    transaction_type: string;
+    direction: string;
+    status: string;
+    amount: number;
+    fee_amount: number;
+    net_amount: number;
+    app_reference: string | null;
+    provider_reference: string | null;
+    external_reference?: string | null;
+    initiated_at: string | null;
+    settled_at?: string | null;
+    failed_at?: string | null;
+    created_at: string;
+    updated_at?: string | null;
+    app?: IdentityRegisteredAppSummaryInterface | null;
+    currency?: IdentityWalletCurrencySummaryInterface | null;
+    initiated_by_identity?: IdentityRecordInterface | null;
+    source_identity?: IdentityRecordInterface | null;
+    source_wallet?: IdentityWalletRecordInterface | null;
+    destination_identity?: IdentityRecordInterface | null;
+    destination_wallet?: IdentityWalletRecordInterface | null;
+    destination_external_account?: Record<string, unknown> | null;
+    parent_transaction?: TransactionRecordInterface | null;
+    provider?: TransactionProviderSummaryInterface | null;
+    payment_method?: TransactionProviderSummaryInterface | null;
+    identity_provider_account?: TransactionProviderSummaryInterface | null;
+    current_receipt?: Record<string, unknown> | null;
+}
+
+export type TransactionListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<TransactionListViewFiltersInterface>;
+};
+
+export interface TransactionListResponseInterface extends PaginatedResponseResultInterface<TransactionRecordInterface[]> {}
 
 // ==============================
 // ACTIVITY TYPES
