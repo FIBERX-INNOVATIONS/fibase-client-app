@@ -37,6 +37,8 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import PaymentProviderMethodListViewActionHandler from "@/action_handlers/payment_provider_method/list_view_action_handler";
@@ -177,19 +179,10 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
         ];
     }
 
-    // Method to format limit
-    private formatAmountLimit(amount: number | null): string {
-        if (amount === null) {
-            return "Infinity";
-        }
-
-        return InputTransformerUtil.nFormatter(InputTransformerUtil.roundToTwoDecimalPlaces(amount), 2);
-    }
-
     // Method to format min/max limits.
     private formatLimits(record: PaymentProviderMethodRecordInterface): string {
-        const min_amount = this.formatAmountLimit(Number(record.min_amount));
-        const max_amount = this.formatAmountLimit(Number(record.max_amount));
+        const min_amount = DisplayFormatterUtil.formatAmountLimit(record.min_amount);
+        const max_amount = DisplayFormatterUtil.formatAmountLimit(record.max_amount);
 
         return `${min_amount} - ${max_amount}`;
     }

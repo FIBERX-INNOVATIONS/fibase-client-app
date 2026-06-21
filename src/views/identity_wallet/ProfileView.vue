@@ -82,11 +82,15 @@ import IdentityWalletProfileViewProps from "@/props_definition/identity_wallet/p
 import IdentityWalletProfileViewController from "@/controllers/identity_wallet/profile_view_controller";
 
 const props = defineProps(IdentityWalletProfileViewProps);
+
 const controller = new IdentityWalletProfileViewController(props);
+
 const { state_refs, components, computed_refs } = controller.getComponentDefinition();
 
 const { class_styles, content_obj } = controller;
+
 const { ProfileValue } = components;
+
 const {
     loading_icon_html,
     wallet_title,

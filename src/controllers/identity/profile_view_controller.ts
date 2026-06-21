@@ -30,7 +30,7 @@ import {
 
 import TabsUI from "@ui/version_3/components/TabsUI.vue";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import TabsUIPropsBuilder from "@ui/version_3/props_builder/tabs_ui_props_builder";
 
@@ -288,20 +288,14 @@ class IdentityProfileViewController extends BaseProfileViewController<
         return this.content_obj.empty_value_text || "-";
     }
 
-    // Method to format lavbel
-    private formatLabel(value?: string | null): string {
-        if (!value) return this.getEmptyValue();
-        return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
-    }
-
     // Method to get readable date time from date input
     private getReadableDateTime(value?: string | null): string {
-        return value ? InputTransformerUtil.formatReadableDateTime(value) : this.getEmptyValue();
+        return DisplayFormatterUtil.formatDateTime(value, this.getEmptyValue());
     }
 
     // Method to get readable date from date input
     private getReadableDate(value?: string | null): string {
-        return value ? InputTransformerUtil.formatReadableDate(value) : this.getEmptyValue();
+        return DisplayFormatterUtil.formatDate(value, this.getEmptyValue());
     }
 
     // Method to get profile display name
@@ -316,7 +310,7 @@ class IdentityProfileViewController extends BaseProfileViewController<
     private getContactItems(contacts: IdentityContactSummaryInterface[] = []): IdentityAssociationItemInterface[] {
         return contacts.map((contact) => ({
             key: contact.public_id,
-            title: this.formatLabel(contact.contact_type),
+            title: DisplayFormatterUtil.formatLabel(contact.contact_type, this.getEmptyValue()),
             subtitle: contact.contact_value,
             details: [
                 contact.source_app?.name ? `Source: ${contact.source_app.name}` : "",
@@ -335,7 +329,7 @@ class IdentityProfileViewController extends BaseProfileViewController<
             subtitle: account.external_username || account.external_public_id || account.external_member_id,
             details: [
                 `Account ID: ${account.public_id}`,
-                `External status: ${this.formatLabel(account.external_status)}`,
+                `External status: ${DisplayFormatterUtil.formatLabel(account.external_status, this.getEmptyValue())}`,
                 account.last_seen_at ? `Last seen: ${this.getReadableDateTime(account.last_seen_at)}` : ""
             ].filter(Boolean),
             status: account.is_deleted ? "Deleted" : account.is_active ? "Active" : "Inactive",
@@ -349,8 +343,9 @@ class IdentityProfileViewController extends BaseProfileViewController<
             loading_icon_html: () => String(getSVGIconValue("loading_svg_icon") ?? ""),
             identity_display_name: () => this.getDisplayName(),
             identity_public_id_text: () => this.getIdentityRecord()?.public_id || this.getEmptyValue(),
-            identity_type_text: () => this.formatLabel(this.getIdentityRecord()?.identity_type),
-            profile_status_text: () => this.formatLabel(this.getIdentityRecord()?.status),
+            identity_type_text: () =>
+                DisplayFormatterUtil.formatLabel(this.getIdentityRecord()?.identity_type, this.getEmptyValue()),
+            profile_status_text: () => DisplayFormatterUtil.formatLabel(this.getIdentityRecord()?.status, this.getEmptyValue()),
             profile_status_badge_class: () =>
                 this.getIdentityRecord()?.status?.toLowerCase() === "active"
                     ? this.class_styles.active_badge_class_style
@@ -373,12 +368,12 @@ class IdentityProfileViewController extends BaseProfileViewController<
                     {
                         icon: "member_icon",
                         label: this.content_obj.identity_type_label_text,
-                        value: this.formatLabel(record?.identity_type)
+                        value: DisplayFormatterUtil.formatLabel(record?.identity_type, this.getEmptyValue())
                     },
                     {
                         icon: "check_circle_svg_icon",
                         label: this.content_obj.status_label_text,
-                        value: this.formatLabel(record?.status)
+                        value: DisplayFormatterUtil.formatLabel(record?.status, this.getEmptyValue())
                     },
                     {
                         icon: "identification_card_svg_icon",
@@ -431,7 +426,7 @@ class IdentityProfileViewController extends BaseProfileViewController<
                     {
                         icon: "members_svg_icon",
                         label: this.content_obj.gender_label_text,
-                        value: this.formatLabel(profile?.gender)
+                        value: DisplayFormatterUtil.formatLabel(profile?.gender, this.getEmptyValue())
                     },
                     {
                         icon: "identification_card_svg_icon",

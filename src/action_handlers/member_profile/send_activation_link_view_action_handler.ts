@@ -48,10 +48,6 @@ class MemberProfileSendActivationLinkViewActionHandler extends BaseDeleteViewAct
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
 
-    protected getRecordId(record: MemberRecordInterface): string | null {
-        return record.public_id || this.props.record_id || null;
-    }
-
     private sendActivationLink = async (
         record_id: string,
         reason_text?: string

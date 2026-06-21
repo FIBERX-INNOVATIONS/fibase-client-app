@@ -1,9 +1,6 @@
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
-import {
-    PaymentMethodMetadataInterface,
-    PaymentMethodRecordInterface
-} from "@/types/api_service_type";
+import { PaymentMethodMetadataInterface, PaymentMethodRecordInterface } from "@/types/api_service_type";
 
 import { PaymentMethodFieldsType } from "@/types/form_fields_type";
 
@@ -14,10 +11,7 @@ import {
     UpdatePaymentMethodPayloadInterface
 } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -68,9 +62,7 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get default form data value based on record.
-    private static getFormDataValue(
-        record?: PaymentMethodRecordInterface
-    ): PaymentMethodFormDataInterface {
+    private static getFormDataValue(record?: PaymentMethodRecordInterface): PaymentMethodFormDataInterface {
         const metadata = record?.metadata;
 
         return {
@@ -130,33 +122,20 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
         return (value ?? []).map((item) => item.trim()).filter(Boolean);
     }
 
-    // Method to normalize optional numbers from form input.
-    private normalizeOptionalNumber(value?: number | string | null): number | null {
-        if (value === null || value === undefined || value === "") {
-            return null;
-        }
-
-        const numeric_value = Number(value);
-
-        return Number.isNaN(numeric_value) ? null : numeric_value;
-    }
-
     // Method to build metadata payload from flat form fields.
-    private buildMetadataPayload(
-        form_data: PaymentMethodFormDataInterface
-    ): PaymentMethodMetadataInterface {
+    private buildMetadataPayload(form_data: PaymentMethodFormDataInterface): PaymentMethodMetadataInterface {
         return {
             display_name: form_data.display_name?.trim() || null,
             display_description: form_data.display_description?.trim() || null,
             display_group: form_data.display_group?.trim() || null,
             processing_time_text: form_data.processing_time_text?.trim() || null,
             fee_label: form_data.fee_label?.trim() || null,
-            supported_country_codes: this.normalizeCodeList(form_data.supported_country_codes).map(
-                (code) => code.toUpperCase()
+            supported_country_codes: this.normalizeCodeList(form_data.supported_country_codes).map((code) =>
+                code.toUpperCase()
             ),
-            supported_currency_codes: this.normalizeCodeList(
-                form_data.supported_currency_codes
-            ).map((code) => code.toUpperCase()),
+            supported_currency_codes: this.normalizeCodeList(form_data.supported_currency_codes).map((code) =>
+                code.toUpperCase()
+            ),
             requires_redirect: !!form_data.requires_redirect,
             supports_deposit: !!form_data.supports_deposit,
             supports_withdrawal: !!form_data.supports_withdrawal,
@@ -193,36 +172,18 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    msg || "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert(
-                "success",
-                msg || "file_uploaded_successfully",
-                5,
-                undefined,
-                true
-            );
+            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
 
             // set the icon url field in the form data
             this.form_data.icon_url = data.url;
@@ -249,9 +210,7 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             const payload = this.buildAPIPayload(form_data);
             const validation_result = record_id
                 ? PaymentMethodValidator.validateUpdatePaymentMethodInput(payload)
-                : PaymentMethodValidator.validateCreatePaymentMethodInput(
-                      payload as CreatePaymentMethodPayloadInterface
-                  );
+                : PaymentMethodValidator.validateCreatePaymentMethodInput(payload as CreatePaymentMethodPayloadInterface);
             const { v_state, v_msg, v_data } = validation_result;
 
             if (!v_state || !v_data) {
@@ -261,9 +220,7 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
 
             const result = record_id
                 ? await PaymentMethodAPIService.updatePaymentMethod(record_id, v_data)
-                : await PaymentMethodAPIService.createPaymentMethod(
-                      v_data as CreatePaymentMethodPayloadInterface
-                  );
+                : await PaymentMethodAPIService.createPaymentMethod(v_data as CreatePaymentMethodPayloadInterface);
 
             if (!result) {
                 this.showErrorAlert("error", "error_occurred");

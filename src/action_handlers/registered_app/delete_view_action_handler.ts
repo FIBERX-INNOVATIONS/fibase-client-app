@@ -35,17 +35,9 @@ class RegisteredAppDeleteViewActionHandler extends BaseDeleteViewActionHandler<
             GlobalEventTypes
         >
     ) {
-        super(
-            controller,
-            "registered_app_delete_view_action_handler",
-            RegisteredAppAPIService.deleteRegisteredApp
-        );
+        super(controller, "registered_app_delete_view_action_handler", RegisteredAppAPIService.deleteRegisteredApp);
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
-    }
-
-    protected getRecordId(record: RegisteredAppRecordInterface): string | null {
-        return record.public_id || this.props.record_id || null;
     }
 }
 

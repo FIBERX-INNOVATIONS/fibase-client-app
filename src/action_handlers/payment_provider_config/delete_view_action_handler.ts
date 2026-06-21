@@ -43,10 +43,6 @@ class PaymentProviderConfigDeleteViewActionHandler extends BaseDeleteViewActionH
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
-
-    protected getRecordId(record: PaymentProviderConfigRecordInterface): string | null {
-        return record.id?.toString() || this.props.record_id || null;
-    }
 }
 
 export default PaymentProviderConfigDeleteViewActionHandler;

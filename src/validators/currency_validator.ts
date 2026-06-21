@@ -10,17 +10,11 @@ import {
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class CurrencyValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    protected static getContentMessage(message_key: string): string {
-        return CurrencyValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class CurrencyValidator extends BaseValidator {
     // CODE (e.g. USD, NGN, BTC)
     public static validateCurrencyCode = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
@@ -58,8 +52,7 @@ class CurrencyValidator {
 
     // NUMERIC CODE (ISO 4217)
     public static validateNumericCode = (value: string | null): ActionMethodRetrunInterface => {
-        if (!value)
-            return { status: true, msg: this.getContentMessage("invalid_currency_numeric_code") };
+        if (!value) return { status: true, msg: this.getContentMessage("invalid_currency_numeric_code") };
 
         if (!/^\d{3}$/.test(value)) {
             return { status: false, msg: this.getContentMessage("invalid_currency_numeric_code") };
@@ -83,8 +76,7 @@ class CurrencyValidator {
 
     // MINOR UNIT
     public static validateMinorUnit = (value: number | null): ActionMethodRetrunInterface => {
-        if (value === null)
-            return { status: true, msg: this.getContentMessage("invalid_currency_minor_unit") };
+        if (value === null) return { status: true, msg: this.getContentMessage("invalid_currency_minor_unit") };
 
         if (value < 0) {
             return { status: false, msg: this.getContentMessage("invalid_currency_minor_unit") };
@@ -95,8 +87,7 @@ class CurrencyValidator {
 
     // COUNTRY CODE
     public static validateCountryCode = (value: string | null): ActionMethodRetrunInterface => {
-        if (!value)
-            return { status: true, msg: this.getContentMessage("invalid_currency_country_code") };
+        if (!value) return { status: true, msg: this.getContentMessage("invalid_currency_country_code") };
 
         if (!/^[A-Z]{2}$/.test(value)) {
             return { status: false, msg: this.getContentMessage("invalid_currency_country_code") };
@@ -120,8 +111,7 @@ class CurrencyValidator {
 
     // SORT ORDER
     public static validateSortOrder = (value: number | null): ActionMethodRetrunInterface => {
-        if (value === null)
-            return { status: true, msg: this.getContentMessage("invalid_currency_sort_order") };
+        if (value === null) return { status: true, msg: this.getContentMessage("invalid_currency_sort_order") };
 
         if (value < 0) {
             return {
@@ -143,9 +133,7 @@ class CurrencyValidator {
     };
 
     // CURRENCY LIST
-    public static validateCurrencyListInput = (
-        value: (string | number)[]
-    ): ActionMethodRetrunInterface => {
+    public static validateCurrencyListInput = (value: (string | number)[]): ActionMethodRetrunInterface => {
         if (value === null || !value.length || !Array.isArray(value)) {
             return { status: true, msg: this.getContentMessage("no_currency_provided") };
         }
@@ -256,18 +244,9 @@ class CurrencyValidator {
     public static validateAppCurrencyInput(
         form_data: AppCurrencyActionFormDataInterface | AppCurrencyFormDataInterface
     ): ValidationResultInterface<AppCurrencyActionValidatedFormDataInterface> {
-        const {
-            csrf_token,
-            registered_app_id,
-            app_id,
-            currency_code_or_id,
-            currency_list,
-            action
-        } = form_data;
+        const { csrf_token, registered_app_id, app_id, currency_code_or_id, currency_list, action } = form_data;
 
-        const currency_array = currency_code_or_id
-            ? [currency_code_or_id.toString()]
-            : (currency_list ?? []);
+        const currency_array = currency_code_or_id ? [currency_code_or_id.toString()] : (currency_list ?? []);
         const _app_id = registered_app_id?.toString() ?? app_id?.toString() ?? "";
 
         // CSRF
@@ -275,11 +254,7 @@ class CurrencyValidator {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
 
-        if (
-            InputValidatorUtil.isEmpty(action) ||
-            !action ||
-            !["assign", "unassign"].includes(action)
-        ) {
+        if (InputValidatorUtil.isEmpty(action) || !action || !["assign", "unassign"].includes(action)) {
             return { v_state: false, v_msg: "invalid_currency_assign_unassign_action_type" };
         }
 

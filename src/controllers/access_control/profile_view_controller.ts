@@ -13,7 +13,7 @@ import {
     AccessControlProfileViewContentInterface
 } from "@/ui_types/profile_view_type";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
@@ -99,10 +99,6 @@ class AccessControlProfileViewController extends BaseProfileViewController<
         return value ? this.content_obj.yes_text : this.content_obj.no_text;
     }
 
-    private formatDateTime(date_value?: string | null): string {
-        return date_value ? InputTransformerUtil.formatReadableDateTime(date_value) : this.content_obj.empty_value_text;
-    }
-
     protected getUIComputedData(): ComputedDefinitionType<AccessControlProfileViewComputedInterface> {
         return {
             role_type_text: () => this.getRoleTypeText(this.state_refs.profile_record.value),
@@ -111,9 +107,17 @@ class AccessControlProfileViewController extends BaseProfileViewController<
 
             member_group_text: () => this.getBooleanText(this.state_refs.profile_record.value?.is_member_group),
 
-            readable_created_at: () => this.formatDateTime(this.state_refs.profile_record.value?.created_at),
+            readable_created_at: () =>
+                DisplayFormatterUtil.formatDateTime(
+                    this.state_refs.profile_record.value?.created_at,
+                    this.content_obj.empty_value_text
+                ),
 
-            readable_updated_at: () => this.formatDateTime(this.state_refs.profile_record.value?.updated_at),
+            readable_updated_at: () =>
+                DisplayFormatterUtil.formatDateTime(
+                    this.state_refs.profile_record.value?.updated_at,
+                    this.content_obj.empty_value_text
+                ),
 
             created_by_member_profile_photo_url: () =>
                 this.state_refs.profile_record.value?.creator?.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL,

@@ -46,9 +46,6 @@ class CurrencyPaymentProviderMethodDeleteViewActionHandler extends BaseDeleteVie
     }
 
     // Method to get record id from currency payment provider method record.
-    protected getRecordId(record: CurrencyPaymentProviderMethodRecordInterface): string | null {
-        return record.id?.toString() || this.props.record_id || null;
-    }
 }
 
 export default CurrencyPaymentProviderMethodDeleteViewActionHandler;

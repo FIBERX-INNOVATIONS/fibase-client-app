@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
 
@@ -85,7 +85,7 @@ class MemberProfileFormViewController extends BaseFormViewController<
             }),
 
             dob_input_group_props: this.buildInputGroupProps("dob", "date", field_content_key("dob"), {
-                model_value: dayjs(dob).format("YYYY-MM-DD")
+                model_value: InputTransformerUtil.formatDob(dob) ?? ""
             }),
 
             gender_input_group_props: this.buildInputGroupProps("gender", "select", field_content_key("gender"), {

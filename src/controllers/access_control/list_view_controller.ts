@@ -28,7 +28,7 @@ import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
@@ -71,11 +71,6 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
     // Method to get content from content manager
     private getContent(key: string, fallback: string): string {
         return this.content_manager.get<string>(key, fallback) ?? fallback;
-    }
-
-    // Method to format date time input to a redable string
-    private formatDateTime(date_value?: string | null): string {
-        return date_value ? InputTransformerUtil.formatReadableDateTime(date_value) : "-";
     }
 
     // Method to get role type text
@@ -309,7 +304,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: RoleRecordInterface) => this.formatDateTime(record.created_at)
+                    getTextContent: (record: RoleRecordInterface) => DisplayFormatterUtil.formatDateTime(record.created_at)
                 }
             },
             // Actions Column Config

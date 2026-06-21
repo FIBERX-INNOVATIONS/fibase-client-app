@@ -71,7 +71,11 @@ class BaseDeleteViewActionHandler<
 
     // Method to get record id from the record object, which is used to identify the specific record that is being deleted. This method can be overridden in subclasses if the record id is stored in a different way.
     protected getRecordId(record: T): string | null {
-        return this.props.record_id?.toString() || null;
+        const conventional_record = record as Record<string, unknown>;
+        const record_id =
+            conventional_record.public_id ?? conventional_record.id ?? conventional_record.code ?? this.props.record_id;
+
+        return record_id === null || record_id === undefined || record_id === "" ? null : String(record_id);
     }
 
     // Method to handle the cancel action for the delete view, which emits an event to close the modal when the user cancels the delete action.

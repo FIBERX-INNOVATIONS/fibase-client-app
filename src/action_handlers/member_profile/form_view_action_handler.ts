@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import { GlobalEventTypes, NewRecordCreated } from "@/types/global_events_type";
 
@@ -70,7 +70,7 @@ class MemberProfileFormViewActionHandler extends BaseFormActionHandler<
             last_name: record?.last_name ?? "",
             email: record?.email ?? "",
             phone: record?.phone ?? "",
-            dob: dayjs(dob).format("YYYY-MM-DD"),
+            dob: InputTransformerUtil.formatDob(dob) ?? "",
             gender: record?.gender ?? "",
             profile_photo_link: record?.profile_photo_link ?? ""
         };

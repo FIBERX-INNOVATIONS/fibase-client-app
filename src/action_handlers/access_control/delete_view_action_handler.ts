@@ -39,10 +39,6 @@ class AccessControlDeleteViewActionHandler extends BaseDeleteViewActionHandler<
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
-
-    protected getRecordId(record: RoleRecordInterface): string | null {
-        return record.id?.toString() || this.props.record_id || null;
-    }
 }
 
 export default AccessControlDeleteViewActionHandler;

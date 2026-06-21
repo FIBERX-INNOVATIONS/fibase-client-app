@@ -4,7 +4,7 @@ import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import { IdentityWalletRecordInterface } from "@/types/api_service_type";
 
@@ -137,24 +137,11 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
 
     // Method to format wallet amounts using the linked currency precision and symbol.
     private formatAmount(record: IdentityWalletRecordInterface, value?: number): string {
-        if (value === undefined || value === null) return this.content_obj.empty_value_text;
-
-        const precision = Math.max(0, record.currency?.precision ?? 2);
-        const amount = Number(value).toFixed(precision);
-
-        return record.currency?.symbol ? `${record.currency.symbol}${amount}` : amount;
-    }
-
-    // Method to format enum-like API values as readable labels.
-    private formatLabel(value?: string | null): string {
-        if (!value) return this.content_obj.empty_value_text;
-
-        return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
-    }
-
-    // Method to format API timestamps in the member's local readable date format.
-    private formatDate(value?: string | null): string {
-        return value ? InputTransformerUtil.formatReadableDateTime(value) : this.content_obj.empty_value_text;
+        return DisplayFormatterUtil.formatCurrencyAmount(value, {
+            precision: record.currency?.precision,
+            symbol: record.currency?.symbol,
+            empty_value: this.content_obj.empty_value_text
+        });
     }
 
     // Method to create a consistently shaped profile value item.
@@ -198,20 +185,39 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
     // Method to derive wallet summary cards from the latest fetched record.
     protected getUIComputedData(): ComputedDefinitionType<IdentityWalletProfileViewComputedDataInterface> {
         return {
-            loading_icon_html: () => String(getSVGIconValue("loading_svg_icon") ?? ""),
-            wallet_title: () => this.state_refs.profile_record.value?.public_id || this.props.record_id,
+            loading_icon_html: () => {
+                return String(getSVGIconValue("loading_svg_icon") ?? "");
+            },
+
+            wallet_title: () => {
+                return this.state_refs.profile_record.value?.public_id || this.props.record_id;
+            },
+
             wallet_subtitle: () => {
                 const currency = this.state_refs.profile_record.value?.currency;
                 return currency ? `${currency.code.toUpperCase()} — ${currency.name}` : this.content_obj.empty_value_text;
             },
-            wallet_status_text: () => this.formatLabel(this.state_refs.profile_record.value?.status),
-            wallet_status_badge_class: () =>
-                this.state_refs.profile_record.value?.is_active
+
+            wallet_status_text: () => {
+                return DisplayFormatterUtil.formatLabel(
+                    this.state_refs.profile_record.value?.status,
+                    this.content_obj.empty_value_text
+                );
+            },
+
+            wallet_status_badge_class: () => {
+                return this.state_refs.profile_record.value?.is_active
                     ? this.class_styles.active_badge_class_style
-                    : this.class_styles.inactive_badge_class_style,
-            wallet_is_deleted: () => Boolean(this.state_refs.profile_record.value?.is_deleted),
+                    : this.class_styles.inactive_badge_class_style;
+            },
+
+            wallet_is_deleted: () => {
+                return Boolean(this.state_refs.profile_record.value?.is_deleted);
+            },
+
             information_items: () => {
                 const record = this.state_refs.profile_record.value;
+
                 return [
                     this.makeItem(
                         "identification_card_svg_icon",
@@ -221,7 +227,7 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     this.makeItem(
                         "horizontal_filters_svg_icon",
                         this.content_obj.status_label_text,
-                        this.formatLabel(record?.status)
+                        DisplayFormatterUtil.formatLabel(record?.status, this.content_obj.empty_value_text)
                     ),
                     this.makeItem(
                         "check_circle_svg_icon",
@@ -230,6 +236,7 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     )
                 ];
             },
+
             balance_items: () => {
                 const record = this.state_refs.profile_record.value;
                 return [
@@ -255,6 +262,7 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     )
                 ];
             },
+
             total_items: () => {
                 const record = this.state_refs.profile_record.value;
                 return [
@@ -270,6 +278,7 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     )
                 ];
             },
+
             currency_items: () => {
                 const currency = this.state_refs.profile_record.value?.currency;
                 return [
@@ -299,6 +308,7 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     )
                 ];
             },
+
             owner_items: () => {
                 const identity = this.state_refs.profile_record.value?.identity;
                 return [
@@ -310,24 +320,29 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
                     this.makeItem(
                         "member_icon",
                         this.content_obj.identity_type_label_text,
-                        this.formatLabel(identity?.identity_type)
+                        DisplayFormatterUtil.formatLabel(identity?.identity_type, this.content_obj.empty_value_text)
                     ),
                     this.makeItem(
                         "horizontal_filters_svg_icon",
                         this.content_obj.identity_status_label_text,
-                        this.formatLabel(identity?.status)
+                        DisplayFormatterUtil.formatLabel(identity?.status, this.content_obj.empty_value_text)
                     )
                 ];
             },
+
             timeline_items: () => {
                 const record = this.state_refs.profile_record.value;
                 return [
                     this.makeItem(
                         "clock_svg_icon",
                         this.content_obj.created_at_label_text,
-                        this.formatDate(record?.created_at)
+                        DisplayFormatterUtil.formatDateTime(record?.created_at, this.content_obj.empty_value_text)
                     ),
-                    this.makeItem("clock_svg_icon", this.content_obj.updated_at_label_text, this.formatDate(record?.updated_at))
+                    this.makeItem(
+                        "clock_svg_icon",
+                        this.content_obj.updated_at_label_text,
+                        DisplayFormatterUtil.formatDateTime(record?.updated_at, this.content_obj.empty_value_text)
+                    )
                 ];
             }
         };

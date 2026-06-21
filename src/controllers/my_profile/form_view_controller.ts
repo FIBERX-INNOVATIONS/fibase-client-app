@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
@@ -162,7 +162,7 @@ class MyProfileFormViewController extends BaseFormViewController<
             }),
 
             dob_input_group_props: this.buildInputGroupProps("dob", "date", field_content_key("dob"), {
-                model_value: dayjs(form_data.dob).format("YYYY-MM-DD") ?? ""
+                model_value: InputTransformerUtil.formatDob(form_data.dob) ?? ""
             }),
 
             gender_input_group_props: this.buildInputGroupProps("gender", "select", field_content_key("gender"), {

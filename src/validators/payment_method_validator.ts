@@ -1,7 +1,4 @@
-import {
-    CreatePaymentMethodPayloadInterface,
-    UpdatePaymentMethodPayloadInterface
-} from "@/types/form_data_type";
+import { CreatePaymentMethodPayloadInterface, UpdatePaymentMethodPayloadInterface } from "@/types/form_data_type";
 
 import { PaymentMethodMetadataInterface } from "@/types/api_service_type";
 
@@ -9,18 +6,11 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class PaymentMethodValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get localized API/content messages.
-    protected static getContentMessage(message_key: string): string {
-        return PaymentMethodValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class PaymentMethodValidator extends BaseValidator {
     // Method to validate payment method code.
     public static validateCode = (value?: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
@@ -112,10 +102,7 @@ class PaymentMethodValidator {
     };
 
     // Method to validate optional metadata arrays.
-    private static validateStringList = (
-        value: unknown,
-        message_key: string
-    ): ActionMethodRetrunInterface => {
+    private static validateStringList = (value: unknown, message_key: string): ActionMethodRetrunInterface => {
         if (value === undefined || value === null) {
             return { status: true, msg: "" };
         }
@@ -128,9 +115,7 @@ class PaymentMethodValidator {
     };
 
     // Method to validate optional payment method metadata.
-    public static validateMetadata = (
-        metadata?: PaymentMethodMetadataInterface | null
-    ): ActionMethodRetrunInterface => {
+    public static validateMetadata = (metadata?: PaymentMethodMetadataInterface | null): ActionMethodRetrunInterface => {
         if (!metadata) {
             return { status: true, msg: "" };
         }
@@ -203,10 +188,8 @@ class PaymentMethodValidator {
             return { v_state: false, v_msg: "invalid_csrf_token" };
         }
 
-        if (!this.validateCode(code).status)
-            return { v_state: false, v_msg: "invalid_payment_method_code" };
-        if (!this.validateName(name).status)
-            return { v_state: false, v_msg: "invalid_payment_method_name" };
+        if (!this.validateCode(code).status) return { v_state: false, v_msg: "invalid_payment_method_code" };
+        if (!this.validateName(name).status) return { v_state: false, v_msg: "invalid_payment_method_name" };
         if (!this.validateDescription(description).status) {
             return { v_state: false, v_msg: "invalid_payment_method_description" };
         }

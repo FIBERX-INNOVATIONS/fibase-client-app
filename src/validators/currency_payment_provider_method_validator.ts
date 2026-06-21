@@ -7,24 +7,13 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class CurrencyPaymentProviderMethodValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get localized API/content messages.
-    protected static getContentMessage(message_key: string): string {
-        return CurrencyPaymentProviderMethodValidator.content_manager.getAPIResponseValue(
-            message_key
-        );
-    }
-
+class CurrencyPaymentProviderMethodValidator extends BaseValidator {
     // Method to validate currency id input.
-    public static validateCurrencyId = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateCurrencyId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
             return { status: false, msg: this.getContentMessage("invalid_currency_id") };
         }
@@ -33,9 +22,7 @@ class CurrencyPaymentProviderMethodValidator {
     };
 
     // Method to validate provider method id input.
-    public static validateProviderMethodId = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateProviderMethodId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
             return { status: false, msg: this.getContentMessage("invalid_provider_method_id") };
         }
@@ -123,10 +110,7 @@ class CurrencyPaymentProviderMethodValidator {
         if (currency_id !== undefined && !this.validateCurrencyId(currency_id).status) {
             return { v_state: false, v_msg: "invalid_currency_id" };
         }
-        if (
-            provider_method_id !== undefined &&
-            !this.validateProviderMethodId(provider_method_id).status
-        ) {
+        if (provider_method_id !== undefined && !this.validateProviderMethodId(provider_method_id).status) {
             return { v_state: false, v_msg: "invalid_provider_method_id" };
         }
         if (!this.validateAmount(min_amount).status || !this.validateAmount(max_amount).status) {

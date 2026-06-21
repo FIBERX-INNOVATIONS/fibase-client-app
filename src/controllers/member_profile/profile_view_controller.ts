@@ -28,6 +28,8 @@ import MemberDevicesView from "@/views/member_profile/MemberDevicesView.vue";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import TabsUIPropsBuilder from "@ui/version_3/props_builder/tabs_ui_props_builder";
 
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
@@ -174,16 +176,12 @@ class MemberProfileProfileViewController extends BaseProfileViewController<
 
     // Method to retrun a readable date format
     private getReadableDate(value?: string | Date | null): string {
-        return value
-            ? InputTransformerUtil.formatReadableDate(value instanceof Date ? value.toISOString() : value)
-            : this.getEmptyValue();
+        return DisplayFormatterUtil.formatDate(value, this.getEmptyValue());
     }
 
     // Method to retrun a readable date time format
     private getReadableDateTime(value?: string | Date | null): string {
-        return value
-            ? InputTransformerUtil.formatReadableDateTime(value instanceof Date ? value.toISOString() : value)
-            : this.getEmptyValue();
+        return DisplayFormatterUtil.formatDateTime(value, this.getEmptyValue());
     }
 
     // Method to get child profile props

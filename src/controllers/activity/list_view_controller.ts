@@ -16,6 +16,8 @@ import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import ActivityListViewActionHandler from "@/action_handlers/activity/list_view_action_handler";
@@ -99,29 +101,14 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
         );
     }
 
-    // Method to get cleaned html text
-    private escapeHtml(value: unknown): string {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    // Method to format date time input to readable string
-    private formatDateTime(date_value?: string | null): string {
-        return date_value ? InputTransformerUtil.formatReadableDateTime(date_value) : "-";
-    }
-
     // Method to build the description content text with html design for the content card
     private buildDescriptionItem(label: string, value?: unknown): string {
         const display_value = value || "-";
 
         return [
             `<span class="inline-flex items-start gap-1 rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700">`,
-            `<strong class="font-black text-gray-900">${this.escapeHtml(label)}:</strong>`,
-            `<span>${this.escapeHtml(display_value)}</span>`,
+            `<strong class="font-black text-gray-900">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            `<span>${DisplayFormatterUtil.escapeHtml(display_value)}</span>`,
             `</span>`
         ].join("");
     }
@@ -133,8 +120,8 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
 
         return [
             `<span class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-black ring-1 ${class_style}">`,
-            `<strong>${this.escapeHtml(label)}:</strong>`,
-            this.escapeHtml(this.formatStatusText(record)),
+            `<strong>${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            DisplayFormatterUtil.escapeHtml(this.formatStatusText(record)),
             `</span>`
         ].join("");
     }
@@ -142,7 +129,7 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
     // Method to build the activity record content card decsription value
     private getActivityCardDescription(record: ActivityRecordInterface): string {
         return [
-            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${this.escapeHtml(
+            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${DisplayFormatterUtil.escapeHtml(
                 record.description || "-"
             )}</p>`,
             `<div class="flex flex-wrap gap-2">`,
@@ -169,11 +156,11 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
             ),
             this.buildDescriptionItem(
                 this.getContent(`${this.card_content_key}.labels.created_at_text`, "Created At"),
-                this.formatDateTime(record.created_at)
+                DisplayFormatterUtil.formatDateTime(record.created_at)
             ),
             this.buildDescriptionItem(
                 this.getContent(`${this.card_content_key}.labels.updated_at_text`, "Updated At"),
-                this.formatDateTime(record.updated_at)
+                DisplayFormatterUtil.formatDateTime(record.updated_at)
             ),
             `</div>`
         ].join("");

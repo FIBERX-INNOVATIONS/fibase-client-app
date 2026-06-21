@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import { CSRF_TOKEN_FOR, FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
 
@@ -81,7 +81,7 @@ class MyProfileFormViewActionHandler extends BaseFormActionHandler<
             last_name: member?.last_name ?? "",
             email: member?.email ?? "",
             phone: member?.phone ?? "",
-            dob: dayjs(dob).format("YYYY-MM-DD"),
+            dob: InputTransformerUtil.formatDob(dob) ?? "",
             gender: member?.gender ?? "",
             profile_photo_link: member?.profile_photo_link ?? "",
             new_password: "",

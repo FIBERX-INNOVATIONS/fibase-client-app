@@ -28,6 +28,8 @@ import PreviewRecordFetcher from "@/utils/preview_record_fetcher";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
@@ -152,23 +154,16 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
 
     // Method to format a wallet amount with its currency precision and symbol.
     private formatAmount(wallet: IdentityWalletRecordInterface, value?: number): string {
-        if (value === undefined || value === null) return "-";
-
-        const precision = Math.max(0, wallet.currency?.precision ?? 2);
-        const amount = Number(value).toFixed(precision);
-        return wallet.currency?.symbol ? `${wallet.currency.symbol}${amount}` : amount;
-    }
-
-    // Method to format a wallet status or boolean label for display.
-    private formatLabel(value?: string | null): string {
-        if (!value) return "-";
-
-        return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
+        return DisplayFormatterUtil.formatCurrencyAmount(value, {
+            precision: wallet.currency?.precision,
+            symbol: wallet.currency?.symbol
+        });
     }
 
     // Method to configure sortable wallet table columns and row actions.
     protected getTableRenderConfig(): DataTableColumnRenderType<IdentityWalletRecordInterface>[] {
         return [
+            // Sn and Select Column
             {
                 key: "public_id",
                 sortable: false,
@@ -221,6 +216,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                     })
                 }
             },
+            // Wallet Public Id Column
             {
                 key: "public_id",
                 sortable: true,
@@ -233,6 +229,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles
                 }
             },
+            // Currency column Column
             {
                 key: "currency_id",
                 sortable: true,
@@ -247,6 +244,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                         record.currency ? `${record.currency.code.toUpperCase()} — ${record.currency.name}` : "-"
                 }
             },
+            // Available Balance Column
             {
                 key: "available_balance",
                 sortable: true,
@@ -261,6 +259,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                         this.formatAmount(record, record.available_balance)
                 }
             },
+            // Locked Balance Column
             {
                 key: "locked_balance",
                 sortable: true,
@@ -274,6 +273,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                     getTextContent: (record: IdentityWalletRecordInterface) => this.formatAmount(record, record.locked_balance)
                 }
             },
+            // Pending Balance Column
             {
                 key: "pending_balance",
                 sortable: true,
@@ -287,6 +287,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                     getTextContent: (record: IdentityWalletRecordInterface) => this.formatAmount(record, record.pending_balance)
                 }
             },
+            // Refunded Balance Column
             {
                 key: "refunded_balance",
                 sortable: true,
@@ -301,6 +302,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                         this.formatAmount(record, record.refunded_balance)
                 }
             },
+            // Wallet Status Column
             {
                 key: "status",
                 sortable: true,
@@ -312,9 +314,10 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getTextContent: (record: IdentityWalletRecordInterface) =>
-                        record.is_deleted ? "Deleted" : this.formatLabel(record.status)
+                        record.is_deleted ? "Deleted" : DisplayFormatterUtil.formatLabel(record.status)
                 }
             },
+            // IsActive status Column
             {
                 key: "is_active",
                 sortable: true,
@@ -328,6 +331,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                     getTextContent: (record: IdentityWalletRecordInterface) => (record.is_active ? "Active" : "Inactive")
                 }
             },
+            // Created At Column
             {
                 key: "created_at",
                 sortable: true,
@@ -342,6 +346,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
                         record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
                 }
             },
+            // Action Menu Column
             {
                 key: "public_id",
                 sortable: false,

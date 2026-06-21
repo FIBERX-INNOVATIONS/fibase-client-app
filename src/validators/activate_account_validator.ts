@@ -4,25 +4,14 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
 import MemberProfileValidator from "@/validators/member_profile_validator";
 import TwoFactorLoginValidator from "@/validators/two_factor_login_validator";
 
-class ActivateAccountValidator {
-    private static readonly content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get content response text.
-    private static getContentMessage(message_key: string): string {
-        return ActivateAccountValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
-    // Method to normalize the OTP input value.
-    private static normalizeOtpCode(otp_code: string | string[] | null): string {
-        return Array.isArray(otp_code) ? otp_code.join("") : (otp_code ?? "");
-    }
-
+class ActivateAccountValidator extends BaseValidator {
     // Method to validate the password field.
     public static validatePasswordField(value?: string | null): ActionMethodRetrunInterface {
         const password_result = MemberProfileValidator.validateNewPasswordField(value);
@@ -76,7 +65,7 @@ class ActivateAccountValidator {
     public static validateCompleteMemberSetupInput(
         form_data: ActivateAccountFormDataInterface
     ): ValidationResultInterface<CompleteMemberSetupPayload> {
-        const otp_code = ActivateAccountValidator.normalizeOtpCode(form_data.otp_code);
+        const otp_code = ActivateAccountValidator.normalizeStringInput(form_data.otp_code);
         const password_step_result = ActivateAccountValidator.validatePasswordStepInput(form_data);
 
         if (!password_step_result.v_state) {

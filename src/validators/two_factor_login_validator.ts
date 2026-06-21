@@ -2,20 +2,14 @@ import { TwoFactorFormDataInterface } from "@/types/form_data_type";
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class TwoFactorLoginValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get content message
-    protected static getContentMessage(message_key: string): string {
-        return TwoFactorLoginValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class TwoFactorLoginValidator extends BaseValidator {
     // Method to validate the OTP code field.
     public static validateOtpCodeField = (otp_value: string | string[] | null): ActionMethodRetrunInterface => {
-        const otp_code = Array.isArray(otp_value) ? otp_value.join("") : (otp_value ?? "");
+        const otp_code = this.normalizeStringInput(otp_value);
 
         if (!InputValidatorUtil.containsOnlyNumbers(otp_code) || otp_code.length !== 6) {
             return {
@@ -29,7 +23,7 @@ class TwoFactorLoginValidator {
     /** Validate TwoFactorLogin input */
     public static validateTwoFactorLoginInput(form_data: TwoFactorFormDataInterface): ValidationResultInterface {
         const { csrf_token, otp_code } = form_data;
-        const normalized_otp_code = Array.isArray(otp_code) ? otp_code.join("") : (otp_code ?? "");
+        const normalized_otp_code = this.normalizeStringInput(otp_code);
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };

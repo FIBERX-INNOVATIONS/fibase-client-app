@@ -7,16 +7,11 @@ import {
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class RegisteredAppValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    protected static getContentMessage(message_key: string): string {
-        return RegisteredAppValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class RegisteredAppValidator extends BaseValidator {
     // =========================
     // 🔹 FIELD VALIDATIONS
     // =========================
@@ -50,9 +45,7 @@ class RegisteredAppValidator {
         return { status: true, msg: "" };
     };
 
-    public static validateDescriptionField = (
-        value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateDescriptionField = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -177,8 +170,7 @@ class RegisteredAppValidator {
     public static validateRegisteredAppInput(
         form_data: RegisteredAppFormDataInterface
     ): ValidationResultInterface<RegisteredAppValidatedFormDataInterface> {
-        const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } =
-            form_data;
+        const { csrf_token, name, prefix, description, base_url, logo_url, social_links, urls } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };

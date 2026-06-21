@@ -46,10 +46,6 @@ class MemberProfileDeleteViewActionHandler extends BaseDeleteViewActionHandler<
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
 
-    protected getRecordId(record: MemberRecordInterface): string | null {
-        return record.public_id || this.props.record_id || null;
-    }
-
     private deleteMember = async (record_id: string, reason_text?: string) => {
         const csrf_token = await this.fetchFormCSRFToken(CSRF_TOKEN_FOR.MEMBER_PROFILE);
 

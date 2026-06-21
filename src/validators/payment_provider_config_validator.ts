@@ -13,22 +13,13 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class PaymentProviderConfigValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get localized API/content messages.
-    protected static getContentMessage(message_key: string): string {
-        return PaymentProviderConfigValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class PaymentProviderConfigValidator extends BaseValidator {
     // Method to validate payment provider id input.
-    public static validateProviderId = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateProviderId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
             return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
         }
@@ -41,9 +32,7 @@ class PaymentProviderConfigValidator {
     };
 
     // Method to validate payment provider config environment.
-    public static validateEnvironment = (
-        value?: PaymentProviderConfigEnvironmentType | null
-    ): ActionMethodRetrunInterface => {
+    public static validateEnvironment = (value?: PaymentProviderConfigEnvironmentType | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
@@ -59,9 +48,7 @@ class PaymentProviderConfigValidator {
     };
 
     // Method to validate an optional provider credential value.
-    public static validateCredentialValue = (
-        value?: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateCredentialValue = (value?: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
@@ -77,9 +64,7 @@ class PaymentProviderConfigValidator {
     };
 
     // Method to validate an optional provider setting value.
-    public static validateSettingValue = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateSettingValue = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
@@ -113,9 +98,7 @@ class PaymentProviderConfigValidator {
     };
 
     // Method to validate an optional timeout in milliseconds.
-    public static validateTimeoutMs = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateTimeoutMs = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
@@ -147,9 +130,7 @@ class PaymentProviderConfigValidator {
             };
         }
 
-        const has_invalid_value = Object.values(credentials).some(
-            (value) => !this.validateCredentialValue(value).status
-        );
+        const has_invalid_value = Object.values(credentials).some((value) => !this.validateCredentialValue(value).status);
 
         if (has_invalid_value) {
             return {
@@ -302,9 +283,7 @@ class PaymentProviderConfigValidator {
                 csrf_token,
                 ...(provider_id !== undefined ? { provider_id } : {}),
                 ...(environment !== undefined ? { environment } : {}),
-                ...(credentials !== undefined
-                    ? { credentials: this.sanitizeCredentials(credentials) }
-                    : {}),
+                ...(credentials !== undefined ? { credentials: this.sanitizeCredentials(credentials) } : {}),
                 ...(settings !== undefined ? { settings: this.sanitizeSettings(settings) } : {})
             }
         };

@@ -92,17 +92,6 @@ class PaymentProviderMethodFormViewActionHandler extends BaseFormActionHandler<
         return ["provider_id", "payment_method_id", "direction"];
     }
 
-    // Method to normalize optional numbers from form input.
-    private normalizeOptionalNumber(value?: number | string | null): number | null {
-        if (value === null || value === undefined || value === "") {
-            return null;
-        }
-
-        const numeric_value = Number(value);
-
-        return Number.isNaN(numeric_value) ? null : numeric_value;
-    }
-
     // Method to build create/update API payload from form data.
     private buildAPIPayload(
         form_data: PaymentProviderMethodFormDataInterface

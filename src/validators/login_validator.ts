@@ -2,20 +2,12 @@ import { LoginFormDataInterface } from "@/types/form_data_type";
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class LoginValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get content message
-    protected static getContentMessage(message_key: string): string {
-        return LoginValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
-    public static validateUsernameField = (
-        username_value: string | null
-    ): ActionMethodRetrunInterface => {
+class LoginValidator extends BaseValidator {
+    public static validateUsernameField = (username_value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(username_value)) {
             return {
                 status: false,
@@ -33,9 +25,7 @@ class LoginValidator {
         return { status: true, msg: "" };
     };
 
-    public static validatePasswordField = (
-        password_value: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validatePasswordField = (password_value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(password_value)) {
             return {
                 status: false,

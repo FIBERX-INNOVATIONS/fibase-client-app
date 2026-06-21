@@ -61,6 +61,7 @@ class IdentityWalletListViewActionHandler extends BaseListViewActionHandler<
         void config;
 
         const { profile_details_modal_content_key } = this.controller.getPageContentKeys();
+
         const modal_payload: OpenModalEventPayloadInterface = {
             content_key: profile_details_modal_content_key,
             animation_type: "slide_top",

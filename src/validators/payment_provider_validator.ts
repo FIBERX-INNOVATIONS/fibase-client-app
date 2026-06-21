@@ -1,24 +1,14 @@
-import {
-    CreatePaymentProviderPayloadInterface,
-    UpdatePaymentProviderPayloadInterface
-} from "@/types/form_data_type";
+import { CreatePaymentProviderPayloadInterface, UpdatePaymentProviderPayloadInterface } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class PaymentProviderValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get localized API/content messages.
-    protected static getContentMessage(message_key: string): string {
-        return PaymentProviderValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class PaymentProviderValidator extends BaseValidator {
     // Method to validate payment provider code.
     public static validateCode = (value?: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
@@ -113,8 +103,7 @@ class PaymentProviderValidator {
     public static validateCreatePaymentProviderInput(
         form_data: CreatePaymentProviderPayloadInterface
     ): ValidationResultInterface<CreatePaymentProviderPayloadInterface> {
-        const { csrf_token, code, name, description, provider_type, logo_url, website_url } =
-            form_data;
+        const { csrf_token, code, name, description, provider_type, logo_url, website_url } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
@@ -158,8 +147,7 @@ class PaymentProviderValidator {
     public static validateUpdatePaymentProviderInput(
         form_data: UpdatePaymentProviderPayloadInterface
     ): ValidationResultInterface<UpdatePaymentProviderPayloadInterface> {
-        const { csrf_token, code, name, description, provider_type, logo_url, website_url } =
-            form_data;
+        const { csrf_token, code, name, description, provider_type, logo_url, website_url } = form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };

@@ -48,13 +48,7 @@ class MemberProfileRestoreMemberViewActionHandler extends BaseDeleteViewActionHa
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
 
-    protected getRecordId(record: MemberRecordInterface): string | null {
-        return record.public_id || this.props.record_id || null;
-    }
-
-    private restoreMember = async (
-        record_id: string
-    ): Promise<APIResponseInterface<MemberRecordInterface>> => {
+    private restoreMember = async (record_id: string): Promise<APIResponseInterface<MemberRecordInterface>> => {
         const current_member = MemberAuthenticatorUtil.getLoggedInMember();
         const is_super_admin = MemberAuthenticatorUtil.memberHasSuperAdminRole(current_member);
 

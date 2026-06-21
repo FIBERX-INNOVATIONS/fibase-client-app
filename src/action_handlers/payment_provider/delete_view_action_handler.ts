@@ -35,17 +35,9 @@ class PaymentProviderDeleteViewActionHandler extends BaseDeleteViewActionHandler
             GlobalEventTypes
         >
     ) {
-        super(
-            controller,
-            "payment_provider_delete_view_action_handler",
-            PaymentProviderAPIService.deletePaymentProvider
-        );
+        super(controller, "payment_provider_delete_view_action_handler", PaymentProviderAPIService.deletePaymentProvider);
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
-    }
-
-    protected getRecordId(record: PaymentProviderRecordInterface): string | null {
-        return record.code || this.props.record_id || null;
     }
 }
 

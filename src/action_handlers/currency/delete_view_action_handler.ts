@@ -39,10 +39,6 @@ class CurrencyDeleteViewActionHandler extends BaseDeleteViewActionHandler<
 
         StatusAlertTriggerUtil.event_bus = controller.event_bus as any;
     }
-
-    protected getRecordId(record: CurrencyRecordInterface): string | null {
-        return record.code || this.props.record_id || null;
-    }
 }
 
 export default CurrencyDeleteViewActionHandler;

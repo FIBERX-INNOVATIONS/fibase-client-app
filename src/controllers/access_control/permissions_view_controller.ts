@@ -24,7 +24,7 @@ import BaseController from "@ui/version_3/base_classes/base_controller";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
@@ -109,23 +109,6 @@ class AccessControlPermissionsViewController
         };
     }
 
-    // Method to escape HTML-sensitive characters.
-    private escapeHtml(value: unknown): string {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    // Method to format a date time value for display.
-    private formatDateTime(date_value?: string | null): string {
-        return date_value
-            ? InputTransformerUtil.formatReadableDateTime(date_value)
-            : this.state_refs.content_obj.value.empty_value_text;
-    }
-
     // Method to format a permission title text part.
     private formatTextPart(value?: string): string {
         return (value ?? "")
@@ -161,8 +144,8 @@ class AccessControlPermissionsViewController
 
         return [
             `<span class="inline-flex items-start gap-1 rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700">`,
-            `<strong class="font-black text-gray-900">${this.escapeHtml(label)}:</strong>`,
-            `<span>${this.escapeHtml(display_value)}</span>`,
+            `<strong class="font-black text-gray-900">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            `<span>${DisplayFormatterUtil.escapeHtml(display_value)}</span>`,
             `</span>`
         ].join("");
     }
@@ -172,12 +155,18 @@ class AccessControlPermissionsViewController
         const content_obj = this.state_refs.content_obj.value;
 
         return [
-            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${this.escapeHtml(
+            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${DisplayFormatterUtil.escapeHtml(
                 permission.description || content_obj.empty_value_text
             )}</p>`,
             `<div class="flex flex-wrap gap-2">`,
-            this.buildDescriptionItem(content_obj.labels.created_at, this.formatDateTime(permission.created_at)),
-            this.buildDescriptionItem(content_obj.labels.updated_at, this.formatDateTime(permission.updated_at)),
+            this.buildDescriptionItem(
+                content_obj.labels.created_at,
+                DisplayFormatterUtil.formatDateTime(permission.created_at, content_obj.empty_value_text)
+            ),
+            this.buildDescriptionItem(
+                content_obj.labels.updated_at,
+                DisplayFormatterUtil.formatDateTime(permission.updated_at, content_obj.empty_value_text)
+            ),
             `</div>`
         ].join("");
     }

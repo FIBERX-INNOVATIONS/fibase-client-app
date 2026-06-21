@@ -9,22 +9,13 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class PaymentProviderMethodValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    // Method to get localized API/content messages.
-    protected static getContentMessage(message_key: string): string {
-        return PaymentProviderMethodValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class PaymentProviderMethodValidator extends BaseValidator {
     // Method to validate payment provider id input.
-    public static validateProviderId = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validateProviderId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
             return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
         }
@@ -33,9 +24,7 @@ class PaymentProviderMethodValidator {
     };
 
     // Method to validate payment method id input.
-    public static validatePaymentMethodId = (
-        value?: string | number | null
-    ): ActionMethodRetrunInterface => {
+    public static validatePaymentMethodId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
             return { status: false, msg: this.getContentMessage("invalid_payment_method_id") };
         }
@@ -44,9 +33,7 @@ class PaymentProviderMethodValidator {
     };
 
     // Method to validate payment direction input.
-    public static validateDirection = (
-        value?: PaymentConfigDirectionType | null
-    ): ActionMethodRetrunInterface => {
+    public static validateDirection = (value?: PaymentConfigDirectionType | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(value)) {
             return {
                 status: false,
@@ -65,9 +52,7 @@ class PaymentProviderMethodValidator {
     };
 
     // Method to validate optional provider method code.
-    public static validateProviderMethodCode = (
-        value?: string | null
-    ): ActionMethodRetrunInterface => {
+    public static validateProviderMethodCode = (value?: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
@@ -117,15 +102,8 @@ class PaymentProviderMethodValidator {
     public static validateCreatePaymentProviderMethodInput(
         form_data: CreatePaymentProviderMethodPayloadInterface
     ): ValidationResultInterface<CreatePaymentProviderMethodPayloadInterface> {
-        const {
-            csrf_token,
-            provider_id,
-            payment_method_id,
-            direction,
-            provider_method_code,
-            min_amount,
-            max_amount
-        } = form_data;
+        const { csrf_token, provider_id, payment_method_id, direction, provider_method_code, min_amount, max_amount } =
+            form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
@@ -169,15 +147,8 @@ class PaymentProviderMethodValidator {
     public static validateUpdatePaymentProviderMethodInput(
         form_data: UpdatePaymentProviderMethodPayloadInterface
     ): ValidationResultInterface<UpdatePaymentProviderMethodPayloadInterface> {
-        const {
-            csrf_token,
-            provider_id,
-            payment_method_id,
-            direction,
-            provider_method_code,
-            min_amount,
-            max_amount
-        } = form_data;
+        const { csrf_token, provider_id, payment_method_id, direction, provider_method_code, min_amount, max_amount } =
+            form_data;
 
         if (InputValidatorUtil.isEmpty(csrf_token)) {
             return { v_state: false, v_msg: "invalid_csrf_token" };
@@ -186,10 +157,7 @@ class PaymentProviderMethodValidator {
         if (provider_id !== undefined && !this.validateProviderId(provider_id).status) {
             return { v_state: false, v_msg: "invalid_payment_provider_id" };
         }
-        if (
-            payment_method_id !== undefined &&
-            !this.validatePaymentMethodId(payment_method_id).status
-        ) {
+        if (payment_method_id !== undefined && !this.validatePaymentMethodId(payment_method_id).status) {
             return { v_state: false, v_msg: "invalid_payment_method_id" };
         }
         if (direction !== undefined && !this.validateDirection(direction).status) {
@@ -213,9 +181,7 @@ class PaymentProviderMethodValidator {
                 ...(provider_id !== undefined ? { provider_id } : {}),
                 ...(payment_method_id !== undefined ? { payment_method_id } : {}),
                 ...(direction !== undefined ? { direction } : {}),
-                ...(provider_method_code !== undefined
-                    ? { provider_method_code: provider_method_code?.trim() || null }
-                    : {}),
+                ...(provider_method_code !== undefined ? { provider_method_code: provider_method_code?.trim() || null } : {}),
                 ...(min_amount !== undefined ? { min_amount: min_amount ?? null } : {}),
                 ...(max_amount !== undefined ? { max_amount: max_amount ?? null } : {})
             }

@@ -110,10 +110,7 @@ class BaseFormActionHandler<
     };
 
     // Method to schedule csrf refresh
-    private scheduleCsrfRefresh = (
-        expires_at: string,
-        token_for: CSRFTokenForType | null
-    ): void => {
+    private scheduleCsrfRefresh = (expires_at: string, token_for: CSRFTokenForType | null): void => {
         if (!expires_at || !token_for) {
             return;
         }
@@ -153,11 +150,19 @@ class BaseFormActionHandler<
         return this.content_manager.getAPIResponseValue(message_key);
     };
 
+    // Method to normalize optional numeric form values before validation or API submission.
+    protected normalizeOptionalNumber(value?: number | string | null): number | null {
+        if (value === null || value === undefined || value === "") {
+            return null;
+        }
+
+        const numeric_value = Number(value);
+
+        return Number.isNaN(numeric_value) ? null : numeric_value;
+    }
+
     // Method to run validators
-    protected runValidator = async (
-        key: keyof FormData,
-        value: any
-    ): Promise<ActionMethodRetrunInterface> => {
+    protected runValidator = async (key: keyof FormData, value: any): Promise<ActionMethodRetrunInterface> => {
         const validator = this.validators[key];
 
         if (!validator) {
@@ -207,21 +212,12 @@ class BaseFormActionHandler<
     };
 
     // Method to show error alert
-    public showErrorAlert = (
-        status: ToastStatusType,
-        message_key: string,
-        duration?: number
-    ): void => {
+    public showErrorAlert = (status: ToastStatusType, message_key: string, duration?: number): void => {
         const to_ms = duration ? duration * 1000 : undefined;
         const status_icon = this.getAlertStatusIcon(status);
         const message = this.getContentMessage(message_key);
 
-        const new_props = ToasterUIPropsBuilder.getReactivePropsObject(
-            message,
-            status,
-            status_icon,
-            to_ms
-        );
+        const new_props = ToasterUIPropsBuilder.getReactivePropsObject(message, status, status_icon, to_ms);
 
         this.setState("toast_alert_props", new_props);
     };
@@ -370,22 +366,21 @@ class BaseFormActionHandler<
             }
         );
 
-        const modal_payload: OpenModalEventPayloadInterface<FilePreviewUploadUIPropsInterface, {}> =
-            {
-                content_key: `${base_content_key}.file_preview_upload_modal`,
+        const modal_payload: OpenModalEventPayloadInterface<FilePreviewUploadUIPropsInterface, {}> = {
+            content_key: `${base_content_key}.file_preview_upload_modal`,
 
-                animation_type: "slide_top",
+            animation_type: "slide_top",
 
-                body_component: markRaw(FilePreviewUploadUI),
+            body_component: markRaw(FilePreviewUploadUI),
 
-                body_props: {
-                    files,
-                    multiple,
-                    class_styles,
-                    upload_button_props,
-                    action_props
-                }
-            };
+            body_props: {
+                files,
+                multiple,
+                class_styles,
+                upload_button_props,
+                action_props
+            }
+        };
 
         this.controller?.event_bus?.emit?.("open_modal", modal_payload);
 

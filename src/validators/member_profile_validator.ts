@@ -6,18 +6,12 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
-class MemberProfileValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    protected static getContentMessage(message_key: string): string {
-        return MemberProfileValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class MemberProfileValidator extends BaseValidator {
     private static readonly allowed_gender_values = ["male", "female", "other"];
 
     // Validate first name field

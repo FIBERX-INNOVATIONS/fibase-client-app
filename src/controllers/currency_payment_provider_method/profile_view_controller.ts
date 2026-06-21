@@ -13,6 +13,8 @@ import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
 import CurrencyPaymentProviderMethodProfileViewActionHandler from "@/action_handlers/currency_payment_provider_method/profile_view_action_handler";
@@ -98,40 +100,19 @@ class CurrencyPaymentProviderMethodProfileViewController extends BaseProfileView
         };
     }
 
-    // Method to format amount limit for display.
-    private formatAmountLimit(amount?: number | null): string {
-        if (amount === null || amount === undefined) {
-            return "Infinity";
-        }
-
-        return InputTransformerUtil.nFormatter(
-            InputTransformerUtil.roundToTwoDecimalPlaces(amount),
-            2
-        );
-    }
-
     // Method to get UI computed data.
-    protected getUIComputedData(): ComputedDefinitionType<
-        Partial<ProfileViewComputedDataInterface>
-    > {
+    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
         return {
             logo_url: () => {
-                return (
-                    this.state_refs.profile_record.value?.currency?.logo_url ||
-                    DEFUALT_CURRENCY_LOGO_URL
-                );
+                return this.state_refs.profile_record.value?.currency?.logo_url || DEFUALT_CURRENCY_LOGO_URL;
             },
 
             formatted_min_amount: () => {
-                return this.formatAmountLimit(
-                    Number(this.state_refs.profile_record.value?.min_amount)
-                );
+                return DisplayFormatterUtil.formatAmountLimit(Number(this.state_refs.profile_record.value?.min_amount));
             },
 
             formatted_max_amount: () => {
-                return this.formatAmountLimit(
-                    Number(this.state_refs.profile_record.value?.max_amount)
-                );
+                return DisplayFormatterUtil.formatAmountLimit(Number(this.state_refs.profile_record.value?.max_amount));
             },
 
             readable_created_at: () => {

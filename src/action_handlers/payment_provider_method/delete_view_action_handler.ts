@@ -46,9 +46,6 @@ class PaymentProviderMethodDeleteViewActionHandler extends BaseDeleteViewActionH
     }
 
     // Method to get record id from payment provider method record.
-    protected getRecordId(record: PaymentProviderMethodRecordInterface): string | null {
-        return record.id?.toString() || this.props.record_id || null;
-    }
 }
 
 export default PaymentProviderMethodDeleteViewActionHandler;

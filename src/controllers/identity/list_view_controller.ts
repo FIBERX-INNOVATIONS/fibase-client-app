@@ -30,6 +30,8 @@ import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import IdentityListViewActionHandler from "@/action_handlers/identity/list_view_action_handler";
@@ -230,13 +232,6 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
         );
     }
 
-    // Method to format a label text input
-    private formatLabel(value?: string | null): string {
-        if (!value) return "-";
-
-        return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
-    }
-
     // Method to get table render config
     protected getTableRenderConfig(): DataTableColumnRenderType<IdentityRecordInterface>[] {
         return [
@@ -322,7 +317,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: IdentityRecordInterface) => this.formatLabel(record.identity_type)
+                    getTextContent: (record: IdentityRecordInterface) => DisplayFormatterUtil.formatLabel(record.identity_type)
                 }
             },
             // Primary Source App column
@@ -399,7 +394,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getTextContent: (record: IdentityRecordInterface) =>
-                        record.is_deleted ? "Deleted" : this.formatLabel(record.status)
+                        record.is_deleted ? "Deleted" : DisplayFormatterUtil.formatLabel(record.status)
                 }
             },
             // Created At column

@@ -11,10 +11,7 @@ import {
     UpdateCurrencyPaymentProviderMethodPayloadInterface
 } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -55,9 +52,7 @@ class CurrencyPaymentProviderMethodFormViewActionHandler extends BaseFormActionH
         super(
             controller,
             "currency_payment_provider_method_form_view_action_handler",
-            CurrencyPaymentProviderMethodFormViewActionHandler.getFormDataValue(
-                controller.props.record
-            )
+            CurrencyPaymentProviderMethodFormViewActionHandler.getFormDataValue(controller.props.record)
         );
 
         this.validators = this.getValidators();
@@ -88,40 +83,20 @@ class CurrencyPaymentProviderMethodFormViewActionHandler extends BaseFormActionH
         return {
             currency_id: CurrencyPaymentProviderMethodValidator.validateCurrencyId,
             provider_method_id: CurrencyPaymentProviderMethodValidator.validateProviderMethodId,
-            min_amount: (value) =>
-                CurrencyPaymentProviderMethodValidator.validateAmount(
-                    this.normalizeOptionalNumber(value)
-                ),
-            max_amount: (value) =>
-                CurrencyPaymentProviderMethodValidator.validateAmount(
-                    this.normalizeOptionalNumber(value)
-                )
+            min_amount: (value) => CurrencyPaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value)),
+            max_amount: (value) => CurrencyPaymentProviderMethodValidator.validateAmount(this.normalizeOptionalNumber(value))
         };
     }
 
     // Method to get required fields for submit.
-    protected getSubmitRequiredFields(): (keyof CurrencyPaymentProviderMethodFormDataInterface &
-        string)[] {
+    protected getSubmitRequiredFields(): (keyof CurrencyPaymentProviderMethodFormDataInterface & string)[] {
         return ["currency_id", "provider_method_id"];
-    }
-
-    // Method to normalize optional numbers from form input.
-    private normalizeOptionalNumber(value?: number | string | null): number | null {
-        if (value === null || value === undefined || value === "") {
-            return null;
-        }
-
-        const numeric_value = Number(value);
-
-        return Number.isNaN(numeric_value) ? null : numeric_value;
     }
 
     // Method to build create/update API payload from form data.
     private buildAPIPayload(
         form_data: CurrencyPaymentProviderMethodFormDataInterface
-    ):
-        | CreateCurrencyPaymentProviderMethodPayloadInterface
-        | UpdateCurrencyPaymentProviderMethodPayloadInterface {
+    ): CreateCurrencyPaymentProviderMethodPayloadInterface | UpdateCurrencyPaymentProviderMethodPayloadInterface {
         return {
             csrf_token: form_data.csrf_token ?? "",
             currency_id: form_data.currency_id,
@@ -143,9 +118,7 @@ class CurrencyPaymentProviderMethodFormViewActionHandler extends BaseFormActionH
             const record_id = this.controller.props.record?.id;
             const payload = this.buildAPIPayload(form_data);
             const validation_result = record_id
-                ? CurrencyPaymentProviderMethodValidator.validateUpdateCurrencyPaymentProviderMethodInput(
-                      payload
-                  )
+                ? CurrencyPaymentProviderMethodValidator.validateUpdateCurrencyPaymentProviderMethodInput(payload)
                 : CurrencyPaymentProviderMethodValidator.validateCreateCurrencyPaymentProviderMethodInput(
                       payload as CreateCurrencyPaymentProviderMethodPayloadInterface
                   );
@@ -157,10 +130,7 @@ class CurrencyPaymentProviderMethodFormViewActionHandler extends BaseFormActionH
             }
 
             const result = record_id
-                ? await CurrencyPaymentProviderMethodAPIService.updateCurrencyPaymentProviderMethod(
-                      record_id,
-                      v_data
-                  )
+                ? await CurrencyPaymentProviderMethodAPIService.updateCurrencyPaymentProviderMethod(record_id, v_data)
                 : await CurrencyPaymentProviderMethodAPIService.createCurrencyPaymentProviderMethod(
                       v_data as CreateCurrencyPaymentProviderMethodPayloadInterface
                   );

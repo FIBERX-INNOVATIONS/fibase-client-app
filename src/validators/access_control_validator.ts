@@ -10,17 +10,11 @@ import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
 
-import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
-
 import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
-class AccessControlValidator {
-    protected static content_manager = ContentManagerUtil.getInstance();
+import BaseValidator from "@/validators/base_validator";
 
-    protected static getContentMessage(message_key: string): string {
-        return AccessControlValidator.content_manager.getAPIResponseValue(message_key);
-    }
-
+class AccessControlValidator extends BaseValidator {
     public static validateRoleName = (value?: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: false, msg: this.getContentMessage("invalid_role_name") };
