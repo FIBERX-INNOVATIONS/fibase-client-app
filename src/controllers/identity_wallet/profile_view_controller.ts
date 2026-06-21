@@ -1,5 +1,3 @@
-import { Component, defineComponent, h, PropType } from "vue";
-
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
@@ -147,39 +145,6 @@ class IdentityWalletProfileViewController extends BaseProfileViewController<
     // Method to create a consistently shaped profile value item.
     private makeItem(icon: SVGIconKey, label: string, value: string | number): IdentityWalletProfileValueItemInterface {
         return { icon, label, value };
-    }
-
-    // Method to build the reusable wallet profile value-row component.
-    private getProfileValueComponent(): Component {
-        const class_styles = this.class_styles;
-
-        return defineComponent({
-            name: "IdentityWalletProfileValue",
-            props: {
-                icon: { type: String as PropType<SVGIconKey>, required: true },
-                label: { type: String, required: true },
-                value: { type: [String, Number], default: "" }
-            },
-            setup(value_props) {
-                return () =>
-                    h("p", { class: class_styles.info_row_class_style }, [
-                        h("span", {
-                            class: class_styles.icon_class_style,
-                            innerHTML: String(getSVGIconValue(value_props.icon) ?? "")
-                        }),
-                        h("span", { class: class_styles.small_bold_key_text_class_style }, value_props.label),
-                        h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.value)
-                    ]);
-            }
-        });
-    }
-
-    // Method to expose wallet profile UI components.
-    protected getUIComponents(): IdentityWalletProfileViewComponentsInterface {
-        return {
-            ...super.getUIComponents(),
-            ProfileValue: this.getProfileValueComponent()
-        };
     }
 
     // Method to derive wallet summary cards from the latest fetched record.

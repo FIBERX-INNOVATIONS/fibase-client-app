@@ -1,18 +1,26 @@
 import {
     PaymentProviderConfigProfileViewContentKeysInterface,
     PaymentProviderConfigProfileViewContentTextInterface,
+    PaymentProviderConfigProfileViewComputedDataInterface,
+    PaymentProviderConfigProfileEntryInterface,
     PaymentProviderConfigProfileViewStateDataInterface,
-    ProfileViewComputedDataInterface,
+    ProfileViewComponentsInterface,
     ProfileViewPropsInterface
 } from "@/ui_types/profile_view_type";
 
 import { DEFAULT_MEMBER_PROFILE_PHOTO_URL, DEFUALT_PAYMENT_PROVIDER_LOGO_URL } from "@/configs";
 
-import { PaymentProviderConfigRecordInterface } from "@/types/api_service_type";
+import {
+    PaymentProviderConfigCredentialsInterface,
+    PaymentProviderConfigRecordInterface,
+    PaymentProviderConfigSettingsInterface
+} from "@/types/api_service_type";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
+
+import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
@@ -23,7 +31,9 @@ import PaymentProviderConfigProfileViewActionHandler from "@/action_handlers/pay
 class PaymentProviderConfigProfileViewController extends BaseProfileViewController<
     PaymentProviderConfigRecordInterface,
     ProfileViewPropsInterface<PaymentProviderConfigRecordInterface>,
-    PaymentProviderConfigProfileViewStateDataInterface
+    PaymentProviderConfigProfileViewStateDataInterface,
+    PaymentProviderConfigProfileViewComputedDataInterface,
+    ProfileViewComponentsInterface
 > {
     public readonly content_key: string = "payment_provider_config";
 
@@ -32,6 +42,36 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
     public content_obj: PaymentProviderConfigProfileViewContentTextInterface =
         {} as PaymentProviderConfigProfileViewContentTextInterface;
 
+    private readonly setting_fields = [
+        { key: "webhook_url", label_key: "webhook_url_label_text" },
+        { key: "callback_url", label_key: "callback_url_label_text" },
+        { key: "redirect_url", label_key: "redirect_url_label_text" },
+        { key: "success_url", label_key: "success_url_label_text" },
+        { key: "failure_url", label_key: "failure_url_label_text" },
+        { key: "settlement_currency", label_key: "settlement_currency_label_text" },
+        { key: "default_currency", label_key: "default_currency_label_text" },
+        { key: "payout_schedule", label_key: "payout_schedule_label_text" },
+        { key: "capture_mode", label_key: "capture_mode_label_text" },
+        { key: "timeout_ms", label_key: "timeout_ms_label_text" }
+    ] as const;
+
+    private readonly credential_fields = [
+        { key: "api_key", label_key: "api_key_label_text" },
+        { key: "secret_key", label_key: "secret_key_label_text" },
+        { key: "public_key", label_key: "public_key_label_text" },
+        { key: "private_key", label_key: "private_key_label_text" },
+        { key: "client_id", label_key: "client_id_label_text" },
+        { key: "client_secret", label_key: "client_secret_label_text" },
+        { key: "merchant_id", label_key: "merchant_id_label_text" },
+        { key: "account_id", label_key: "account_id_label_text" },
+        { key: "username", label_key: "username_label_text" },
+        { key: "password", label_key: "password_label_text" },
+        { key: "webhook_hash", label_key: "webhook_hash_label_text" },
+        { key: "webhook_secret", label_key: "webhook_secret_label_text" },
+        { key: "signing_secret", label_key: "signing_secret_label_text" }
+    ] as const;
+
+    // Method to initialize the provider configuration profile controller.
     constructor(props: ProfileViewPropsInterface<PaymentProviderConfigRecordInterface>) {
         super(props);
 
@@ -39,6 +79,71 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         this.setProfileActionHandler(this.action_handler);
     }
 
+    // Method to configure the shared member summary for provider configuration audit fields.
+    protected getUIComponents(): ProfileViewComponentsInterface {
+        return {
+            ...super.getUIComponents(),
+            MemberSummary: this.getMemberSummaryComponent({
+                always_show_member: true,
+                member_name_tag: "p",
+                member_email_class_style: this.class_styles.p_class_style
+            })
+        };
+    }
+
+    // Method to determine whether a provider configuration value is present.
+    private isPresent(value: unknown): boolean {
+        return value !== null && value !== undefined && value !== "";
+    }
+
+    // Method to build the visible provider setting entries.
+    private getSettingsEntries(): PaymentProviderConfigProfileEntryInterface[] {
+        const settings: PaymentProviderConfigSettingsInterface = this.state_refs.profile_record.value?.settings ?? {};
+
+        return this.setting_fields
+            .map((field) => {
+                return {
+                    key: field.key,
+                    label: this.content_obj[field.label_key],
+                    value: settings[field.key] ?? this.content_obj.empty_value_text
+                };
+            })
+            .filter((entry) => {
+                return this.isPresent(settings[entry.key]);
+            });
+    }
+
+    // Method to build the visible provider credential entries.
+    private getCredentialEntries(): PaymentProviderConfigProfileEntryInterface[] {
+        const credentials: PaymentProviderConfigCredentialsInterface = this.state_refs.credentials.value ?? {};
+
+        return this.credential_fields
+            .map((field) => {
+                return {
+                    key: field.key,
+                    label: this.content_obj[field.label_key],
+                    value: credentials[field.key] ?? this.content_obj.empty_value_text
+                };
+            })
+            .filter((entry) => {
+                return this.isPresent(credentials[entry.key]);
+            });
+    }
+
+    // Method to resolve the credential reveal button text from its current state.
+    private getCredentialsButtonText(): string {
+        if (this.state_refs.is_loading_credentials.value) {
+            return this.content_obj.credentials_loading_text;
+        }
+
+        if (this.state_refs.credentials_are_visible.value) {
+            return this.content_obj.hide_credentials_btn_text;
+        }
+
+        return this.content_obj.reveal_credentials_btn_text;
+    }
+
+    // Method to map provider configuration content fields to content-resource keys.
     protected getChildProfileViewContentKeys(): Partial<PaymentProviderConfigProfileViewContentKeysInterface> {
         const base_content_key = this.getBaseContentKey();
 
@@ -91,6 +196,7 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         };
     }
 
+    // Method to provide provider configuration profile fallback content.
     protected getProfileViewContentFallbacks(): Partial<PaymentProviderConfigProfileViewContentTextInterface> {
         return {
             ...super.getProfileViewContentFallbacks(),
@@ -144,6 +250,7 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         };
     }
 
+    // Method to initialize provider configuration profile and credential state.
     protected getUIStateData(): PaymentProviderConfigProfileViewStateDataInterface {
         return {
             ...super.getUIStateData(),
@@ -154,8 +261,13 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         } as PaymentProviderConfigProfileViewStateDataInterface;
     }
 
-    protected getUIComputedData(): ComputedDefinitionType<Partial<ProfileViewComputedDataInterface>> {
+    // Method to derive provider configuration profile display data.
+    protected getUIComputedData(): ComputedDefinitionType<PaymentProviderConfigProfileViewComputedDataInterface> {
         return {
+            loading_icon_html: () => {
+                return String(getSVGIconValue("loading_svg_icon") ?? "");
+            },
+
             logo_url: () => {
                 return this.state_refs.profile_record.value?.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL;
             },
@@ -186,6 +298,18 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
                 return MemberAuthenticatorUtil.memberHasPermissionTo(
                     "payment_provider_config_module.get_payment_provider_config_credentials"
                 );
+            },
+
+            settings_entries: () => {
+                return this.getSettingsEntries();
+            },
+
+            credential_entries: () => {
+                return this.getCredentialEntries();
+            },
+
+            credentials_button_text: () => {
+                return this.getCredentialsButtonText();
             }
         };
     }

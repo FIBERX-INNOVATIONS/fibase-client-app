@@ -27,6 +27,8 @@ class IdentityWalletListViewActionHandler extends BaseListViewActionHandler<
     "public_id",
     IdentityWalletListViewFiltersInterface
 > {
+    private readonly identity_wallet_controller: IdentityWalletListViewController;
+
     // Method to initialise the wallet list action handler with the scoped identity API request.
     constructor(controller: IdentityWalletListViewController) {
         super(
@@ -35,6 +37,8 @@ class IdentityWalletListViewActionHandler extends BaseListViewActionHandler<
             {},
             (params) => IdentityAPIService.getIdentityWalletList(controller.identity_public_id, params)
         );
+
+        this.identity_wallet_controller = controller;
     }
 
     // Method to toggle the selected wallet's row action dropdown.
@@ -73,6 +77,29 @@ class IdentityWalletListViewActionHandler extends BaseListViewActionHandler<
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
+    };
+
+    // Method to open the selected wallet's standalone ledger list in a separate tab.
+    public handleLedgerActionMenuClicked = async (
+        record: IdentityWalletRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        const route = this.controller.router.resolve({
+            name: "IdentityWalletLedgerList",
+            params: {
+                wallet_id: record.public_id,
+                identity_public_id: this.identity_wallet_controller.identity_public_id
+            }
+        });
+        const opened_window = window.open(route.href, "_blank");
+
+        if (opened_window) {
+            opened_window.opener = null;
+        } else {
+            await this.controller.router.push(route.fullPath);
+        }
     };
 }
 

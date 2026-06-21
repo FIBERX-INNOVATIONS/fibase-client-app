@@ -86,22 +86,30 @@
 
                 <CapabilityValue
                     :label="content_obj.supports_deposit_label_text"
-                    :enabled="!!state_refs.profile_record.value?.metadata?.supports_deposit"
+                    :active="!!state_refs.profile_record.value?.metadata?.supports_deposit"
+                    :true-text="content_obj.enabled_text"
+                    :false-text="content_obj.disabled_text"
                 />
 
                 <CapabilityValue
                     :label="content_obj.supports_withdrawal_label_text"
-                    :enabled="!!state_refs.profile_record.value?.metadata?.supports_withdrawal"
+                    :active="!!state_refs.profile_record.value?.metadata?.supports_withdrawal"
+                    :true-text="content_obj.enabled_text"
+                    :false-text="content_obj.disabled_text"
                 />
 
                 <CapabilityValue
                     :label="content_obj.supports_refund_label_text"
-                    :enabled="!!state_refs.profile_record.value?.metadata?.supports_refund"
+                    :active="!!state_refs.profile_record.value?.metadata?.supports_refund"
+                    :true-text="content_obj.enabled_text"
+                    :false-text="content_obj.disabled_text"
                 />
 
                 <CapabilityValue
                     :label="content_obj.requires_redirect_label_text"
-                    :enabled="!!state_refs.profile_record.value?.metadata?.requires_redirect"
+                    :active="!!state_refs.profile_record.value?.metadata?.requires_redirect"
+                    :true-text="content_obj.enabled_text"
+                    :false-text="content_obj.disabled_text"
                 />
             </div>
 
@@ -112,9 +120,9 @@
 
                 <CapabilityValue
                     :label="content_obj.active_label_text"
-                    :enabled="!!state_refs.profile_record.value?.is_active"
-                    :enabled-text="content_obj.active_status_text"
-                    :disabled-text="content_obj.inactive_status_text"
+                    :active="!!state_refs.profile_record.value?.is_active"
+                    :true-text="content_obj.active_status_text"
+                    :false-text="content_obj.inactive_status_text"
                 />
 
                 <ProfileValue
@@ -200,23 +208,24 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, h, PropType } from "vue";
-
-import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
-
-import { CreatorUpdatorMemberinterface, getMemberFullName, MemberRecordInterface } from "@/types/api_service_type";
+import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
 
 import PaymentMethodProfileViewProps from "@/props_definition/payment_method/profile_view_props";
+
 import PaymentMethodProfileViewController from "@/controllers/payment_method/profile_view_controller";
 
 const props = defineProps(PaymentMethodProfileViewProps);
+
 const controller = new PaymentMethodProfileViewController(props);
-const component_definition = controller.getComponentDefinition();
+
+const { state_refs, components, computed_refs } = controller.getComponentDefinition();
 
 const { record_id } = props;
-const { state_refs, components, computed_refs } = component_definition;
-const { ImageRenderUI } = components;
+
+const { ImageRenderUI, ProfileValue, StatusValue: CapabilityValue, MemberSummary } = components;
+
 const { class_styles, content_obj } = controller;
+
 const {
     logo_url,
     creator_member_profile_photo_url,
@@ -224,78 +233,4 @@ const {
     readable_created_at,
     readable_updated_at
 } = computed_refs;
-
-const ProfileValue = defineComponent({
-    props: {
-        icon: { type: String as PropType<SVGIconKey>, required: true },
-        label: { type: String, required: true },
-        value: { type: [String, Number], default: "" }
-    },
-    setup(value_props) {
-        return () =>
-            h("p", { class: class_styles.small_bold_value_text_class_style }, [
-                h("span", {
-                    class: class_styles.icon_class_style,
-                    innerHTML: getSVGIconValue(value_props.icon)
-                }),
-                h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.label),
-                value_props.value
-            ]);
-    }
-});
-
-const CapabilityValue = defineComponent({
-    props: {
-        label: { type: String, required: true },
-        enabled: { type: Boolean, required: true },
-        enabledText: { type: String, default: () => content_obj.enabled_text },
-        disabledText: { type: String, default: () => content_obj.disabled_text }
-    },
-    setup(capability_props) {
-        return () =>
-            h("p", { class: class_styles.small_bold_value_text_class_style }, [
-                h("span", {
-                    class: [class_styles.icon_class_style, capability_props.enabled ? "text-green-400" : "text-red-400"],
-                    innerHTML: getSVGIconValue(capability_props.enabled ? "check_circle_svg_icon" : "x_circile_svg_icon")
-                }),
-                h("span", { class: class_styles.small_bold_value_text_class_style }, capability_props.label),
-                h(
-                    "span",
-                    {
-                        class: ["font-semibold", capability_props.enabled ? "text-green-400" : "text-red-400"]
-                    },
-                    capability_props.enabled ? capability_props.enabledText : capability_props.disabledText
-                )
-            ]);
-    }
-});
-
-const MemberSummary = defineComponent({
-    props: {
-        title: { type: String, required: true },
-        member: {
-            type: Object as PropType<CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined>,
-            default: null
-        },
-        photoUrl: { type: String, required: true }
-    },
-    setup(member_props) {
-        return () =>
-            h("div", { class: class_styles.grid_class_style?.grid_wrapper_class_style }, [
-                h("h4", { class: class_styles.small_bold_underlined_text_class_style }, member_props.title),
-                member_props.member
-                    ? h("div", { class: "flex items-center gap-3" }, [
-                          h("img", {
-                              src: member_props.photoUrl,
-                              class: class_styles.member_avatar_img_class_style
-                          }),
-                          h("div", [
-                              h("h3", { class: class_styles.member_name_class_style }, getMemberFullName(member_props.member)),
-                              h("p", { class: class_styles.description_class_style }, member_props.member.email)
-                          ])
-                      ])
-                    : null
-            ]);
-    }
-});
 </script>

@@ -58,6 +58,15 @@ export interface IdentityWalletListViewFiltersInterface {
     date_range?: { start_date: string; end_date: string } | string | null;
 }
 
+export interface IdentityWalletLedgerListViewFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean | string;
+    entry_type?: string | null;
+    direction?: string | null;
+    balance_field?: string | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface PaymentConfigListViewFiltersInterface {
     page?: number;
     limit?: number;

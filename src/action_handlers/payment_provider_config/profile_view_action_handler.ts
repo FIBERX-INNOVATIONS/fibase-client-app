@@ -1,12 +1,9 @@
-import {
-    PaymentProviderConfigCredentialsInterface,
-    PaymentProviderConfigRecordInterface
-} from "@/types/api_service_type";
+import { PaymentProviderConfigCredentialsInterface, PaymentProviderConfigRecordInterface } from "@/types/api_service_type";
 
 import {
     PaymentProviderConfigProfileViewStateDataInterface,
+    PaymentProviderConfigProfileViewComputedDataInterface,
     ProfileViewComponentsInterface,
-    ProfileViewComputedDataInterface,
     ProfileViewPropsInterface
 } from "@/ui_types/profile_view_type";
 
@@ -24,14 +21,17 @@ class PaymentProviderConfigProfileViewActionHandler extends BaseProfileViewActio
     PaymentProviderConfigRecordInterface,
     ProfileViewPropsInterface<PaymentProviderConfigRecordInterface>,
     PaymentProviderConfigProfileViewStateDataInterface,
-    ProfileViewComputedDataInterface,
+    PaymentProviderConfigProfileViewComputedDataInterface,
     ProfileViewComponentsInterface
 > {
+    // Method to initialize the provider configuration profile action handler.
     constructor(
         controller: BaseProfileViewController<
             PaymentProviderConfigRecordInterface,
             ProfileViewPropsInterface<PaymentProviderConfigRecordInterface>,
-            PaymentProviderConfigProfileViewStateDataInterface
+            PaymentProviderConfigProfileViewStateDataInterface,
+            PaymentProviderConfigProfileViewComputedDataInterface,
+            ProfileViewComponentsInterface
         >
     ) {
         super(
@@ -43,14 +43,12 @@ class PaymentProviderConfigProfileViewActionHandler extends BaseProfileViewActio
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
 
+    // Method to resolve the current provider configuration identifier.
     private getConfigId(): string | null {
-        return (
-            this.controller.state_refs.profile_record.value?.id?.toString() ||
-            this.controller.props.record_id ||
-            null
-        );
+        return this.controller.state_refs.profile_record.value?.id?.toString() || this.controller.props.record_id || null;
     }
 
+    // Method to reveal, hide, or fetch provider configuration credentials.
     public handleCredentialsButtonClicked = async (): Promise<void> => {
         if (this.controller.state_refs.credentials_are_visible.value) {
             this.setState("credentials_are_visible", false);
@@ -86,10 +84,7 @@ class PaymentProviderConfigProfileViewActionHandler extends BaseProfileViewActio
         this.setState("credentials_error_msg", null);
 
         try {
-            const response =
-                await PaymentProviderConfigAPIService.getPaymentProviderConfigCredentials(
-                    config_id
-                );
+            const response = await PaymentProviderConfigAPIService.getPaymentProviderConfigCredentials(config_id);
 
             if (!response || response.status === "error") {
                 const msg = response?.msg ?? "error_occurred";
@@ -105,8 +100,7 @@ class PaymentProviderConfigProfileViewActionHandler extends BaseProfileViewActio
 
             this.setState(
                 "credentials",
-                (response.data?.credentials ??
-                    null) as PaymentProviderConfigCredentialsInterface | null
+                (response.data?.credentials ?? null) as PaymentProviderConfigCredentialsInterface | null
             );
             this.setState("credentials_are_visible", true);
         } catch (error: unknown) {

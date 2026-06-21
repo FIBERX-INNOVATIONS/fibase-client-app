@@ -8,7 +8,8 @@ import {
     PaymentProviderConfigListViewFiltersInterface,
     PaymentProviderMethodListViewFiltersInterface,
     IdentityListViewFiltersInterface,
-    IdentityWalletListViewFiltersInterface
+    IdentityWalletListViewFiltersInterface,
+    IdentityWalletLedgerListViewFiltersInterface
 } from "./list_view_filter_type";
 
 export interface CSRFTokenRecordInterface {
@@ -650,6 +651,66 @@ export type IdentityWalletListParams = {
 
 export interface IdentityWalletListResponseInterface extends PaginatedResponseResultInterface<
     IdentityWalletRecordInterface[]
+> {}
+
+export interface IdentityWalletLedgerTransactionSummaryInterface {
+    public_id: string;
+    transaction_type: string;
+    direction: string;
+    status: string;
+    amount: number;
+    fee_amount?: number;
+    net_amount?: number;
+    app_reference?: string | null;
+    provider_reference?: string | null;
+    external_reference?: string | null;
+    created_at: string;
+}
+
+export interface IdentityWalletLedgerRecordInterface {
+    record_key: string;
+    transaction_id?: number;
+    wallet_id?: number;
+    identity_id?: number;
+    currency_id?: number;
+    created_by_member_id?: number | null;
+    created_by_identity_id?: number | null;
+    created_by_app_id?: number | null;
+    entry_type: string;
+    direction: string;
+    balance_field: string;
+    amount: number;
+    available_balance_before?: number;
+    available_balance_after?: number;
+    locked_balance_before?: number;
+    locked_balance_after?: number;
+    refunded_balance_before?: number;
+    refunded_balance_after?: number;
+    pending_balance_before?: number;
+    pending_balance_after?: number;
+    description?: string | null;
+    reason?: string | null;
+    metadata?: Record<string, unknown> | null;
+    created_at: string;
+    transaction?: IdentityWalletLedgerTransactionSummaryInterface | null;
+    wallet?: IdentityWalletRecordInterface | null;
+    identity?: IdentityRecordInterface | null;
+    currency?: IdentityWalletCurrencySummaryInterface | null;
+    created_by_member?: Partial<MemberRecordInterface> | null;
+    created_by_identity?: IdentityRecordInterface | null;
+    created_by_app?: IdentityRegisteredAppSummaryInterface | null;
+}
+
+export type IdentityWalletLedgerListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<IdentityWalletLedgerListViewFiltersInterface>;
+};
+
+export interface IdentityWalletLedgerListResponseInterface extends PaginatedResponseResultInterface<
+    IdentityWalletLedgerRecordInterface[]
 > {}
 
 // ==============================

@@ -3,7 +3,11 @@ import { Component, Ref } from "vue";
 import { APIResponseInterface } from "@ui/version_3/types/util_type";
 import { ImageRenderUIClassStylesInterface } from "@ui/version_3/ui_types/image_render_ui_type";
 import { TabsUIPropsInterface } from "@ui/version_3/ui_types/tabs_ui_type";
-import { MemberRecordInterface } from "@/types/api_service_type";
+import {
+    MemberRecordInterface,
+    PaymentProviderConfigCredentialsInterface,
+    PaymentProviderConfigRecordInterface
+} from "@/types/api_service_type";
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
 export interface ProfileViewPropsInterface<T = any> {
@@ -331,14 +335,33 @@ export interface ProfileViewStateDataInterface<T = any> {
     content_text: ProfileViewContentTextInterface;
 }
 
-export interface PaymentProviderConfigProfileViewStateDataInterface extends ProfileViewStateDataInterface {
-    credentials: Record<string, string | null | undefined> | null;
+export interface PaymentProviderConfigProfileViewStateDataInterface extends ProfileViewStateDataInterface<PaymentProviderConfigRecordInterface> {
+    credentials: PaymentProviderConfigCredentialsInterface | null;
 
     credentials_are_visible: boolean;
 
     is_loading_credentials: boolean;
 
     credentials_error_msg: string | null;
+}
+
+export interface PaymentProviderConfigProfileEntryInterface {
+    key: string;
+    label: string;
+    value: string;
+}
+
+export interface PaymentProviderConfigProfileViewComputedDataInterface extends ProfileViewComputedDataInterface {
+    loading_icon_html: string;
+    logo_url: string;
+    creator_member_profile_photo_url: string;
+    updator_member_profile_photo_url: string;
+    readable_created_at: string;
+    readable_updated_at: string;
+    has_credentials_permission: boolean;
+    settings_entries: PaymentProviderConfigProfileEntryInterface[];
+    credential_entries: PaymentProviderConfigProfileEntryInterface[];
+    credentials_button_text: string;
 }
 
 export interface ProfileViewComputedDataInterface {
@@ -383,6 +406,9 @@ export interface ProfileViewComputedDataInterface {
 
 export interface ProfileViewComponentsInterface {
     ImageRenderUI: Component;
+    ProfileValue: Component;
+    StatusValue: Component;
+    MemberSummary: Component;
 }
 
 export interface ProfileViewClassStylesInterface {
@@ -403,10 +429,32 @@ export interface ProfileViewClassStylesInterface {
     role_chip_wrapper_class_style?: string;
     member_name_class_style?: string;
     role_chip_class_style?: string;
+    info_row_class_style?: string;
     grid_class_style?: {
         two_col_responsive_grid_wrapper_class_style?: string;
         grid_wrapper_class_style?: string;
     };
+}
+
+export interface ProfileValueComponentOptionsInterface {
+    component_name?: string;
+    value_class_style?: string;
+}
+
+export interface StatusValueComponentOptionsInterface {
+    component_name?: string;
+    active_class_style?: string;
+    inactive_class_style?: string;
+    active_icon_class_style?: string;
+    inactive_icon_class_style?: string;
+}
+
+export interface MemberSummaryComponentOptionsInterface {
+    component_name?: string;
+    show_empty_state?: boolean;
+    always_show_member?: boolean;
+    member_name_tag?: "h3" | "p";
+    member_email_class_style?: string;
 }
 
 export type FetchRecordMethod<TRecord> = (record_id: string) => Promise<APIResponseInterface<TRecord>>;
@@ -448,12 +496,9 @@ export interface MemberProfileViewComputedDataInterface extends ProfileViewCompu
     member_role_items: MemberRoleChipInterface[];
 }
 
-export interface MemberProfileViewComponentsInterface {
-    ImageRenderUI: Component;
+export interface MemberProfileViewComponentsInterface extends ProfileViewComponentsInterface {
     TabsUI: Component;
     MemberDevicesView: Component;
-    ProfileValue: Component;
-    StatusValue: Component;
 }
 
 export interface MemberProfileViewStateDataInterface extends ProfileViewStateDataInterface<MemberRecordInterface> {

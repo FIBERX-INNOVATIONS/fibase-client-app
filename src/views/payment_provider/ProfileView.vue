@@ -65,7 +65,12 @@
                     {{ content_obj.status_title_text }}
                 </h4>
 
-                <StatusValue :label="content_obj.active_label_text" :active="!!state_refs.profile_record.value?.is_active" />
+                <StatusValue
+                    :label="content_obj.active_label_text"
+                    :active="!!state_refs.profile_record.value?.is_active"
+                    :true-text="content_obj.active_status_text"
+                    :false-text="content_obj.inactive_status_text"
+                />
 
                 <ProfileValue icon="clock_svg_icon" :label="content_obj.created_label_text" :value="readable_created_at" />
 
@@ -90,23 +95,24 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, h, PropType } from "vue";
-
-import { getSVGIconValue, SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
-
-import { CreatorUpdatorMemberinterface, getMemberFullName, MemberRecordInterface } from "@/types/api_service_type";
+import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
 
 import PaymentProviderProfileViewProps from "@/props_definition/payment_provider/profile_view_props";
+
 import PaymentProviderProfileViewController from "@/controllers/payment_provider/profile_view_controller";
 
 const props = defineProps(PaymentProviderProfileViewProps);
+
 const controller = new PaymentProviderProfileViewController(props);
-const component_definition = controller.getComponentDefinition();
+
+const { state_refs, components, computed_refs } = controller.getComponentDefinition();
 
 const { record_id } = props;
-const { state_refs, components, computed_refs } = component_definition;
-const { ImageRenderUI } = components;
+
+const { ImageRenderUI, ProfileValue, StatusValue, MemberSummary } = components;
+
 const { class_styles, content_obj } = controller;
+
 const {
     logo_url,
     creator_member_profile_photo_url,
@@ -114,76 +120,4 @@ const {
     readable_created_at,
     readable_updated_at
 } = computed_refs;
-
-const ProfileValue = defineComponent({
-    props: {
-        icon: { type: String as PropType<SVGIconKey>, required: true },
-        label: { type: String, required: true },
-        value: { type: [String, Number], default: "" }
-    },
-    setup(value_props) {
-        return () =>
-            h("p", { class: class_styles.small_bold_value_text_class_style }, [
-                h("span", {
-                    class: class_styles.icon_class_style,
-                    innerHTML: getSVGIconValue(value_props.icon)
-                }),
-                h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.label),
-                value_props.value
-            ]);
-    }
-});
-
-const StatusValue = defineComponent({
-    props: {
-        label: { type: String, required: true },
-        active: { type: Boolean, required: true }
-    },
-    setup(status_props) {
-        return () =>
-            h("p", { class: class_styles.small_bold_value_text_class_style }, [
-                h("span", {
-                    class: [class_styles.icon_class_style, status_props.active ? "text-green-400" : "text-red-400"],
-                    innerHTML: getSVGIconValue(status_props.active ? "check_circle_svg_icon" : "x_circile_svg_icon")
-                }),
-                h("span", { class: class_styles.small_bold_value_text_class_style }, status_props.label),
-                h(
-                    "span",
-                    {
-                        class: ["font-semibold", status_props.active ? "text-green-400" : "text-red-400"]
-                    },
-                    status_props.active ? content_obj.active_status_text : content_obj.inactive_status_text
-                )
-            ]);
-    }
-});
-
-const MemberSummary = defineComponent({
-    props: {
-        title: { type: String, required: true },
-        member: {
-            type: Object as PropType<CreatorUpdatorMemberinterface | MemberRecordInterface | null | undefined>,
-            default: null
-        },
-        photoUrl: { type: String, required: true }
-    },
-    setup(member_props) {
-        return () =>
-            h("div", { class: class_styles.grid_class_style?.grid_wrapper_class_style }, [
-                h("h4", { class: class_styles.small_bold_underlined_text_class_style }, member_props.title),
-                member_props.member
-                    ? h("div", { class: "flex items-center gap-3" }, [
-                          h("img", {
-                              src: member_props.photoUrl,
-                              class: class_styles.member_avatar_img_class_style
-                          }),
-                          h("div", [
-                              h("h3", { class: class_styles.member_name_class_style }, getMemberFullName(member_props.member)),
-                              h("p", { class: class_styles.description_class_style }, member_props.member.email)
-                          ])
-                      ])
-                    : null
-            ]);
-    }
-});
 </script>

@@ -1,5 +1,3 @@
-import { Component, defineComponent, h, PropType } from "vue";
-
 import { DEFAULT_MEMBER_PROFILE_PHOTO_URL } from "@/configs";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
@@ -97,71 +95,6 @@ class IdentityProfileViewController extends BaseProfileViewController<
         );
     }
 
-    // Method to get profile value component
-    private getProfileValueComponent(): Component {
-        const class_styles = this.class_styles;
-
-        return defineComponent({
-            name: "IdentityProfileValue",
-            props: {
-                icon: { type: String as PropType<SVGIconKey>, required: true },
-                label: { type: String, required: true },
-                value: { type: [String, Number], default: "" }
-            },
-            setup(value_props) {
-                return () =>
-                    h("p", { class: class_styles.info_row_class_style }, [
-                        h("span", {
-                            class: class_styles.icon_class_style,
-                            innerHTML: String(getSVGIconValue(value_props.icon) ?? "")
-                        }),
-                        h("span", { class: class_styles.small_bold_key_text_class_style }, value_props.label),
-                        h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.value)
-                    ]);
-            }
-        });
-    }
-
-    // Method to get status value component
-    private getStatusValueComponent(): Component {
-        const class_styles = this.class_styles;
-
-        return defineComponent({
-            name: "IdentityStatusValue",
-            props: {
-                label: { type: String, required: true },
-                active: { type: Boolean, required: true },
-                trueText: { type: String, required: true },
-                falseText: { type: String, required: true },
-                activeIsDanger: { type: Boolean, default: false }
-            },
-            setup(status_props) {
-                return () => {
-                    const positive_class = status_props.activeIsDanger ? "text-red-600" : "text-green-600";
-                    const negative_class = status_props.activeIsDanger ? "text-green-600" : "text-red-600";
-                    const status_class = status_props.active ? positive_class : negative_class;
-
-                    return h("p", { class: class_styles.info_row_class_style }, [
-                        h("span", {
-                            class: [class_styles.icon_class_style, status_class],
-                            innerHTML: String(
-                                getSVGIconValue(status_props.active ? "check_circle_svg_icon" : "x_circile_svg_icon") ?? ""
-                            )
-                        }),
-                        h("span", { class: class_styles.small_bold_key_text_class_style }, status_props.label),
-                        h(
-                            "span",
-                            {
-                                class: [class_styles.small_bold_value_text_class_style, status_class]
-                            },
-                            status_props.active ? status_props.trueText : status_props.falseText
-                        )
-                    ]);
-                };
-            }
-        });
-    }
-
     // Method to get content keys for view
     protected getChildProfileViewContentKeys(): Partial<ProfileViewContentKeysInterface> {
         const base = this.getBaseContentKey();
@@ -257,8 +190,10 @@ class IdentityProfileViewController extends BaseProfileViewController<
         return {
             ...super.getUIComponents(),
             TabsUI,
-            ProfileValue: this.getProfileValueComponent(),
-            StatusValue: this.getStatusValueComponent()
+            StatusValue: this.getStatusValueComponent({
+                active_class_style: "text-green-600",
+                inactive_class_style: "text-red-600"
+            })
         };
     }
 

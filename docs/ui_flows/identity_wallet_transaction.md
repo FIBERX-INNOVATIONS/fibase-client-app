@@ -30,12 +30,13 @@ Configuration.
 
 ### Routes
 
-| Route                                     | Route name              | View                                   | Route permission                                 | Open behavior |
-| ----------------------------------------- | ----------------------- | -------------------------------------- | ------------------------------------------------ | ------------- |
-| `/identities`                             | `IdentityList`          | `views/identity/ListView.vue`          | `identity_module.get_identity_list`              | Same tab      |
-| `/identities/:identity_public_id/wallets` | `IdentityWalletList`    | `views/identity_wallet/ListView.vue`   | `identity_module.get_identity_wallet_list`       | Same tab      |
-| `/transactions`                           | `TransactionList`       | `views/transaction/ListView.vue`       | `transaction_module.get_transaction_list`        | Same tab      |
-| `/transactions/:transaction_id/ledger`    | `TransactionLedgerList` | `views/transaction/LedgerListView.vue` | `transaction_module.get_transaction_ledger_list` | New tab       |
+| Route                                     | Route name                 | View                                        | Route permission                                 | Open behavior |
+| ----------------------------------------- | -------------------------- | ------------------------------------------- | ------------------------------------------------ | ------------- |
+| `/identities`                             | `IdentityList`             | `views/identity/ListView.vue`               | `identity_module.get_identity_list`              | Same tab      |
+| `/identities/:identity_public_id/wallets` | `IdentityWalletList`       | `views/identity_wallet/ListView.vue`        | `identity_module.get_identity_wallet_list`       | Same tab      |
+| `/wallets/:wallet_id/ledger`              | `IdentityWalletLedgerList` | `views/identity_wallet_ledger/ListView.vue` | `wallet_module.get_wallet_ledger_list`           | New tab       |
+| `/transactions`                           | `TransactionList`          | `views/transaction/ListView.vue`            | `transaction_module.get_transaction_list`        | Same tab      |
+| `/transactions/:transaction_id/ledger`    | `TransactionLedgerList`    | `views/transaction/LedgerListView.vue`      | `transaction_module.get_transaction_ledger_list` | New tab       |
 
 Use public IDs in generated URLs. Route parameters still accept numeric IDs because the server
 does, but public IDs are safer for visible admin links.
@@ -201,7 +202,7 @@ Show identity public ID, currency, status, active state, available/locked/pendin
 total credit/debit, and created/updated dates. When the linked identity is present and permitted,
 offer a return link to `/identities?search=:identity_public_id`.
 
-### Future wallet ledger API and filters
+### Wallet ledger module API and filters
 
 `GET /api/wallet/:wallet_id/ledger`
 
@@ -225,11 +226,12 @@ offer a return link to `/identities?search=:identity_public_id`.
 | Amount        | Currency-aware amount.                                                                |
 | Before        | The matching `*_balance_before` value.                                                |
 | After         | The matching `*_balance_after` value.                                                 |
-| Description   | `description`, with `reason` in a tooltip/detail line.                                |
 | Created by    | Member, identity, or app summary in that priority order; otherwise `System`.          |
+| Actions       | Permission-gated **View** action that opens the full list record in a modal.          |
 
-There is no row action menu and no selection control. Keep metadata out of the table; optionally
-offer an expandable read-only JSON block later if a clear support need emerges.
+There is no row selection control. The View modal shows the complete in-memory ledger record,
+including description, reason, balance context, actor, transaction, and formatted metadata. It
+does not make a separate detail request because the API does not expose a single-entry endpoint.
 
 ## 4. Transaction List View
 

@@ -421,6 +421,11 @@
                         "menu_icon": "view_eye_svg_icon",
                         "menu_link": ""
                     },
+                    "ledger_menu_option": {
+                        "menu_text": "Ledger",
+                        "menu_icon": "table_cells_svg_icon",
+                        "menu_link": ""
+                    },
                     "select_menu_option": {
                         "menu_text": "Select",
                         "selected_menu_text": "Deselect",

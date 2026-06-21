@@ -1,5 +1,3 @@
-import { Component, defineComponent, h, PropType } from "vue";
-
 import { DEFAULT_MEMBER_PROFILE_PHOTO_URL } from "@/configs";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
@@ -102,71 +100,6 @@ class MemberProfileProfileViewController extends BaseProfileViewController<
                 class_styles: this.class_styles.tabs_class_styles
             }
         );
-    }
-
-    // method to get profile value component
-    private getProfileValueComponent(): Component {
-        const class_styles = this.class_styles;
-
-        return defineComponent({
-            name: "MemberProfileValue",
-            props: {
-                icon: { type: String as PropType<SVGIconKey>, required: true },
-                label: { type: String, required: true },
-                value: { type: [String, Number], default: "" }
-            },
-            setup(value_props) {
-                return () =>
-                    h("p", { class: class_styles.info_row_class_style }, [
-                        h("span", {
-                            class: class_styles.icon_class_style,
-                            innerHTML: String(getSVGIconValue(value_props.icon) ?? "")
-                        }),
-                        h("span", { class: class_styles.small_bold_key_text_class_style }, value_props.label),
-                        h("span", { class: class_styles.small_bold_value_text_class_style }, value_props.value)
-                    ]);
-            }
-        });
-    }
-
-    // method to get status value component
-    private getStatusValueComponent(): Component {
-        const class_styles = this.class_styles;
-
-        return defineComponent({
-            name: "MemberProfileStatusValue",
-            props: {
-                label: { type: String, required: true },
-                active: { type: Boolean, required: true },
-                trueText: { type: String, required: true },
-                falseText: { type: String, required: true },
-                activeIsDanger: { type: Boolean, default: false }
-            },
-            setup(status_props) {
-                return () => {
-                    const positive_class = status_props.activeIsDanger ? "text-red-500" : "text-green-500";
-                    const negative_class = status_props.activeIsDanger ? "text-green-500" : "text-red-500";
-                    const status_class = status_props.active ? positive_class : negative_class;
-
-                    return h("p", { class: class_styles.info_row_class_style }, [
-                        h("span", {
-                            class: [class_styles.icon_class_style, status_class],
-                            innerHTML: String(
-                                getSVGIconValue(status_props.active ? "check_circle_svg_icon" : "x_circile_svg_icon") ?? ""
-                            )
-                        }),
-                        h("span", { class: class_styles.small_bold_key_text_class_style }, status_props.label),
-                        h(
-                            "span",
-                            {
-                                class: [class_styles.small_bold_value_text_class_style, status_class]
-                            },
-                            status_props.active ? status_props.trueText : status_props.falseText
-                        )
-                    ]);
-                };
-            }
-        });
     }
 
     // Method to get empty value content
@@ -287,8 +220,10 @@ class MemberProfileProfileViewController extends BaseProfileViewController<
             ...super.getUIComponents(),
             TabsUI,
             MemberDevicesView,
-            ProfileValue: this.getProfileValueComponent(),
-            StatusValue: this.getStatusValueComponent()
+            StatusValue: this.getStatusValueComponent({
+                active_class_style: "text-green-500",
+                inactive_class_style: "text-red-500"
+            })
         };
     }
 

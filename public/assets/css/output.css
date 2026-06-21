@@ -609,6 +609,9 @@
   .max-h-60 {
     max-height: calc(var(--spacing) * 60);
   }
+  .max-h-64 {
+    max-height: calc(var(--spacing) * 64);
+  }
   .max-h-\[90vh\] {
     max-height: 90vh;
   }
@@ -1846,6 +1849,9 @@
   }
   .text-emerald-950 {
     color: var(--color-emerald-950);
+  }
+  .text-gray-100 {
+    color: var(--color-gray-100);
   }
   .text-gray-300 {
     color: var(--color-gray-300);

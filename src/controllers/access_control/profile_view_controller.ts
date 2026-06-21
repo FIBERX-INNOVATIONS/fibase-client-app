@@ -32,6 +32,19 @@ class AccessControlProfileViewController extends BaseProfileViewController<
         super(props);
     }
 
+    // Method to configure shared profile components for access-control status and empty states.
+    protected getUIComponents(): ProfileViewComponentsInterface {
+        return {
+            ...super.getUIComponents(),
+            StatusValue: this.getStatusValueComponent({
+                active_class_style: "text-green-500",
+                inactive_class_style: "text-gray-500",
+                inactive_icon_class_style: "text-gray-400"
+            }),
+            MemberSummary: this.getMemberSummaryComponent({ show_empty_state: true })
+        };
+    }
+
     protected getChildProfileViewContentKeys(): Partial<ProfileViewContentKeysInterface> {
         const base_content_key = this.getBaseContentKey();
 

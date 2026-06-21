@@ -20,6 +20,8 @@ const IdentityListView = () => import("@/views/identity/ListView.vue");
 
 const IdentityWalletListView = () => import("@/views/identity_wallet/ListView.vue");
 
+const IdentityWalletLedgerListView = () => import("@/views/identity_wallet_ledger/ListView.vue");
+
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
@@ -206,6 +208,21 @@ class RouterManager {
                     page_meta_key: "identity_wallet_page",
                     title_key: "identity_wallet_page",
                     permission_name: "identity_module.get_identity_wallet_list",
+                    is_auth_page: false
+                }
+            },
+            {
+                path: "/identities/:identity_public_id/wallets/:wallet_id/ledger",
+                name: "IdentityWalletLedgerList",
+                component: IdentityWalletLedgerListView,
+                props: (route) => ({
+                    wallet_public_id: route.params.wallet_id,
+                    identity_public_id: route?.params?.identity_public_id ?? route?.query?.identity_public_id
+                }),
+                meta: {
+                    page_meta_key: "identity_wallet_ledger_page",
+                    title_key: "identity_wallet_ledger_page",
+                    permission_name: "wallet_module.get_wallet_ledger_list",
                     is_auth_page: false
                 }
             },
