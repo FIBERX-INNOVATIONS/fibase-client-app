@@ -25,7 +25,10 @@
                                 </p>
 
                                 <p :class="class_styles.member_id_value_class_style">
-                                    {{ state_refs.member.value?.public_id || state_refs.content_text.value.unavailable_text }}
+                                    {{
+                                        state_refs.member.value?.public_id?.toUpperCase() ||
+                                        state_refs.content_text.value.unavailable_text
+                                    }}
                                 </p>
                             </div>
                         </div>
