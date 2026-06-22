@@ -20,6 +20,8 @@ import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
+import LedgerDisplayFormatterUtil from "@/utils/ledger_display_formatter_util";
+
 import RenderHtmlUtil from "@ui/version_3/utils/render_html_util";
 
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
@@ -165,52 +167,6 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
         ];
     }
 
-    // Method to format a ledger amount using its currency projection.
-    private formatAmount(record: IdentityWalletLedgerRecordInterface, value?: number): string {
-        const currency = record.currency ?? record.wallet?.currency;
-
-        return DisplayFormatterUtil.formatCurrencyAmount(value, {
-            precision: currency?.precision,
-            symbol: currency?.symbol
-        });
-    }
-
-    // Method to resolve the balance value before or after the ledger movement.
-    private getBalanceValue(record: IdentityWalletLedgerRecordInterface, position: "before" | "after"): string {
-        const balance_key = `${record.balance_field}_${position}` as
-            | "available_balance_before"
-            | "available_balance_after"
-            | "locked_balance_before"
-            | "locked_balance_after"
-            | "pending_balance_before"
-            | "pending_balance_after"
-            | "refunded_balance_before"
-            | "refunded_balance_after";
-
-        return this.formatAmount(record, record[balance_key]);
-    }
-
-    // Method to resolve the most specific actor attached to a ledger entry.
-    private getCreatedBy(record: IdentityWalletLedgerRecordInterface): string {
-        const member = record.created_by_member;
-
-        if (member) {
-            return (
-                member.full_name || [member.first_name, member.last_name].filter(Boolean).join(" ") || member.email || "Member"
-            );
-        }
-
-        if (record.created_by_identity) {
-            return `Identity: ${record.created_by_identity.public_id}`;
-        }
-
-        if (record.created_by_app) {
-            return `App: ${record.created_by_app.name || record.created_by_app.public_id}`;
-        }
-
-        return "System";
-    }
-
     // Method to configure the sortable, read-only wallet ledger table.
     protected getTableRenderConfig(): DataTableColumnRenderType<IdentityWalletLedgerRecordInterface>[] {
         const base_key = "content_resource.identity_wallet_ledger_view_ui.list_view_ui.table.header";
@@ -299,7 +255,9 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
                     class_styles: cell_styles,
-                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => this.formatAmount(record, record.amount)
+                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => {
+                        return LedgerDisplayFormatterUtil.formatAmount(record, record.amount);
+                    }
                 }
             },
             // Available Balance Before Column
@@ -311,7 +269,9 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
                     class_styles: cell_styles,
-                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => this.getBalanceValue(record, "before")
+                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => {
+                        return LedgerDisplayFormatterUtil.getBalanceValue(record, "before");
+                    }
                 }
             },
             // Available Balance After column
@@ -323,7 +283,9 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
                     class_styles: cell_styles,
-                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => this.getBalanceValue(record, "after")
+                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => {
+                        return LedgerDisplayFormatterUtil.getBalanceValue(record, "after");
+                    }
                 }
             },
             // Created By column
@@ -335,7 +297,9 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
                     class_styles: cell_styles,
-                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => this.getCreatedBy(record)
+                    getTextContent: (record: IdentityWalletLedgerRecordInterface) => {
+                        return LedgerDisplayFormatterUtil.getCreatedBy(record);
+                    }
                 }
             },
             // Action Menu Column

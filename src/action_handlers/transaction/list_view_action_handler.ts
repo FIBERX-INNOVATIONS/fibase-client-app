@@ -66,6 +66,28 @@ class TransactionListViewActionHandler extends BaseListViewActionHandler<
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
     };
+
+    // Method to open the selected transaction's ledger list in a separate tab.
+    public handleLedgerActionMenuClicked = async (
+        record: TransactionRecordInterface,
+        config?: { props: NavLinkUIPropsInterface }
+    ): Promise<void> => {
+        void config;
+
+        const route = this.controller.router.resolve({
+            name: "TransactionLedgerList",
+            params: {
+                transaction_id: record.public_id
+            }
+        });
+        const opened_window = window.open(route.href, "_blank");
+
+        if (opened_window) {
+            opened_window.opener = null;
+        } else {
+            await this.controller.router.push(route.fullPath);
+        }
+    };
 }
 
 export default TransactionListViewActionHandler;

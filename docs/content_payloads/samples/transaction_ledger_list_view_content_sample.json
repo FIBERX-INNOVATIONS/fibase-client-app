@@ -1,0 +1,130 @@
+{
+    "transaction_ledger_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Transactions",
+                    "menu_icon": "greater_than_caret_svg_icon",
+                    "menu_link": "/transactions"
+                },
+                {
+                    "menu_id": "TransactionBreadcrumb",
+                    "menu_text": "Transaction",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                },
+                {
+                    "menu_text": "Ledger",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Transaction Ledger",
+                "header_description": "Review every wallet balance movement created by this transaction."
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "search_filter": {
+                    "label_text": "Search",
+                    "placeholder_text": "Search ledger, wallet, identity, or currency"
+                },
+                "entry_type_filter": {
+                    "label_text": "Entry Type",
+                    "placeholder_text": "All entry types",
+                    "option_list": [
+                        { "label_text": "Transaction", "value": "transaction" },
+                        { "label_text": "Fee", "value": "fee" },
+                        { "label_text": "Adjustment", "value": "adjustment" },
+                        { "label_text": "Refund", "value": "refund" }
+                    ]
+                },
+                "direction_filter": {
+                    "label_text": "Direction",
+                    "placeholder_text": "All directions",
+                    "option_list": [
+                        { "label_text": "Credit", "value": "credit" },
+                        { "label_text": "Debit", "value": "debit" }
+                    ]
+                },
+                "balance_field_filter": {
+                    "label_text": "Balance Field",
+                    "placeholder_text": "All balance fields",
+                    "option_list": [
+                        { "label_text": "Available", "value": "available_balance" },
+                        { "label_text": "Locked", "value": "locked_balance" },
+                        { "label_text": "Pending", "value": "pending_balance" },
+                        { "label_text": "Refunded", "value": "refunded_balance" }
+                    ]
+                },
+                "wallet_filter": {
+                    "label_text": "Wallet",
+                    "placeholder_text": "Enter wallet ID"
+                },
+                "identity_filter": {
+                    "label_text": "Identity",
+                    "placeholder_text": "Search identities",
+                    "selected_text_prefix": "Selected identity"
+                },
+                "currency_filter": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Search currencies",
+                    "selected_text_prefix": "Selected currency"
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} ledger entries (Page {{current_page}} of {{total_pages}})"
+                },
+                "loading_section": {
+                    "loader_text": "Loading transaction ledger..."
+                },
+                "empty_state_section": {
+                    "header_text": "No transaction ledger entries found."
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "created_at_text": "Created At",
+                    "wallet_text": "Wallet",
+                    "identity_text": "Identity",
+                    "entry_text": "Entry",
+                    "balance_field_text": "Balance Field",
+                    "amount_text": "Amount",
+                    "before_text": "Before",
+                    "after_text": "After",
+                    "description_text": "Description / Reason",
+                    "created_by_text": "Created By"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                }
+            }
+        },
+        "api_responses": {
+            "transaction_ledger_records_fetch_failed": "The transaction ledger could not be loaded.",
+            "permission_denied": "You do not have permission to perform this action.",
+            "session_expired": "Your session has expired. Please sign in again.",
+            "error_occurred": "An unexpected error occurred. Please try again."
+        }
+    }
+}

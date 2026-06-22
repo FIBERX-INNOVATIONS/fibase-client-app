@@ -86,6 +86,18 @@ export interface TransactionListViewFiltersInterface {
     date_range?: { start_date: string; end_date: string } | string | null;
 }
 
+export interface TransactionLedgerListViewFiltersInterface {
+    search?: string | null;
+    preview_only?: boolean | string;
+    entry_type?: string | null;
+    direction?: string | null;
+    balance_field?: string | null;
+    wallet_id?: string | number | null;
+    identity_id?: string | number | null;
+    currency_id?: string | number | null;
+    date_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface PaymentConfigListViewFiltersInterface {
     page?: number;
     limit?: number;

@@ -342,6 +342,9 @@ the backend later distinguishes a template URL.
 
 ## 6. Transaction Ledger Page
 
+The standalone page copy lives under `content_resource.transaction_ledger_view_ui`; use
+`docs/content_payloads/samples/transaction_ledger_list_view_content_sample.json` as its sample payload.
+
 ### Page composition
 
 1. Breadcrumb: **Home / Transactions / {transaction_public_id} / Ledger**.
@@ -364,8 +367,8 @@ the backend later distinguishes a template URL.
 | Direction     | `direction`     | Content-driven select |
 | Balance field | `balance_field` | Content-driven select |
 | Wallet        | `wallet_id`     | ID/search input       |
-| Identity      | `identity_id`   | ID/search input       |
-| Currency      | `currency_id`   | ID/search input       |
+| Identity      | `identity_id`   | Preview select-search |
+| Currency      | `currency_id`   | Preview select-search |
 | Created date  | `date_range`    | Date range            |
 
 ### Table

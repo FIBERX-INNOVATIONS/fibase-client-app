@@ -10,7 +10,8 @@ import {
     IdentityListViewFiltersInterface,
     IdentityWalletListViewFiltersInterface,
     IdentityWalletLedgerListViewFiltersInterface,
-    TransactionListViewFiltersInterface
+    TransactionListViewFiltersInterface,
+    TransactionLedgerListViewFiltersInterface
 } from "./list_view_filter_type";
 
 export interface CSRFTokenRecordInterface {
@@ -774,6 +775,18 @@ export type TransactionListParams = {
 };
 
 export interface TransactionListResponseInterface extends PaginatedResponseResultInterface<TransactionRecordInterface[]> {}
+
+export type TransactionLedgerListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: Partial<TransactionLedgerListViewFiltersInterface>;
+};
+
+export interface TransactionLedgerListResponseInterface extends PaginatedResponseResultInterface<
+    IdentityWalletLedgerRecordInterface[]
+> {}
 
 export interface TransactionReceiptRecordInterface {
     id?: number;

@@ -16,6 +16,8 @@ import {
 
 import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
+import LedgerDisplayFormatterUtil from "@/utils/ledger_display_formatter_util";
+
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 class IdentityWalletLedgerProfileViewController extends BaseProfileViewController<
     IdentityWalletLedgerRecordInterface,
@@ -90,53 +92,6 @@ class IdentityWalletLedgerProfileViewController extends BaseProfileViewControlle
         };
     }
 
-    // Method to format a ledger amount using its currency projection.
-    private formatAmount(record: IdentityWalletLedgerRecordInterface, value?: number): string {
-        const currency = record.currency ?? record.wallet?.currency;
-
-        return DisplayFormatterUtil.formatCurrencyAmount(value, {
-            precision: currency?.precision,
-            symbol: currency?.symbol,
-            empty_value: this.content_obj.empty_value_text
-        });
-    }
-
-    // Method to resolve the matching balance value around a ledger movement.
-    private getBalanceValue(record: IdentityWalletLedgerRecordInterface, position: "before" | "after"): string {
-        const balance_key = `${record.balance_field}_${position}` as
-            | "available_balance_before"
-            | "available_balance_after"
-            | "locked_balance_before"
-            | "locked_balance_after"
-            | "pending_balance_before"
-            | "pending_balance_after"
-            | "refunded_balance_before"
-            | "refunded_balance_after";
-
-        return this.formatAmount(record, record[balance_key]);
-    }
-
-    // Method to resolve the most specific actor attached to the ledger entry.
-    private getCreatedBy(record: IdentityWalletLedgerRecordInterface): string {
-        const member = record.created_by_member;
-
-        if (member) {
-            return (
-                member.full_name || [member.first_name, member.last_name].filter(Boolean).join(" ") || member.email || "Member"
-            );
-        }
-
-        if (record.created_by_identity) {
-            return `Identity: ${record.created_by_identity.public_id}`;
-        }
-
-        if (record.created_by_app) {
-            return `App: ${record.created_by_app.name || record.created_by_app.public_id}`;
-        }
-
-        return "System";
-    }
-
     // Method to expose wallet profile UI components.
     protected getUIComponents(): IdentityWalletLedgerProfileViewComponentsInterface {
         return {
@@ -155,15 +110,15 @@ class IdentityWalletLedgerProfileViewController extends BaseProfileViewControlle
             balance_field_text: () => DisplayFormatterUtil.formatLabel(this.state_refs.profile_record.value?.balance_field),
             amount_text: () => {
                 const record = this.state_refs.profile_record.value;
-                return this.formatAmount(record, record?.amount);
+                return LedgerDisplayFormatterUtil.formatAmount(record, record?.amount, this.content_obj.empty_value_text);
             },
             before_balance_text: () => {
                 const record = this.state_refs.profile_record.value;
-                return this.getBalanceValue(record, "before");
+                return LedgerDisplayFormatterUtil.getBalanceValue(record, "before", this.content_obj.empty_value_text);
             },
             after_balance_text: () => {
                 const record = this.state_refs.profile_record.value;
-                return this.getBalanceValue(record, "after");
+                return LedgerDisplayFormatterUtil.getBalanceValue(record, "after", this.content_obj.empty_value_text);
             },
             transaction_text: () =>
                 this.state_refs.profile_record.value?.transaction?.public_id || this.content_obj.empty_value_text,
@@ -179,7 +134,9 @@ class IdentityWalletLedgerProfileViewController extends BaseProfileViewControlle
                     this.state_refs.profile_record.value?.created_at,
                     this.content_obj.empty_value_text
                 ),
-            created_by_text: () => this.getCreatedBy(this.state_refs.profile_record.value),
+            created_by_text: () => {
+                return LedgerDisplayFormatterUtil.getCreatedBy(this.state_refs.profile_record.value);
+            },
             metadata_text: () => {
                 const metadata = this.state_refs.profile_record.value?.metadata;
                 return metadata && Object.keys(metadata).length ? JSON.stringify(metadata, null, 2) : "";

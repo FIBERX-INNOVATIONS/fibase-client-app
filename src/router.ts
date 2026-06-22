@@ -24,6 +24,8 @@ const IdentityWalletLedgerListView = () => import("@/views/identity_wallet_ledge
 
 const TransactionListView = () => import("@/views/transaction/ListView.vue");
 
+const TransactionLedgerListView = () => import("@/views/transaction/LedgerListView.vue");
+
 const CurrencyListView = () => import("@/views/currency/ListView.vue");
 
 const PaymentMethodListView = () => import("@/views/payment_method/ListView.vue");
@@ -248,6 +250,23 @@ class RouterManager {
                     page_meta_key: "transaction_page",
                     title_key: "transaction_page",
                     permission_name: "transaction_module.get_transaction_list",
+                    is_auth_page: false
+                }
+            },
+            // Transaction Ledger Page
+            {
+                path: "/transactions/:transaction_id/ledger",
+                name: "TransactionLedgerList",
+                component: TransactionLedgerListView,
+                props: (route) => {
+                    return {
+                        transaction_public_id: route.params.transaction_id
+                    };
+                },
+                meta: {
+                    page_meta_key: "transaction_ledger_page",
+                    title_key: "transaction_ledger_page",
+                    permission_name: "transaction_module.get_transaction_ledger_list",
                     is_auth_page: false
                 }
             },

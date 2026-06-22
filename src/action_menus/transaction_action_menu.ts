@@ -24,6 +24,9 @@ class TransactionActionMenu {
         const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
             `${base_content_key}.view_menu_option`
         );
+        const ledger_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>(
+            `${base_content_key}.ledger_menu_option`
+        );
 
         return [
             {
@@ -41,6 +44,20 @@ class TransactionActionMenu {
                 has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("transaction_module.get_transaction")
             },
             {
+                id: `${ledger_menu_content?.menu_text ?? "Ledger"}ActionMenu${record.public_id.toUpperCase()}`,
+                link: ledger_menu_content?.menu_link ?? "",
+                icon: ledger_menu_content?.menu_icon ?? "table_cells_svg_icon",
+                content: ledger_menu_content?.menu_text ?? "Ledger",
+                action_props: {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        void event;
+                        await action_handler?.handleLedgerActionMenuClicked(record, config);
+                    }
+                },
+                class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("transaction_module.get_transaction_ledger_list")
+            },
+            {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record.public_id.toUpperCase()}`,
                 link: select_menu_content?.menu_link ?? "",
                 icon: select_menu_content?.menu_icon ?? "check_circle_svg_icon",
@@ -53,7 +70,9 @@ class TransactionActionMenu {
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission: true
             }
-        ].filter((menu) => menu.has_permission);
+        ].filter((menu) => {
+            return menu.has_permission;
+        });
     }
 }
 
