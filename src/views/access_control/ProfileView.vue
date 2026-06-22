@@ -7,10 +7,7 @@
 
     <div v-else :class="class_styles.wrapper_class_style">
         <div :class="class_styles.header_info_wrapper_class_style">
-            <span
-                v-html="getSVGIconValue('member_shield_svg_icon')"
-                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-gray-900 p-3 text-white"
-            ></span>
+            <span v-html="getSVGIconValue('member_shield_svg_icon')" :class="class_styles.header_icon_tile_class_style"></span>
 
             <div>
                 <h3 :class="class_styles.h3_class_style">

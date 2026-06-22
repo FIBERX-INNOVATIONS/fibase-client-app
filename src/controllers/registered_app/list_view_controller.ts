@@ -148,7 +148,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -215,7 +215,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "name",
                 sortable: true,
-                width: "w-[25%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_25,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.name_text"
                 },
@@ -245,7 +245,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "base_url",
                 sortable: true,
-                width: "w-[15%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_15,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.base_url_text"
                 },
@@ -262,7 +262,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "creator",
                 sortable: true,
-                width: "w-[15%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_15,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.creator_text"
                 },
@@ -290,7 +290,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -339,7 +339,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[22%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_22,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -366,7 +366,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.registered_app_view_ui.list_view_ui.table.header.actions_text"
                 },

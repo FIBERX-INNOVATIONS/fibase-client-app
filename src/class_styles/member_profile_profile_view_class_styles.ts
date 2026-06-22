@@ -27,6 +27,10 @@ const MemberProfileProfileViewClassStyles: MemberProfileProfileViewClassStylesIn
 
     info_row_class_style: "flex items-start gap-2 text-xs font-semibold text-gray-800 break-words",
 
+    active_status_class_style: "text-green-500",
+
+    inactive_status_class_style: "text-red-500",
+
     tabs_class_styles: {
         wrapper_class_style: "w-full space-y-5 h-full",
         tabs_list_class_style: "grid grid-cols-2 gap-2 border-b border-gray-100 w-full",
@@ -45,13 +49,11 @@ const MemberProfileProfileViewClassStyles: MemberProfileProfileViewClassStylesIn
 
     devices_wrapper_class_style: "w-full space-y-4",
 
-    devices_toolbar_class_style:
-        "flex flex-col gap-3 md:flex-row md:items-center md:justify-between",
+    devices_toolbar_class_style: "flex flex-col gap-3 md:flex-row md:items-center md:justify-between",
 
     devices_search_wrapper_class_style: "relative flex min-h-11 w-full items-center md:w-8/12",
 
-    devices_search_icon_class_style:
-        "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400",
+    devices_search_icon_class_style: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400",
 
     devices_search_input_class_style:
         "h-11 w-full rounded-full border border-gray-200 bg-white px-10 py-2 text-sm font-semibold text-gray-800 outline-none transition focus:border-gray-500 focus:ring-2 focus:ring-gray-100",
@@ -84,8 +86,7 @@ const MemberProfileProfileViewClassStyles: MemberProfileProfileViewClassStylesIn
     },
 
     device_content_card_class_styles: {
-        wrapper_class_style:
-            "rounded-md border border-gray-200 bg-white p-4 shadow-sm transition hover:border-gray-300",
+        wrapper_class_style: "rounded-md border border-gray-200 bg-white p-4 shadow-sm transition hover:border-gray-300",
         header_class_style: "mb-3",
         title_class_style: "flex items-center gap-2 text-sm font-black text-gray-900",
         title_icon_class_style: "h-4 w-4 shrink-0 text-gray-600",
@@ -94,8 +95,7 @@ const MemberProfileProfileViewClassStyles: MemberProfileProfileViewClassStylesIn
         media_class_style: "",
         media_description_class_style: "",
         body_class_style: "space-y-3",
-        description_class_style:
-            "whitespace-pre-line text-xs font-semibold leading-6 text-gray-600 break-words",
+        description_class_style: "whitespace-pre-line text-xs font-semibold leading-6 text-gray-600 break-words",
         actions_class_style: "flex items-center justify-end",
         button_class_style:
             "inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700 transition border border-red-100 hover:bg-red-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400",

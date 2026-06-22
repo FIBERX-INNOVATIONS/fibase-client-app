@@ -259,6 +259,27 @@ const activity_loading_icon_class_style = "mr-2 inline-block h-4 w-4 animate-spi
 const activity_empty_state_class_style =
     "rounded-md border border-dashed border-gray-200 bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-500";
 
+const table_column_width_class_styles: Record<string, string> = {
+    percent_5: "w-[5%]",
+    percent_6: "w-[6%]",
+    percent_7: "w-[7%]",
+    percent_8: "w-[8%]",
+    percent_9: "w-[9%]",
+    percent_10: "w-[10%]",
+    percent_11: "w-[11%]",
+    percent_12: "w-[12%]",
+    percent_13: "w-[13%]",
+    percent_14: "w-[14%]",
+    percent_15: "w-[15%]",
+    percent_16: "w-[16%]",
+    percent_17: "w-[17%]",
+    percent_18: "w-[18%]",
+    percent_22: "w-[22%]",
+    percent_23: "w-[23%]",
+    percent_24: "w-[24%]",
+    percent_25: "w-[25%]"
+};
+
 const activity_card_class_styles: ContentCardUIClassStylesInterface = {
     wrapper_class_style: "rounded-md border border-gray-200 bg-white p-4 shadow-sm transition hover:border-gray-300",
     header_class_style: "mb-3",
@@ -294,6 +315,8 @@ const ListViewClassStyles: ListViewClassStylesInterface = {
     activity_loading_wrapper_class_style,
     activity_loading_icon_class_style,
     activity_empty_state_class_style,
+
+    table_column_width_class_styles,
     activity_card_class_styles
 };
 

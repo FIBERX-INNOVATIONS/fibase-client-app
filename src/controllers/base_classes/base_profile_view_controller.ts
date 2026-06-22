@@ -177,11 +177,12 @@ class BaseProfileViewController<
             class_styles.small_bold_key_text_class_style ?? class_styles.small_bold_value_text_class_style;
         const value_class_style = class_styles.info_row_class_style
             ? class_styles.small_bold_value_text_class_style
-            : "font-semibold";
-        const active_class_style = options.active_class_style ?? "text-green-400";
-        const inactive_class_style = options.inactive_class_style ?? "text-red-400";
+            : class_styles.status_text_class_style;
+        const active_class_style = options.active_class_style ?? class_styles.active_status_class_style ?? "";
+        const inactive_class_style = options.inactive_class_style ?? class_styles.inactive_status_class_style ?? "";
         const active_icon_class_style = options.active_icon_class_style ?? active_class_style;
-        const inactive_icon_class_style = options.inactive_icon_class_style ?? inactive_class_style;
+        const inactive_icon_class_style =
+            options.inactive_icon_class_style ?? class_styles.inactive_status_icon_class_style ?? inactive_class_style;
 
         return defineComponent({
             name: options.component_name ?? "StatusValue",
@@ -255,7 +256,7 @@ class BaseProfileViewController<
                     let member_content: ReturnType<typeof h> | null = null;
 
                     if (member || options.always_show_member) {
-                        member_content = h("div", { class: "flex items-center gap-3" }, [
+                        member_content = h("div", { class: class_styles.member_summary_content_class_style }, [
                             h("img", {
                                 src: member_props.photoUrl,
                                 alt: member_name,

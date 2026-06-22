@@ -22,6 +22,8 @@ export interface AuthsViewClassStylesInterface extends FormViewClassStylesInterf
     wrapper_class_style: string;
 
     form_box_class_style: string;
+
+    spinner_class_style: string;
 }
 
 export interface AuthLayoutClassStylesInterface {

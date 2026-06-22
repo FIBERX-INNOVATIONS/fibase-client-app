@@ -167,7 +167,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -220,7 +220,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "public_id",
                 sortable: true,
-                width: "w-[15%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_15,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.wallet_text"
                 },
@@ -233,7 +233,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "currency_id",
                 sortable: true,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.currency_text"
                 },
@@ -248,7 +248,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "available_balance",
                 sortable: true,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.available_balance_text"
                 },
@@ -263,7 +263,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "locked_balance",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.locked_balance_text"
                 },
@@ -277,7 +277,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "pending_balance",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.pending_balance_text"
                 },
@@ -291,7 +291,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "refunded_balance",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.refunded_balance_text"
                 },
@@ -306,7 +306,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "status",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -321,7 +321,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.active_text"
                 },
@@ -335,7 +335,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -350,7 +350,7 @@ class IdentityWalletListViewController extends BaseListViewController<IdentityWa
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_wallet_view_ui.list_view_ui.table.header.actions_text"
                 },

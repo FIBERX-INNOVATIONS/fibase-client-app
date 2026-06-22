@@ -18,6 +18,8 @@ import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
+import ContentCardHTMLClassStyles from "@/class_styles/content_card_html_class_styles";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import ActivityListViewActionHandler from "@/action_handlers/activity/list_view_action_handler";
@@ -106,8 +108,8 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
         const display_value = value || "-";
 
         return [
-            `<span class="inline-flex items-start gap-1 rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700">`,
-            `<strong class="font-black text-gray-900">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            `<span class="${ContentCardHTMLClassStyles.description_item_class_style}">`,
+            `<strong class="${ContentCardHTMLClassStyles.description_label_class_style}">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
             `<span>${DisplayFormatterUtil.escapeHtml(display_value)}</span>`,
             `</span>`
         ].join("");
@@ -116,10 +118,12 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
     // Method to build status badge html text
     private buildStatusBadge(label: string, record: ActivityRecordInterface): string {
         const is_success = record.is_success;
-        const class_style = is_success ? "bg-green-50 text-green-700 ring-green-200" : "bg-red-50 text-red-700 ring-red-200";
+        const class_style = is_success
+            ? ContentCardHTMLClassStyles.success_status_class_style
+            : ContentCardHTMLClassStyles.error_status_class_style;
 
         return [
-            `<span class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-black ring-1 ${class_style}">`,
+            `<span class="${ContentCardHTMLClassStyles.status_badge_class_style} ${class_style}">`,
             `<strong>${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
             DisplayFormatterUtil.escapeHtml(this.formatStatusText(record)),
             `</span>`
@@ -129,10 +133,10 @@ class ActivityListViewController extends BaseListViewController<ActivityRecordIn
     // Method to build the activity record content card decsription value
     private getActivityCardDescription(record: ActivityRecordInterface): string {
         return [
-            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${DisplayFormatterUtil.escapeHtml(
+            `<p class="${ContentCardHTMLClassStyles.description_text_class_style}">${DisplayFormatterUtil.escapeHtml(
                 record.description || "-"
             )}</p>`,
-            `<div class="flex flex-wrap gap-2">`,
+            `<div class="${ContentCardHTMLClassStyles.description_list_class_style}">`,
             this.buildStatusBadge(this.getContent(`${this.card_content_key}.labels.status_text`, "Status"), record),
             this.buildDescriptionItem(
                 this.getContent(`${this.card_content_key}.labels.actor_text`, "Actor"),

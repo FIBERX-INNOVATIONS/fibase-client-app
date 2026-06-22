@@ -141,7 +141,9 @@ class IdentityWalletLedgerProfileViewController extends BaseProfileViewControlle
     protected getUIComponents(): IdentityWalletLedgerProfileViewComponentsInterface {
         return {
             ...super.getUIComponents(),
-            ProfileValue: this.getProfileValueComponent({ value_class_style: "break-all" })
+            ProfileValue: this.getProfileValueComponent({
+                value_class_style: this.class_styles.inline_break_class_style
+            })
         };
     }
 

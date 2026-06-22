@@ -57,7 +57,7 @@
                 <h4 :class="class_styles.small_bold_underlined_text_class_style">
                     {{ content_obj.description_title_text }}
                 </h4>
-                <p class="w-full whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">
+                <p :class="class_styles.long_text_class_style">
                     {{ state_refs.profile_record.value?.description || content_obj.no_description_text }}
                 </p>
             </section>
@@ -66,7 +66,7 @@
                 <h4 :class="class_styles.small_bold_underlined_text_class_style">
                     {{ content_obj.reason_title_text }}
                 </h4>
-                <p class="w-full whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">
+                <p :class="class_styles.long_text_class_style">
                     {{ state_refs.profile_record.value?.reason || content_obj.no_reason_text }}
                 </p>
             </section>
@@ -76,12 +76,8 @@
             <h4 :class="class_styles.small_bold_underlined_text_class_style">
                 {{ content_obj.metadata_title_text }}
             </h4>
-            <pre
-                v-if="metadata_text"
-                class="max-h-64 w-full overflow-auto whitespace-pre-wrap break-words rounded-lg bg-gray-900 p-4 text-xs text-gray-100"
-                >{{ metadata_text }}</pre
-            >
-            <p v-else class="w-full text-sm text-gray-500">
+            <pre v-if="metadata_text" :class="class_styles.metadata_class_style">{{ metadata_text }}</pre>
+            <p v-else :class="class_styles.metadata_empty_class_style">
                 {{ content_obj.no_metadata_text }}
             </p>
         </section>

@@ -328,7 +328,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: { label_key: `${base_key}.sn_text` },
                 cell: { render: () => DataTableSerialCellUI },
                 props: {
@@ -373,7 +373,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "public_id",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: { label_key: `${base_key}.transaction_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: { class_styles: cell_styles, getTextContent: (record) => this.getTransactionText(record) }
@@ -382,7 +382,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "transaction_type",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.type_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -395,7 +395,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "source_wallet",
                 sortable: false,
-                width: "w-[15%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_15,
                 header: { label_key: `${base_key}.parties_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: { class_styles: cell_styles, getTextContent: (record) => this.getPartiesText(record) }
@@ -404,7 +404,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "amount",
                 sortable: true,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: { label_key: `${base_key}.amount_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: { class_styles: cell_styles, getTextContent: (record) => this.getAmountsText(record) }
@@ -413,7 +413,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "currency",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.currency_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -426,7 +426,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "provider",
                 sortable: false,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: { label_key: `${base_key}.provider_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: { class_styles: cell_styles, getTextContent: (record) => this.getProviderText(record) }
@@ -435,7 +435,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "status",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.status_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: { class_styles: cell_styles, getTextContent: (record) => this.getStatusText(record) }
@@ -444,7 +444,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: { label_key: `${base_key}.created_at_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -456,7 +456,7 @@ class TransactionListViewController extends BaseListViewController<TransactionRe
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: { label_key: `${base_key}.actions_text` },
                 cell: { render: () => DataTableActionIconCellUI },
                 props: {

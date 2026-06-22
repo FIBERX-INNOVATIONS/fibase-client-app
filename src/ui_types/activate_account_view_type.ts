@@ -15,6 +15,8 @@ import { AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
 import { ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 import { ContentCardUIPropsInterface } from "@ui/version_3/ui_types/content_card_ui_type";
+import { ButtonUIClassStylesInterface } from "@ui/version_3/ui_types/button_ui_type";
+import { ContentCardUIClassStylesInterface } from "@ui/version_3/ui_types/content_card_ui_type";
 
 export type ActivateAccountStepType = "loading" | "password" | "two_factor" | "invalid";
 
@@ -44,6 +46,16 @@ export interface ActivateAccountViewClassStylesInterface extends AuthsViewClassS
     qr_image_class_style: string;
 
     secret_section_class_style: string;
+
+    authenticator_apps_title_class_style: string;
+
+    back_button_class_style: string;
+
+    password_toggle_button_class_styles: ButtonUIClassStylesInterface;
+
+    secret_key_card_class_styles: ContentCardUIClassStylesInterface;
+
+    spinner_class_style: string;
 }
 
 export interface ActivateAccountContentTextInterface {

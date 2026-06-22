@@ -144,6 +144,8 @@ export interface ListViewClassStylesInterface {
     activity_empty_state_class_style: string;
 
     activity_card_class_styles: ContentCardUIClassStylesInterface;
+
+    table_column_width_class_styles: Record<string, string>;
 }
 
 export type FetchListMethod<TFilters extends object, TRecord extends object> = (params: {

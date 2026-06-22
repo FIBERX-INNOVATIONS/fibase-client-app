@@ -45,6 +45,11 @@ const AccessControlPermissionsViewClassStyles: AccessControlPermissionsViewClass
 
     permission_card_wrapper_class_style: "min-w-0 flex-1",
 
+    permission_assign_button_class_style:
+        "inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-green-50 px-3 py-2 text-sm font-bold text-green-700 transition border border-green-100 hover:bg-green-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400",
+
+    permission_processing_icon_class_style: "animate-spin",
+
     permission_content_card_class_styles: {
         wrapper_class_style: "h-full rounded-full bg-white px-5 py-4 transition",
         header_class_style: "mb-3",

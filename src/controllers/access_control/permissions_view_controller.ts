@@ -26,6 +26,8 @@ import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
+import ContentCardHTMLClassStyles from "@/class_styles/content_card_html_class_styles";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import ContentCardUI from "@ui/version_3/components/ContentCardUI.vue";
@@ -143,8 +145,8 @@ class AccessControlPermissionsViewController
         const display_value = value || this.state_refs.content_obj.value.empty_value_text;
 
         return [
-            `<span class="inline-flex items-start gap-1 rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700">`,
-            `<strong class="font-black text-gray-900">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            `<span class="${ContentCardHTMLClassStyles.description_item_class_style}">`,
+            `<strong class="${ContentCardHTMLClassStyles.description_label_class_style}">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
             `<span>${DisplayFormatterUtil.escapeHtml(display_value)}</span>`,
             `</span>`
         ].join("");
@@ -155,10 +157,10 @@ class AccessControlPermissionsViewController
         const content_obj = this.state_refs.content_obj.value;
 
         return [
-            `<p class="mb-3 whitespace-pre-line text-sm font-semibold leading-6 text-gray-800">${DisplayFormatterUtil.escapeHtml(
+            `<p class="${ContentCardHTMLClassStyles.description_text_class_style}">${DisplayFormatterUtil.escapeHtml(
                 permission.description || content_obj.empty_value_text
             )}</p>`,
-            `<div class="flex flex-wrap gap-2">`,
+            `<div class="${ContentCardHTMLClassStyles.description_list_class_style}">`,
             this.buildDescriptionItem(
                 content_obj.labels.created_at,
                 DisplayFormatterUtil.formatDateTime(permission.created_at, content_obj.empty_value_text)
@@ -261,7 +263,8 @@ class AccessControlPermissionsViewController
         const is_assign_mode = this.computed_refs.is_assign_permissions_mode.value;
         const can_manage_permissions = this.computed_refs.can_manage_permissions.value;
         const content_obj = this.state_refs.content_obj.value;
-        const class_styles = this.state_refs.class_styles.value.permission_content_card_class_styles;
+        const view_class_styles = this.state_refs.class_styles.value;
+        const class_styles = view_class_styles.permission_content_card_class_styles;
 
         return ContentCardUIPropsBuilder.getReactivePropsObject(`RolePermission${permission.id}`, {
             content_props: {
@@ -296,14 +299,10 @@ class AccessControlPermissionsViewController
             class_styles: {
                 ...class_styles,
                 button_class_style: is_assign_mode
-                    ? [
-                          "inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-green-50 px-3 py-2",
-                          "text-sm font-bold text-green-700 transition border border-green-100 hover:bg-green-200",
-                          "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
-                      ].join(" ")
+                    ? view_class_styles.permission_assign_button_class_style
                     : class_styles.button_class_style,
                 button_icon_class_style: is_processing
-                    ? `${class_styles.button_icon_class_style} animate-spin`
+                    ? `${class_styles.button_icon_class_style} ${view_class_styles.permission_processing_icon_class_style}`
                     : class_styles.button_icon_class_style
             }
         });

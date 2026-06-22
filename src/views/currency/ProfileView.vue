@@ -102,7 +102,9 @@
                         "
                         :class="[
                             class_styles.icon_class_style,
-                            state_refs.profile_record.value?.is_fiat ? 'text-green-400' : 'text-red-400'
+                            state_refs.profile_record.value?.is_fiat
+                                ? class_styles.active_status_class_style
+                                : class_styles.inactive_status_class_style
                         ]"
                     ></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
@@ -120,15 +122,21 @@
                         "
                         :class="[
                             class_styles.icon_class_style,
-                            state_refs.profile_record.value?.is_active ? 'text-green-400' : 'text-red-400'
+                            state_refs.profile_record.value?.is_active
+                                ? class_styles.active_status_class_style
+                                : class_styles.inactive_status_class_style
                         ]"
                     ></span>
                     <span :class="class_styles.small_bold_value_text_class_style">
                         {{ content_obj.active_label_text }}
                     </span>
                     <span
-                        :class="state_refs.profile_record.value?.is_active ? 'text-green-400' : 'text-red-400'"
-                        class="font-semibold"
+                        :class="[
+                            class_styles.status_text_class_style,
+                            state_refs.profile_record.value?.is_active
+                                ? class_styles.active_status_class_style
+                                : class_styles.inactive_status_class_style
+                        ]"
                     >
                         {{
                             state_refs.profile_record.value?.is_active
@@ -164,11 +172,14 @@
                 {{ content_obj.assigned_apps_title_text }}
             </h4>
 
-            <div v-if="state_refs.profile_record.value?.app_currencies?.length" class="space-y-3">
+            <div
+                v-if="state_refs.profile_record.value?.app_currencies?.length"
+                :class="class_styles.app_currency_list_class_style"
+            >
                 <div
                     v-for="appCurrency in state_refs.profile_record.value.app_currencies"
                     :key="appCurrency.app?.public_id"
-                    class="flex items-center gap-3"
+                    :class="class_styles.app_currency_item_class_style"
                 >
                     <img
                         :src="appCurrency.app?.logo_url || DEFUALT_REGISTERED_APP_LOGO_URL"
@@ -177,18 +188,18 @@
                     />
 
                     <div>
-                        <p class="font-semibold text-sm">
+                        <p :class="class_styles.app_currency_name_class_style">
                             {{ appCurrency.app?.name || content_obj.empty_value_text }}
                         </p>
 
-                        <p class="text-xs text-gray-400">
+                        <p :class="class_styles.app_currency_description_class_style">
                             {{ content_obj.app_prefix_label_text }}
                             {{ appCurrency.app?.prefix || content_obj.empty_value_text }}
                         </p>
 
                         <span
                             v-if="appCurrency.is_default"
-                            :class="[class_styles.small_bold_value_text_class_style, 'text-green-400']"
+                            :class="[class_styles.small_bold_value_text_class_style, class_styles.active_status_class_style]"
                         >
                             {{ content_obj.default_badge_text }}
                         </span>
@@ -196,7 +207,7 @@
                 </div>
             </div>
 
-            <p v-else class="text-sm text-gray-400">
+            <p v-else :class="class_styles.empty_state_text_class_style">
                 {{ content_obj.no_assigned_apps_text }}
             </p>
         </div>
@@ -207,7 +218,7 @@
                     {{ content_obj.created_by_title_text }}
                 </h4>
 
-                <div v-if="state_refs.profile_record.value?.creator" class="flex items-center gap-3">
+                <div v-if="state_refs.profile_record.value?.creator" :class="class_styles.member_summary_content_class_style">
                     <img :src="creator_member_profile_photo_url" :class="class_styles.member_avatar_img_class_style" />
 
                     <div>
@@ -226,7 +237,7 @@
                     {{ content_obj.updated_by_title_text }}
                 </h4>
 
-                <div v-if="state_refs.profile_record.value?.updator" class="flex items-center gap-3">
+                <div v-if="state_refs.profile_record.value?.updator" :class="class_styles.member_summary_content_class_style">
                     <img :src="updator_member_profile_photo_url" :class="class_styles.member_avatar_img_class_style" />
 
                     <div>

@@ -146,6 +146,10 @@ Do not add expression-bodied arrows such as `(record) => record.id`.
 - Use toolkit data-table cell components instead of embedding repeated table-cell markup.
 - Reuse toolkit SVG icon keys/resources; do not paste standalone SVG markup or add an icon library for one icon.
 - Put shared styles in `class_styles/` and pass them through component props. Avoid scattered duplicate Tailwind class strings.
+- Treat `src/class_styles/` as the only source of truth for CSS/Tailwind class strings. Do not hardcode `class="..."`, dynamic class literals, table-width utilities, render-function classes, or HTML-template classes in Vue, controllers, handlers, or utilities.
+- Add or extend a typed class-style object for every new visual rule, then expose it through the owning controller or component props.
+- Do not hard-code CSS or Tailwind class strings in Vue files. Define them in `src/class_styles/` and expose them through
+  the relevant controller, reusing an existing class-style module when suitable or creating a dedicated one when needed.
 - User-facing copy belongs in the content resource under `content_resource.<module>_view_ui`. Hardcoded text is only a fallback.
 - When adding or changing content keys, update the matching file under `docs/content_payloads/` and its sample JSON when applicable.
 - When changing a route, modal sequence, permission, or API interaction, update the matching file under `docs/ui_flows/`.

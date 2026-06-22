@@ -7,7 +7,7 @@
     <div v-else :class="class_styles.wrapper_class_style">
         <TabsUI v-bind="tabs_props">
             <template #profile>
-                <section class="space-y-5">
+                <section :class="class_styles.section_stack_class_style">
                     <div :class="class_styles.profile_header_class_style">
                         <ImageRenderUI v-bind="profile_image_props">
                             <h3 :class="class_styles.h3_class_style">
@@ -79,7 +79,7 @@
                         </div>
                     </div>
 
-                    <div class="space-y-3">
+                    <div :class="class_styles.app_currency_list_class_style">
                         <h4 :class="class_styles.small_bold_underlined_text_class_style">
                             {{ content_obj.contacts_title_text }}
                         </h4>
@@ -120,7 +120,7 @@
                         </p>
                     </div>
 
-                    <div class="space-y-3">
+                    <div :class="class_styles.app_currency_list_class_style">
                         <h4 :class="class_styles.small_bold_underlined_text_class_style">
                             {{ content_obj.app_accounts_title_text }}
                         </h4>

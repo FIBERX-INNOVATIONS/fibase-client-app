@@ -27,6 +27,10 @@ const IdentityProfileViewClassStyles: IdentityProfileViewClassStylesInterface = 
 
     info_row_class_style: "flex items-start gap-2 text-xs font-semibold text-gray-800 break-words",
 
+    active_status_class_style: "text-green-600",
+
+    inactive_status_class_style: "text-red-600",
+
     association_grid_class_style: "grid grid-cols-1 gap-3 lg:grid-cols-2",
 
     association_card_class_style: "rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3",

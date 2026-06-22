@@ -198,7 +198,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -253,7 +253,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "provider",
                 sortable: true,
-                width: "w-[17%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_17,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.provider_text"
                 },
@@ -273,7 +273,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "payment_method",
                 sortable: true,
-                width: "w-[17%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_17,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.payment_method_text"
                 },
@@ -293,7 +293,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "direction",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.direction_text"
                 },
@@ -309,7 +309,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "provider_method_code",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key:
                         "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.provider_method_code_text"
@@ -326,7 +326,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "min_amount",
                 sortable: false,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
                 },
@@ -342,7 +342,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -375,7 +375,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "linked_by_member",
                 sortable: false,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.linked_by_text"
                 },
@@ -400,7 +400,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -417,7 +417,7 @@ class PaymentProviderMethodListViewController extends BaseListViewController<Pay
             {
                 key: "id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.payment_provider_method_view_ui.list_view_ui.table.header.actions_text"
                 },

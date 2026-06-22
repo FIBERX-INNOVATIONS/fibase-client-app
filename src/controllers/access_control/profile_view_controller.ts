@@ -17,6 +17,8 @@ import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
+import AccessControlProfileViewClassStyles from "@/class_styles/access_control_profile_view_class_styles";
+
 class AccessControlProfileViewController extends BaseProfileViewController<
     RoleRecordInterface,
     ProfileViewPropsInterface<RoleRecordInterface>,
@@ -29,18 +31,13 @@ class AccessControlProfileViewController extends BaseProfileViewController<
     public content_obj: AccessControlProfileViewContentInterface = {} as AccessControlProfileViewContentInterface;
 
     constructor(props: ProfileViewPropsInterface<RoleRecordInterface>) {
-        super(props);
+        super(props, "profile_view", AccessControlProfileViewClassStyles);
     }
 
     // Method to configure shared profile components for access-control status and empty states.
     protected getUIComponents(): ProfileViewComponentsInterface {
         return {
             ...super.getUIComponents(),
-            StatusValue: this.getStatusValueComponent({
-                active_class_style: "text-green-500",
-                inactive_class_style: "text-gray-500",
-                inactive_icon_class_style: "text-gray-400"
-            }),
             MemberSummary: this.getMemberSummaryComponent({ show_empty_state: true })
         };
     }

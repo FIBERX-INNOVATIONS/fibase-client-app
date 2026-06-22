@@ -214,7 +214,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -273,7 +273,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "currency",
                 sortable: true,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.currency_text"
@@ -294,7 +294,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "provider_method",
                 sortable: false,
-                width: "w-[14%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_14,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.provider_text"
@@ -318,7 +318,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "provider_method",
                 sortable: true,
-                width: "w-[14%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_14,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.payment_method_text"
@@ -342,7 +342,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "provider_method",
                 sortable: false,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.direction_text"
@@ -360,7 +360,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "min_amount",
                 sortable: false,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
                 },
@@ -376,7 +376,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -413,7 +413,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "linked_by_member",
                 sortable: false,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.linked_by_text"
@@ -439,7 +439,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.created_at_text"
@@ -457,7 +457,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
             {
                 key: "id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key:
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.actions_text"

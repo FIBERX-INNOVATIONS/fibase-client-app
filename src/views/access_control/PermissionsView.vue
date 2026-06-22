@@ -20,7 +20,10 @@
                 @click="action_handler.handleBulkPermissionActionClicked"
             >
                 <span
-                    :class="[class_styles.bulk_action_button_icon_class_style, is_bulk_action_processing ? 'animate-spin' : '']"
+                    :class="[
+                        class_styles.bulk_action_button_icon_class_style,
+                        is_bulk_action_processing ? class_styles.permission_processing_icon_class_style : ''
+                    ]"
                     v-html="getSVGIconValue(bulk_action_button_icon as SVGIconKey)"
                 ></span>
 

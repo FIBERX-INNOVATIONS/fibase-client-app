@@ -51,6 +51,8 @@ export interface DashboardLayoutClassStylesInterface {
 
     side_bar_menu_item_class_style: NavLinkUIClassStylesInterface;
 
+    side_bar_child_menu_item_class_style: NavLinkUIClassStylesInterface;
+
     modal_class_style: ModalUIClassStylesInterface;
 }
 

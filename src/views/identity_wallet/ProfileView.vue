@@ -1,17 +1,17 @@
 <template>
-    <section id="IdentityWalletProfileView" class="w-full">
+    <section id="IdentityWalletProfileView" :class="class_styles.view_wrapper_class_style">
         <div v-if="state_refs.is_loading.value" :class="class_styles.loading_wrapper_class_style">
-            <span class="h-6 w-6" v-html="loading_icon_html"></span>
+            <span :class="class_styles.loading_icon_class_style" v-html="loading_icon_html"></span>
             {{ content_obj.loading_text }}
         </div>
 
         <div v-else :class="class_styles.wrapper_class_style">
             <header :class="class_styles.profile_header_class_style">
-                <div class="min-w-0 space-y-2">
-                    <p class="text-xs font-black uppercase tracking-wider text-gray-500">
+                <div :class="class_styles.header_text_wrapper_class_style">
+                    <p :class="class_styles.eyebrow_text_class_style">
                         {{ content_obj.wallet_breadcrumb_text }}
                     </p>
-                    <h2 class="break-all text-xl font-black text-gray-900">
+                    <h2 :class="class_styles.header_title_class_style">
                         {{ wallet_title }}
                     </h2>
                     <p :class="class_styles.p_class_style">

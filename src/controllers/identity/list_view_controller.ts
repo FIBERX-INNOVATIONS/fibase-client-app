@@ -239,7 +239,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -292,7 +292,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "public_id",
                 sortable: true,
-                width: "w-[18%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_18,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.identity_text"
                 },
@@ -310,7 +310,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "identity_type",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.type_text"
                 },
@@ -324,7 +324,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "primary_source_app_id",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.source_app_text"
                 },
@@ -342,7 +342,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "profile",
                 sortable: false,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.contact_text"
                 },
@@ -356,7 +356,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "wallets",
                 sortable: false,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.wallets_text"
                 },
@@ -372,7 +372,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "is_verified",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.verified_text"
                 },
@@ -386,7 +386,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "status",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -401,7 +401,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -416,7 +416,7 @@ class IdentityListViewController extends BaseListViewController<IdentityRecordIn
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.identity_view_ui.list_view_ui.table.header.actions_text"
                 },

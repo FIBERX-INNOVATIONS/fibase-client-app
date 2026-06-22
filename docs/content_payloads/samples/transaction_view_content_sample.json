@@ -327,6 +327,7 @@
                 }
             },
             "receipts_view": {
+                "coming_soon_text": "Receipt history will be added in the next module slice.",
                 "loading_text": "Loading receipts...",
                 "empty_state_text": "No receipts found for this transaction.",
                 "error_state_text": "Receipts could not be loaded.",
@@ -338,8 +339,13 @@
                 "clear_filters_btn_text": "Clear",
                 "view_receipt_btn_text": "View Receipt",
                 "receipt_unavailable_text": "Receipt file unavailable",
+                "permission_denied_text": "You do not have permission to view transaction receipts.",
                 "previous_button_text": "Previous",
                 "next_button_text": "Next",
+                "pagination_btn_content": {
+                    "prev_btn_text": "Previous",
+                    "next_btn_text": "Next"
+                },
                 "pagination_result_text": "Page {{current_page}} of {{total_pages}} ({{total_items}} receipts)",
                 "labels": {
                     "receipt_number": "Receipt Number",

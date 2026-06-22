@@ -63,7 +63,7 @@ class LogoutViewController extends BaseController<
             ),
 
             spinner_html_content: RenderHtmlUtil.renderLoaderHtml({
-                class_style: "w-12 h-12 flex items-center"
+                class_style: this.class_styles.spinner_class_style
             })
         } as LogoutViewStateDataInterface;
     }

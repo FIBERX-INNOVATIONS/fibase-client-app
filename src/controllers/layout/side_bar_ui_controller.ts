@@ -39,10 +39,7 @@ import OverlayUIPropsBuilder from "@ui/version_3/props_builder/overlay_ui_props_
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
-import {
-    NavLinkUIClassStylesInterface,
-    NavLinkUIPropsInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIClassStylesInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import { SVGIconKey } from "@ui/version_3/resources/svg_icon_resource";
 
@@ -103,16 +100,11 @@ class SideBarUIController extends BaseController<
                 }
             ),
 
-            nav_menu_list_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
-                "SidebarMenuList",
-                {
-                    class_styles: DashboardLayoutClassStyles.side_bar_menu_list_class_style,
+            nav_menu_list_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("SidebarMenuList", {
+                class_styles: DashboardLayoutClassStyles.side_bar_menu_list_class_style,
 
-                    menu_items: this.buildSidebarMenuList(
-                        "content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list"
-                    )
-                }
-            )
+                menu_items: this.buildSidebarMenuList("content_resource.dashboard_layout_ui.side_bar_ui.nav_menu_list")
+            })
         };
     }
 
@@ -128,13 +120,7 @@ class SideBarUIController extends BaseController<
     // Method to build the child item class style used by sidebar submenus.
     private getSidebarChildMenuClassStyle(): NavLinkUIClassStylesInterface {
         return {
-            ...DashboardLayoutClassStyles.side_bar_menu_item_class_style,
-            wrapper_class_style:
-                "flex items-center cursor-pointer py-2 pl-2 pr-1 rounded-lg justify-between group/link w-full min-h-[42px] hover:bg-[#6f7e8d6e] my-1",
-            icon_img_wrapper_class_style:
-                "flex items-center justify-center overflow-hidden w-2/12 h-full p-1",
-            content_class_style:
-                "flex items-center justify-start text-white text-[13px] text-start w-10/12 leading-tight"
+            ...DashboardLayoutClassStyles.side_bar_child_menu_item_class_style
         };
     }
 
@@ -181,9 +167,7 @@ class SideBarUIController extends BaseController<
 
         const children =
             item.children_list
-                ?.map((child) =>
-                    this.buildSidebarMenuItem(child, this.getSidebarChildMenuClassStyle())
-                )
+                ?.map((child) => this.buildSidebarMenuItem(child, this.getSidebarChildMenuClassStyle()))
                 .filter((child): child is NavLinkUIPropsInterface => Boolean(child)) ?? [];
 
         if (!item.menu_link && !children.length) {
@@ -215,20 +199,14 @@ class SideBarUIController extends BaseController<
 
     // Method to build the sidebar menu list with nested payment config children.
     private buildSidebarMenuList(content_key: string): NavLinkUIPropsInterface[] {
-        const content_payload =
-            this.content_manager.get<SideBarNavigationContentItemInterface[]>(content_key);
+        const content_payload = this.content_manager.get<SideBarNavigationContentItemInterface[]>(content_key);
 
         if (!content_payload?.length) {
             return [];
         }
 
         const menus = content_payload
-            .map((item) =>
-                this.buildSidebarMenuItem(
-                    item,
-                    DashboardLayoutClassStyles.side_bar_menu_item_class_style
-                )
-            )
+            .map((item) => this.buildSidebarMenuItem(item, DashboardLayoutClassStyles.side_bar_menu_item_class_style))
             .filter((item): item is NavLinkUIPropsInterface => Boolean(item));
         return menus;
     }

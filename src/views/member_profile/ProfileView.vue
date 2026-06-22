@@ -8,7 +8,7 @@
     <div v-else :class="class_styles.wrapper_class_style">
         <TabsUI v-bind="tabs_props">
             <template #profile>
-                <section class="space-y-5">
+                <section :class="class_styles.section_stack_class_style">
                     <div :class="class_styles.profile_header_class_style">
                         <ImageRenderUI v-bind="profile_image_props">
                             <h3 :class="class_styles.h3_class_style">

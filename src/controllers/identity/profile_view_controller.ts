@@ -189,11 +189,7 @@ class IdentityProfileViewController extends BaseProfileViewController<
     protected getUIComponents(): IdentityProfileViewComponentsInterface {
         return {
             ...super.getUIComponents(),
-            TabsUI,
-            StatusValue: this.getStatusValueComponent({
-                active_class_style: "text-green-600",
-                inactive_class_style: "text-red-600"
-            })
+            TabsUI
         };
     }
 

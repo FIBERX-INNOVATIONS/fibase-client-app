@@ -25,6 +25,8 @@ export interface AccessControlPermissionsViewClassStylesInterface {
     permission_checkbox_unselected_class_style: string;
     permission_checkbox_icon_class_style: string;
     permission_card_wrapper_class_style: string;
+    permission_assign_button_class_style: string;
+    permission_processing_icon_class_style: string;
     permission_content_card_class_styles: ContentCardUIClassStylesInterface;
 }
 

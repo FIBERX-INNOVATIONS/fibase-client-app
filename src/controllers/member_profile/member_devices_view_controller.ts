@@ -27,6 +27,8 @@ import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
 import DisplayFormatterUtil from "@/utils/display_formatter_util";
 
+import ContentCardHTMLClassStyles from "@/class_styles/content_card_html_class_styles";
+
 import PaginationUIPropsBuilder from "@ui/version_3/props_builder/pagination_ui_props_builder";
 
 import ContentCardUIPropsBuilder from "@ui/version_3/props_builder/content_card_ui_props_builder";
@@ -224,8 +226,8 @@ class MemberDevicesViewController
         const display_value = value || this.state_refs.content_obj.value.empty_value_text;
 
         return [
-            `<span class="inline-flex items-start gap-1 rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700">`,
-            `<strong class="font-black text-gray-900">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
+            `<span class="${ContentCardHTMLClassStyles.description_item_class_style}">`,
+            `<strong class="${ContentCardHTMLClassStyles.description_label_class_style}">${DisplayFormatterUtil.escapeHtml(label)}:</strong>`,
             `<span>${DisplayFormatterUtil.escapeHtml(display_value)}</span>`,
             `</span>`
         ].join("");
@@ -233,7 +235,7 @@ class MemberDevicesViewController
 
     private buildCurrentDeviceBadge(): string {
         return [
-            `<span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-black text-green-700 ring-1 ring-green-200">`,
+            `<span class="${ContentCardHTMLClassStyles.current_device_badge_class_style}">`,
             `${DisplayFormatterUtil.escapeHtml(this.state_refs.content_obj.value.current_device_badge_text)}`,
             `</span>`
         ].join("");

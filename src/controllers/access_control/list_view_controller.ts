@@ -164,7 +164,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: `${this.table_content_key}.header.sn_text`
                 },
@@ -221,7 +221,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "name",
                 sortable: true,
-                width: "w-[23%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_23,
                 header: {
                     label_key: `${this.table_content_key}.header.role_text`
                 },
@@ -239,7 +239,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "is_member_group",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: `${this.table_content_key}.header.type_text`
                 },
@@ -255,7 +255,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "creator",
                 sortable: true,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
                     label_key: `${this.table_content_key}.header.created_by_text`
                 },
@@ -275,7 +275,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "updator",
                 sortable: true,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
                     label_key: `${this.table_content_key}.header.updated_by_text`
                 },
@@ -295,7 +295,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
                     label_key: `${this.table_content_key}.header.created_at_text`
                 },
@@ -311,7 +311,7 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
             {
                 key: "id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: `${this.table_content_key}.header.actions_text`
                 },

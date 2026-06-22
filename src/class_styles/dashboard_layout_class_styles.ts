@@ -171,6 +171,14 @@ const SideBarNavMenuClassstyle: NavLinkUIClassStylesInterface = {
     children_caret_class_style: "w-[16px] h-[16px] transition-transform duration-200 text-white"
 };
 
+const SideBarChildMenuClassStyle: NavLinkUIClassStylesInterface = {
+    ...SideBarNavMenuClassstyle,
+    wrapper_class_style:
+        "flex items-center cursor-pointer py-2 pl-2 pr-1 rounded-lg justify-between group/link w-full min-h-[42px] hover:bg-[#6f7e8d6e] my-1",
+    icon_img_wrapper_class_style: "flex items-center justify-center overflow-hidden w-2/12 h-full p-1",
+    content_class_style: "flex items-center justify-start text-white text-[13px] text-start w-10/12 leading-tight"
+};
+
 const ModalClassStyle: ModalUIClassStylesInterface = {
     wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
@@ -224,6 +232,8 @@ const DashboardLayoutClassStyles: DashboardLayoutClassStylesInterface = {
     side_bar_menu_list_class_style: SideBarMenuListClassStyle,
 
     side_bar_menu_item_class_style: SideBarNavMenuClassstyle,
+
+    side_bar_child_menu_item_class_style: SideBarChildMenuClassStyle,
 
     modal_class_style: ModalClassStyle
 };

@@ -221,7 +221,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "record_key",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: { label_key: `${base_key}.sn_text` },
                 cell: { render: () => DataTableSerialCellUI },
                 props: { class_styles: cell_styles, is_selected: false }
@@ -230,7 +230,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: { label_key: `${base_key}.created_at_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -243,7 +243,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "transaction_id",
                 sortable: true,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: { label_key: `${base_key}.transaction_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -255,7 +255,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "entry_type",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.entry_type_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -268,7 +268,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "direction",
                 sortable: true,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: { label_key: `${base_key}.direction_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -281,7 +281,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "balance_field",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: { label_key: `${base_key}.balance_field_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -294,7 +294,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "amount",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.amount_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -306,7 +306,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "available_balance_before",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.before_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -318,7 +318,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "available_balance_after",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.after_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -330,7 +330,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "created_by_member_id",
                 sortable: false,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: { label_key: `${base_key}.created_by_text` },
                 cell: { render: () => DataTableTextContentCellUI },
                 props: {
@@ -342,7 +342,7 @@ class IdentityWalletLedgerListViewController extends BaseListViewController<Iden
             {
                 key: "record_key",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: { label_key: `${base_key}.actions_text` },
                 cell: { render: () => DataTableActionIconCellUI },
                 props: {

@@ -215,7 +215,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "code",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -281,7 +281,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "name",
                 sortable: true,
-                width: "w-[24%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_24,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.name_text"
                 },
@@ -308,7 +308,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "country_code",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.country_code_text"
                 },
@@ -326,7 +326,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "is_fiat",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.type_text"
                 },
@@ -362,7 +362,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "precision",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.precision_text"
                 },
@@ -380,7 +380,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "sort_order",
                 sortable: true,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.sort_order_text"
                 },
@@ -398,7 +398,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -448,7 +448,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "creator",
                 sortable: true,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.creator_text"
                 },
@@ -475,7 +475,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -503,7 +503,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
             {
                 key: "code",
                 sortable: false,
-                width: "w-[7%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_7,
                 header: {
                     label_key: "content_resource.currency_view_ui.list_view_ui.table.header.actions_text"
                 },

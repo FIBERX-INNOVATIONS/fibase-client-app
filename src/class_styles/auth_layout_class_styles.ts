@@ -1,14 +1,12 @@
-import {
-    AuthLayoutClassStylesInterface,
-    AuthsViewClassStylesInterface
-} from "@/ui_types/auth_layout_type";
+import { AuthLayoutClassStylesInterface, AuthsViewClassStylesInterface } from "@/ui_types/auth_layout_type";
 
 import FormViewClassStyles from "./form_view_class_styles";
 
 const AuthViewClassStyle: AuthsViewClassStylesInterface = {
     ...FormViewClassStyles,
     wrapper_class_style:
-        "overflow-y-auto overflow-x-hidden w-full h-full flex flex-col md:items-end items-center justify-center px-[10%] py-[5%]"
+        "overflow-y-auto overflow-x-hidden w-full h-full flex flex-col md:items-end items-center justify-center px-[10%] py-[5%]",
+    spinner_class_style: "w-12 h-12 flex items-center"
 };
 
 const AuthLayoutClassStyles: AuthLayoutClassStylesInterface = {

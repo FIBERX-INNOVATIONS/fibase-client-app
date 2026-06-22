@@ -223,7 +223,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "code",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -282,7 +282,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "name",
                 sortable: true,
-                width: "w-[22%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_22,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.method_text"
                 },
@@ -303,7 +303,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "metadata",
                 sortable: false,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.display_group_text"
                 },
@@ -321,7 +321,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "metadata",
                 sortable: false,
-                width: "w-[15%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_15,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.capabilities_text"
                 },
@@ -339,7 +339,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "sort_order",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.sort_order_text"
                 },
@@ -356,7 +356,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.status_text"
                 },
@@ -399,7 +399,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "creator",
                 sortable: false,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.creator_text"
                 },
@@ -421,7 +421,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[12%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_12,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -443,7 +443,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             {
                 key: "code",
                 sortable: false,
-                width: "w-[6%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_6,
                 header: {
                     label_key: "content_resource.payment_method_view_ui.list_view_ui.table.header.actions_text"
                 },

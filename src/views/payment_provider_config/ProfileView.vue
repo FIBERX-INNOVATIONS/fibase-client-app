@@ -110,7 +110,7 @@
                 v-if="has_credentials_permission"
                 type="button"
                 :disabled="state_refs.is_loading_credentials.value"
-                class="rounded-md bg-gray-900 px-4 py-2 text-xs font-bold uppercase text-white disabled:cursor-not-allowed disabled:opacity-50"
+                :class="class_styles.credential_button_class_style"
                 @click="action_handler.handleCredentialsButtonClicked"
             >
                 {{ credentials_button_text }}
@@ -120,7 +120,7 @@
                 {{ content_obj.credentials_permission_denied_text }}
             </p>
 
-            <p v-if="state_refs.credentials_error_msg.value" class="text-xs font-semibold text-red-500">
+            <p v-if="state_refs.credentials_error_msg.value" :class="class_styles.error_text_class_style">
                 {{ state_refs.credentials_error_msg.value }}
             </p>
 

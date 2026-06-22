@@ -751,6 +751,18 @@ export interface TransactionRecordInterface {
     payment_method?: TransactionProviderSummaryInterface | null;
     identity_provider_account?: TransactionProviderSummaryInterface | null;
     current_receipt?: Record<string, unknown> | null;
+    external_destination_type?: string | null;
+    external_destination_snapshot?: Record<string, unknown> | null;
+    provider_instruction_snapshot?: Record<string, unknown> | null;
+    description?: string | null;
+    reason?: string | null;
+    authorized_at?: string | null;
+    cancelled_at?: string | null;
+    reversed_at?: string | null;
+    refunded_at?: string | null;
+    initiated_by_member?: Partial<MemberRecordInterface> | null;
+    initiated_by_app?: IdentityRegisteredAppSummaryInterface | null;
+    parent_transaction_public_id?: string | null;
 }
 
 export type TransactionListParams = {
@@ -762,6 +774,44 @@ export type TransactionListParams = {
 };
 
 export interface TransactionListResponseInterface extends PaginatedResponseResultInterface<TransactionRecordInterface[]> {}
+
+export interface TransactionReceiptRecordInterface {
+    id?: number;
+    public_id: string;
+    transaction_id: number;
+    receipt_number: string;
+    file_storage_id?: number | null;
+    receipt_url: string | null;
+    status: string;
+    generated_by_member_id?: number | null;
+    generated_at: string | null;
+    processor_attempts?: number;
+    last_error?: string | null;
+    metadata?: Record<string, unknown> | null;
+    created_at: string;
+    updated_at?: string | null;
+    transaction?: TransactionRecordInterface | null;
+    file_storage?: Record<string, unknown> | null;
+    generated_by_member?: Partial<MemberRecordInterface> | null;
+}
+
+export type TransactionReceiptListParams = {
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_direction?: "asc" | "desc";
+    filters?: {
+        search?: string | null;
+        preview_only?: boolean;
+        status?: string | null;
+        generated_by_member_id?: string | number | null;
+        date_range?: { start_date: string; end_date: string } | string | null;
+    };
+};
+
+export interface TransactionReceiptListResponseInterface extends PaginatedResponseResultInterface<
+    TransactionReceiptRecordInterface[]
+> {}
 
 // ==============================
 // ACTIVITY TYPES

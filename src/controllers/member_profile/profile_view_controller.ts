@@ -219,11 +219,7 @@ class MemberProfileProfileViewController extends BaseProfileViewController<
         return {
             ...super.getUIComponents(),
             TabsUI,
-            MemberDevicesView,
-            StatusValue: this.getStatusValueComponent({
-                active_class_style: "text-green-500",
-                inactive_class_style: "text-red-500"
-            })
+            MemberDevicesView
         };
     }
 

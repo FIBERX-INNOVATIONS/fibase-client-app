@@ -13,7 +13,9 @@ const IdentityWalletProfileViewClassStyles: IdentityProfileViewClassStylesInterf
 
     association_grid_class_style: "grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3",
 
-    association_card_class_style: "rounded-2xl border border-gray-100 bg-white p-5 shadow-lg space-y-3"
+    association_card_class_style: "rounded-2xl border border-gray-100 bg-white p-5 shadow-lg space-y-3",
+    header_text_wrapper_class_style: "min-w-0 space-y-2",
+    header_title_class_style: "break-all text-xl font-black text-gray-900"
 };
 
 export default IdentityWalletProfileViewClassStyles;

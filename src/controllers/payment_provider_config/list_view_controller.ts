@@ -157,7 +157,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.sn_text"
                 },
@@ -212,7 +212,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "provider",
                 sortable: true,
-                width: "w-[22%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_22,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.provider_text"
                 },
@@ -232,7 +232,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "environment",
                 sortable: true,
-                width: "w-[10%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_10,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.environment_text"
                 },
@@ -248,7 +248,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "account_reference",
                 sortable: false,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
                     label_key:
                         "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.account_reference_text"
@@ -266,7 +266,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "settings",
                 sortable: false,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: {
                     label_key:
                         "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.settlement_currency_text"
@@ -284,7 +284,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "settings",
                 sortable: false,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: {
                     label_key:
                         "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.default_currency_text"
@@ -301,7 +301,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "creator",
                 sortable: false,
-                width: "w-[13%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_13,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.creator_text"
                 },
@@ -323,7 +323,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.created_at_text"
                 },
@@ -340,7 +340,7 @@ class PaymentProviderConfigListViewController extends BaseListViewController<Pay
             {
                 key: "id",
                 sortable: false,
-                width: "w-[9%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_9,
                 header: {
                     label_key: "content_resource.payment_provider_config_view_ui.list_view_ui.table.header.actions_text"
                 },

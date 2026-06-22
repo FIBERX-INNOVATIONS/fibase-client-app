@@ -7,7 +7,7 @@
         </div>
 
         <div :class="class_styles.two_factor_instruction_class_style">
-            <h3 class="text-sm font-semibold text-slate-800">
+            <h3 :class="class_styles.authenticator_apps_title_class_style">
                 {{ content_text.authenticator_apps_title_text }}
             </h3>
 

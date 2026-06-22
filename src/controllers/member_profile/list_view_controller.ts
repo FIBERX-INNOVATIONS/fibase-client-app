@@ -51,10 +51,7 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
-class MemberProfileListViewController extends BaseListViewController<
-    MemberRecordInterface,
-    "public_id"
-> {
+class MemberProfileListViewController extends BaseListViewController<MemberRecordInterface, "public_id"> {
     public readonly content_key: string = "member_profile";
 
     public readonly record_id_key: "public_id" = "public_id" as const;
@@ -84,9 +81,7 @@ class MemberProfileListViewController extends BaseListViewController<
                 {
                     boolean_props: { disabled: false },
                     action_props: this.action_handler?.getActionBtnActionHandlerConfig?.(),
-                    class_styles:
-                        this.list_view_class_styles.page_header_class_styles
-                            .action_button_class_styles
+                    class_styles: this.list_view_class_styles.page_header_class_styles.action_button_class_styles
                 }
             )
         ];
@@ -219,9 +214,7 @@ class MemberProfileListViewController extends BaseListViewController<
 
     // Method to get member Display name
     private getMemberDisplayName(record: MemberRecordInterface): string {
-        return (
-            record.full_name || getMemberFullName(record) || record.username || record.email || "-"
-        );
+        return record.full_name || getMemberFullName(record) || record.username || record.email || "-";
     }
 
     // Helper Method to get role text
@@ -244,26 +237,22 @@ class MemberProfileListViewController extends BaseListViewController<
     // Method to check if member account actions should be blocked
     private isProtectedMemberRecord(record: MemberRecordInterface): boolean {
         return (
-            MemberAuthenticatorUtil.memberHasSuperAdminRole(record) ||
-            MemberAuthenticatorUtil.isSameAsLoggedInMember(record)
+            MemberAuthenticatorUtil.memberHasSuperAdminRole(record) || MemberAuthenticatorUtil.isSameAsLoggedInMember(record)
         );
     }
 
     // Method to get table render config
     protected getTableRenderConfig(): DataTableColumnRenderType<MemberRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "member_profile_module.update_member_status"
-        );
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.update_member_status");
 
         const columns: DataTableColumnRenderType<MemberRecordInterface>[] = [
             // S/N and Select Checkbox Column
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[5%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.sn_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
                     render: () => DataTableSerialCellUI
@@ -279,25 +268,19 @@ class MemberProfileListViewController extends BaseListViewController<
                             const public_ids = records.map((row) => row.public_id);
 
                             return (
-                                public_ids.length > 0 &&
-                                public_ids.every((public_id) =>
-                                    selected_records.includes(public_id)
-                                )
+                                public_ids.length > 0 && public_ids.every((public_id) => selected_records.includes(public_id))
                             );
                         }
 
                         return selected_records.includes(record.public_id);
                     },
-                    input_ui_boolean_props: (
-                        record?: MemberRecordInterface
-                    ): InputUIBooleanPropsInterface => {
+                    input_ui_boolean_props: (record?: MemberRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
                         const public_ids = records.map((row) => row.public_id);
                         const is_checked = record?.public_id
                             ? selected_records.includes(record.public_id)
-                            : public_ids.length > 0 &&
-                              public_ids.every((public_id) => selected_records.includes(public_id));
+                            : public_ids.length > 0 && public_ids.every((public_id) => selected_records.includes(public_id));
 
                         return {
                             is_checked,
@@ -305,19 +288,14 @@ class MemberProfileListViewController extends BaseListViewController<
                             disabled: !record?.public_id && public_ids.length === 0
                         };
                     },
-                    input_action_props: (
-                        record?: MemberRecordInterface
-                    ): InputUIActionPropsInterface => ({
+                    input_action_props: (record?: MemberRecordInterface): InputUIActionPropsInterface => ({
                         on_click: async (
                             event?: Event,
                             input_value?: InputValue,
                             input_config?: { props: InputUIPropsInterface }
                         ): Promise<ActionMethodRetrunInterface> => {
                             if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(
-                                    record,
-                                    input_value
-                                );
+                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
                             }
 
                             return this.action_handler.handleOnSelectAllRows();
@@ -330,23 +308,19 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "first_name",
                 sortable: true,
-                width: "w-[22%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_22,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.member_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.member_text"
                 },
                 cell: {
                     render: () => DataTableAvatarInfoCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: MemberRecordInterface) =>
-                        this.getMemberDisplayName(record),
+                    getImgAltText: (record: MemberRecordInterface) => this.getMemberDisplayName(record),
                     getImgSubText: (record: MemberRecordInterface) => record.public_id,
-                    getImgContent: (record: MemberRecordInterface) =>
-                        this.getMemberDisplayName(record),
-                    getImgSrc: (record: MemberRecordInterface) =>
-                        record.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL
+                    getImgContent: (record: MemberRecordInterface) => this.getMemberDisplayName(record),
+                    getImgSrc: (record: MemberRecordInterface) => record.profile_photo_link || DEFAULT_MEMBER_PROFILE_PHOTO_URL
                 }
             },
 
@@ -354,10 +328,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "username",
                 sortable: true,
-                width: "w-[11%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_11,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.username_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.username_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
@@ -371,10 +344,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "roles",
                 sortable: false,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.roles_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.roles_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
@@ -389,10 +361,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "email",
                 sortable: true,
-                width: "w-[16%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_16,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.email_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.email_text"
                 },
                 cell: {
                     render: () => DataTableLinkCellUI
@@ -400,8 +371,7 @@ class MemberProfileListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     link_target: "_blank",
-                    getLinkURL: (record: MemberRecordInterface) =>
-                        record.email ? `mailto:${record.email}` : "",
+                    getLinkURL: (record: MemberRecordInterface) => (record.email ? `mailto:${record.email}` : ""),
                     getLinkText: (record: MemberRecordInterface) => record.email || "-"
                 }
             },
@@ -410,10 +380,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "is_active",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.status_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
                     render: (record: MemberRecordInterface) => {
@@ -431,20 +400,13 @@ class MemberProfileListViewController extends BaseListViewController<
                     input_content_props: (): InputUIContentOptionsInterface => ({
                         loader_html_content: RenderHtmlUtil.renderLoaderHtml()
                     }),
-                    input_ui_boolean_props: (
-                        record: MemberRecordInterface
-                    ): InputUIBooleanPropsInterface => ({
+                    input_ui_boolean_props: (record: MemberRecordInterface): InputUIBooleanPropsInterface => ({
                         is_checked: record.is_active,
                         required: true,
                         disabled: this.isProtectedMemberRecord(record)
                     }),
-                    input_action_props: (
-                        record: MemberRecordInterface
-                    ): InputUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: Event,
-                            input_value?: InputValue
-                        ): Promise<ActionMethodRetrunInterface> =>
+                    input_action_props: (record: MemberRecordInterface): InputUIActionPropsInterface => ({
+                        on_click: async (event?: Event, input_value?: InputValue): Promise<ActionMethodRetrunInterface> =>
                             this.action_handler.handleStatusToggleChange(record, input_value)
                     })
                 }
@@ -454,18 +416,16 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "is_deleted",
                 sortable: true,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.deleted_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.deleted_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: MemberRecordInterface) =>
-                        record.is_deleted ? "Deleted" : "-"
+                    getTextContent: (record: MemberRecordInterface) => (record.is_deleted ? "Deleted" : "-")
                 }
             },
 
@@ -473,10 +433,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "created_at",
                 sortable: true,
-                width: "w-[14%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_14,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.created_at_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
                     render: () => DataTableTextContentCellUI
@@ -484,9 +443,7 @@ class MemberProfileListViewController extends BaseListViewController<
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     getDateTextContent: (record: MemberRecordInterface) =>
-                        record.created_at
-                            ? InputTransformerUtil.formatReadableDateTime(record.created_at)
-                            : "-"
+                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
                 }
             },
 
@@ -494,10 +451,9 @@ class MemberProfileListViewController extends BaseListViewController<
             {
                 key: "public_id",
                 sortable: false,
-                width: "w-[8%]",
+                width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {
-                    label_key:
-                        "content_resource.member_profile_view_ui.list_view_ui.table.header.actions_text"
+                    label_key: "content_resource.member_profile_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
                     render: () => DataTableActionIconCellUI
@@ -508,26 +464,23 @@ class MemberProfileListViewController extends BaseListViewController<
                         button_html_content: RenderHtmlUtil.renderHtml({
                             icon: "vertical_elipsis_svg_icon",
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.content_class_style,
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.content_class_style,
                             icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         }),
                         loading_html_content: RenderHtmlUtil.renderLoaderHtml({
                             class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles
-                                    .button_ui_class_style?.icon_class_style
+                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                    ?.icon_class_style
                         })
                     }),
                     button_action_props: (
                         record: MemberRecordInterface,
                         record_index?: number
                     ): ButtonUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: MouseEvent,
-                            config?: { props: ButtonUIPropsInterface }
-                        ): Promise<void> => {
+                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
                             this.action_handler.toggleActionMenu(record, record_index);
                         }
                     })
