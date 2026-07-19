@@ -10,6 +10,8 @@
 
                 <InputGroupUI v-bind="state_refs.fields.value.symbol_input_group_props" />
 
+                <InputGroupUI v-bind="state_refs.fields.value.network_symbol_input_group_props" />
+
                 <InputGroupUI v-bind="state_refs.fields.value.numeric_code_input_group_props" />
 
                 <InputGroupUI v-bind="state_refs.fields.value.country_code_input_group_props" />

@@ -69,6 +69,7 @@ export interface CurrencyFormDataInterface extends BaseFormData {
     numeric_code: string | null;
     name: string;
     symbol: string;
+    network_symbol: string | null;
     precision: number;
     minor_unit: number | null;
     country_code: string | null;
@@ -82,6 +83,7 @@ export interface CurrencyValidatedFormDataInterface extends BaseFormData {
     numeric_code: string | null;
     name: string;
     symbol: string;
+    network_symbol: string | null;
     precision: number;
     minor_unit: number | null;
     country_code: string | null;

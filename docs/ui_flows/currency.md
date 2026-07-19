@@ -22,9 +22,9 @@ Manages currency catalog records and app currency assignment/default state.
 
 ## Flow
 
-1. List view loads currency records with filters for search, active state, fiat state, creator, precision, minor unit, numeric code, app assignment, and date range.
-2. Create/edit use the currency form modal and upload icon/logo files through file storage when needed.
-3. Profile opens currency details.
+1. List view loads currency records with filters for search, active state, fiat state, network symbol, creator, precision, minor unit, numeric code, app assignment, and date range.
+2. Create/edit use the currency form modal, collect a crypto network symbol where applicable, and upload icon/logo files through file storage when needed.
+3. Profile opens currency details and displays network information when the currency includes it.
 4. Status toggle calls the update-status endpoint.
 5. Delete opens confirmation and calls delete.
 6. Assign/unassign app currency flows submit the app currency action endpoint.

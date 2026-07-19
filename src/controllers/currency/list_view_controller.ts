@@ -117,6 +117,18 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                     model_value: this.route.query?.numeric_code ?? ""
                 }
             },
+            // Network Symbol Filter
+            {
+                key: "network_symbol_filter",
+                type: "select",
+                label_content_key: `${filters_content_key}.network_symbol_filter`,
+                input_content_key: `${filters_content_key}.network_symbol_filter`,
+                options_content_key: `${filters_content_key}.network_symbol_filter.option_list`,
+                overides: {
+                    action_props: this.action_handler.getFilterInputActionHandlersConfig(),
+                    model_value: this.route.query?.network_symbol ?? ""
+                }
+            },
             // Is Active filter
             {
                 key: "is_active_filter",

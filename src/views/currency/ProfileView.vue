@@ -63,6 +63,36 @@
                     {{ state_refs.profile_record.value?.country_code || content_obj.empty_value_text }}
                 </p>
 
+                <p v-if="state_refs.profile_record.value?.network" :class="class_styles.small_bold_value_text_class_style">
+                    <span v-html="getSVGIconValue('world_globe_svg_icon')" :class="class_styles.icon_class_style"></span>
+                    <span :class="class_styles.small_bold_value_text_class_style">
+                        {{ content_obj.network_label_text }}
+                    </span>
+                    {{ state_refs.profile_record.value.network.network || content_obj.empty_value_text }}
+                </p>
+
+                <p
+                    v-if="state_refs.profile_record.value?.network_symbol"
+                    :class="class_styles.small_bold_value_text_class_style"
+                >
+                    <span
+                        v-html="getSVGIconValue('identification_card_svg_icon')"
+                        :class="class_styles.icon_class_style"
+                    ></span>
+                    <span :class="class_styles.small_bold_value_text_class_style">
+                        {{ content_obj.network_symbol_label_text }}
+                    </span>
+                    {{ state_refs.profile_record.value.network_symbol || content_obj.empty_value_text }}
+                </p>
+
+                <p v-if="state_refs.profile_record.value?.network" :class="class_styles.small_bold_value_text_class_style">
+                    <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
+                    <span :class="class_styles.small_bold_value_text_class_style">
+                        {{ content_obj.token_standard_label_text }}
+                    </span>
+                    {{ state_refs.profile_record.value.network.token_standard || content_obj.empty_value_text }}
+                </p>
+
                 <p :class="class_styles.small_bold_value_text_class_style">
                     <span v-html="getSVGIconValue('numbered_list_svg_icon')" :class="class_styles.icon_class_style"></span>
                     <span :class="class_styles.small_bold_value_text_class_style">

@@ -8,10 +8,7 @@ import { FILE_STORAGE_REFERENCE_TYPE } from "@/configs";
 
 import { FieldValidator, CurrencyFormDataInterface } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -68,6 +65,7 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
             code: record?.code ?? "",
             name: record?.name ?? "",
             symbol: record?.symbol ?? "",
+            network_symbol: record?.network_symbol ?? null,
             numeric_code: record?.numeric_code ?? "",
             precision: record?.precision ?? 0,
             minor_unit: record?.minor_unit ?? null,
@@ -79,15 +77,15 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get field validators
-    protected getValidators(): Partial<
-        Record<keyof CurrencyFormDataInterface, FieldValidator<CurrencyFormDataInterface>>
-    > {
+    protected getValidators(): Partial<Record<keyof CurrencyFormDataInterface, FieldValidator<CurrencyFormDataInterface>>> {
         return {
             code: CurrencyValidator.validateCurrencyCode,
 
             name: CurrencyValidator.validateCurrencyName,
 
             symbol: CurrencyValidator.validateCurrencySymbol,
+
+            network_symbol: CurrencyValidator.validateNetworkSymbol,
 
             numeric_code: CurrencyValidator.validateNumericCode,
 
@@ -120,36 +118,18 @@ class CurrencyFormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    msg || "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert(
-                "success",
-                msg || "file_uploaded_successfully",
-                5,
-                undefined,
-                true
-            );
+            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
 
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;

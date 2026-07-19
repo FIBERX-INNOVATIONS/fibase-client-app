@@ -223,6 +223,12 @@ export interface AppCurrencyRecordinterface {
     app?: RegisteredAppPreviewRecordInterface;
 }
 
+export interface CurrencyNetworkInterface {
+    network: string;
+    network_symbol: string;
+    token_standard: string;
+}
+
 export interface CurrencyRecordInterface {
     id?: number;
     code: string;
@@ -230,6 +236,8 @@ export interface CurrencyRecordInterface {
     logo_url: string | null;
     name: string;
     symbol: string;
+    network_symbol: string | null;
+    network: CurrencyNetworkInterface | null;
     precision: number;
     minor_unit: number | null;
     format: string | null;

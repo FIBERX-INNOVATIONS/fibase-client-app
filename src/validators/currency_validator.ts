@@ -9,10 +9,12 @@ import {
 } from "@/types/form_data_type";
 
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
+
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
-import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
 import BaseValidator from "@/validators/base_validator";
+
+import InputValidatorUtil from "@ui/version_3/utils/input_validator_util";
 
 class CurrencyValidator extends BaseValidator {
     // CODE (e.g. USD, NGN, BTC)
@@ -45,6 +47,15 @@ class CurrencyValidator extends BaseValidator {
     public static validateCurrencySymbol = (value: string | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: false, msg: this.getContentMessage("invalid_currency_symbol") };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate currency network symbol.
+    public static validateNetworkSymbol = (value: string | null): ActionMethodRetrunInterface => {
+        if (!value) {
+            return { status: true, msg: "" };
         }
 
         return { status: true, msg: "" };
@@ -141,6 +152,7 @@ class CurrencyValidator extends BaseValidator {
         return { status: true, msg: "" };
     };
 
+    // Method to validate currency form input.
     public static validateCurrencyInput(
         form_data: CurrencyFormDataInterface
     ): ValidationResultInterface<CurrencyValidatedFormDataInterface> {
@@ -149,6 +161,7 @@ class CurrencyValidator extends BaseValidator {
             code,
             name,
             symbol,
+            network_symbol,
             numeric_code,
             precision,
             minor_unit,
@@ -174,6 +187,10 @@ class CurrencyValidator extends BaseValidator {
 
         if (!this.validateCurrencySymbol(symbol).status) {
             return { v_state: false, v_msg: "invalid_currency_symbol" };
+        }
+
+        if (!this.validateNetworkSymbol(network_symbol).status) {
+            return { v_state: false, v_msg: "invalid_currency_network_symbol" };
         }
 
         if (!this.validateNumericCode(numeric_code).status) {
@@ -216,6 +233,10 @@ class CurrencyValidator extends BaseValidator {
             return { v_state: false, v_msg: "crypto_should_not_have_minor_unit" };
         }
 
+        if (!is_fiat && !network_symbol) {
+            return { v_state: false, v_msg: "invalid_currency_network_symbol" };
+        }
+
         // =========================
         // ✅ CLEAN DATA
         // =========================
@@ -225,6 +246,7 @@ class CurrencyValidator extends BaseValidator {
             code: code?.toUpperCase().trim(),
             name: name?.trim(),
             symbol: symbol?.trim(),
+            network_symbol: is_fiat ? null : network_symbol?.trim().toUpperCase() || null,
             numeric_code: numeric_code ?? null,
             precision,
             minor_unit: minor_unit ?? null,

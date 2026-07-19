@@ -33,6 +33,8 @@ type CurrencyFieldsType = {
 
     symbol_input_group_props: InputGroupUIPropsInterface;
 
+    network_symbol_input_group_props: InputGroupUIPropsInterface;
+
     numeric_code_input_group_props: InputGroupUIPropsInterface;
 
     country_code_input_group_props: InputGroupUIPropsInterface;

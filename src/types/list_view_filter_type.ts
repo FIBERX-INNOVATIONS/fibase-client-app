@@ -12,6 +12,7 @@ export interface CurrencyListViewFiltersInterface {
     search?: string | null;
     is_active?: string | null;
     is_fiat?: string | null;
+    network_symbol?: string | null;
     created_by?: string | null;
     unassigned_to_app?: string | boolean;
     precision?: number | null;

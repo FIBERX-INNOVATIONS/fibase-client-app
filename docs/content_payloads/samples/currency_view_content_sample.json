@@ -1,0 +1,292 @@
+{
+    "currency_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "Currencies",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "Currencies",
+                "header_description": "Manage supported fiat and crypto currencies.",
+                "create_btn": {
+                    "btn_text": "Create Currency"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_icon": "horizontal_filters_svg_icon",
+                    "btn_text": "Filters"
+                },
+                "search_filter": {
+                    "label_text": "Keyword Search",
+                    "placeholder_text": "Search by name, code, symbol..."
+                },
+                "precision_filter": {
+                    "label_text": "Currency Precision",
+                    "placeholder_text": "0, 1, 2, 3, 4..."
+                },
+                "minor_unit_filter": {
+                    "label_text": "Currency Minor Unit",
+                    "placeholder_text": "100, 200, 300"
+                },
+                "numeric_code_filter": {
+                    "label_text": "Currency Numeric Code",
+                    "placeholder_text": "566, 840, 826"
+                },
+                "network_symbol_filter": {
+                    "label_text": "Currency Network Symbol",
+                    "placeholder_text": "Select network symbol",
+                    "option_list": [
+                        {
+                            "label_text": "BNB Smart Chain (BEP-20)",
+                            "value": "BSC"
+                        },
+                        {
+                            "label_text": "Ethereum (ERC-20)",
+                            "value": "ETH"
+                        }
+                    ]
+                },
+                "status_filter": {
+                    "label_text": "Currency Status",
+                    "placeholder_text": "Select Status",
+                    "option_list": [
+                        {
+                            "label_text": "Active",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Inactive",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "type_filter": {
+                    "label_text": "Currency Type",
+                    "placeholder_text": "Select Type",
+                    "option_list": [
+                        {
+                            "label_text": "Fiat",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "Non-Fiat",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "app_id_filter": {
+                    "label_text": "Filter by App",
+                    "placeholder_text": "App ID or Public ID...",
+                    "selected_text_prefix": "Selected Registered App"
+                },
+                "unassigned_to_app_filter": {
+                    "label_text": "Unassigned to App",
+                    "placeholder_text": "Select Option",
+                    "option_list": [
+                        {
+                            "label_text": "Assigned Only",
+                            "value": "false"
+                        },
+                        {
+                            "label_text": "Unassigned Only",
+                            "value": "true"
+                        }
+                    ]
+                },
+                "created_by_filter": {
+                    "label_text": "Created By",
+                    "placeholder_text": "Member ID..."
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date Range",
+                    "placeholder_text": "yyyy-mm-dd"
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear Filters"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} currency record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} selected",
+                    "actions": [
+                        {
+                            "label_text": "Assign to App",
+                            "value": "assign"
+                        },
+                        {
+                            "label_text": "Unassign from App",
+                            "value": "unassign"
+                        }
+                    ]
+                },
+                "loading_section": {
+                    "loader_text": "Loading currencies..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Currencies Found"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "code_text": "Code",
+                    "name_text": "Name",
+                    "country_code_text": "Country Code",
+                    "type_text": "Type",
+                    "precision_text": "Precision",
+                    "sort_order_text": "Sort Order",
+                    "creator_text": "Created By",
+                    "created_at_text": "Created At",
+                    "status_text": "Status",
+                    "actions_text": "Actions"
+                },
+                "body": {
+                    "fiat_currency_type_text": "Fiat Currency",
+                    "crypto_currency_type_text": "Crypto Currency"
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "next_btn_text": "Next",
+                        "prev_btn_text": "Prev"
+                    }
+                }
+            }
+        },
+        "form_view_ui": {
+            "header_text": "",
+            "fieldset": {
+                "code_field": {
+                    "label_text": "Currency Code",
+                    "placeholder_text": "e.g. USD, EUR, GBP"
+                },
+                "name_field": {
+                    "label_text": "Currency Name",
+                    "placeholder_text": "e.g. United States Dollar"
+                },
+                "symbol_field": {
+                    "label_text": "Symbol",
+                    "placeholder_text": "$, EUR, GBP"
+                },
+                "network_symbol_field": {
+                    "label_text": "Currency Network Symbol",
+                    "placeholder_text": "Select crypto network symbol",
+                    "option_list": [
+                        {
+                            "label_text": "BNB Smart Chain (BEP-20)",
+                            "value": "BSC"
+                        },
+                        {
+                            "label_text": "Ethereum (ERC-20)",
+                            "value": "ETH"
+                        }
+                    ]
+                },
+                "numeric_code_field": {
+                    "label_text": "Numeric Code",
+                    "placeholder_text": "e.g. 840"
+                },
+                "precision_field": {
+                    "label_text": "Precision",
+                    "placeholder_text": "e.g. 2"
+                },
+                "minor_unit_field": {
+                    "label_text": "Minor Unit",
+                    "placeholder_text": "e.g. 100"
+                },
+                "format_field": {
+                    "label_text": "Format",
+                    "placeholder_text": "Optional display format"
+                },
+                "country_code_field": {
+                    "label_text": "Country Code",
+                    "placeholder_text": "e.g. US, GB"
+                },
+                "sort_order_field": {
+                    "label_text": "Sort Order",
+                    "placeholder_text": "e.g. 1, 2, 3"
+                },
+                "logo_url_field": {
+                    "label_text": "Logo URL",
+                    "placeholder_text": "https://..."
+                },
+                "is_fiat_field": {
+                    "label_text": "Is Fiat Currency",
+                    "option_list": [
+                        {
+                            "label_text": "Yes",
+                            "value": "true"
+                        },
+                        {
+                            "label_text": "No",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "btn_text": "Submit"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading currency...",
+            "no_description_text": "",
+            "empty_value_text": "-",
+            "header": {
+                "currency_logo_alt_text": "Currency logo",
+                "symbol_label_text": "Symbol:",
+                "format_label_text": "Format:",
+                "no_format_text": "No format defined"
+            },
+            "sections": {
+                "currency_information": {
+                    "title_text": "Currency Information",
+                    "code_label_text": "Code:",
+                    "numeric_code_label_text": "Numeric Code:",
+                    "country_code_label_text": "Country:",
+                    "network_label_text": "Network:",
+                    "network_symbol_label_text": "Network Symbol:",
+                    "token_standard_label_text": "Token Standard:",
+                    "precision_label_text": "Precision:",
+                    "minor_unit_label_text": "Minor Unit:",
+                    "sort_order_label_text": "Sort Order:"
+                },
+                "status": {
+                    "title_text": "Status",
+                    "type_label_text": "Type:",
+                    "fiat_type_text": "Fiat",
+                    "crypto_type_text": "Crypto",
+                    "active_label_text": "Active:",
+                    "active_status_text": "Active",
+                    "inactive_status_text": "Inactive",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                },
+                "assigned_apps": {
+                    "title_text": "Apps Using This Currency",
+                    "app_prefix_label_text": "Prefix:",
+                    "default_badge_text": "Default",
+                    "no_assigned_apps_text": "No apps assigned"
+                },
+                "created_by": {
+                    "title_text": "Created By"
+                },
+                "updated_by": {
+                    "title_text": "Updated By"
+                }
+            }
+        },
+        "api_responses": {
+            "invalid_currency_network_symbol": "Please provide a valid crypto currency network symbol."
+        }
+    }
+}

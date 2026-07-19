@@ -106,6 +106,9 @@ export interface CurrencyProfileViewContentKeysInterface extends ProfileViewCont
     code_label_text: string;
     numeric_code_label_text: string;
     country_code_label_text: string;
+    network_label_text: string;
+    network_symbol_label_text: string;
+    token_standard_label_text: string;
     precision_label_text: string;
     minor_unit_label_text: string;
     sort_order_label_text: string;
@@ -137,6 +140,9 @@ export interface CurrencyProfileViewContentTextInterface extends ProfileViewCont
     code_label_text: string;
     numeric_code_label_text: string;
     country_code_label_text: string;
+    network_label_text: string;
+    network_symbol_label_text: string;
+    token_standard_label_text: string;
     precision_label_text: string;
     minor_unit_label_text: string;
     sort_order_label_text: string;
