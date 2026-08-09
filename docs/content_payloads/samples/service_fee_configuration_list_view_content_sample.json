@@ -1,0 +1,281 @@
+{
+    "service_fee_configuration_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                { "menu_text": "Home", "menu_icon": "home_svg_icon", "menu_link": "/dashboard" },
+                { "menu_text": "Service Fee Configurations", "menu_icon": "greater_than_caret_svg_icon" }
+            ],
+            "header_section": {
+                "header_text": "Service Fee Configurations",
+                "header_description": "Manage transaction fees across currencies and configuration scopes.",
+                "create_btn": { "btn_text": "Create Fee Configuration" }
+            },
+            "filters_section": {
+                "toggle_btn": { "btn_text": "Filters", "btn_icon": "horizontal_filters_svg_icon" },
+                "clear_filters_btn": { "btn_text": "Clear" },
+                "apply_filters_btn": { "btn_text": "Apply Filters" },
+                "search_filter": { "label_text": "Search", "placeholder_text": "Search fee configurations" },
+                "is_active_filter": {
+                    "label_text": "Status",
+                    "placeholder_text": "Select status",
+                    "option_list": [
+                        { "label_text": "Active", "value": "true" },
+                        { "label_text": "Inactive", "value": "false" }
+                    ]
+                },
+                "currency_id_filter": { "label_text": "Currency", "placeholder_text": "Search currency" },
+                "registered_app_id_filter": { "label_text": "Registered App", "placeholder_text": "Search application" },
+                "provider_id_filter": { "label_text": "Provider", "placeholder_text": "Search provider" },
+                "identity_id_filter": { "label_text": "Identity", "placeholder_text": "Search identity" },
+                "transaction_type_filter": {
+                    "label_text": "Transaction Type",
+                    "placeholder_text": "Select transaction type",
+                    "option_list": [
+                        { "label_text": "Deposit", "value": "deposit" },
+                        { "label_text": "Withdrawal", "value": "withdrawal" },
+                        { "label_text": "Transfer", "value": "transfer" },
+                        { "label_text": "Exchange", "value": "exchange" }
+                    ]
+                },
+                "configuration_level_filter": {
+                    "label_text": "Configuration Level",
+                    "placeholder_text": "Select level",
+                    "option_list": [
+                        { "label_text": "Level 1", "value": 1 },
+                        { "label_text": "Level 2", "value": 2 },
+                        { "label_text": "Level 3", "value": 3 },
+                        { "label_text": "Level 4", "value": 4 }
+                    ]
+                },
+                "fee_type_filter": {
+                    "label_text": "Fee Type",
+                    "placeholder_text": "Select fee type",
+                    "option_list": [
+                        { "label_text": "Flat", "value": "flat" },
+                        { "label_text": "Percentage", "value": "percentage" },
+                        { "label_text": "Range", "value": "range" }
+                    ]
+                },
+                "effective_state_filter": {
+                    "label_text": "Effective State",
+                    "placeholder_text": "Select effective state",
+                    "option_list": [
+                        { "label_text": "Current", "value": "current" },
+                        { "label_text": "Scheduled", "value": "scheduled" },
+                        { "label_text": "Expired", "value": "expired" },
+                        { "label_text": "Unbounded", "value": "unbounded" }
+                    ]
+                },
+                "min_amount_filter": { "label_text": "Minimum Amount", "placeholder_text": "Minimum amount" },
+                "max_amount_filter": { "label_text": "Maximum Amount", "placeholder_text": "Maximum amount" },
+                "created_by_filter": { "label_text": "Created By", "placeholder_text": "Search member" },
+                "updated_by_filter": { "label_text": "Updated By", "placeholder_text": "Search member" },
+                "effective_from_range_filter": {
+                    "label_text": "Effective From",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                },
+                "effective_until_range_filter": {
+                    "label_text": "Effective Until",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                },
+                "date_range_filter": {
+                    "label_text": "Created Date",
+                    "start_date_placeholder_text": "Start date",
+                    "end_date_placeholder_text": "End date"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} fee configuration record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": { "btn_text": "{{selected_count}} record(s) selected" },
+                "loading_section": { "loader_text": "Loading service fee configurations..." },
+                "empty_state_section": { "header_text": "No Service Fee Configuration Found" },
+                "header": {
+                    "sn_text": "S/N",
+                    "currency_text": "Currency",
+                    "transaction_type_text": "Transaction Type",
+                    "scope_text": "Scope",
+                    "fee_text": "Fee",
+                    "effective_period_text": "Effective Period",
+                    "status_text": "Status",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "pagination_section": { "btn_content": { "prev_btn_text": "Previous", "next_btn_text": "Next" } },
+                "action_menu_list": {
+                    "view_menu_option": { "menu_text": "View", "menu_icon": "view_eye_svg_icon", "menu_link": "" },
+                    "select_menu_option": { "menu_text": "Select", "menu_icon": "check_circle_svg_icon", "menu_link": "" },
+                    "edit_menu_option": { "menu_text": "Edit", "menu_icon": "edit_square_pencil_svg_icon", "menu_link": "" }
+                }
+            }
+        },
+        "modals_ui": {
+            "add_new_modal_ui": {
+                "title_text": "Create Service Fee Configuration",
+                "title_icon": "square_grid_plus_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "update_modal_ui": {
+                "title_text": "Edit Service Fee Configuration",
+                "title_icon": "edit_square_pencil_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "profile_details_modal_ui": {
+                "title_text": "Service Fee Configuration Details",
+                "title_icon": "view_eye_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            }
+        },
+        "form_view_ui": {
+            "header_text": "",
+            "fieldset": {
+                "no_selection_option_text": "No selection",
+                "currency_id_field": {
+                    "label_text": "Currency",
+                    "placeholder_text": "Search currency",
+                    "selected_text_prefix": "Selected"
+                },
+                "registered_app_id_field": {
+                    "label_text": "Registered App",
+                    "placeholder_text": "Optional application scope",
+                    "selected_text_prefix": "Selected"
+                },
+                "provider_id_field": {
+                    "label_text": "Payment Provider",
+                    "placeholder_text": "Optional provider scope",
+                    "selected_text_prefix": "Selected"
+                },
+                "identity_id_field": {
+                    "label_text": "Identity",
+                    "placeholder_text": "Optional identity scope",
+                    "selected_text_prefix": "Selected"
+                },
+                "transaction_type_field": {
+                    "label_text": "Transaction Type",
+                    "placeholder_text": "Select transaction type",
+                    "options_list": [
+                        { "label_text": "Deposit", "value": "deposit" },
+                        { "label_text": "Withdrawal", "value": "withdrawal" },
+                        { "label_text": "Transfer", "value": "transfer" },
+                        { "label_text": "Exchange", "value": "exchange" }
+                    ]
+                },
+                "fee_type_field": {
+                    "label_text": "Fee Type",
+                    "placeholder_text": "Select fee type",
+                    "options_list": [
+                        { "label_text": "Flat", "value": "flat" },
+                        { "label_text": "Percentage", "value": "percentage" },
+                        { "label_text": "Range", "value": "range" }
+                    ]
+                },
+                "amount_field": {
+                    "label_text": "Fee Amount",
+                    "placeholder_text": "Enter fee amount"
+                },
+                "ranges_section_title": "Fee Ranges",
+                "range_min_value_field": {
+                    "label_text": "Minimum Value",
+                    "placeholder_text": "Enter lower bound"
+                },
+                "range_max_value_field": {
+                    "label_text": "Maximum Value",
+                    "placeholder_text": "Leave empty for no upper bound"
+                },
+                "range_fee_type_field": {
+                    "label_text": "Range Fee Type",
+                    "placeholder_text": "Select fee type",
+                    "options_list": [
+                        { "label_text": "Flat", "value": "flat" },
+                        { "label_text": "Percentage", "value": "percentage" }
+                    ]
+                },
+                "range_amount_field": {
+                    "label_text": "Range Fee Amount",
+                    "placeholder_text": "Enter fee amount"
+                },
+                "add_range_btn_text": "Add Range",
+                "remove_range_btn_text": "Remove Range",
+                "effective_from_field": {
+                    "label_text": "Effective From",
+                    "placeholder_text": "Optional start date"
+                },
+                "effective_until_field": {
+                    "label_text": "Effective Until",
+                    "placeholder_text": "Optional end date"
+                },
+                "btn_text": "Save Fee Configuration"
+            }
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading service fee configuration...",
+            "no_description_text": "",
+            "empty_value_text": "-",
+            "header": { "currency_logo_alt_text": "Currency logo" },
+            "sections": {
+                "configuration_information": {
+                    "title_text": "Configuration Information",
+                    "configuration_id_label_text": "Configuration ID:",
+                    "currency_label_text": "Currency:",
+                    "transaction_type_label_text": "Transaction Type:",
+                    "configuration_level_label_text": "Configuration Level:"
+                },
+                "fee_details": {
+                    "title_text": "Fee Details",
+                    "fee_type_label_text": "Fee Type:",
+                    "amount_label_text": "Amount:"
+                },
+                "ranges": {
+                    "title_text": "Fee Ranges",
+                    "range_item_title_text": "Tier",
+                    "minimum_label_text": "Minimum:",
+                    "maximum_label_text": "Maximum:",
+                    "fee_type_label_text": "Fee Type:",
+                    "amount_label_text": "Amount:",
+                    "open_ended_text": "No upper limit",
+                    "no_ranges_text": "No fee ranges configured."
+                },
+                "scope": {
+                    "title_text": "Configuration Scope",
+                    "registered_app_label_text": "Registered App:",
+                    "provider_label_text": "Payment Provider:",
+                    "identity_label_text": "Identity:"
+                },
+                "lifecycle": {
+                    "title_text": "Status and Lifecycle",
+                    "active_label_text": "Active:",
+                    "active_status_text": "Active",
+                    "inactive_status_text": "Inactive",
+                    "effective_from_label_text": "Effective From:",
+                    "effective_until_label_text": "Effective Until:",
+                    "created_label_text": "Created:",
+                    "updated_label_text": "Updated:"
+                },
+                "created_by": { "title_text": "Created By" },
+                "updated_by": { "title_text": "Updated By" }
+            }
+        }
+    },
+    "api_responses": {
+        "service_fee_configuration_module_responses": {
+            "invalid_service_fee_record_id": "Please select a valid record.",
+            "invalid_service_fee_currency_id": "Please select a valid currency.",
+            "invalid_service_fee_transaction_type": "Please select a valid transaction type.",
+            "invalid_service_fee_type": "Please select a valid fee type.",
+            "invalid_service_fee_amount": "Please enter a valid non-negative fee amount.",
+            "service_fee_percentage_cannot_exceed_100": "Percentage fees cannot exceed 100.",
+            "invalid_service_fee_configuration_scope": "Select a registered app before a provider, and select both an app and provider before an identity.",
+            "invalid_service_fee_effective_period": "The effective-until date must be later than the effective-from date.",
+            "service_fee_ranges_required": "Add at least one fee range.",
+            "invalid_service_fee_range": "Each fee range needs valid bounds, fee type, and amount.",
+            "range_service_fee_amount_must_be_empty": "A range fee cannot also have a standalone amount.",
+            "scalar_service_fee_cannot_have_ranges": "Flat and percentage fees cannot include range rows.",
+            "service_fee_ranges_must_start_at_zero": "The first fee range must start at zero.",
+            "service_fee_ranges_must_end_open": "The final fee range must have no maximum value.",
+            "non_contiguous_service_fee_ranges": "Fee ranges must be contiguous without gaps or overlaps."
+        }
+    }
+}

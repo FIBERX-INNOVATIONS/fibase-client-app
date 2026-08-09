@@ -24,6 +24,7 @@ import {
     PaymentProviderConfigFieldsType,
     PaymentProviderMethodFieldsType,
     CurrencyPaymentProviderMethodFieldsType,
+    ServiceFeeConfigurationFieldsType,
     MemberProfileFieldsType,
     AppCurrencyFieldsType,
     TwoFactorLoginFieldsType,
@@ -211,6 +212,28 @@ type PaymentProviderMethodFormState = FormViewStateDataInterface<PaymentProvider
 
 type CurrencyPaymentProviderMethodFormState = FormViewStateDataInterface<CurrencyPaymentProviderMethodFieldsType>;
 
+interface ServiceFeeConfigurationRangeRowUIInterface {
+    key: string;
+
+    min_value_input_group_props: InputGroupUIPropsInterface;
+
+    max_value_input_group_props: InputGroupUIPropsInterface;
+
+    fee_type_input_group_props: InputGroupUIPropsInterface;
+
+    amount_input_group_props: InputGroupUIPropsInterface;
+
+    remove_btn_props: ButtonUIPropsInterface;
+}
+
+interface ServiceFeeConfigurationFormState extends FormViewStateDataInterface<ServiceFeeConfigurationFieldsType> {
+    fee_type: "flat" | "percentage" | "range";
+
+    range_rows: ServiceFeeConfigurationRangeRowUIInterface[];
+
+    add_range_btn_props: ButtonUIPropsInterface;
+}
+
 type MemberProfileFormState = FormViewStateDataInterface<MemberProfileFieldsType>;
 
 type AppCurrencyFormState = FormViewStateDataInterface<AppCurrencyFieldsType>;
@@ -246,6 +269,8 @@ export {
     PaymentProviderConfigFormState,
     PaymentProviderMethodFormState,
     CurrencyPaymentProviderMethodFormState,
+    ServiceFeeConfigurationRangeRowUIInterface,
+    ServiceFeeConfigurationFormState,
     MemberProfileFormState,
     AppCurrencyFormState,
     RoleFormState,

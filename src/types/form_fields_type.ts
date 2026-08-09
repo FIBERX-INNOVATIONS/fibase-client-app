@@ -212,6 +212,26 @@ type CurrencyPaymentProviderMethodFieldsType = {
     max_amount_input_group_props: InputGroupUIPropsInterface;
 };
 
+type ServiceFeeConfigurationFieldsType = {
+    currency_id_input_group_props: InputGroupUIPropsInterface;
+
+    registered_app_id_input_group_props: InputGroupUIPropsInterface;
+
+    provider_id_input_group_props: InputGroupUIPropsInterface;
+
+    identity_id_input_group_props: InputGroupUIPropsInterface;
+
+    transaction_type_input_group_props: InputGroupUIPropsInterface;
+
+    fee_type_input_group_props: InputGroupUIPropsInterface;
+
+    amount_input_group_props: InputGroupUIPropsInterface;
+
+    effective_from_input_group_props: InputGroupUIPropsInterface;
+
+    effective_until_input_group_props: InputGroupUIPropsInterface;
+};
+
 type MemberProfileFieldsType = {
     first_name_input_group_props: InputGroupUIPropsInterface;
 
@@ -279,6 +299,7 @@ export {
     PaymentProviderConfigFieldsType,
     PaymentProviderMethodFieldsType,
     CurrencyPaymentProviderMethodFieldsType,
+    ServiceFeeConfigurationFieldsType,
     MemberProfileFieldsType,
     MyProfileFieldsType,
     AppCurrencyFieldsType,

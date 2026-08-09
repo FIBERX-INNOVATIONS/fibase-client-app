@@ -8,6 +8,27 @@ interface CurrencyAmountFormatOptions {
 
 // Centralizes application display formatting while delegating primitive transforms to the UI toolkit.
 class DisplayFormatterUtil {
+    // Method to format a decimal value for editable inputs without insignificant zeroes.
+    public static formatDecimalInput(value?: number | string | null): string {
+        if (value === null || value === undefined || value === "") {
+            return "";
+        }
+
+        const normalized_value = String(value).trim();
+
+        if (!/^[+-]?\d+(?:\.\d+)?$/.test(normalized_value)) {
+            return normalized_value;
+        }
+
+        const sign = normalized_value.startsWith("-") ? "-" : "";
+        const unsigned_value = normalized_value.replace(/^[+-]/, "");
+        const [integer_part, fractional_part = ""] = unsigned_value.split(".");
+        const normalized_integer = integer_part.replace(/^0+(?=\d)/, "") || "0";
+        const normalized_fraction = fractional_part.replace(/0+$/, "");
+
+        return `${sign}${normalized_integer}${normalized_fraction ? `.${normalized_fraction}` : ""}`;
+    }
+
     public static formatLabel(value?: string | null, empty_value = "-"): string {
         if (!value) {
             return empty_value;

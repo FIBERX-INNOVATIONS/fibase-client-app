@@ -38,6 +38,65 @@ class PreviewRecordFetcher {
 
     private static readonly countries_page_size = 50;
 
+    // Method to prepend a clear option to the first page of optional preview records.
+    private static prependOptionalSelection(
+        params: InputUIFetchDataParamsInterface<Record<string, unknown>>,
+        result: { records: SelectOptionInterface[]; total_pages: number }
+    ): { records: SelectOptionInterface[]; total_pages: number } {
+        const page = Number(params?.page ?? 1);
+
+        if (page > 1) {
+            return result;
+        }
+
+        return {
+            ...result,
+            records: [{ label_text: String(params.optional_selection_label ?? "No selection"), value: "" }, ...result.records]
+        };
+    }
+
+    // Method to remove optional-selection UI metadata before querying an API.
+    private static getOptionalSelectionFetchParams<TParams extends Record<string, unknown>>(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): InputUIFetchDataParamsInterface<TParams> {
+        const { optional_selection_label, ...fetch_params } = params;
+
+        return fetch_params as InputUIFetchDataParamsInterface<TParams>;
+    }
+
+    // Method to fetch identity preview records with an option to clear the selection.
+    public static fetchOptionalIdentityPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const result = await this.fetchIdentityPreviewRecords(this.getOptionalSelectionFetchParams(params));
+
+        return this.prependOptionalSelection(params, result);
+    };
+
+    // Method to fetch registered app preview records with an option to clear the selection.
+    public static fetchOptionalRegisteredAppPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const result = await this.fetchRegisteredAppPreviewRecords(this.getOptionalSelectionFetchParams(params));
+
+        return this.prependOptionalSelection(params, result);
+    };
+
+    // Method to fetch payment provider preview records with an option to clear the selection.
+    public static fetchOptionalPaymentProviderPreviewRecords = async <
+        TParams extends Record<string, unknown> = Record<string, unknown>
+    >(
+        params: InputUIFetchDataParamsInterface<TParams>
+    ): Promise<{ records: SelectOptionInterface[]; total_pages: number }> => {
+        const result = await this.fetchPaymentProviderPreviewRecords(this.getOptionalSelectionFetchParams(params));
+
+        return this.prependOptionalSelection(params, result);
+    };
+
     // Method to handle fetching identity preview records.
     public static fetchIdentityPreviewRecords = async <TParams extends Record<string, unknown> = Record<string, unknown>>(
         params: InputUIFetchDataParamsInterface<TParams>

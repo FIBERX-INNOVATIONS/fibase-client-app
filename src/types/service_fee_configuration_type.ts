@@ -67,7 +67,7 @@ export interface ServiceFeeConfigurationListParamsInterface {
     page?: number;
     limit?: number;
     sort_by?: string;
-    sort_direction?: "ASC" | "DESC";
+    sort_direction?: "asc" | "desc";
     filters?: Partial<ServiceFeeConfigurationListViewFiltersInterface>;
 }
 
@@ -88,7 +88,6 @@ export interface CreateServiceFeeConfigurationPayloadInterface {
     fee_type: ServiceFeeConfigurationType;
     amount?: string | number | null;
     ranges?: ServiceFeeConfigurationRangePayloadInterface[];
-    is_active?: boolean;
     effective_from?: string | Date | null;
     effective_until?: string | Date | null;
 }

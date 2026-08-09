@@ -17,7 +17,7 @@ class ServiceFeeConfigurationAPIService extends BaseAPIService {
     public static getServiceFeeConfigurationList = async (
         params?: ServiceFeeConfigurationListParamsInterface
     ): Promise<APIResponseInterface<ServiceFeeConfigurationListResponseInterface>> => {
-        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "DESC", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<ServiceFeeConfigurationListResponseInterface>({
             url: "/fee-configuration/list",
@@ -26,7 +26,7 @@ class ServiceFeeConfigurationAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });

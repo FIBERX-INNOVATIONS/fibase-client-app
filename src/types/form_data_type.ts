@@ -10,6 +10,12 @@ import type {
     PaymentProviderType
 } from "@/types/api_service_type";
 
+import type {
+    ServiceFeeConfigurationType,
+    ServiceFeeRangeType,
+    ServiceFeeTransactionType
+} from "@/types/service_fee_configuration_type";
+
 export type FieldValidator<FormData> = (
     value: any,
     form_data: Partial<FormData>
@@ -17,6 +23,26 @@ export type FieldValidator<FormData> = (
 
 export interface BaseFormData extends Record<string, any> {
     csrf_token: string | null;
+}
+
+export interface ServiceFeeConfigurationRangeFormDataInterface {
+    min_value: string | number | null;
+    max_value: string | number | null;
+    fee_type: ServiceFeeRangeType;
+    amount: string | number | null;
+}
+
+export interface ServiceFeeConfigurationFormDataInterface extends BaseFormData {
+    currency_id: string | number;
+    registered_app_id: string | number | null;
+    provider_id: string | number | null;
+    identity_id: string | number | null;
+    transaction_type: ServiceFeeTransactionType;
+    fee_type: ServiceFeeConfigurationType;
+    amount: string | number | null;
+    ranges: ServiceFeeConfigurationRangeFormDataInterface[];
+    effective_from: string | null;
+    effective_until: string | null;
 }
 
 export interface LoginFormDataInterface extends BaseFormData {

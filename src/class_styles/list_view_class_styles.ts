@@ -213,7 +213,7 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
     },
     button_ui_class_style: {
         button_class_style:
-            "w-[40px] h-[40px] flex items-center justify-center hover:shadow hover:bg-gray-300 rounded-full p-2 cursor-pointer hover:cursor-pointer",
+            "w-[40px] h-[40px] flex items-center justify-center hover:shadow hover:bg-gray-300 rounded-full cursor-pointer hover:cursor-pointer overflow-hidden transition-all duration-300",
 
         disabled_class_style: "",
 
@@ -221,11 +221,11 @@ const table_cell_components_class_styles: DataTableCellComponentUIClassStylesInt
 
         wrapper_class_style: "w-full h-full flex items-center justify-center",
 
-        icon_class_style: "flex items-center justify-center w-full h-full",
+        icon_class_style: "flex items-center justify-center w-full h-full p-2",
 
         text_class_style: "",
 
-        content_class_style: "w-full h-full flex items-center"
+        content_class_style: "w-full h-full flex items-center justify-center"
     }
 };
 

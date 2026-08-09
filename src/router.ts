@@ -38,6 +38,8 @@ const PaymentProviderMethodListView = () => import("@/views/payment_provider_met
 
 const CurrencyPaymentProviderMethodListView = () => import("@/views/currency_payment_provider_method/ListView.vue");
 
+const ServiceFeeConfigurationListView = () => import("@/views/service_fee_configuration/ListView.vue");
+
 const ActivityListView = () => import("@/views/activity/ListView.vue");
 
 const AccessControlListView = () => import("@/views/access_control/ListView.vue");
@@ -339,6 +341,18 @@ class RouterManager {
                     page_meta_key: "currency_payment_provider_method_page",
                     title_key: "currency_payment_provider_method_page",
                     permission_name: "currency_payment_provider_method_module.get_currency_payment_provider_method_list",
+                    is_auth_page: false
+                }
+            },
+            // Service Fee Configuration Page
+            {
+                path: "/service-fee-configurations",
+                name: "ServiceFeeConfigurationList",
+                component: ServiceFeeConfigurationListView,
+                meta: {
+                    page_meta_key: "service_fee_configuration_page",
+                    title_key: "service_fee_configuration_page",
+                    permission_name: "service_fee_configuration_module.get_service_fee_configuration_list",
                     is_auth_page: false
                 }
             },

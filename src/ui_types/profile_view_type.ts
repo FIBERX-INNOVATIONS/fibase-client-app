@@ -318,6 +318,44 @@ export interface PaymentProviderMethodProfileViewContentKeysInterface extends Pr
 
 export interface PaymentProviderMethodProfileViewContentTextInterface extends PaymentProviderMethodProfileViewContentKeysInterface {}
 
+export interface ServiceFeeConfigurationProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
+    currency_logo_alt_text: string;
+    empty_value_text: string;
+    configuration_information_title_text: string;
+    configuration_id_label_text: string;
+    currency_label_text: string;
+    transaction_type_label_text: string;
+    configuration_level_label_text: string;
+    fee_details_title_text: string;
+    fee_type_label_text: string;
+    amount_label_text: string;
+    ranges_title_text: string;
+    range_item_title_text: string;
+    range_minimum_label_text: string;
+    range_maximum_label_text: string;
+    range_fee_type_label_text: string;
+    range_amount_label_text: string;
+    open_ended_text: string;
+    no_ranges_text: string;
+    scope_title_text: string;
+    registered_app_label_text: string;
+    provider_label_text: string;
+    identity_label_text: string;
+    lifecycle_title_text: string;
+    active_label_text: string;
+    active_status_text: string;
+    inactive_status_text: string;
+    effective_from_label_text: string;
+    effective_until_label_text: string;
+    created_label_text: string;
+    updated_label_text: string;
+    created_by_title_text: string;
+    updated_by_title_text: string;
+    [key: string]: string;
+}
+
+export interface ServiceFeeConfigurationProfileViewContentTextInterface extends ServiceFeeConfigurationProfileViewContentKeysInterface {}
+
 export interface CurrencyPaymentProviderMethodProfileViewContentKeysInterface extends ProfileViewContentKeysInterface {
     currency_logo_alt_text: string;
     empty_value_text: string;
@@ -427,6 +465,28 @@ export interface ProfileViewComputedDataInterface {
     youtube_social_link?: string;
 
     whatsapp_social_link?: string;
+}
+
+export interface ServiceFeeConfigurationRangeDisplayInterface {
+    key: string;
+    minimum: string;
+    maximum: string;
+    fee_type: string;
+    amount: string;
+}
+
+export interface ServiceFeeConfigurationProfileViewComputedInterface extends ProfileViewComputedDataInterface {
+    logo_url: string;
+    readable_transaction_type: string;
+    readable_fee_type: string;
+    formatted_amount: string;
+    readable_effective_from: string;
+    readable_effective_until: string;
+    readable_created_at: string;
+    readable_updated_at: string;
+    creator_member_profile_photo_url: string;
+    updator_member_profile_photo_url: string;
+    range_entries: ServiceFeeConfigurationRangeDisplayInterface[];
 }
 
 export interface ProfileViewComponentsInterface {
