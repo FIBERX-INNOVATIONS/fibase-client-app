@@ -20,7 +20,8 @@ Manages environment-specific credentials and settings for payment provider accou
 ## Flow
 
 1. List view loads configs with search, provider, environment, account reference, creator, and date filters.
-2. Create/edit use a modal form for provider, environment, account reference, and credentials/settings payloads.
+2. Create/edit use a modal form for provider, environment, credentials, and the complete typed settings payload.
+   Existing settings are repopulated in edit mode; credential inputs remain blank and omitted unless replaced.
 3. Profile shows config details. Credential values should only be fetched when explicitly requested by a permitted user.
 4. This module has no status toggle in the current service.
 5. Delete opens confirmation and calls delete.

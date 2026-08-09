@@ -143,6 +143,22 @@ export interface CurrencyPaymentProviderMethodListViewFiltersInterface extends P
     direction?: "deposit" | "withdrawal" | string | null;
 }
 
+export interface ServiceFeeConfigurationListViewFiltersInterface extends PaymentConfigListViewFiltersInterface {
+    currency_id?: string | number | null;
+    registered_app_id?: string | number | null;
+    provider_id?: string | number | null;
+    identity_id?: string | number | null;
+    transaction_type?: "deposit" | "withdrawal" | "transfer" | "exchange" | null;
+    configuration_level?: 1 | 2 | 3 | 4 | null;
+    fee_type?: "flat" | "percentage" | "range" | null;
+    effective_state?: "current" | "scheduled" | "expired" | "unbounded" | null;
+    min_amount?: number | null;
+    max_amount?: number | null;
+    updated_by?: string | number | null;
+    effective_from_range?: { start_date: string; end_date: string } | string | null;
+    effective_until_range?: { start_date: string; end_date: string } | string | null;
+}
+
 export interface MemberDeviceSessionListViewFiltersInterface {
     search?: string | null;
     is_active?: boolean | string | null;

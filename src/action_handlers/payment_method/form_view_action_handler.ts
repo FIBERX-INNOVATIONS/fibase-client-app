@@ -97,24 +97,20 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
             name: PaymentMethodValidator.validateName,
             description: PaymentMethodValidator.validateDescription,
             icon_url: PaymentMethodValidator.validateIconUrl,
-            sort_order: PaymentMethodValidator.validateSortOrder
+            sort_order: PaymentMethodValidator.validateSortOrder,
+            display_name: PaymentMethodValidator.validateMetadataText,
+            display_description: PaymentMethodValidator.validateMetadataText,
+            display_group: PaymentMethodValidator.validateMetadataText,
+            processing_time_text: PaymentMethodValidator.validateMetadataText,
+            fee_label: PaymentMethodValidator.validateMetadataText,
+            min_amount: PaymentMethodValidator.validateAmount,
+            max_amount: PaymentMethodValidator.validateAmount
         };
     }
 
     // Method to get required fields for submit.
     protected getSubmitRequiredFields(): (keyof PaymentMethodFormDataInterface & string)[] {
-        return [
-            "code",
-            "name",
-            "description",
-            "sort_order",
-            "display_name",
-            "display_description",
-            "display_group",
-            "processing_time_text",
-            "fee_label",
-            "display_group"
-        ];
+        return ["code", "name"];
     }
 
     // Method to normalize selected codes into a clean string array.
@@ -206,7 +202,7 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
         try {
             const form_data = this.form_data as PaymentMethodFormDataInterface;
             const record = this.controller.props.record;
-            const record_id = record?.code;
+            const record_id = record?.id;
             const payload = this.buildAPIPayload(form_data);
             const validation_result = record_id
                 ? PaymentMethodValidator.validateUpdatePaymentMethodInput(payload)
@@ -229,7 +225,7 @@ class PaymentMethodFormViewActionHandler extends BaseFormActionHandler<
 
             const { status, msg, data } = result;
 
-            if (status !== "success" || !data?.code) {
+            if (status !== "success" || !data?.id) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg };
             }

@@ -85,6 +85,24 @@ class PaymentMethodValidator extends BaseValidator {
         return { status: true, msg: "" };
     };
 
+    // Method to validate an optional payment method metadata text value.
+    public static validateMetadataText = (value?: string | null): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: "" };
+        }
+
+        if (typeof value !== "string" || value.trim().length > 5000) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_method_metadata") };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate an optional payment method amount.
+    public static validateAmount = (value?: number | null): ActionMethodRetrunInterface => {
+        return this.validateNullableAmount(value);
+    };
+
     // Method to validate a nullable positive amount.
     private static validateNullableAmount = (
         value?: number | null,
@@ -107,7 +125,12 @@ class PaymentMethodValidator extends BaseValidator {
             return { status: true, msg: "" };
         }
 
-        if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
+        if (
+            !Array.isArray(value) ||
+            value.some((item) => {
+                return typeof item !== "string" || InputValidatorUtil.isEmpty(item);
+            })
+        ) {
             return { status: false, msg: this.getContentMessage(message_key) };
         }
 
@@ -131,19 +154,58 @@ class PaymentMethodValidator extends BaseValidator {
             metadata.supported_country_codes,
             "invalid_payment_method_supported_country_codes"
         );
-        if (!country_validation.status) return country_validation;
+        if (!country_validation.status) {
+            return country_validation;
+        }
 
         const currency_validation = this.validateStringList(
             metadata.supported_currency_codes,
             "invalid_payment_method_supported_currency_codes"
         );
-        if (!currency_validation.status) return currency_validation;
+        if (!currency_validation.status) {
+            return currency_validation;
+        }
+
+        const text_values = [
+            metadata.display_name,
+            metadata.display_description,
+            metadata.display_group,
+            metadata.processing_time_text,
+            metadata.fee_label
+        ];
+
+        if (
+            text_values.some((value) => {
+                return !this.validateMetadataText(value).status;
+            })
+        ) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_method_metadata") };
+        }
+
+        const boolean_values = [
+            metadata.requires_redirect,
+            metadata.supports_deposit,
+            metadata.supports_withdrawal,
+            metadata.supports_refund
+        ];
+
+        if (
+            boolean_values.some((value) => {
+                return value !== undefined && typeof value !== "boolean";
+            })
+        ) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_method_metadata") };
+        }
 
         const min_validation = this.validateNullableAmount(metadata.min_amount);
-        if (!min_validation.status) return min_validation;
+        if (!min_validation.status) {
+            return min_validation;
+        }
 
         const max_validation = this.validateNullableAmount(metadata.max_amount);
-        if (!max_validation.status) return max_validation;
+        if (!max_validation.status) {
+            return max_validation;
+        }
 
         if (
             metadata.min_amount !== null &&
@@ -173,6 +235,12 @@ class PaymentMethodValidator extends BaseValidator {
             display_group: metadata.display_group?.trim() || null,
             processing_time_text: metadata.processing_time_text?.trim() || null,
             fee_label: metadata.fee_label?.trim() || null,
+            supported_country_codes: (metadata.supported_country_codes ?? []).map((code) => {
+                return code.trim().toUpperCase();
+            }),
+            supported_currency_codes: (metadata.supported_currency_codes ?? []).map((code) => {
+                return code.trim().toUpperCase();
+            }),
             min_amount: metadata.min_amount ?? null,
             max_amount: metadata.max_amount ?? null
         };

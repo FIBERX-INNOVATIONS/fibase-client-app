@@ -37,7 +37,7 @@
                 <ProfileValue
                     icon="identification_card_svg_icon"
                     :label="content_obj.provider_type_label_text"
-                    :value="state_refs.profile_record.value?.provider_type || content_obj.empty_value_text"
+                    :value="readable_provider_type"
                 />
 
                 <p :class="class_styles.small_bold_value_text_class_style">
@@ -115,6 +115,7 @@ const { class_styles, content_obj } = controller;
 
 const {
     logo_url,
+    readable_provider_type,
     creator_member_profile_photo_url,
     updator_member_profile_photo_url,
     readable_created_at,

@@ -56,7 +56,10 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
         "password",
         "webhook_hash",
         "webhook_secret",
-        "signing_secret"
+        "signing_secret",
+        "api_secret",
+        "access_token",
+        "key_version"
     ] as const;
 
     private static readonly setting_keys = [
@@ -69,7 +72,21 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
         "default_currency",
         "payout_schedule",
         "capture_mode",
-        "timeout_ms"
+        "timeout_ms",
+        "base_api_url",
+        "create_sub_account",
+        "create_dedicated_account",
+        "recv_window",
+        "supports_deposit",
+        "supports_withdrawal",
+        "supports_refund",
+        "supports_webhook",
+        "supports_polling",
+        "supported_methods",
+        "supported_currencies",
+        "account_strategy",
+        "requires_provider_kyc_for_subaccount",
+        "transaction_fees"
     ] as const;
 
     constructor(
@@ -111,6 +128,12 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             webhook_hash: "",
             webhook_secret: "",
             signing_secret: "",
+            api_secret: "",
+            access_token: "",
+            key_version: "",
+            base_api_url: record?.settings?.base_api_url ?? "",
+            create_sub_account: record?.settings?.create_sub_account ?? false,
+            create_dedicated_account: record?.settings?.create_dedicated_account ?? false,
             webhook_url: record?.settings?.webhook_url ?? "",
             callback_url: record?.settings?.callback_url ?? "",
             redirect_url: record?.settings?.redirect_url ?? "",
@@ -120,7 +143,20 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             default_currency: record?.settings?.default_currency ?? "",
             payout_schedule: record?.settings?.payout_schedule ?? "",
             capture_mode: record?.settings?.capture_mode ?? "",
-            timeout_ms: record?.settings?.timeout_ms ?? ""
+            timeout_ms: record?.settings?.timeout_ms ?? "",
+            recv_window: record?.settings?.recv_window ?? "",
+            supports_deposit: record?.settings?.supports_deposit ?? false,
+            supports_withdrawal: record?.settings?.supports_withdrawal ?? false,
+            supports_refund: record?.settings?.supports_refund ?? false,
+            supports_webhook: record?.settings?.supports_webhook ?? false,
+            supports_polling: record?.settings?.supports_polling ?? false,
+            supported_methods: record?.settings?.supported_methods?.join(", ") ?? "",
+            supported_currencies: record?.settings?.supported_currencies ?? [],
+            account_strategy: record?.settings?.account_strategy ?? "none",
+            requires_provider_kyc_for_subaccount: record?.settings?.requires_provider_kyc_for_subaccount ?? false,
+            transaction_fees: record?.settings?.transaction_fees
+                ? JSON.stringify(record.settings.transaction_fees, null, 2)
+                : ""
         };
     }
 
@@ -146,6 +182,10 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             webhook_hash: credential_validator,
             webhook_secret: credential_validator,
             signing_secret: credential_validator,
+            api_secret: credential_validator,
+            access_token: credential_validator,
+            key_version: credential_validator,
+            base_api_url: PaymentProviderConfigValidator.validateURLSetting,
             webhook_url: PaymentProviderConfigValidator.validateURLSetting,
             callback_url: PaymentProviderConfigValidator.validateURLSetting,
             redirect_url: PaymentProviderConfigValidator.validateURLSetting,
@@ -155,7 +195,9 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
             default_currency: PaymentProviderConfigValidator.validateSettingValue,
             payout_schedule: PaymentProviderConfigValidator.validateSettingValue,
             capture_mode: PaymentProviderConfigValidator.validateSettingValue,
-            timeout_ms: PaymentProviderConfigValidator.validateTimeoutMs
+            timeout_ms: PaymentProviderConfigValidator.validateTimeoutMs,
+            recv_window: PaymentProviderConfigValidator.validateTimeoutMs,
+            transaction_fees: PaymentProviderConfigValidator.validateTransactionFees
         };
     }
 
@@ -189,22 +231,66 @@ class PaymentProviderConfigFormViewActionHandler extends BaseFormActionHandler<
     private buildSettingsPayload(
         form_data: PaymentProviderConfigFormDataInterface
     ): PaymentProviderConfigSettingsInterface | undefined {
+        // Preserve typed settings that are not represented by the legacy form during an update.
         const original_settings = this.controller.props.record?.settings ?? {};
-        const settings = PaymentProviderConfigFormViewActionHandler.setting_keys.reduce<PaymentProviderConfigSettingsInterface>(
-            (result, key) => {
-                const raw_value = form_data[key];
-                const value = raw_value === null || raw_value === undefined ? "" : String(raw_value).trim();
+        const settings: Record<string, unknown> = { ...original_settings };
 
-                if (value || Object.prototype.hasOwnProperty.call(original_settings, key)) {
-                    result[key] = value || null;
-                }
+        PaymentProviderConfigFormViewActionHandler.setting_keys.forEach((key) => {
+            const raw_value = form_data[key];
 
-                return result;
-            },
-            {}
-        );
+            if (
+                [
+                    "create_sub_account",
+                    "create_dedicated_account",
+                    "supports_deposit",
+                    "supports_withdrawal",
+                    "supports_refund",
+                    "supports_webhook",
+                    "supports_polling",
+                    "requires_provider_kyc_for_subaccount"
+                ].includes(key)
+            ) {
+                settings[key] = Boolean(raw_value);
+                return;
+            }
 
-        return Object.keys(settings).length ? settings : undefined;
+            if (key === "supported_methods") {
+                settings.supported_methods =
+                    typeof raw_value === "string"
+                        ? raw_value
+                              .split(",")
+                              .map((value) => {
+                                  return value.trim();
+                              })
+                              .filter(Boolean)
+                        : [];
+                return;
+            }
+
+            if (key === "supported_currencies") {
+                settings.supported_currencies = Array.isArray(raw_value) ? raw_value : [];
+                return;
+            }
+
+            if (key === "transaction_fees") {
+                settings.transaction_fees = typeof raw_value === "string" && raw_value.trim() ? JSON.parse(raw_value) : null;
+                return;
+            }
+            const value = raw_value === null || raw_value === undefined ? "" : String(raw_value).trim();
+
+            if (!value && !Object.prototype.hasOwnProperty.call(original_settings, key)) {
+                return;
+            }
+
+            if (key === "timeout_ms" || key === "recv_window") {
+                settings[key] = value ? Number(value) : null;
+                return;
+            }
+
+            settings[key] = value || null;
+        });
+
+        return Object.keys(settings).length ? (settings as PaymentProviderConfigSettingsInterface) : undefined;
     }
 
     // Method to build create/update API payload from form data.

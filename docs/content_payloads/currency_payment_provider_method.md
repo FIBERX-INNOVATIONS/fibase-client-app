@@ -27,7 +27,7 @@
 ## Expected Content
 
 - Filters: search, status, currency, provider, payment method, provider method, direction, created by, date range.
-- Form fields: currency, provider method, direction, min amount, max amount, fee configuration, settlement/processing metadata.
+- Form fields: currency, provider method, minimum amount, and maximum amount.
 - Table columns: serial/select, currency, provider, payment method, direction, limits, status, created by, created at, actions.
 
 ## Sample

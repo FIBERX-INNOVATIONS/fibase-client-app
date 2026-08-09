@@ -33,7 +33,10 @@
 ## Expected Content
 
 - Filters: search, provider, environment, account reference, created by, date range.
-- Form fields: provider, environment, account reference, credentials object fields, settings object fields.
+- Form fields: provider and environment; all typed credential fields; and URL, capability, supported-code,
+  account-strategy, timing, and transaction-fee settings.
+- Edit forms repopulate settings from the config record. Credential inputs always initialize blank so secrets are only
+  replaced when an operator explicitly enters a new value.
 - Table columns: serial/select, provider, environment, account reference, created by, created at, actions.
 - No status toggle content is expected for the current service.
 

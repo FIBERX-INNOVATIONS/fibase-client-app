@@ -2,10 +2,7 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { PaymentProviderRecordInterface } from "@/types/api_service_type";
 
-import {
-    NavLinkUIPropsInterface,
-    NavLinkContentPayloadResultInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
@@ -18,12 +15,10 @@ class PaymentProviderActionMenu {
         record: PaymentProviderRecordInterface,
         action_handler?: PaymentProviderListViewActionHandler
     ): NavLinkUIPropsInterface[] {
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
-        const base_content_key =
-            "content_resource.payment_provider_view_ui.list_view_ui.table.action_menu_list";
-        const record_id = record?.code?.toString() ?? "";
+        const base_content_key = "content_resource.payment_provider_view_ui.list_view_ui.table.action_menu_list";
+        const record_id = record.id.toString();
 
         const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.view_menu_option`
@@ -45,17 +40,12 @@ class PaymentProviderActionMenu {
                 icon: view_menu_content?.menu_icon,
                 content: view_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleViewActionMenuClicked(record, config);
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_module.get_payment_provider"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.get_payment_provider")
             },
             {
                 id: `${select_menu_content?.menu_text ?? "select"}ActionMenu${record_id.toUpperCase()}`,
@@ -63,10 +53,7 @@ class PaymentProviderActionMenu {
                 icon: select_menu_content?.menu_icon,
                 content: select_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleSelectActionMenuClicked(record, config);
                     }
                 },
@@ -79,18 +66,14 @@ class PaymentProviderActionMenu {
                 icon: edit_menu_content?.menu_icon,
                 content: edit_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleEditActionMenuClicked(record, config);
                     }
                 },
                 class_styles,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "payment_provider_module.update_payment_provider"
-                    ) && !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.update_payment_provider") &&
+                    !record?.is_active
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id.toUpperCase()}`,
@@ -98,18 +81,14 @@ class PaymentProviderActionMenu {
                 icon: delete_menu_content?.menu_icon,
                 content: delete_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleDeleteActionMenuClicked(record, config);
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "payment_provider_module.delete_payment_provider"
-                    ) && !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.delete_payment_provider") &&
+                    !record?.is_active
             }
         ];
 

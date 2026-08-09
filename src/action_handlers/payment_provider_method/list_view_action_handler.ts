@@ -82,8 +82,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
                 };
             }
 
-            const result =
-                await PaymentProviderMethodAPIService.updatePaymentProviderMethodStatus(id);
+            const result = await PaymentProviderMethodAPIService.updatePaymentProviderMethodStatus(id);
 
             if (!result || result.status === "error") {
                 return {
@@ -101,7 +100,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
             }
 
             if (result.status === "success") {
-                this.updateListStateRecord(id, { is_active: !record.is_active }, "id");
+                this.updateListStateRecord(id, { is_active: result.data?.new_status ?? !record.is_active }, "id");
 
                 return {
                     status: true,
@@ -125,10 +124,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
     };
 
     // Method to toggle data table action menu.
-    public toggleActionMenu = (
-        record: PaymentProviderMethodRecordInterface,
-        record_index?: number
-    ): void => {
+    public toggleActionMenu = (record: PaymentProviderMethodRecordInterface, record_index?: number): void => {
         const action_menu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -140,11 +136,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_menu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
     };
 
     // Method to handle view action menu clicked.
@@ -161,7 +153,7 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
 
             body_component: markRaw(ProfileView),
 
-            body_props: { record_id: record.id?.toString() ?? "", record }
+            body_props: { record_id: record.id.toString(), record }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
@@ -203,12 +195,10 @@ class PaymentProviderMethodListViewActionHandler extends BaseListViewActionHandl
 
             body_props: {
                 record,
-                record_id: record.id?.toString() ?? "",
+                record_id: record.id.toString(),
                 content_key: delete_modal_content_key,
-                on_delete_success: async (
-                    deleted_record: PaymentProviderMethodRecordInterface
-                ): Promise<void> => {
-                    this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
+                on_delete_success: async (deleted_record: PaymentProviderMethodRecordInterface): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id, "id");
                 }
             }
         };

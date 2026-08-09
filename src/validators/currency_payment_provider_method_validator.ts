@@ -18,12 +18,24 @@ class CurrencyPaymentProviderMethodValidator extends BaseValidator {
             return { status: false, msg: this.getContentMessage("invalid_currency_id") };
         }
 
+        const normalized_value = String(value).trim();
+        const is_numeric_id = /^\d+$/.test(normalized_value) && Number(normalized_value) > 0;
+        const is_currency_code = /^[A-Za-z0-9_-]{2,20}$/.test(normalized_value);
+
+        if (!is_numeric_id && !is_currency_code) {
+            return { status: false, msg: this.getContentMessage("invalid_currency_id") };
+        }
+
         return { status: true, msg: "" };
     };
 
     // Method to validate provider method id input.
     public static validateProviderMethodId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
+            return { status: false, msg: this.getContentMessage("invalid_provider_method_id") };
+        }
+
+        if (!/^\d+$/.test(String(value)) || Number(value) <= 0) {
             return { status: false, msg: this.getContentMessage("invalid_provider_method_id") };
         }
 
@@ -36,7 +48,7 @@ class CurrencyPaymentProviderMethodValidator extends BaseValidator {
             return { status: true, msg: "" };
         }
 
-        if (Number.isNaN(Number(value)) || Number(value) < 0) {
+        if (!Number.isFinite(Number(value)) || Number(value) < 0) {
             return { status: false, msg: this.getContentMessage("invalid_payment_amount") };
         }
 
@@ -89,7 +101,7 @@ class CurrencyPaymentProviderMethodValidator extends BaseValidator {
             v_msg: "valid_input",
             v_data: {
                 csrf_token,
-                currency_id,
+                currency_id: typeof currency_id === "string" ? currency_id.trim().toUpperCase() : currency_id,
                 provider_method_id,
                 min_amount: min_amount ?? null,
                 max_amount: max_amount ?? null
@@ -125,7 +137,9 @@ class CurrencyPaymentProviderMethodValidator extends BaseValidator {
             v_msg: "valid_input",
             v_data: {
                 csrf_token,
-                ...(currency_id !== undefined ? { currency_id } : {}),
+                ...(currency_id !== undefined
+                    ? { currency_id: typeof currency_id === "string" ? currency_id.trim().toUpperCase() : currency_id }
+                    : {}),
                 ...(provider_method_id !== undefined ? { provider_method_id } : {}),
                 ...(min_amount !== undefined ? { min_amount: min_amount ?? null } : {}),
                 ...(max_amount !== undefined ? { max_amount: max_amount ?? null } : {})

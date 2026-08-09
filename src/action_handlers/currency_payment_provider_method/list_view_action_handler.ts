@@ -36,9 +36,7 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     CurrencyPaymentProviderMethodListViewFiltersInterface
 > {
     // Method to initialize list view action handler.
-    constructor(
-        controller: BaseListViewController<CurrencyPaymentProviderMethodRecordInterface, "id">
-    ) {
+    constructor(controller: BaseListViewController<CurrencyPaymentProviderMethodRecordInterface, "id">) {
         super(
             controller,
             "currency_payment_provider_method_list_view_action_handler",
@@ -84,10 +82,7 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
                 };
             }
 
-            const result =
-                await CurrencyPaymentProviderMethodAPIService.updateCurrencyPaymentProviderMethodStatus(
-                    id
-                );
+            const result = await CurrencyPaymentProviderMethodAPIService.updateCurrencyPaymentProviderMethodStatus(id);
 
             if (!result || result.status === "error") {
                 return {
@@ -131,10 +126,7 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
     };
 
     // Method to toggle data table action menu.
-    public toggleActionMenu = (
-        record: CurrencyPaymentProviderMethodRecordInterface,
-        record_index?: number
-    ): void => {
+    public toggleActionMenu = (record: CurrencyPaymentProviderMethodRecordInterface, record_index?: number): void => {
         const action_menu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -146,11 +138,7 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_menu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
     };
 
     // Method to handle view action menu clicked.
@@ -167,7 +155,7 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
 
             body_component: markRaw(ProfileView),
 
-            body_props: { record_id: record.id?.toString() ?? "", record }
+            body_props: { record_id: record.id.toString(), record }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
@@ -209,12 +197,10 @@ class CurrencyPaymentProviderMethodListViewActionHandler extends BaseListViewAct
 
             body_props: {
                 record,
-                record_id: record.id?.toString() ?? "",
+                record_id: record.id.toString(),
                 content_key: delete_modal_content_key,
-                on_delete_success: async (
-                    deleted_record: CurrencyPaymentProviderMethodRecordInterface
-                ): Promise<void> => {
-                    this.removeListStateRecord(deleted_record.id ?? record.id ?? "", "id");
+                on_delete_success: async (deleted_record: CurrencyPaymentProviderMethodRecordInterface): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id, "id");
                 }
             }
         };

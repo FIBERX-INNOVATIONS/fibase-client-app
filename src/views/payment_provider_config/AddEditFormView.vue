@@ -34,6 +34,18 @@
 
                 <InputGroupUI v-bind="state_refs.fields.value.signing_secret_input_group_props" />
 
+                <InputGroupUI v-bind="state_refs.fields.value.api_secret_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.access_token_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.key_version_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.base_api_url_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.create_sub_account_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.create_dedicated_account_input_group_props" />
+
                 <InputGroupUI v-bind="state_refs.fields.value.webhook_url_input_group_props" />
 
                 <InputGroupUI v-bind="state_refs.fields.value.callback_url_input_group_props" />
@@ -44,9 +56,7 @@
 
                 <InputGroupUI v-bind="state_refs.fields.value.failure_url_input_group_props" />
 
-                <InputGroupUI
-                    v-bind="state_refs.fields.value.settlement_currency_input_group_props"
-                />
+                <InputGroupUI v-bind="state_refs.fields.value.settlement_currency_input_group_props" />
 
                 <InputGroupUI v-bind="state_refs.fields.value.default_currency_input_group_props" />
 
@@ -55,6 +65,28 @@
                 <InputGroupUI v-bind="state_refs.fields.value.capture_mode_input_group_props" />
 
                 <InputGroupUI v-bind="state_refs.fields.value.timeout_ms_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.recv_window_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supports_deposit_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supports_withdrawal_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supports_refund_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supports_webhook_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supports_polling_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supported_methods_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.supported_currencies_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.account_strategy_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.requires_provider_kyc_for_subaccount_input_group_props" />
+
+                <InputGroupUI v-bind="state_refs.fields.value.transaction_fees_input_group_props" />
             </fieldset>
 
             <ToasterUI v-bind="state_refs.toast_alert_props.value" />

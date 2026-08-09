@@ -33,6 +33,8 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseListViewController from "@/controllers/base_classes/base_list_view_controller";
 
 import PaymentProviderListViewActionHandler from "@/action_handlers/payment_provider/list_view_action_handler";
@@ -49,15 +51,15 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
-class PaymentProviderListViewController extends BaseListViewController<PaymentProviderRecordInterface, "code"> {
+class PaymentProviderListViewController extends BaseListViewController<PaymentProviderRecordInterface, "id"> {
     public readonly content_key: string = "payment_provider";
 
-    public readonly record_id_key: "code" = "code" as const;
+    public readonly record_id_key: "id" = "id" as const;
 
     public action_handler: PaymentProviderListViewActionHandler;
 
     constructor(props: ListViewPropsInterface) {
-        super(props, "code");
+        super(props, "id");
 
         this.action_handler = new PaymentProviderListViewActionHandler(this);
     }
@@ -148,7 +150,7 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
         const columns: DataTableColumnRenderType<PaymentProviderRecordInterface>[] = [
             // S_n and Selection Column
             {
-                key: "code",
+                key: "id",
                 sortable: false,
                 width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
@@ -163,27 +165,27 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     input_model_value: (record?: PaymentProviderRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
-                        if (!record?.code) {
+                        if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const provider_codes = records.map((row) => row.code);
+                            const provider_ids = records.map((row) => row.id);
 
-                            return provider_codes.length > 0 && provider_codes.every((code) => selected_records.includes(code));
+                            return provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
                         }
 
-                        return selected_records.includes(record.code);
+                        return selected_records.includes(record.id);
                     },
                     input_ui_boolean_props: (record?: PaymentProviderRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const provider_codes = records.map((row) => row.code);
-                        const is_checked = record?.code
-                            ? selected_records.includes(record.code)
-                            : provider_codes.length > 0 && provider_codes.every((code) => selected_records.includes(code));
+                        const provider_ids = records.map((row) => row.id);
+                        const is_checked = record?.id
+                            ? selected_records.includes(record.id)
+                            : provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
                             required: true,
-                            disabled: !record?.code && provider_codes.length === 0
+                            disabled: !record?.id && provider_ids.length === 0
                         };
                     },
                     input_action_props: (record?: PaymentProviderRecordInterface): InputUIActionPropsInterface => ({
@@ -232,7 +234,10 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     render: () => DataTableTextContentCellUI
                 },
                 props: {
-                    class_styles: this.list_view_class_styles.table_cell_components_class_styles
+                    class_styles: this.list_view_class_styles.table_cell_components_class_styles,
+                    getTextContent: (record: PaymentProviderRecordInterface) => {
+                        return DisplayFormatterUtil.formatLabel(record.provider_type);
+                    }
                 }
             },
             // Website URL Column
@@ -326,7 +331,7 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
             },
             // Actions Column
             {
-                key: "code",
+                key: "id",
                 sortable: false,
                 width: this.list_view_class_styles.table_column_width_class_styles.percent_8,
                 header: {

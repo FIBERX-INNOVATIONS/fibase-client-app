@@ -19,7 +19,7 @@ class PaymentProviderConfigAPIService extends BaseAPIService {
     public static getPaymentProviderConfigList = async (
         params?: PaymentProviderConfigListParams
     ): Promise<APIResponseInterface<PaymentProviderConfigListResponseInterface>> => {
-        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentProviderConfigListResponseInterface>({
             url: `/payment-config/provider-config/list`,
@@ -28,7 +28,7 @@ class PaymentProviderConfigAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });
@@ -85,7 +85,8 @@ class PaymentProviderConfigAPIService extends BaseAPIService {
     ): Promise<APIResponseInterface<PaymentProviderConfigRecordInterface>> => {
         return await this.queryAPI<PaymentProviderConfigRecordInterface>({
             url: `/payment-config/provider-config/${config_id}/delete`,
-            method: "DELETE"
+            method: "DELETE",
+            disable_retry: true
         });
     };
 }

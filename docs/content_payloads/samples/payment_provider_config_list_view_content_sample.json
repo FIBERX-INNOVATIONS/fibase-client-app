@@ -176,6 +176,20 @@
                     "payout_schedule_label_text": "Payout Schedule:",
                     "capture_mode_label_text": "Capture Mode:",
                     "timeout_ms_label_text": "Timeout (MS):",
+                    "base_api_url_label_text": "Base API URL:",
+                    "create_sub_account_label_text": "Create Sub-account:",
+                    "create_dedicated_account_label_text": "Create Dedicated Account:",
+                    "recv_window_label_text": "Receive Window (MS):",
+                    "supports_deposit_label_text": "Supports Deposits:",
+                    "supports_withdrawal_label_text": "Supports Withdrawals:",
+                    "supports_refund_label_text": "Supports Refunds:",
+                    "supports_webhook_label_text": "Supports Webhooks:",
+                    "supports_polling_label_text": "Supports Polling:",
+                    "supported_methods_label_text": "Supported Methods:",
+                    "supported_currencies_label_text": "Supported Currencies:",
+                    "account_strategy_label_text": "Account Strategy:",
+                    "requires_provider_kyc_for_subaccount_label_text": "Provider KYC Required for Sub-account:",
+                    "transaction_fees_label_text": "Transaction Fees:",
                     "no_settings_text": "No settings configured."
                 },
                 "credentials": {
@@ -198,7 +212,10 @@
                     "password_label_text": "Password:",
                     "webhook_hash_label_text": "Webhook Hash:",
                     "webhook_secret_label_text": "Webhook Secret:",
-                    "signing_secret_label_text": "Signing Secret:"
+                    "signing_secret_label_text": "Signing Secret:",
+                    "api_secret_label_text": "API Secret:",
+                    "access_token_label_text": "Access Token:",
+                    "key_version_label_text": "Key Version:"
                 },
                 "status": {
                     "title_text": "Status",
@@ -295,6 +312,31 @@
                     "placeholder_text": "Enter signing secret",
                     "helper_text": "Leave blank when editing to keep the stored value."
                 },
+                "api_secret_field": {
+                    "label_text": "API Secret",
+                    "placeholder_text": "Enter API secret",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "access_token_field": {
+                    "label_text": "Access Token",
+                    "placeholder_text": "Enter access token",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "key_version_field": {
+                    "label_text": "Key Version",
+                    "placeholder_text": "Enter key version",
+                    "helper_text": "Leave blank when editing to keep the stored value."
+                },
+                "base_api_url_field": {
+                    "label_text": "Base API URL",
+                    "placeholder_text": "https://..."
+                },
+                "create_sub_account_field": {
+                    "label_text": "Create Sub-account"
+                },
+                "create_dedicated_account_field": {
+                    "label_text": "Create Dedicated Account"
+                },
                 "webhook_url_field": {
                     "label_text": "Webhook URL",
                     "placeholder_text": "https://..."
@@ -334,6 +376,42 @@
                 "timeout_ms_field": {
                     "label_text": "Timeout (MS)",
                     "placeholder_text": "e.g. 30000"
+                },
+                "recv_window_field": {
+                    "label_text": "Receive Window (MS)",
+                    "placeholder_text": "e.g. 5000"
+                },
+                "supports_deposit_field": { "label_text": "Supports Deposits" },
+                "supports_withdrawal_field": { "label_text": "Supports Withdrawals" },
+                "supports_refund_field": { "label_text": "Supports Refunds" },
+                "supports_webhook_field": { "label_text": "Supports Webhooks" },
+                "supports_polling_field": { "label_text": "Supports Polling" },
+                "supported_methods_field": {
+                    "label_text": "Supported Methods",
+                    "placeholder_text": "e.g. card, bank_transfer"
+                },
+                "supported_currencies_field": {
+                    "label_text": "Supported Currencies",
+                    "placeholder_text": "Search currencies"
+                },
+                "account_strategy_field": {
+                    "label_text": "Account Strategy",
+                    "placeholder_text": "Select account strategy",
+                    "options_list": [
+                        { "label_text": "None", "value": "none" },
+                        { "label_text": "Provider Customer", "value": "provider_customer" },
+                        { "label_text": "Virtual Account", "value": "virtual_account" },
+                        { "label_text": "Main Wallet Address", "value": "main_wallet_address" },
+                        { "label_text": "Sub-account", "value": "sub_account" },
+                        { "label_text": "Wallet Address", "value": "wallet_address" }
+                    ]
+                },
+                "requires_provider_kyc_for_subaccount_field": {
+                    "label_text": "Provider KYC Required for Sub-account"
+                },
+                "transaction_fees_field": {
+                    "label_text": "Transaction Fees (JSON)",
+                    "placeholder_text": "Enter deposit and withdrawal fee configuration as JSON"
                 },
                 "btn_text": "Submit"
             }

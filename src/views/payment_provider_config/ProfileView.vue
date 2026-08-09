@@ -169,9 +169,9 @@ const controller = new PaymentProviderConfigProfileViewController(props);
 
 const { record_id } = props;
 
-const { class_styles, content_obj, action_handler } = controller;
-
 const { state_refs, components, computed_refs } = controller.getComponentDefinition();
+
+const { class_styles, content_obj, action_handler } = controller;
 
 const { ImageRenderUI, ProfileValue, MemberSummary } = components;
 

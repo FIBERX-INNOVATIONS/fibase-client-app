@@ -32,16 +32,11 @@ import DropdownMenuUIPropsBuilder from "@ui/version_3/props_builder/dropdown_men
 
 class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
     PaymentProviderRecordInterface,
-    "code",
+    "id",
     PaymentProviderListViewFiltersInterface
 > {
-    constructor(controller: BaseListViewController<PaymentProviderRecordInterface, "code">) {
-        super(
-            controller,
-            "payment_provider_list_view_action_handler",
-            {},
-            PaymentProviderAPIService.getPaymentProviderList
-        );
+    constructor(controller: BaseListViewController<PaymentProviderRecordInterface, "id">) {
+        super(controller, "payment_provider_list_view_action_handler", {}, PaymentProviderAPIService.getPaymentProviderList);
 
         StatusAlertTriggerUtil.event_bus = this.controller.event_bus;
     }
@@ -72,16 +67,16 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
         input_value?: InputValue
     ): Promise<ActionMethodRetrunInterface> => {
         try {
-            const code = record.code;
+            const provider_id = record.id;
 
-            if (!code) {
+            if (!provider_id) {
                 return {
                     status: false,
                     msg: this.getContentMessage("record_not_found")
                 };
             }
 
-            const result = await PaymentProviderAPIService.updatePaymentProviderStatus(code);
+            const result = await PaymentProviderAPIService.updatePaymentProviderStatus(provider_id);
 
             if (!result || result.status === "error") {
                 return {
@@ -99,7 +94,7 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
             }
 
             if (result.status === "success") {
-                this.updateListStateRecord(code, { is_active: !record.is_active }, "code");
+                this.updateListStateRecord(provider_id, { is_active: result.data?.new_status ?? !record.is_active }, "id");
 
                 return {
                     status: true,
@@ -121,10 +116,7 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
     };
 
     // Method to toggle data table action menu.
-    public toggleActionMenu = (
-        record: PaymentProviderRecordInterface,
-        record_index?: number
-    ): void => {
+    public toggleActionMenu = (record: PaymentProviderRecordInterface, record_index?: number): void => {
         const action_menu_btn_id = `ActionBtn${record_index?.toString()}`;
         const action_menu_id = "TableActionMeuDropdown";
         const menu_el = document.getElementById(action_menu_id);
@@ -136,11 +128,7 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
             this.setState("action_menu_dropdown_props", { menu_items: updated_menu });
         }
 
-        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(
-            action_menu_btn_id,
-            action_menu_id,
-            true
-        );
+        return DropdownMenuUIPropsBuilder.toggleDropdownMenu(action_menu_btn_id, action_menu_id, true);
     };
 
     // Method to handle view action menu clicked.
@@ -157,7 +145,7 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
 
             body_component: markRaw(ProfileView),
 
-            body_props: { record_id: record.code, record }
+            body_props: { record_id: record.id.toString(), record }
         };
 
         this.controller.event_bus?.emit?.("open_modal", modal_payload);
@@ -197,12 +185,10 @@ class PaymentProviderListViewActionHandler extends BaseListViewActionHandler<
 
             body_props: {
                 record,
-                record_id: record.code,
+                record_id: record.id.toString(),
                 content_key: delete_modal_content_key,
-                on_delete_success: async (
-                    deleted_record: PaymentProviderRecordInterface
-                ): Promise<void> => {
-                    this.removeListStateRecord(deleted_record.code, "code");
+                on_delete_success: async (deleted_record: PaymentProviderRecordInterface): Promise<void> => {
+                    this.removeListStateRecord(deleted_record.id, "id");
                 }
             }
         };

@@ -11,10 +11,7 @@ import {
     UpdatePaymentProviderPayloadInterface
 } from "@/types/form_data_type";
 
-import {
-    ButtonActionMethodReturnInterface,
-    ButtonUIPropsInterface
-} from "@ui/version_3/ui_types/button_ui_type";
+import { ButtonActionMethodReturnInterface, ButtonUIPropsInterface } from "@ui/version_3/ui_types/button_ui_type";
 
 import {
     FormViewPropsInterface,
@@ -65,9 +62,7 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
     }
 
     // Method to get default form data value based on record.
-    private static getFormDataValue(
-        record?: PaymentProviderRecordInterface
-    ): PaymentProviderFormDataInterface {
+    private static getFormDataValue(record?: PaymentProviderRecordInterface): PaymentProviderFormDataInterface {
         return {
             csrf_token: null,
             code: record?.code ?? "",
@@ -81,10 +76,7 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get field validators.
     protected getValidators(): Partial<
-        Record<
-            keyof PaymentProviderFormDataInterface,
-            FieldValidator<PaymentProviderFormDataInterface>
-        >
+        Record<keyof PaymentProviderFormDataInterface, FieldValidator<PaymentProviderFormDataInterface>>
     > {
         return {
             code: PaymentProviderValidator.validateCode,
@@ -98,7 +90,7 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
 
     // Method to get required fields for submit.
     protected getSubmitRequiredFields(): (keyof PaymentProviderFormDataInterface & string)[] {
-        return ["code", "name", "provider_type", "website_url"];
+        return ["code", "name"];
     }
 
     // Method to build create/update API payload from form data.
@@ -128,36 +120,18 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
             const result = await FileStorageAPIService.uploadFile(form_data);
 
             if (!result) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
             const { status, msg, data } = result;
 
             if (status !== "success" || !data?.url) {
-                StatusAlertTriggerUtil.triggerAlert(
-                    "error",
-                    msg || "file_upload_failed",
-                    10,
-                    undefined,
-                    false
-                );
+                StatusAlertTriggerUtil.triggerAlert("error", msg || "file_upload_failed", 10, undefined, false);
                 return false;
             }
 
-            StatusAlertTriggerUtil.triggerAlert(
-                "success",
-                msg || "file_uploaded_successfully",
-                5,
-                undefined,
-                true
-            );
+            StatusAlertTriggerUtil.triggerAlert("success", msg || "file_uploaded_successfully", 5, undefined, true);
 
             // set the logo url field in the form data
             this.form_data.logo_url = data.url;
@@ -179,13 +153,11 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
 
         try {
             const form_data = this.form_data as PaymentProviderFormDataInterface;
-            const record_id = this.controller.props.record?.code;
+            const record_id = this.controller.props.record?.id;
             const payload = this.buildAPIPayload(form_data);
             const validation_result = record_id
                 ? PaymentProviderValidator.validateUpdatePaymentProviderInput(payload)
-                : PaymentProviderValidator.validateCreatePaymentProviderInput(
-                      payload as CreatePaymentProviderPayloadInterface
-                  );
+                : PaymentProviderValidator.validateCreatePaymentProviderInput(payload as CreatePaymentProviderPayloadInterface);
             const { v_state, v_msg, v_data } = validation_result;
 
             if (!v_state || !v_data) {
@@ -195,9 +167,7 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
 
             const result = record_id
                 ? await PaymentProviderAPIService.updatePaymentProvider(record_id, v_data)
-                : await PaymentProviderAPIService.createPaymentProvider(
-                      v_data as CreatePaymentProviderPayloadInterface
-                  );
+                : await PaymentProviderAPIService.createPaymentProvider(v_data as CreatePaymentProviderPayloadInterface);
 
             if (!result) {
                 this.showErrorAlert("error", "error_occurred");
@@ -206,7 +176,7 @@ class PaymentProviderFormViewActionHandler extends BaseFormActionHandler<
 
             const { status, msg, data } = result;
 
-            if (status !== "success" || !data?.code) {
+            if (status !== "success" || !data?.id) {
                 this.showErrorAlert("error", msg);
                 return { status: false, msg };
             }

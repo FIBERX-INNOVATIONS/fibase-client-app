@@ -7,6 +7,7 @@ export const CSRF_TOKEN_FOR = {
     PAYMENT_PROVIDER_CONFIG: "payment_provider_config",
     PAYMENT_PROVIDER_METHOD: "payment_provider_method",
     CURRENCY_PAYMENT_PROVIDER_METHOD: "currency_payment_provider_method",
+    SERVICE_FEE_CONFIGURATION: "service_fee_configuration",
     PAYMENT_METHOD: "payment_method",
     ACCESS_CONTROL_ROLE: "access_control_role",
     ACCESS_CONTROL_ACTOR_ROLE: "access_control_actor_role",

@@ -16,7 +16,7 @@ class PaymentProviderAPIService extends BaseAPIService {
     public static getPaymentProviderList = async (
         params?: PaymentProviderListParams
     ): Promise<APIResponseInterface<PaymentProviderListResponseInterface>> => {
-        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentProviderListResponseInterface>({
             url: `/payment-config/provider/list`,
@@ -25,7 +25,7 @@ class PaymentProviderAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });

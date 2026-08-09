@@ -5,7 +5,9 @@ import type {
     PaymentMethodMetadataInterface,
     PaymentProviderConfigCredentialsInterface,
     PaymentProviderConfigEnvironmentType,
-    PaymentProviderConfigSettingsInterface
+    PaymentProviderConfigSettingsInterface,
+    PaymentProviderAccountStrategyType,
+    PaymentProviderType
 } from "@/types/api_service_type";
 
 export type FieldValidator<FormData> = (
@@ -173,7 +175,7 @@ export interface CreatePaymentProviderPayloadInterface extends BaseFormData {
     code: string;
     name: string;
     description?: string | null;
-    provider_type?: string;
+    provider_type?: PaymentProviderType;
     logo_url?: string | null;
     website_url?: string | null;
 }
@@ -183,7 +185,7 @@ export interface UpdatePaymentProviderPayloadInterface extends BaseFormData {
     code?: string;
     name?: string;
     description?: string | null;
-    provider_type?: string;
+    provider_type?: PaymentProviderType;
     logo_url?: string | null;
     website_url?: string | null;
 }
@@ -193,7 +195,7 @@ export interface PaymentProviderFormDataInterface extends BaseFormData {
     code: string;
     name: string;
     description?: string | null;
-    provider_type?: string;
+    provider_type?: PaymentProviderType;
     logo_url?: string | null;
     website_url?: string | null;
 }
@@ -231,6 +233,12 @@ export interface PaymentProviderConfigFormDataInterface extends BaseFormData {
     webhook_hash?: string | null;
     webhook_secret?: string | null;
     signing_secret?: string | null;
+    api_secret?: string | null;
+    access_token?: string | null;
+    key_version?: string | null;
+    base_api_url?: string | null;
+    create_sub_account?: boolean;
+    create_dedicated_account?: boolean;
     webhook_url?: string | null;
     callback_url?: string | null;
     redirect_url?: string | null;
@@ -241,6 +249,17 @@ export interface PaymentProviderConfigFormDataInterface extends BaseFormData {
     payout_schedule?: string | null;
     capture_mode?: string | null;
     timeout_ms?: string | number | null;
+    recv_window?: string | number | null;
+    supports_deposit?: boolean;
+    supports_withdrawal?: boolean;
+    supports_refund?: boolean;
+    supports_webhook?: boolean;
+    supports_polling?: boolean;
+    supported_methods?: string | null;
+    supported_currencies?: string[];
+    account_strategy?: PaymentProviderAccountStrategyType | null;
+    requires_provider_kyc_for_subaccount?: boolean;
+    transaction_fees?: string | null;
 }
 
 export interface PaymentProviderMethodFormDataInterface extends BaseFormData {

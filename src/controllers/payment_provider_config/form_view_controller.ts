@@ -87,6 +87,17 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
         });
         const credentialInput = (id: string, type: "text" | "password" = "text") =>
             this.buildInputGroupProps(id, type, field_content_key(id), { model_value: "" });
+        // Method to build a checkbox field with its current boolean value.
+        const booleanInput = (id: string, model_value = false) =>
+            this.buildInputGroupProps(id, "checkbox", field_content_key(id), {
+                model_value,
+                input_props: { boolean_props: { is_checked: model_value } }
+            });
+        // Method to build selected code options for multi-select fields.
+        const selectedCodeOptions = (values?: string[]) =>
+            (values ?? []).map((value) => {
+                return { label_text: value, value };
+            });
 
         return {
             provider_id_input_group_props: this.buildInputGroupProps(
@@ -127,6 +138,23 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
             webhook_hash_input_group_props: credentialInput("webhook_hash", "password"),
             webhook_secret_input_group_props: credentialInput("webhook_secret", "password"),
             signing_secret_input_group_props: credentialInput("signing_secret", "password"),
+            api_secret_input_group_props: credentialInput("api_secret", "password"),
+            access_token_input_group_props: credentialInput("access_token", "password"),
+            key_version_input_group_props: credentialInput("key_version"),
+
+            base_api_url_input_group_props: this.buildInputGroupProps(
+                "base_api_url",
+                "text",
+                field_content_key("base_api_url"),
+                {
+                    model_value: settings?.base_api_url ?? ""
+                }
+            ),
+            create_sub_account_input_group_props: booleanInput("create_sub_account", settings?.create_sub_account),
+            create_dedicated_account_input_group_props: booleanInput(
+                "create_dedicated_account",
+                settings?.create_dedicated_account
+            ),
 
             webhook_url_input_group_props: this.buildInputGroupProps("webhook_url", "text", field_content_key("webhook_url"), {
                 model_value: settings?.webhook_url ?? ""
@@ -185,7 +213,58 @@ class PaymentProviderConfigFormViewController extends BaseFormViewController<
             timeout_ms_input_group_props: this.buildInputGroupProps("timeout_ms", "number", field_content_key("timeout_ms"), {
                 model_value: settings?.timeout_ms ?? "",
                 input_props: { number_props: { min: 0, step: 1 } }
-            })
+            }),
+            recv_window_input_group_props: this.buildInputGroupProps(
+                "recv_window",
+                "number",
+                field_content_key("recv_window"),
+                {
+                    model_value: settings?.recv_window ?? "",
+                    input_props: { number_props: { min: 0, step: 1 } }
+                }
+            ),
+            supports_deposit_input_group_props: booleanInput("supports_deposit", settings?.supports_deposit),
+            supports_withdrawal_input_group_props: booleanInput("supports_withdrawal", settings?.supports_withdrawal),
+            supports_refund_input_group_props: booleanInput("supports_refund", settings?.supports_refund),
+            supports_webhook_input_group_props: booleanInput("supports_webhook", settings?.supports_webhook),
+            supports_polling_input_group_props: booleanInput("supports_polling", settings?.supports_polling),
+            supported_methods_input_group_props: this.buildInputGroupProps(
+                "supported_methods",
+                "text",
+                field_content_key("supported_methods"),
+                {
+                    model_value: settings?.supported_methods?.join(", ") ?? ""
+                }
+            ),
+            supported_currencies_input_group_props: this.buildInputGroupProps(
+                "supported_currencies",
+                "multi_select_search",
+                field_content_key("supported_currencies"),
+                {
+                    model_value: settings?.supported_currencies ?? [],
+                    input_props: {
+                        option_props: selectedCodeOptions(settings?.supported_currencies),
+                        content_props: { caret_html_contewnt: SVGIcons.trinagular_caret_down_svg_icon },
+                        action_props: { fetch_data_method: PreviewRecordFetcher.fetchCurrenciesPreviewRecords }
+                    }
+                }
+            ),
+            account_strategy_input_group_props: this.buildInputGroupProps(
+                "account_strategy",
+                "select",
+                field_content_key("account_strategy"),
+                { model_value: settings?.account_strategy ?? "none" }
+            ),
+            requires_provider_kyc_for_subaccount_input_group_props: booleanInput(
+                "requires_provider_kyc_for_subaccount",
+                settings?.requires_provider_kyc_for_subaccount
+            ),
+            transaction_fees_input_group_props: this.buildInputGroupProps(
+                "transaction_fees",
+                "textarea",
+                field_content_key("transaction_fees"),
+                { model_value: settings?.transaction_fees ? JSON.stringify(settings.transaction_fees, null, 2) : "" }
+            )
         };
     }
 

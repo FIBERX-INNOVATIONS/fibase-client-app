@@ -183,7 +183,7 @@ const ModalClassStyle: ModalUIClassStylesInterface = {
     wrapper_class_style: "w-full h-full flex justify-center items-start bg-black/70 relative mx-auto my-auto py-[5%]",
 
     modal_class_style:
-        "overflow-hidden relative bg-white shadow-lg rounded-lg w-[80%] md:w-[50%] lg:w-[45%] max-w-[90%] min-w-[80%] md:min-w-[50%] lg:min-w-[45%]",
+        "overflow-hidden relative bg-white shadow-lg rounded-lg w-[80%] md:w-[50%] lg:w-[47%] max-w-[90%] min-w-[80%] md:min-w-[50%] lg:min-w-[47%]",
 
     header_class_style: "flex w-full h-[70px] border-b border-blue-300 items-center justify-between overflow-hidden",
 

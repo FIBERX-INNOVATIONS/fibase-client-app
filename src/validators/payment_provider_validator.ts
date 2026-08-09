@@ -1,5 +1,7 @@
 import { CreatePaymentProviderPayloadInterface, UpdatePaymentProviderPayloadInterface } from "@/types/form_data_type";
 
+import { PaymentProviderType } from "@/types/api_service_type";
+
 import { ValidationResultInterface } from "@ui/version_3/types/validator_type";
 
 import { ActionMethodRetrunInterface } from "@ui/version_3/ui_types/input_ui_type";
@@ -52,12 +54,12 @@ class PaymentProviderValidator extends BaseValidator {
     };
 
     // Method to validate optional provider type.
-    public static validateProviderType = (value?: string | null): ActionMethodRetrunInterface => {
+    public static validateProviderType = (value?: PaymentProviderType | null): ActionMethodRetrunInterface => {
         if (InputValidatorUtil.isEmpty(value)) {
             return { status: true, msg: "" };
         }
 
-        if (value && !/^[a-zA-Z0-9_-]{2,50}$/.test(value.trim())) {
+        if (value && !["payment_gateway", "banking_partner", "crypto_exchange", "wallet_provider", "other"].includes(value)) {
             return {
                 status: false,
                 msg: this.getContentMessage("invalid_payment_provider_type")
@@ -136,7 +138,7 @@ class PaymentProviderValidator extends BaseValidator {
                 code: code.trim(),
                 name: name.trim(),
                 description: description?.trim() || null,
-                provider_type: provider_type?.trim() || undefined,
+                provider_type: provider_type || undefined,
                 logo_url: logo_url?.trim() || null,
                 website_url: website_url?.trim() || null
             }
@@ -180,7 +182,7 @@ class PaymentProviderValidator extends BaseValidator {
                 ...(code !== undefined ? { code: code.trim() } : {}),
                 ...(name !== undefined ? { name: name.trim() } : {}),
                 ...(description !== undefined ? { description: description?.trim() || null } : {}),
-                ...(provider_type !== undefined ? { provider_type: provider_type?.trim() } : {}),
+                ...(provider_type !== undefined ? { provider_type } : {}),
                 ...(logo_url !== undefined ? { logo_url: logo_url?.trim() || null } : {}),
                 ...(website_url !== undefined ? { website_url: website_url?.trim() || null } : {})
             }

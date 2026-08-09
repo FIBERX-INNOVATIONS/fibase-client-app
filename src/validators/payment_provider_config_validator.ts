@@ -6,6 +6,7 @@ import {
 import {
     PaymentProviderConfigCredentialsInterface,
     PaymentProviderConfigEnvironmentType,
+    PaymentProviderConfigFeeStructureType,
     PaymentProviderConfigSettingsInterface
 } from "@/types/api_service_type";
 
@@ -115,6 +116,60 @@ class PaymentProviderConfigValidator extends BaseValidator {
         return { status: true, msg: "" };
     };
 
+    // Method to validate optional transaction fee JSON input.
+    public static validateTransactionFees = (value?: string | null): ActionMethodRetrunInterface => {
+        if (InputValidatorUtil.isEmpty(value)) {
+            return { status: true, msg: "" };
+        }
+
+        try {
+            const transaction_fees = JSON.parse(value ?? "");
+
+            if (
+                !transaction_fees ||
+                typeof transaction_fees !== "object" ||
+                Array.isArray(transaction_fees) ||
+                !["deposit", "withdrawal"].some((key) => {
+                    return key in transaction_fees;
+                })
+            ) {
+                return { status: false, msg: this.getContentMessage("invalid_payment_provider_config_settings") };
+            }
+        } catch {
+            return { status: false, msg: this.getContentMessage("invalid_payment_provider_config_settings") };
+        }
+
+        return { status: true, msg: "" };
+    };
+
+    // Method to validate a single or ranged transaction fee structure.
+    private static validateFeeStructure(value: PaymentProviderConfigFeeStructureType | null): boolean {
+        if (value === null) {
+            return true;
+        }
+
+        if (!value || typeof value !== "object") {
+            return false;
+        }
+
+        if (value.type === "range") {
+            return (
+                Array.isArray(value.ranges) &&
+                value.ranges.length > 0 &&
+                value.ranges.every((range) => {
+                    return (
+                        ["flat", "percentage"].includes(range.type) &&
+                        !InputValidatorUtil.isEmpty(range.min) &&
+                        !InputValidatorUtil.isEmpty(range.max) &&
+                        !InputValidatorUtil.isEmpty(range.fee_amount)
+                    );
+                })
+            );
+        }
+
+        return ["flat", "percentage"].includes(value.type) && !InputValidatorUtil.isEmpty(value.fee_amount);
+    }
+
     // Method to validate optional provider credentials.
     public static validateCredentials = (
         credentials?: PaymentProviderConfigCredentialsInterface | null
@@ -158,25 +213,77 @@ class PaymentProviderConfigValidator extends BaseValidator {
         }
 
         for (const [key, value] of Object.entries(settings)) {
-            if (!this.validateSettingValue(value).status) {
-                return {
-                    status: false,
-                    msg: this.getContentMessage("invalid_payment_provider_config_settings")
-                };
-            }
-
-            if (key.endsWith("_url") && value && !InputValidatorUtil.isValidURL(value.trim())) {
+            if (key.endsWith("_url") && value && (typeof value !== "string" || !InputValidatorUtil.isValidURL(value.trim()))) {
                 return {
                     status: false,
                     msg: this.getContentMessage("invalid_payment_provider_config_url")
                 };
             }
 
-            if (key === "timeout_ms" && !this.validateTimeoutMs(value).status) {
+            if (["timeout_ms", "recv_window"].includes(key) && !this.validateTimeoutMs(value as number | null).status) {
                 return {
                     status: false,
                     msg: this.getContentMessage("invalid_payment_provider_config_timeout_ms")
                 };
+            }
+
+            if (
+                key.startsWith("supports_") ||
+                ["create_sub_account", "create_dedicated_account", "requires_provider_kyc_for_subaccount"].includes(key)
+            ) {
+                if (value !== undefined && typeof value !== "boolean") {
+                    return {
+                        status: false,
+                        msg: this.getContentMessage("invalid_payment_provider_config_settings")
+                    };
+                }
+            }
+
+            if (["supported_methods", "supported_currencies"].includes(key)) {
+                if (
+                    !Array.isArray(value) ||
+                    value.some((item) => {
+                        return typeof item !== "string" || InputValidatorUtil.isEmpty(item);
+                    })
+                ) {
+                    return {
+                        status: false,
+                        msg: this.getContentMessage("invalid_payment_provider_config_settings")
+                    };
+                }
+            }
+
+            if (
+                key === "account_strategy" &&
+                value !== undefined &&
+                ![
+                    "none",
+                    "provider_customer",
+                    "virtual_account",
+                    "main_wallet_address",
+                    "sub_account",
+                    "wallet_address"
+                ].includes(String(value))
+            ) {
+                return {
+                    status: false,
+                    msg: this.getContentMessage("invalid_payment_provider_config_settings")
+                };
+            }
+
+            if (key === "transaction_fees" && value) {
+                if (
+                    typeof value !== "object" ||
+                    Array.isArray(value) ||
+                    !Object.values(value).every((fee_structure) => {
+                        return this.validateFeeStructure(fee_structure as PaymentProviderConfigFeeStructureType | null);
+                    })
+                ) {
+                    return {
+                        status: false,
+                        msg: this.getContentMessage("invalid_payment_provider_config_settings")
+                    };
+                }
             }
         }
 
@@ -191,13 +298,11 @@ class PaymentProviderConfigValidator extends BaseValidator {
             return null;
         }
 
-        const clean_credentials: PaymentProviderConfigCredentialsInterface = {};
-
-        Object.entries(credentials).forEach(([key, value]) => {
-            clean_credentials[key] = value?.trim() || null;
+        const clean_entries = Object.entries(credentials).map(([key, value]) => {
+            return [key, value?.trim() || null];
         });
 
-        return clean_credentials;
+        return Object.fromEntries(clean_entries) as PaymentProviderConfigCredentialsInterface;
     };
 
     // Method to clean provider settings.
@@ -208,13 +313,24 @@ class PaymentProviderConfigValidator extends BaseValidator {
             return null;
         }
 
-        const clean_settings: PaymentProviderConfigSettingsInterface = {};
+        const clean_entries = Object.entries(settings).map(([key, value]) => {
+            if (typeof value === "string") {
+                return [key, value.trim() || null];
+            }
 
-        Object.entries(settings).forEach(([key, value]) => {
-            clean_settings[key] = value?.trim() || null;
+            if (Array.isArray(value)) {
+                return [
+                    key,
+                    value.map((item) => {
+                        return typeof item === "string" ? item.trim().toUpperCase() : item;
+                    })
+                ];
+            }
+
+            return [key, value];
         });
 
-        return clean_settings;
+        return Object.fromEntries(clean_entries) as PaymentProviderConfigSettingsInterface;
     };
 
     // Method to validate and clean create payment provider config input.

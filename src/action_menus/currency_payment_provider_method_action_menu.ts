@@ -2,10 +2,7 @@ import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { CurrencyPaymentProviderMethodRecordInterface } from "@/types/api_service_type";
 
-import {
-    NavLinkUIPropsInterface,
-    NavLinkContentPayloadResultInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 
@@ -19,12 +16,11 @@ class CurrencyPaymentProviderMethodActionMenu {
         record: CurrencyPaymentProviderMethodRecordInterface,
         action_handler?: CurrencyPaymentProviderMethodListViewActionHandler
     ): NavLinkUIPropsInterface[] {
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
         const base_content_key =
             "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.action_menu_list";
-        const record_id = record?.id?.toString() ?? "";
+        const record_id = record.id.toString();
 
         const view_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.view_menu_option`
@@ -46,10 +42,7 @@ class CurrencyPaymentProviderMethodActionMenu {
                 icon: view_menu_content?.menu_icon,
                 content: view_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleViewActionMenuClicked(record, config);
                     }
                 },
@@ -64,10 +57,7 @@ class CurrencyPaymentProviderMethodActionMenu {
                 icon: select_menu_content?.menu_icon,
                 content: select_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleSelectActionMenuClicked(record, config);
                     }
                 },
@@ -80,10 +70,7 @@ class CurrencyPaymentProviderMethodActionMenu {
                 icon: edit_menu_content?.menu_icon,
                 content: edit_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleEditActionMenuClicked(record, config);
                     }
                 },
@@ -99,10 +86,7 @@ class CurrencyPaymentProviderMethodActionMenu {
                 icon: delete_menu_content?.menu_icon,
                 content: delete_menu_content?.menu_text ?? "",
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleDeleteActionMenuClicked(record, config);
                     }
                 },

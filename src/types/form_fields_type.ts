@@ -133,6 +133,18 @@ type PaymentProviderConfigFieldsType = {
 
     signing_secret_input_group_props: InputGroupUIPropsInterface;
 
+    api_secret_input_group_props: InputGroupUIPropsInterface;
+
+    access_token_input_group_props: InputGroupUIPropsInterface;
+
+    key_version_input_group_props: InputGroupUIPropsInterface;
+
+    base_api_url_input_group_props: InputGroupUIPropsInterface;
+
+    create_sub_account_input_group_props: InputGroupUIPropsInterface;
+
+    create_dedicated_account_input_group_props: InputGroupUIPropsInterface;
+
     webhook_url_input_group_props: InputGroupUIPropsInterface;
 
     callback_url_input_group_props: InputGroupUIPropsInterface;
@@ -152,6 +164,28 @@ type PaymentProviderConfigFieldsType = {
     capture_mode_input_group_props: InputGroupUIPropsInterface;
 
     timeout_ms_input_group_props: InputGroupUIPropsInterface;
+
+    recv_window_input_group_props: InputGroupUIPropsInterface;
+
+    supports_deposit_input_group_props: InputGroupUIPropsInterface;
+
+    supports_withdrawal_input_group_props: InputGroupUIPropsInterface;
+
+    supports_refund_input_group_props: InputGroupUIPropsInterface;
+
+    supports_webhook_input_group_props: InputGroupUIPropsInterface;
+
+    supports_polling_input_group_props: InputGroupUIPropsInterface;
+
+    supported_methods_input_group_props: InputGroupUIPropsInterface;
+
+    supported_currencies_input_group_props: InputGroupUIPropsInterface;
+
+    account_strategy_input_group_props: InputGroupUIPropsInterface;
+
+    requires_provider_kyc_for_subaccount_input_group_props: InputGroupUIPropsInterface;
+
+    transaction_fees_input_group_props: InputGroupUIPropsInterface;
 };
 
 type PaymentProviderMethodFieldsType = {

@@ -24,6 +24,8 @@ import { getSVGIconValue } from "@ui/version_3/resources/svg_icon_resource";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
 import PaymentProviderConfigProfileViewActionHandler from "@/action_handlers/payment_provider_config/profile_view_action_handler";
@@ -52,7 +54,21 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         { key: "default_currency", label_key: "default_currency_label_text" },
         { key: "payout_schedule", label_key: "payout_schedule_label_text" },
         { key: "capture_mode", label_key: "capture_mode_label_text" },
-        { key: "timeout_ms", label_key: "timeout_ms_label_text" }
+        { key: "timeout_ms", label_key: "timeout_ms_label_text" },
+        { key: "base_api_url", label_key: "base_api_url_label_text" },
+        { key: "create_sub_account", label_key: "create_sub_account_label_text" },
+        { key: "create_dedicated_account", label_key: "create_dedicated_account_label_text" },
+        { key: "recv_window", label_key: "recv_window_label_text" },
+        { key: "supports_deposit", label_key: "supports_deposit_label_text" },
+        { key: "supports_withdrawal", label_key: "supports_withdrawal_label_text" },
+        { key: "supports_refund", label_key: "supports_refund_label_text" },
+        { key: "supports_webhook", label_key: "supports_webhook_label_text" },
+        { key: "supports_polling", label_key: "supports_polling_label_text" },
+        { key: "supported_methods", label_key: "supported_methods_label_text" },
+        { key: "supported_currencies", label_key: "supported_currencies_label_text" },
+        { key: "account_strategy", label_key: "account_strategy_label_text" },
+        { key: "requires_provider_kyc_for_subaccount", label_key: "requires_provider_kyc_for_subaccount_label_text" },
+        { key: "transaction_fees", label_key: "transaction_fees_label_text" }
     ] as const;
 
     private readonly credential_fields = [
@@ -68,7 +84,10 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         { key: "password", label_key: "password_label_text" },
         { key: "webhook_hash", label_key: "webhook_hash_label_text" },
         { key: "webhook_secret", label_key: "webhook_secret_label_text" },
-        { key: "signing_secret", label_key: "signing_secret_label_text" }
+        { key: "signing_secret", label_key: "signing_secret_label_text" },
+        { key: "api_secret", label_key: "api_secret_label_text" },
+        { key: "access_token", label_key: "access_token_label_text" },
+        { key: "key_version", label_key: "key_version_label_text" }
     ] as const;
 
     // Method to initialize the provider configuration profile controller.
@@ -96,6 +115,27 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
         return value !== null && value !== undefined && value !== "";
     }
 
+    // Method to format a provider configuration setting for profile display.
+    private formatSettingValue(key: keyof PaymentProviderConfigSettingsInterface, value: unknown): string {
+        if (typeof value === "boolean") {
+            return DisplayFormatterUtil.formatBoolean(value);
+        }
+
+        if (Array.isArray(value)) {
+            return value.length ? value.join(", ") : this.content_obj.empty_value_text;
+        }
+
+        if (value && typeof value === "object") {
+            return JSON.stringify(value, null, 2);
+        }
+
+        if (key === "account_strategy" && typeof value === "string") {
+            return DisplayFormatterUtil.formatLabel(value, this.content_obj.empty_value_text);
+        }
+
+        return String(value ?? this.content_obj.empty_value_text);
+    }
+
     // Method to build the visible provider setting entries.
     private getSettingsEntries(): PaymentProviderConfigProfileEntryInterface[] {
         const settings: PaymentProviderConfigSettingsInterface = this.state_refs.profile_record.value?.settings ?? {};
@@ -105,7 +145,7 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
                 return {
                     key: field.key,
                     label: this.content_obj[field.label_key],
-                    value: settings[field.key] ?? this.content_obj.empty_value_text
+                    value: this.formatSettingValue(field.key, settings[field.key])
                 };
             })
             .filter((entry) => {
@@ -167,6 +207,20 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             payout_schedule_label_text: `${base_content_key}.sections.settings.payout_schedule_label_text`,
             capture_mode_label_text: `${base_content_key}.sections.settings.capture_mode_label_text`,
             timeout_ms_label_text: `${base_content_key}.sections.settings.timeout_ms_label_text`,
+            base_api_url_label_text: `${base_content_key}.sections.settings.base_api_url_label_text`,
+            create_sub_account_label_text: `${base_content_key}.sections.settings.create_sub_account_label_text`,
+            create_dedicated_account_label_text: `${base_content_key}.sections.settings.create_dedicated_account_label_text`,
+            recv_window_label_text: `${base_content_key}.sections.settings.recv_window_label_text`,
+            supports_deposit_label_text: `${base_content_key}.sections.settings.supports_deposit_label_text`,
+            supports_withdrawal_label_text: `${base_content_key}.sections.settings.supports_withdrawal_label_text`,
+            supports_refund_label_text: `${base_content_key}.sections.settings.supports_refund_label_text`,
+            supports_webhook_label_text: `${base_content_key}.sections.settings.supports_webhook_label_text`,
+            supports_polling_label_text: `${base_content_key}.sections.settings.supports_polling_label_text`,
+            supported_methods_label_text: `${base_content_key}.sections.settings.supported_methods_label_text`,
+            supported_currencies_label_text: `${base_content_key}.sections.settings.supported_currencies_label_text`,
+            account_strategy_label_text: `${base_content_key}.sections.settings.account_strategy_label_text`,
+            requires_provider_kyc_for_subaccount_label_text: `${base_content_key}.sections.settings.requires_provider_kyc_for_subaccount_label_text`,
+            transaction_fees_label_text: `${base_content_key}.sections.settings.transaction_fees_label_text`,
             no_settings_text: `${base_content_key}.sections.settings.no_settings_text`,
             credentials_title_text: `${base_content_key}.sections.credentials.title_text`,
             credentials_hidden_text: `${base_content_key}.sections.credentials.hidden_text`,
@@ -188,6 +242,9 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             webhook_hash_label_text: `${base_content_key}.sections.credentials.webhook_hash_label_text`,
             webhook_secret_label_text: `${base_content_key}.sections.credentials.webhook_secret_label_text`,
             signing_secret_label_text: `${base_content_key}.sections.credentials.signing_secret_label_text`,
+            api_secret_label_text: `${base_content_key}.sections.credentials.api_secret_label_text`,
+            access_token_label_text: `${base_content_key}.sections.credentials.access_token_label_text`,
+            key_version_label_text: `${base_content_key}.sections.credentials.key_version_label_text`,
             status_title_text: `${base_content_key}.sections.status.title_text`,
             created_label_text: `${base_content_key}.sections.status.created_label_text`,
             updated_label_text: `${base_content_key}.sections.status.updated_label_text`,
@@ -221,6 +278,20 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             payout_schedule_label_text: "Payout Schedule:",
             capture_mode_label_text: "Capture Mode:",
             timeout_ms_label_text: "Timeout (MS):",
+            base_api_url_label_text: "Base API URL:",
+            create_sub_account_label_text: "Create Sub-account:",
+            create_dedicated_account_label_text: "Create Dedicated Account:",
+            recv_window_label_text: "Receive Window (MS):",
+            supports_deposit_label_text: "Supports Deposits:",
+            supports_withdrawal_label_text: "Supports Withdrawals:",
+            supports_refund_label_text: "Supports Refunds:",
+            supports_webhook_label_text: "Supports Webhooks:",
+            supports_polling_label_text: "Supports Polling:",
+            supported_methods_label_text: "Supported Methods:",
+            supported_currencies_label_text: "Supported Currencies:",
+            account_strategy_label_text: "Account Strategy:",
+            requires_provider_kyc_for_subaccount_label_text: "Provider KYC Required for Sub-account:",
+            transaction_fees_label_text: "Transaction Fees:",
             no_settings_text: "No settings configured.",
             credentials_title_text: "Credentials",
             credentials_hidden_text: "Credentials are hidden until you reveal them.",
@@ -242,6 +313,9 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             webhook_hash_label_text: "Webhook Hash:",
             webhook_secret_label_text: "Webhook Secret:",
             signing_secret_label_text: "Signing Secret:",
+            api_secret_label_text: "API Secret:",
+            access_token_label_text: "Access Token:",
+            key_version_label_text: "Key Version:",
             status_title_text: "Status",
             created_label_text: "Created:",
             updated_label_text: "Updated:",

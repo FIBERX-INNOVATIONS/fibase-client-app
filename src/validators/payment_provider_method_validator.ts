@@ -20,12 +20,20 @@ class PaymentProviderMethodValidator extends BaseValidator {
             return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
         }
 
+        if (!/^\d+$/.test(String(value)) || Number(value) <= 0) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_provider_id") };
+        }
+
         return { status: true, msg: "" };
     };
 
     // Method to validate payment method id input.
     public static validatePaymentMethodId = (value?: string | number | null): ActionMethodRetrunInterface => {
         if (value === null || value === undefined || InputValidatorUtil.isEmpty(String(value))) {
+            return { status: false, msg: this.getContentMessage("invalid_payment_method_id") };
+        }
+
+        if (!/^\d+$/.test(String(value)) || Number(value) <= 0) {
             return { status: false, msg: this.getContentMessage("invalid_payment_method_id") };
         }
 
@@ -73,7 +81,7 @@ class PaymentProviderMethodValidator extends BaseValidator {
             return { status: true, msg: "" };
         }
 
-        if (Number.isNaN(Number(value)) || Number(value) < 0) {
+        if (!Number.isFinite(Number(value)) || Number(value) < 0) {
             return { status: false, msg: this.getContentMessage("invalid_payment_amount") };
         }
 

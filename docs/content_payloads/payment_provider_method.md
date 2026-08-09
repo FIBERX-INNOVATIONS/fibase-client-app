@@ -27,7 +27,7 @@
 ## Expected Content
 
 - Filters: search, status, provider, payment method, direction, created by, date range.
-- Form fields: provider, payment method, direction, provider method code, metadata/settings fields.
+- Form fields: provider, payment method, direction, provider method code, minimum amount, and maximum amount.
 - Table columns: serial/select, provider, payment method, direction, provider method code, status, linked by, created at, actions.
 
 ## Sample

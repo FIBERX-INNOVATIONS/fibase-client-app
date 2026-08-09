@@ -49,17 +49,17 @@ import DataTableActionIconCellUI from "@ui/version_3/components/DataTableCellCom
 
 import DataTableTextContentCellUI from "@ui/version_3/components/DataTableCellComponents/DataTableTextContentCellUI.vue";
 
-class PaymentMethodListViewController extends BaseListViewController<PaymentMethodRecordInterface, "code"> {
+class PaymentMethodListViewController extends BaseListViewController<PaymentMethodRecordInterface, "id"> {
     public readonly content_key: string = "payment_method";
 
-    public readonly record_id_key: "code" = "code" as const;
+    public readonly record_id_key: "id" = "id" as const;
 
     public action_handler: PaymentMethodListViewActionHandler;
 
     private readonly content_manager = ContentManagerUtil.getInstance();
 
     constructor(props: ListViewPropsInterface) {
-        super(props, "code");
+        super(props, "id");
 
         this.action_handler = new PaymentMethodListViewActionHandler(this);
     }
@@ -221,7 +221,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
         const columns: DataTableColumnRenderType<PaymentMethodRecordInterface>[] = [
             // Code column
             {
-                key: "code",
+                key: "id",
                 sortable: false,
                 width: this.list_view_class_styles.table_column_width_class_styles.percent_5,
                 header: {
@@ -238,22 +238,22 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                     input_model_value: (record?: PaymentMethodRecordInterface): InputValue => {
                         const selected_records = this.state_refs.selected_records.value;
 
-                        if (!record?.code) {
+                        if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const method_codes = records.map((row) => row.code);
+                            const method_ids = records.map((row) => row.id);
 
-                            return method_codes.length > 0 && method_codes.every((code) => selected_records.includes(code));
+                            return method_ids.length > 0 && method_ids.every((id) => selected_records.includes(id));
                         }
 
-                        return selected_records.includes(record.code);
+                        return selected_records.includes(record.id);
                     },
                     input_ui_boolean_props: (record?: PaymentMethodRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const method_codes = records.map((row) => row.code);
-                        const is_checked = record?.code
-                            ? selected_records.includes(record.code)
-                            : method_codes.length > 0 && method_codes.every((code) => selected_records.includes(code));
+                        const method_ids = records.map((row) => row.id);
+                        const is_checked = record?.id
+                            ? selected_records.includes(record.id)
+                            : method_ids.length > 0 && method_ids.every((id) => selected_records.includes(id));
 
                         return {
                             is_checked,
@@ -441,7 +441,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
             },
             // Actions column
             {
-                key: "code",
+                key: "id",
                 sortable: false,
                 width: this.list_view_class_styles.table_column_width_class_styles.percent_6,
                 header: {

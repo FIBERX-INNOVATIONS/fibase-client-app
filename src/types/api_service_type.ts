@@ -267,7 +267,12 @@ export type AppCurrencyActionResponseInterface = boolean;
 
 export type PaymentConfigDirectionType = "deposit" | "withdrawal";
 
+export type PaymentProviderType = "payment_gateway" | "banking_partner" | "crypto_exchange" | "wallet_provider" | "other";
+
 export type PaymentProviderConfigEnvironmentType = "test" | "live";
+
+export type PaymentProviderAccountStrategyType =
+    "none" | "provider_customer" | "virtual_account" | "main_wallet_address" | "sub_account" | "wallet_address";
 
 export interface PaymentMethodMetadataInterface {
     display_name?: string | null;
@@ -286,7 +291,7 @@ export interface PaymentMethodMetadataInterface {
 }
 
 export interface PaymentMethodRecordInterface {
-    id?: number;
+    id: number;
     code: string;
     name: string;
     description: string | null;
@@ -301,11 +306,11 @@ export interface PaymentMethodRecordInterface {
 }
 
 export interface PaymentProviderRecordInterface {
-    id?: number;
+    id: number;
     code: string;
     name: string;
     description: string | null;
-    provider_type: string;
+    provider_type: PaymentProviderType;
     logo_url: string | null;
     website_url: string | null;
     is_active: boolean;
@@ -329,14 +334,47 @@ export interface PaymentProviderConfigCredentialsInterface {
     webhook_hash?: string | null;
     webhook_secret?: string | null;
     signing_secret?: string | null;
-    [key: string]: string | null | undefined;
+    api_secret?: string | null;
+    access_token?: string | null;
+    key_version?: string | null;
+    // [key: string]: string | null | undefined;
 }
 
 export interface PaymentProviderConfigCredentialsResponseInterface {
     credentials: PaymentProviderConfigCredentialsInterface | null;
 }
 
+export type PaymentProviderConfigFeeType = "flat" | "percentage";
+
+export interface PaymentProviderConfigSingleFeeInterface {
+    type: PaymentProviderConfigFeeType;
+    fee_amount: string;
+}
+
+export interface PaymentProviderConfigFeeRangeInterface {
+    min: string;
+    max: string;
+    type: PaymentProviderConfigFeeType;
+    fee_amount: string;
+}
+
+export interface PaymentProviderConfigRangeFeeInterface {
+    type: "range";
+    ranges: PaymentProviderConfigFeeRangeInterface[];
+}
+
+export type PaymentProviderConfigFeeStructureType =
+    PaymentProviderConfigSingleFeeInterface | PaymentProviderConfigRangeFeeInterface;
+
+export interface PaymentProviderConfigTransactionFeesInterface {
+    deposit?: PaymentProviderConfigFeeStructureType | null;
+    withdrawal?: PaymentProviderConfigFeeStructureType | null;
+}
+
 export interface PaymentProviderConfigSettingsInterface {
+    base_api_url?: string;
+    create_sub_account?: boolean;
+    create_dedicated_account?: boolean;
     webhook_url?: string | null;
     callback_url?: string | null;
     redirect_url?: string | null;
@@ -346,12 +384,22 @@ export interface PaymentProviderConfigSettingsInterface {
     default_currency?: string | null;
     payout_schedule?: string | null;
     capture_mode?: string | null;
-    timeout_ms?: string | null;
-    [key: string]: string | null | undefined;
+    timeout_ms?: number | null;
+    recv_window?: number | null;
+    supports_deposit?: boolean;
+    supports_withdrawal?: boolean;
+    supports_refund?: boolean;
+    supports_webhook?: boolean;
+    supports_polling?: boolean;
+    supported_methods?: string[];
+    supported_currencies?: string[];
+    account_strategy?: PaymentProviderAccountStrategyType;
+    requires_provider_kyc_for_subaccount?: boolean;
+    transaction_fees?: PaymentProviderConfigTransactionFeesInterface | null;
 }
 
 export interface PaymentProviderConfigRecordInterface {
-    id?: number;
+    id: number;
     environment: PaymentProviderConfigEnvironmentType;
     account_reference: string | null;
     settings: PaymentProviderConfigSettingsInterface | null;
@@ -363,7 +411,7 @@ export interface PaymentProviderConfigRecordInterface {
 }
 
 export interface PaymentProviderMethodRecordInterface {
-    id?: number;
+    id: number;
     direction: PaymentConfigDirectionType;
     provider_method_code: string | null;
     min_amount: number | null;

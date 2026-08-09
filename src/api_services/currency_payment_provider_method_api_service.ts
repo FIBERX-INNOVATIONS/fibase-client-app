@@ -19,7 +19,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
     public static getCurrencyPaymentProviderMethodList = async (
         params?: CurrencyPaymentProviderMethodListParams
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodListResponseInterface>> => {
-        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<CurrencyPaymentProviderMethodListResponseInterface>({
             url: `/payment-config/currency-provider-method/list`,
@@ -28,7 +28,7 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });
@@ -86,7 +86,8 @@ class CurrencyPaymentProviderMethodAPIService extends BaseAPIService {
     ): Promise<APIResponseInterface<CurrencyPaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<CurrencyPaymentProviderMethodRecordInterface>({
             url: `/payment-config/currency-provider-method/${currency_provider_method_id}/delete`,
-            method: "DELETE"
+            method: "DELETE",
+            disable_retry: true
         });
     };
 }

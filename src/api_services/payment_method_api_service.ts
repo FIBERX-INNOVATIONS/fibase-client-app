@@ -16,7 +16,7 @@ class PaymentMethodAPIService extends BaseAPIService {
     public static getPaymentMethodList = async (
         params?: PaymentMethodListParams
     ): Promise<APIResponseInterface<PaymentMethodListResponseInterface>> => {
-        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentMethodListResponseInterface>({
             url: `/payment-config/method/list`,
@@ -25,7 +25,7 @@ class PaymentMethodAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });
@@ -83,7 +83,8 @@ class PaymentMethodAPIService extends BaseAPIService {
     ): Promise<APIResponseInterface<PaymentMethodRecordInterface>> => {
         return await this.queryAPI<PaymentMethodRecordInterface>({
             url: `/payment-config/method/${method_id}/delete`,
-            method: "DELETE"
+            method: "DELETE",
+            disable_retry: true
         });
     };
 }

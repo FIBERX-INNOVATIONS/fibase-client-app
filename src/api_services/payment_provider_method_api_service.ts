@@ -19,7 +19,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
     public static getPaymentProviderMethodList = async (
         params?: PaymentProviderMethodListParams
     ): Promise<APIResponseInterface<PaymentProviderMethodListResponseInterface>> => {
-        const { page = 1, limit = 10, sort_by = "updated_at", sort_direction = "desc", filters } = params ?? {};
+        const { page = 1, limit = 12, sort_by = "created_at", sort_direction = "desc", filters } = params ?? {};
 
         return await this.queryAPI<PaymentProviderMethodListResponseInterface>({
             url: `/payment-config/provider-method/list`,
@@ -28,7 +28,7 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
                 page,
                 limit,
                 sort_by,
-                sort_direction,
+                sort_direction: sort_direction.toUpperCase(),
                 ...filters
             }
         });
@@ -86,7 +86,8 @@ class PaymentProviderMethodAPIService extends BaseAPIService {
     ): Promise<APIResponseInterface<PaymentProviderMethodRecordInterface>> => {
         return await this.queryAPI<PaymentProviderMethodRecordInterface>({
             url: `/payment-config/provider-method/${provider_method_id}/delete`,
-            method: "DELETE"
+            method: "DELETE",
+            disable_retry: true
         });
     };
 }

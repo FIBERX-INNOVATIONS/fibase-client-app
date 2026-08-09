@@ -13,6 +13,8 @@ import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
 
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
+import DisplayFormatterUtil from "@/utils/display_formatter_util";
+
 import BaseProfileViewController from "@/controllers/base_classes/base_profile_view_controller";
 
 import PaymentProviderProfileViewActionHandler from "@/action_handlers/payment_provider/profile_view_action_handler";
@@ -80,6 +82,13 @@ class PaymentProviderProfileViewController extends BaseProfileViewController<Pay
         return {
             logo_url: () => {
                 return this.state_refs.profile_record.value?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL;
+            },
+
+            readable_provider_type: () => {
+                return DisplayFormatterUtil.formatLabel(
+                    this.state_refs.profile_record.value?.provider_type,
+                    this.content_obj.empty_value_text
+                );
             },
 
             readable_created_at: () => {

@@ -243,6 +243,20 @@ export interface PaymentProviderConfigProfileViewContentKeysInterface extends Pr
     payout_schedule_label_text: string;
     capture_mode_label_text: string;
     timeout_ms_label_text: string;
+    base_api_url_label_text: string;
+    create_sub_account_label_text: string;
+    create_dedicated_account_label_text: string;
+    recv_window_label_text: string;
+    supports_deposit_label_text: string;
+    supports_withdrawal_label_text: string;
+    supports_refund_label_text: string;
+    supports_webhook_label_text: string;
+    supports_polling_label_text: string;
+    supported_methods_label_text: string;
+    supported_currencies_label_text: string;
+    account_strategy_label_text: string;
+    requires_provider_kyc_for_subaccount_label_text: string;
+    transaction_fees_label_text: string;
     no_settings_text: string;
     credentials_title_text: string;
     credentials_hidden_text: string;
@@ -264,6 +278,9 @@ export interface PaymentProviderConfigProfileViewContentKeysInterface extends Pr
     webhook_hash_label_text: string;
     webhook_secret_label_text: string;
     signing_secret_label_text: string;
+    api_secret_label_text: string;
+    access_token_label_text: string;
+    key_version_label_text: string;
     status_title_text: string;
     created_label_text: string;
     updated_label_text: string;
@@ -382,6 +399,8 @@ export interface ProfileViewComputedDataInterface {
     readable_created_at?: string;
 
     readable_updated_at?: string;
+
+    readable_provider_type?: string;
 
     formatted_min_amount?: string;
 
