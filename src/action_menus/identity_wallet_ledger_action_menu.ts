@@ -1,3 +1,5 @@
+import { WALLET_PERMISSIONS } from "@/configs/permissions_config";
+
 import { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
@@ -35,9 +37,11 @@ class IdentityWalletLedgerActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("wallet_module.get_wallet_ledger_list")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(WALLET_PERMISSIONS.LEDGER_LIST)
             }
-        ].filter((menu) => menu.has_permission);
+        ].filter((menu) => {
+            return menu.has_permission;
+        });
     }
 }
 

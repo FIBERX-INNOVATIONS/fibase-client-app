@@ -1,3 +1,5 @@
+import { SERVICE_FEE_CONFIGURATION_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import type { ListViewPropsInterface } from "@/ui_types/list_view_type";
@@ -229,7 +231,7 @@ class ServiceFeeConfigurationListViewController extends BaseListViewController<
     // Method to build the service fee configuration table columns.
     protected getTableRenderConfig(): DataTableColumnRenderType<ServiceFeeConfigurationRecordInterface>[] {
         const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "service_fee_configuration_module.update_service_fee_configuration_status"
+            SERVICE_FEE_CONFIGURATION_PERMISSIONS.UPDATE_STATUS
         );
 
         const columns: DataTableColumnRenderType<ServiceFeeConfigurationRecordInterface>[] = [

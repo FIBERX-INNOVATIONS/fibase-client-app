@@ -1,3 +1,5 @@
+import { WALLET_PERMISSIONS } from "@/configs/permissions_config";
+
 import { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
@@ -42,7 +44,7 @@ class IdentityWalletActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo("wallet_module.get_wallet")
+                has_permission: !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo(WALLET_PERMISSIONS.VIEW)
             },
             {
                 id: `${ledger_menu_content?.menu_text ?? "Ledger"}ActionMenu${record_id}`,
@@ -57,7 +59,7 @@ class IdentityWalletActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission:
-                    !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo("wallet_module.get_wallet_ledger_list")
+                    !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo(WALLET_PERMISSIONS.LEDGER_LIST)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record_id}`,
@@ -72,7 +74,9 @@ class IdentityWalletActionMenu {
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission: true
             }
-        ].filter((menu) => menu.has_permission);
+        ].filter((menu) => {
+            return menu.has_permission;
+        });
     }
 }
 

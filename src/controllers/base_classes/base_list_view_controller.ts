@@ -1,3 +1,5 @@
+import { LIST_VIEW_CREATE_PERMISSIONS } from "@/configs/permissions_config";
+
 import { reactive, Ref, ref } from "vue";
 
 import { EventBus } from "@/utils/global_event_bus_util";
@@ -283,17 +285,22 @@ class BaseListViewController<T extends object = Record<string, unknown>, K exten
         });
     }
 
-    // Method to get header action button props
+    // Method to build create buttons using the central module permission mapping.
     protected getHeaderActionButtons(
         page_key: string,
         content_keys: ListViewContentKeysInterface,
         icons: ListViewIconKeysInterface
     ): ButtonUIPropsInterface[] {
         const { page_header_class_styles } = ListViewClassStyles;
+        const create_permission = LIST_VIEW_CREATE_PERMISSIONS[page_key];
+
+        if (!create_permission) {
+            return [];
+        }
 
         return [
             ButtonUIPropsBuilder.getReactivePropsObject(
-                `${page_key}_module.create_${page_key}`,
+                create_permission,
                 content_keys.create_button_text,
                 icons.create_button,
                 "button",

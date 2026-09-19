@@ -1,3 +1,5 @@
+import { ACCESS_CONTROL_PERMISSIONS, ACTIVITY_PERMISSIONS, MEMBER_PROFILE_PERMISSIONS } from "@/configs/permissions_config";
+
 import { MemberRecordInterface } from "@/types/api_service_type";
 
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
@@ -11,6 +13,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import MemberProfileListViewActionHandler from "@/action_handlers/member_profile/list_view_action_handler";
 
 class MemberProfileActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: MemberRecordInterface,
         action_handler?: MemberProfileListViewActionHandler
@@ -33,8 +36,9 @@ class MemberProfileActionMenu {
 
         const base_content_key = "content_resource.member_profile_view_ui.list_view_ui.table.action_menu_list";
 
-        const getContent = (key: string) =>
-            content_manager.get<NavLinkContentPayloadResultInterface>(`${base_content_key}.${key}`);
+        const getContent = (key: string) => {
+            return content_manager.get<NavLinkContentPayloadResultInterface>(`${base_content_key}.${key}`);
+        };
 
         const view_menu_content = getContent("view_menu_option");
         const select_menu_content = getContent("select_menu_option");
@@ -45,7 +49,7 @@ class MemberProfileActionMenu {
         const delete_menu_content = getContent("delete_menu_option");
         const send_activation_link_menu_content = getContent("send_activation_link_menu_option");
 
-        const can_view = MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.get_member");
+        const can_view = MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_PROFILE_PERMISSIONS.VIEW);
 
         const can_select = true;
 
@@ -54,32 +58,32 @@ class MemberProfileActionMenu {
             !is_record_super_admin &&
             (is_same_as_logged_in_member ||
                 is_current_member_super_admin ||
-                MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.update_member"));
+                MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_PROFILE_PERMISSIONS.UPDATE));
 
-        const can_view_activity = MemberAuthenticatorUtil.memberHasPermissionTo("activity_module.get_activity_list");
+        const can_view_activity = MemberAuthenticatorUtil.memberHasPermissionTo(ACTIVITY_PERMISSIONS.LIST);
 
         const can_manage_roles =
             !is_deleted &&
             !is_record_super_admin &&
-            (MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.assign_actor_roles") ||
-                MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.unassign_actor_roles"));
+            (MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.ASSIGN_ACTOR_ROLES) ||
+                MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.UNASSIGN_ACTOR_ROLES));
 
         const can_send_activation_email =
             !is_deleted &&
             !record.is_active &&
             !is_record_super_admin &&
-            MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.send_member_activation_link");
+            MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_PROFILE_PERMISSIONS.SEND_ACTIVATION_LINK);
 
         const can_restore_deleted_profile =
             is_deleted &&
             is_current_member_super_admin &&
             !is_record_super_admin &&
-            MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.restore_member");
+            MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_PROFILE_PERMISSIONS.RESTORE);
 
         const can_delete =
             !is_deleted &&
             !is_record_super_admin &&
-            MemberAuthenticatorUtil.memberHasPermissionTo("member_profile_module.delete_member");
+            MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_PROFILE_PERMISSIONS.DELETE);
 
         const menus = [
             // View Action Menu

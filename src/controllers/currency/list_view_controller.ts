@@ -1,3 +1,5 @@
+import { CURRENCY_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -220,7 +222,7 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
     protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyRecordInterface>[] {
         const content_manager = ContentManagerUtil.getInstance();
 
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo("currency_module.update_currency_status");
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.UPDATE_STATUS);
 
         const columns: DataTableColumnRenderType<CurrencyRecordInterface>[] = [
             // S/N and Select Checkbox Column
@@ -246,9 +248,16 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                         if (!record?.code) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const currency_codes = records.map((row) => row.code);
+                            const currency_codes = records.map((row) => {
+                                return row.code;
+                            });
 
-                            return currency_codes.length > 0 && currency_codes.every((code) => selected_records.includes(code));
+                            return (
+                                currency_codes.length > 0 &&
+                                currency_codes.every((code) => {
+                                    return selected_records.includes(code);
+                                })
+                            );
                         }
 
                         return selected_records.includes(record.code);
@@ -257,10 +266,15 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                     input_ui_boolean_props: (record?: CurrencyRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const currency_codes = records.map((row) => row.code);
+                        const currency_codes = records.map((row) => {
+                            return row.code;
+                        });
                         const is_checked = record?.code
                             ? selected_records.includes(record.code)
-                            : currency_codes.length > 0 && currency_codes.every((code) => selected_records.includes(code));
+                            : currency_codes.length > 0 &&
+                              currency_codes.every((code) => {
+                                  return selected_records.includes(code);
+                              });
 
                         return {
                             is_checked,
@@ -304,11 +318,17 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: CurrencyRecordInterface) => record.name,
+                    getImgAltText: (record: CurrencyRecordInterface) => {
+                        return record.name;
+                    },
 
-                    getImgSubText: (record: CurrencyRecordInterface) => record.code ?? "-",
+                    getImgSubText: (record: CurrencyRecordInterface) => {
+                        return record.code ?? "-";
+                    },
 
-                    getImgContent: (record: CurrencyRecordInterface) => record.name,
+                    getImgContent: (record: CurrencyRecordInterface) => {
+                        return record.name;
+                    },
 
                     getImgSrc: (record: CurrencyRecordInterface) => {
                         return record?.logo_url || DEFUALT_CURRENCY_LOGO_URL;
@@ -474,12 +494,17 @@ class CurrencyListViewController extends BaseListViewController<CurrencyRecordIn
 
                     icon_key: "member_icon",
 
-                    getImgAltText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: CurrencyRecordInterface) => {
+                        return getMemberFullName(record?.creator) ?? "";
+                    },
 
-                    getLinkURL: (record: CurrencyRecordInterface) =>
-                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
+                    getLinkURL: (record: CurrencyRecordInterface) => {
+                        return this.getRouteQueryLink("member_profile", record?.creator?.public_id);
+                    },
 
-                    getLinkText: (record: CurrencyRecordInterface) => getMemberFullName(record?.creator) ?? ""
+                    getLinkText: (record: CurrencyRecordInterface) => {
+                        return getMemberFullName(record?.creator) ?? "";
+                    }
                 }
             },
 

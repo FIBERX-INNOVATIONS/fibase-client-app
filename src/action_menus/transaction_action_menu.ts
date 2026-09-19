@@ -1,3 +1,5 @@
+import { TRANSACTION_PERMISSIONS } from "@/configs/permissions_config";
+
 import { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
@@ -41,7 +43,7 @@ class TransactionActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("transaction_module.get_transaction")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(TRANSACTION_PERMISSIONS.VIEW)
             },
             {
                 id: `${ledger_menu_content?.menu_text ?? "Ledger"}ActionMenu${record.public_id.toUpperCase()}`,
@@ -55,7 +57,7 @@ class TransactionActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("transaction_module.get_transaction_ledger_list")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(TRANSACTION_PERMISSIONS.LEDGER_LIST)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record.public_id.toUpperCase()}`,

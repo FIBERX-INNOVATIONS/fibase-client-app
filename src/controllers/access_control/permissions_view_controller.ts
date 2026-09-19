@@ -1,3 +1,5 @@
+import { ACCESS_CONTROL_PERMISSIONS } from "@/configs/permissions_config";
+
 import { markRaw } from "vue";
 
 import { ComputedDefinitionType, WatchersType } from "@ui/version_3/types/base_type";
@@ -70,7 +72,7 @@ class AccessControlPermissionsViewController
     // Method to check if the logged-in member can manage role permissions.
     private memberCanManagePermissions(): boolean {
         const has_permission = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "access_control_module.assign_or_unassign_role_permissions"
+            ACCESS_CONTROL_PERMISSIONS.ASSIGN_OR_UNASSIGN_ROLE_PERMISSIONS
         );
 
         const is_super_admin = MemberAuthenticatorUtil.memberHasSuperAdminRole(MemberAuthenticatorUtil.getLoggedInMember());

@@ -1,3 +1,5 @@
+import { PAYMENT_PROVIDER_CONFIG_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { PaymentProviderConfigRecordInterface } from "@/types/api_service_type";
@@ -11,6 +13,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import PaymentProviderConfigListViewActionHandler from "@/action_handlers/payment_provider_config/list_view_action_handler";
 
 class PaymentProviderConfigActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: PaymentProviderConfigRecordInterface,
         action_handler?: PaymentProviderConfigListViewActionHandler
@@ -45,9 +48,7 @@ class PaymentProviderConfigActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_config_module.get_payment_provider_config"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_CONFIG_PERMISSIONS.VIEW)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "select"}ActionMenu${record_id}`,
@@ -73,9 +74,7 @@ class PaymentProviderConfigActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_config_module.update_payment_provider_config"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_CONFIG_PERMISSIONS.UPDATE)
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id}`,
@@ -88,13 +87,13 @@ class PaymentProviderConfigActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_config_module.delete_payment_provider_config"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_CONFIG_PERMISSIONS.DELETE)
             }
         ];
 
-        return menus.filter((nav_obj: NavLinkUIPropsInterface) => nav_obj?.has_permission);
+        return menus.filter((nav_obj: NavLinkUIPropsInterface) => {
+            return nav_obj?.has_permission;
+        });
     }
 }
 

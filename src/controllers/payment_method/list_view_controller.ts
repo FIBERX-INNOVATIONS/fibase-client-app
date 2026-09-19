@@ -1,3 +1,5 @@
+import { PAYMENT_METHOD_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -214,9 +216,7 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
 
     // Method to get table render config.
     protected getTableRenderConfig(): DataTableColumnRenderType<PaymentMethodRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "payment_method_module.update_payment_method_status"
-        );
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_METHOD_PERMISSIONS.UPDATE_STATUS);
 
         const columns: DataTableColumnRenderType<PaymentMethodRecordInterface>[] = [
             // Code column
@@ -240,9 +240,16 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
 
                         if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const method_ids = records.map((row) => row.id);
+                            const method_ids = records.map((row) => {
+                                return row.id;
+                            });
 
-                            return method_ids.length > 0 && method_ids.every((id) => selected_records.includes(id));
+                            return (
+                                method_ids.length > 0 &&
+                                method_ids.every((id) => {
+                                    return selected_records.includes(id);
+                                })
+                            );
                         }
 
                         return selected_records.includes(record.id);
@@ -250,10 +257,15 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                     input_ui_boolean_props: (record?: PaymentMethodRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const method_ids = records.map((row) => row.id);
+                        const method_ids = records.map((row) => {
+                            return row.id;
+                        });
                         const is_checked = record?.id
                             ? selected_records.includes(record.id)
-                            : method_ids.length > 0 && method_ids.every((id) => selected_records.includes(id));
+                            : method_ids.length > 0 &&
+                              method_ids.every((id) => {
+                                  return selected_records.includes(id);
+                              });
 
                         return {
                             is_checked,
@@ -293,10 +305,18 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: PaymentMethodRecordInterface) => record.name,
-                    getImgSubText: (record: PaymentMethodRecordInterface) => record.code,
-                    getImgContent: (record: PaymentMethodRecordInterface) => record.metadata?.display_name || record.name,
-                    getImgSrc: (record: PaymentMethodRecordInterface) => record.icon_url ?? ""
+                    getImgAltText: (record: PaymentMethodRecordInterface) => {
+                        return record.name;
+                    },
+                    getImgSubText: (record: PaymentMethodRecordInterface) => {
+                        return record.code;
+                    },
+                    getImgContent: (record: PaymentMethodRecordInterface) => {
+                        return record.metadata?.display_name || record.name;
+                    },
+                    getImgSrc: (record: PaymentMethodRecordInterface) => {
+                        return record.icon_url ?? "";
+                    }
                 }
             },
             // Display gorup Column
@@ -314,7 +334,9 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentMethodRecordInterface) => record.metadata?.display_group ?? "-"
+                    getTextContent: (record: PaymentMethodRecordInterface) => {
+                        return record.metadata?.display_group ?? "-";
+                    }
                 }
             },
             // Capabilites Column
@@ -332,7 +354,9 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: PaymentMethodRecordInterface) => this.getCapabilitiesText(record)
+                    getTextContent: (record: PaymentMethodRecordInterface) => {
+                        return this.getCapabilitiesText(record);
+                    }
                 }
             },
             // Sort Order column
@@ -411,10 +435,15 @@ class PaymentMethodListViewController extends BaseListViewController<PaymentMeth
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     icon_key: "member_icon",
-                    getImgAltText: (record: PaymentMethodRecordInterface) => getMemberFullName(record?.creator) ?? "",
-                    getLinkURL: (record: PaymentMethodRecordInterface) =>
-                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
-                    getLinkText: (record: PaymentMethodRecordInterface) => getMemberFullName(record?.creator) || "-"
+                    getImgAltText: (record: PaymentMethodRecordInterface) => {
+                        return getMemberFullName(record?.creator) ?? "";
+                    },
+                    getLinkURL: (record: PaymentMethodRecordInterface) => {
+                        return this.getRouteQueryLink("member_profile", record?.creator?.public_id);
+                    },
+                    getLinkText: (record: PaymentMethodRecordInterface) => {
+                        return getMemberFullName(record?.creator) || "-";
+                    }
                 }
             },
             // Created At Column

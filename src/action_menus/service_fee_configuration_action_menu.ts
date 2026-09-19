@@ -1,3 +1,5 @@
+import { SERVICE_FEE_CONFIGURATION_PERMISSIONS } from "@/configs/permissions_config";
+
 import type { ServiceFeeConfigurationRecordInterface } from "@/types/service_fee_configuration_type";
 
 import type { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
@@ -42,9 +44,7 @@ class ServiceFeeConfigurationActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "service_fee_configuration_module.get_service_fee_configuration"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(SERVICE_FEE_CONFIGURATION_PERMISSIONS.VIEW)
             },
             // Select Action Menu
             {
@@ -73,9 +73,7 @@ class ServiceFeeConfigurationActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "service_fee_configuration_module.update_service_fee_configuration"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(SERVICE_FEE_CONFIGURATION_PERMISSIONS.UPDATE)
             }
         ];
 

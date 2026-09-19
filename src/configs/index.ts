@@ -6,3 +6,4 @@ export * from "./csrf_config";
 export * from "./data_corpus_config";
 export * from "./storage_schema_config";
 export * from "./file_storage_reference_type_config";
+export * from "./permissions_config";

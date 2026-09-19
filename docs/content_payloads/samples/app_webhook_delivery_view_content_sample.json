@@ -1,0 +1,354 @@
+{
+    "page_meta": {
+        "app_webhook_delivery_page": {
+            "title_text": "Fibase Admin - App Webhook Deliveries",
+            "description_text": "Review registered-app webhook delivery history, inspect delivery attempts and failures, send endpoint tests, and replay eligible failed deliveries."
+        }
+    },
+    "dashboard_layout_ui": {
+        "side_bar_ui": {
+            "nav_menu_list": [
+                {
+                    "menu_id_text": "AppWebhookDeliveryListView",
+                    "menu_link": "/app-webhook-deliveries",
+                    "menu_icon": "numbered_list_svg_icon",
+                    "menu_text": "App Webhook Deliveries",
+                    "menu_permission_text": "app_webhook_delivery_management_module.get_delivery_list"
+                }
+            ]
+        }
+    },
+    "app_webhook_delivery_view_ui": {
+        "list_view_ui": {
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "App Webhook Deliveries",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ],
+            "header_section": {
+                "header_text": "App Webhook Deliveries",
+                "header_description": "Monitor webhook deliveries to registered apps, review failures, and test app endpoints.",
+                "test_btn": {
+                    "btn_text": "Send Test Webhook",
+                    "btn_icon": "plus_circle_svg_icon"
+                },
+                "refresh_btn": {
+                    "btn_text": "Refresh"
+                }
+            },
+            "filters_section": {
+                "toggle_btn": {
+                    "btn_text": "Filters",
+                    "btn_icon": "horizontal_filters_svg_icon"
+                },
+                "app_id_filter": {
+                    "label_text": "Registered App",
+                    "placeholder_text": "Search registered apps",
+                    "selected_text_prefix": "Selected app"
+                },
+                "event_type_filter": {
+                    "label_text": "Event Type",
+                    "placeholder_text": "All event types",
+                    "option_list": [
+                        {
+                            "label_text": "Identity created",
+                            "value": "identity.created"
+                        },
+                        {
+                            "label_text": "Identity member linked",
+                            "value": "identity.member.linked"
+                        },
+                        {
+                            "label_text": "Transaction requires action",
+                            "value": "transaction.requires_action"
+                        },
+                        {
+                            "label_text": "Transaction partially paid",
+                            "value": "transaction.partially_paid"
+                        },
+                        {
+                            "label_text": "Transaction overpaid",
+                            "value": "transaction.overpaid"
+                        },
+                        {
+                            "label_text": "Transaction successful",
+                            "value": "transaction.successful"
+                        },
+                        {
+                            "label_text": "Transaction failed",
+                            "value": "transaction.failed"
+                        },
+                        {
+                            "label_text": "Transaction cancelled",
+                            "value": "transaction.cancelled"
+                        },
+                        {
+                            "label_text": "Transaction expired",
+                            "value": "transaction.expired"
+                        },
+                        {
+                            "label_text": "Transaction reversed",
+                            "value": "transaction.reversed"
+                        },
+                        {
+                            "label_text": "Transaction refunded",
+                            "value": "transaction.refunded"
+                        },
+                        {
+                            "label_text": "Wallet created",
+                            "value": "wallet.created"
+                        },
+                        {
+                            "label_text": "Wallet balance updated",
+                            "value": "wallet.balance.updated"
+                        },
+                        {
+                            "label_text": "Wallet status updated",
+                            "value": "wallet.status.updated"
+                        },
+                        {
+                            "label_text": "App configuration updated",
+                            "value": "app.configuration.updated"
+                        },
+                        {
+                            "label_text": "App activated",
+                            "value": "app.activated"
+                        },
+                        {
+                            "label_text": "App deactivated",
+                            "value": "app.deactivated"
+                        },
+                        {
+                            "label_text": "App webhook test",
+                            "value": "app.webhook.test"
+                        }
+                    ]
+                },
+                "status_filter": {
+                    "label_text": "Delivery Status",
+                    "placeholder_text": "All statuses",
+                    "option_list": [
+                        {
+                            "label_text": "Queued",
+                            "value": "queued"
+                        },
+                        {
+                            "label_text": "Delivering",
+                            "value": "delivering"
+                        },
+                        {
+                            "label_text": "Delivered",
+                            "value": "delivered"
+                        },
+                        {
+                            "label_text": "Retrying",
+                            "value": "retrying"
+                        },
+                        {
+                            "label_text": "Failed",
+                            "value": "failed"
+                        },
+                        {
+                            "label_text": "Dead letter",
+                            "value": "dead_letter"
+                        }
+                    ]
+                },
+                "clear_filters_btn": {
+                    "btn_text": "Clear Filters"
+                },
+                "apply_filters_btn": {
+                    "btn_text": "Apply Filters"
+                },
+                "active_filter_chip": {
+                    "remove_btn_text": "Remove {{filter_name}} filter",
+                    "clear_all_btn_text": "Clear all filters"
+                }
+            },
+            "table": {
+                "result_section": {
+                    "result_text": "Showing {{showing}} of {{total_records}} delivery record(s) (Page {{current_page}} of {{total_pages}})"
+                },
+                "bulk_action_section": {
+                    "btn_text": "{{selected_count}} record(s) selected"
+                },
+                "loading_section": {
+                    "loader_text": "Loading webhook deliveries..."
+                },
+                "empty_state_section": {
+                    "header_text": "No Webhook Deliveries Found",
+                    "description_text": "Try changing the filters or send a test webhook to a registered app."
+                },
+                "error_state_section": {
+                    "header_text": "Webhook Deliveries Could Not Be Loaded",
+                    "retry_btn_text": "Retry"
+                },
+                "header": {
+                    "sn_text": "S/N",
+                    "public_id_text": "Delivery ID",
+                    "app_text": "Registered App",
+                    "event_type_text": "Event Type",
+                    "status_text": "Status",
+                    "attempts_text": "Attempts",
+                    "response_status_code_text": "HTTP Response Status",
+                    "last_attempt_at_text": "Last Attempt",
+                    "created_at_text": "Created At",
+                    "actions_text": "Actions"
+                },
+                "values": {
+                    "empty_value_text": "-",
+                    "attempts_text": "{{attempts}} of {{max_attempts}}"
+                },
+                "action_menu_list": {
+                    "view_menu_option": {
+                        "menu_text": "View Details",
+                        "menu_icon": "view_eye_svg_icon"
+                    },
+                    "replay_menu_option": {
+                        "menu_text": "Replay Delivery",
+                        "menu_icon": "clock_svg_icon"
+                    },
+                    "select_menu_option": {
+                        "menu_text": "Select",
+                        "menu_icon": "check_circle_svg_icon"
+                    }
+                },
+                "pagination_section": {
+                    "btn_content": {
+                        "prev_btn_text": "Previous",
+                        "next_btn_text": "Next"
+                    }
+                }
+            }
+        },
+        "status_labels": {
+            "queued": "Queued",
+            "delivering": "Delivering",
+            "delivered": "Delivered",
+            "retrying": "Retrying",
+            "failed": "Failed",
+            "dead_letter": "Dead letter"
+        },
+        "profile_view_ui": {
+            "loading_text": "Loading webhook delivery details...",
+            "empty_value_text": "-",
+            "no_error_text": "No error recorded.",
+            "header_section": {
+                "header_text": "Webhook Delivery Details",
+                "header_description": "Review the event, delivery status, attempts, and response information.",
+                "delivery_label_text": "Webhook delivery",
+                "endpoint_label_text": "Destination endpoint"
+            },
+            "sections": {
+                "event_information": {
+                    "title_text": "Event Information",
+                    "public_id_label_text": "Delivery ID",
+                    "event_id_label_text": "Event ID",
+                    "event_type_label_text": "Event Type",
+                    "event_version_label_text": "Event Version",
+                    "app_label_text": "Registered App",
+                    "transaction_public_id_label_text": "Transaction ID"
+                },
+                "delivery_information": {
+                    "title_text": "Delivery Information",
+                    "status_label_text": "Status",
+                    "attempts_label_text": "Attempts",
+                    "max_attempts_label_text": "Maximum Attempts",
+                    "response_status_code_label_text": "HTTP Response Status",
+                    "last_error_label_text": "Last Error"
+                },
+                "timestamps": {
+                    "title_text": "Delivery Timeline",
+                    "created_at_label_text": "Created At",
+                    "updated_at_label_text": "Updated At",
+                    "last_attempt_at_label_text": "Last Attempt",
+                    "next_attempt_at_label_text": "Next Attempt",
+                    "delivered_at_label_text": "Delivered At"
+                }
+            },
+            "replay_btn": {
+                "btn_text": "Replay Delivery"
+            },
+            "refresh_btn": {
+                "btn_text": "Refresh"
+            },
+            "metrics": {
+                "attempts_text": "{{attempts}} / {{max_attempts}}"
+            }
+        },
+        "form_view_ui": {
+            "header_text": "Send Test Webhook",
+            "header_description": "Send a signed app.webhook.test event to an active registered app’s configured webhook endpoint.",
+            "fieldset": {
+                "app_id_field": {
+                    "label_text": "Registered App",
+                    "placeholder_text": "Search registered apps",
+                    "helper_text": "Choose an active registered app with a configured webhook endpoint.",
+                    "selected_text_prefix": "Selected app"
+                },
+                "btn_text": "Send Test Webhook"
+            },
+            "submitting_text": "Sending test webhook...",
+            "cancel_btn_text": "Cancel",
+            "queued_text": "Test webhook queued. Refresh the delivery history to check its status."
+        },
+        "replay_view_ui": {
+            "header_text": "Replay Webhook Delivery",
+            "message_text": "Replay delivery {{public_id}}? This resets its attempt count and sends the event again.",
+            "eligibility_text": "Only failed or dead-letter deliveries can be replayed.",
+            "confirm_btn_text": "Replay Delivery",
+            "cancel_btn_text": "Cancel",
+            "submitting_text": "Requesting replay...",
+            "queued_text": "Delivery queued for replay. Refresh to check its status."
+        },
+        "modals_ui": {
+            "test_delivery_modal_ui": {
+                "title_text": "Send Test Webhook",
+                "title_icon": "plus_circle_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "profile_details_modal_ui": {
+                "title_text": "Webhook Delivery Details",
+                "title_icon": "view_eye_svg_icon",
+                "title_img": "/assets/img/modal_icon.png"
+            },
+            "replay_delivery_modal_ui": {
+                "title_text": "Replay Webhook Delivery",
+                "title_icon": "clock_svg_icon",
+                "title_img": "/assets/img/modal_icon.png",
+                "content": {
+                    "title_text": "Replay Webhook Delivery",
+                    "message_text": "Replay delivery {{public_id}}? This resets its attempt count and sends the event again.",
+                    "cancel_btn_text": "Cancel",
+                    "confirm_btn_text": "Replay Delivery"
+                }
+            }
+        }
+    },
+    "api_responses": {
+        "app_webhook_delivery_module_responses": {
+            "app_webhook_delivery_cannot_be_replayed": "⚠️ This webhook delivery is not eligible for replay.",
+            "app_webhook_delivery_not_found": "🔍 The requested webhook delivery was not found.",
+            "app_webhook_delivery_replay_queued_successfully": "✅ The webhook delivery has been queued for replay.",
+            "app_webhook_payload_is_too_large": "⚠️ The webhook event payload is too large.",
+            "app_webhook_test_queued_successfully": "✅ The webhook endpoint test has been queued.",
+            "fetched_app_webhook_delivery_list_successfully": "📦 Webhook delivery history loaded successfully.",
+            "fetched_app_webhook_delivery_successfully": "📄 Webhook delivery details retrieved successfully.",
+            "invalid_app_webhook_delivery_id": "⚠️ Please provide a valid webhook delivery identifier.",
+            "invalid_app_webhook_event": "⚠️ The webhook event is invalid.",
+            "invalid_app_webhook_occurred_at": "⚠️ The webhook event occurrence time is invalid.",
+            "invalid_app_webhook_publish_context": "⚠️ The webhook event publishing context is invalid.",
+            "registered_app_webhook_destination_not_found": "🔍 The registered app does not have an active webhook destination.",
+            "valid_app_webhook_delivery_id": "✅ The webhook delivery identifier is valid.",
+            "valid_app_webhook_event": "✅ The webhook event is valid.",
+            "valid_app_webhook_test": "✅ The webhook endpoint test is valid.",
+            "invalid_registered_app_id": "Please select a registered app."
+        }
+    }
+}

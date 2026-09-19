@@ -1,28 +1,26 @@
+import { CURRENCY_PERMISSIONS } from "@/configs/permissions_config";
+
 import { useRoute } from "vue-router";
 import { FieldArray } from "@/ui_types/list_view_type";
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { CurrencyRecordInterface } from "@/types/api_service_type";
-import {
-    NavLinkUIPropsInterface,
-    NavLinkContentPayloadResultInterface
-} from "@ui/version_3/ui_types/nav_link_ui_type";
+import { NavLinkUIPropsInterface, NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_styles";
 import CurrencyListViewActionHandler from "@/action_handlers/currency/list_view_action_handler";
 
 class CurrencyActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: CurrencyRecordInterface,
         action_handler?: CurrencyListViewActionHandler,
         route?: ReturnType<typeof useRoute>
     ): NavLinkUIPropsInterface[] {
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
-        const base_content_key =
-            "content_resource.currency_view_ui.list_view_ui.table.action_menu_list";
+        const base_content_key = "content_resource.currency_view_ui.list_view_ui.table.action_menu_list";
         const record_id = record?.code?.toString();
 
         // menu contents
@@ -41,10 +39,9 @@ class CurrencyActionMenu {
         const un_assign_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.un_assign_menu_option`
         );
-        const set_default_menu_content =
-            content_manager.get<NavLinkContentPayloadResultInterface>?.(
-                `${base_content_key}.set_default_menu_option`
-            );
+        const set_default_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
+            `${base_content_key}.set_default_menu_option`
+        );
         const delete_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.delete_menu_option`
         );
@@ -61,19 +58,14 @@ class CurrencyActionMenu {
                 content: view_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleViewActionMenuClicked(record, config);
                     }
                 },
 
                 class_styles,
 
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "currency_module.get_currency"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.VIEW)
             },
             // Select Menu
             {
@@ -86,10 +78,7 @@ class CurrencyActionMenu {
                 content: select_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleSelectActionMenuClicked(record, config);
                     }
                 },
@@ -109,20 +98,14 @@ class CurrencyActionMenu {
                 content: edit_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleEditActionMenuClicked(record, config);
                     }
                 },
 
                 class_styles,
 
-                has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.update_currency"
-                    ) && !record?.is_active
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.UPDATE) && !record?.is_active
             },
             // assign to app
             {
@@ -135,10 +118,7 @@ class CurrencyActionMenu {
                 content: assign_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleOpenAssignFormView(record, config);
                     }
                 },
@@ -146,9 +126,7 @@ class CurrencyActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.assign_or_unassign_a_currency_to_an_app"
-                    ) &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.ASSIGN_OR_UNASSIGN_APP_CURRENCY) &&
                     Boolean(route?.query?.app_id) &&
                     (route?.query?.unassigned_to_app?.toString() ?? "")?.trim() === "true" &&
                     record?.app_currencies?.length === 0
@@ -164,10 +142,7 @@ class CurrencyActionMenu {
                 content: un_assign_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleOpenUnAssignFormView(record, config);
                     }
                 },
@@ -175,12 +150,9 @@ class CurrencyActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.delete_currency"
-                    ) &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.DELETE) &&
                     Boolean(route?.query?.app_id) &&
-                    (!route?.query?.unassigned_to_app ||
-                        route?.query?.unassigned_to_app?.toString()?.trim() === "false") &&
+                    (!route?.query?.unassigned_to_app || route?.query?.unassigned_to_app?.toString()?.trim() === "false") &&
                     (record?.app_currencies?.length ?? 0) > 0
             },
             // set as default to app
@@ -194,10 +166,7 @@ class CurrencyActionMenu {
                 content: set_default_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleOpenSetAsDefaultFormView(record, config);
                     }
                 },
@@ -205,9 +174,7 @@ class CurrencyActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.update_default_currency"
-                    ) &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.UPDATE_DEFAULT) &&
                     Boolean(route?.query?.app_id) &&
                     route?.query?.unassigned_to_app?.toString()?.trim() === "false" &&
                     (record?.app_currencies?.length ?? 0) > 0 &&
@@ -224,20 +191,14 @@ class CurrencyActionMenu {
                 content: delete_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
                         return await action_handler?.handleDeleteActionMenuClicked(record, config);
                     }
                 },
 
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
 
-                has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.delete_currency"
-                    ) && !record.is_active
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.DELETE) && !record.is_active
             }
         ];
 
@@ -246,16 +207,15 @@ class CurrencyActionMenu {
         });
     }
 
+    // Method to build permission-aware bulk action menus.
     public static getBulkActionMenus(
         selected_records: FieldArray<CurrencyRecordInterface, "code">,
         action_handler?: CurrencyListViewActionHandler,
         route?: ReturnType<typeof useRoute>
     ): NavLinkUIPropsInterface[] {
-        const class_styles =
-            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
+        const class_styles = DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style;
         const content_manager = ContentManagerUtil.getInstance();
-        const base_content_key =
-            "content_resource.currency_view_ui.list_view_ui.table.bulk_action_menu_list";
+        const base_content_key = "content_resource.currency_view_ui.list_view_ui.table.bulk_action_menu_list";
 
         const assign_menu_content = content_manager.get<NavLinkContentPayloadResultInterface>?.(
             `${base_content_key}.assign_menu_option`
@@ -276,24 +236,15 @@ class CurrencyActionMenu {
                 content: assign_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
-                        return await action_handler?.handleOpenAssignFormView(
-                            null,
-                            config,
-                            selected_records
-                        );
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleOpenAssignFormView(null, config, selected_records);
                     }
                 },
 
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.assign_or_unassign_a_currency_to_an_app"
-                    ) &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.ASSIGN_OR_UNASSIGN_APP_CURRENCY) &&
                     Boolean(route?.query?.app_id) &&
                     (route?.query?.unassigned_to_app?.toString() ?? "")?.trim() === "true" &&
                     selected_records?.length > 0
@@ -309,27 +260,17 @@ class CurrencyActionMenu {
                 content: un_assign_menu_content?.menu_text ?? "",
 
                 action_props: {
-                    on_click: async (
-                        event?: MouseEvent,
-                        config?: { props: NavLinkUIPropsInterface }
-                    ): Promise<void> => {
-                        return await action_handler?.handleOpenUnAssignFormView(
-                            null,
-                            config,
-                            selected_records
-                        );
+                    on_click: async (event?: MouseEvent, config?: { props: NavLinkUIPropsInterface }): Promise<void> => {
+                        return await action_handler?.handleOpenUnAssignFormView(null, config, selected_records);
                     }
                 },
 
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_module.delete_currency"
-                    ) &&
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PERMISSIONS.DELETE) &&
                     Boolean(route?.query?.app_id) &&
-                    (!route?.query?.unassigned_to_app ||
-                        route?.query?.unassigned_to_app?.toString()?.trim() === "false") &&
+                    (!route?.query?.unassigned_to_app || route?.query?.unassigned_to_app?.toString()?.trim() === "false") &&
                     selected_records?.length > 0
             }
         ];

@@ -1,3 +1,5 @@
+import { ACCESS_CONTROL_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -104,13 +106,13 @@ class AccessControlListViewController extends BaseListViewController<RoleRecordI
         return super.getPermittedHeaderActionButtons(buttons);
     }
 
-    // Methdo to get header action buttons
+    // Method to build permitted header actions.
     protected getHeaderActionButtons(page_key: string, content_keys: ListViewContentKeysInterface): ButtonUIPropsInterface[] {
         const { page_header_class_styles } = this.list_view_class_styles;
 
         return [
             ButtonUIPropsBuilder.getReactivePropsObject(
-                "access_control_module.create_role",
+                ACCESS_CONTROL_PERMISSIONS.CREATE,
                 content_keys.create_button_text,
                 "plus_circle_svg_icon",
                 "button",

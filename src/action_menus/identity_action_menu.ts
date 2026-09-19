@@ -1,3 +1,5 @@
+import { IDENTITY_PERMISSIONS } from "@/configs/permissions_config";
+
 import { NavLinkContentPayloadResultInterface, NavLinkUIPropsInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
 
 import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
@@ -11,6 +13,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import IdentityListViewActionHandler from "@/action_handlers/identity/list_view_action_handler";
 
 class IdentityActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: IdentityRecordInterface,
         action_handler?: IdentityListViewActionHandler
@@ -41,8 +44,7 @@ class IdentityActionMenu {
                     }
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
-                has_permission:
-                    !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo("identity_module.get_identity")
+                has_permission: !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo(IDENTITY_PERMISSIONS.VIEW)
             },
             {
                 id: `${wallets_menu_content?.menu_text ?? "Wallets"}ActionMenu${record_id}`,
@@ -57,8 +59,7 @@ class IdentityActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission:
-                    !record.is_deleted &&
-                    MemberAuthenticatorUtil.memberHasPermissionTo("identity_module.get_identity_wallet_list")
+                    !record.is_deleted && MemberAuthenticatorUtil.memberHasPermissionTo(IDENTITY_PERMISSIONS.WALLET_LIST)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "Select"}ActionMenu${record_id}`,
@@ -73,7 +74,9 @@ class IdentityActionMenu {
                 class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style,
                 has_permission: true
             }
-        ].filter((menu) => menu.has_permission);
+        ].filter((menu) => {
+            return menu.has_permission;
+        });
     }
 }
 

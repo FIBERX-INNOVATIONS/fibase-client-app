@@ -1,3 +1,5 @@
+import { PAYMENT_METHOD_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { PaymentMethodRecordInterface } from "@/types/api_service_type";
@@ -11,6 +13,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import PaymentMethodListViewActionHandler from "@/action_handlers/payment_method/list_view_action_handler";
 
 class PaymentMethodActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: PaymentMethodRecordInterface,
         action_handler?: PaymentMethodListViewActionHandler
@@ -45,7 +48,7 @@ class PaymentMethodActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("payment_method_module.get_payment_method")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_METHOD_PERMISSIONS.VIEW)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "select"}ActionMenu${record_id.toUpperCase()}`,
@@ -72,8 +75,7 @@ class PaymentMethodActionMenu {
                 },
                 class_styles,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_method_module.update_payment_method") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_METHOD_PERMISSIONS.UPDATE) && !record?.is_active
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id.toUpperCase()}`,
@@ -87,8 +89,7 @@ class PaymentMethodActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_method_module.delete_payment_method") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_METHOD_PERMISSIONS.DELETE) && !record?.is_active
             }
         ];
 

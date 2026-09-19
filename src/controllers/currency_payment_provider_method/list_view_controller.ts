@@ -1,3 +1,5 @@
+import { CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -206,7 +208,7 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
     // Method to get table render config.
     protected getTableRenderConfig(): DataTableColumnRenderType<CurrencyPaymentProviderMethodRecordInterface>[] {
         const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "currency_payment_provider_method_module.update_currency_payment_provider_method_status"
+            CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS.UPDATE_STATUS
         );
 
         const columns: DataTableColumnRenderType<CurrencyPaymentProviderMethodRecordInterface>[] = [
@@ -219,7 +221,9 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
-                    render: () => DataTableSerialCellUI
+                    render: () => {
+                        return DataTableSerialCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -229,9 +233,16 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
 
                         if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
+                            const record_ids = records.flatMap((row) => {
+                                return row.id ? [row.id] : [];
+                            });
 
-                            return record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
+                            return (
+                                record_ids.length > 0 &&
+                                record_ids.every((id) => {
+                                    return selected_records.includes(id);
+                                })
+                            );
                         }
 
                         return selected_records.includes(record.id);
@@ -241,10 +252,15 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     ): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const record_ids = records.flatMap((row) => (row.id ? [row.id] : []));
+                        const record_ids = records.flatMap((row) => {
+                            return row.id ? [row.id] : [];
+                        });
                         const is_checked = record?.id
                             ? selected_records.includes(record.id)
-                            : record_ids.length > 0 && record_ids.every((id) => selected_records.includes(id));
+                            : record_ids.length > 0 &&
+                              record_ids.every((id) => {
+                                  return selected_records.includes(id);
+                              });
 
                         return {
                             is_checked,
@@ -254,19 +270,21 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     },
                     input_action_props: (
                         record?: CurrencyPaymentProviderMethodRecordInterface
-                    ): InputUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: Event,
-                            input_value?: InputValue,
-                            input_config?: { props: InputUIPropsInterface }
-                        ): Promise<ActionMethodRetrunInterface> => {
-                            if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
-                            }
+                    ): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                if (record !== undefined) {
+                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
+                                }
 
-                            return this.action_handler.handleOnSelectAllRows();
-                        }
-                    })
+                                return this.action_handler.handleOnSelectAllRows();
+                            }
+                        };
+                    }
                 }
             },
             // Currency Column
@@ -279,15 +297,24 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.currency_text"
                 },
                 cell: {
-                    render: () => DataTableAvatarInfoCellUI
+                    render: () => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.name ?? "",
-                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.code ?? "",
-                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) => record.currency?.name ?? "-",
-                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.currency?.logo_url || DEFUALT_CURRENCY_LOGO_URL
+                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.currency?.name ?? "";
+                    },
+                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.currency?.code ?? "";
+                    },
+                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.currency?.name ?? "-";
+                    },
+                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.currency?.logo_url || DEFUALT_CURRENCY_LOGO_URL;
+                    }
                 }
             },
             // Provider Column
@@ -300,18 +327,24 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.provider_text"
                 },
                 cell: {
-                    render: () => DataTableAvatarInfoCellUI
+                    render: () => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.provider?.name ?? "",
-                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.provider?.code ?? "",
-                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.provider?.name ?? "-",
-                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL
+                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.provider?.name ?? "";
+                    },
+                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.provider?.code ?? "";
+                    },
+                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.provider?.name ?? "-";
+                    },
+                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.provider?.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL;
+                    }
                 }
             },
             // Payment Method Column
@@ -324,18 +357,24 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.payment_method_text"
                 },
                 cell: {
-                    render: () => DataTableAvatarInfoCellUI
+                    render: () => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.payment_method?.name ?? "",
-                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.payment_method?.code ?? "",
-                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.payment_method?.name ?? "-",
-                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.payment_method?.icon_url || DEFUALT_PAYMENT_METHOD_ICON_URL
+                    getImgAltText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.payment_method?.name ?? "";
+                    },
+                    getImgSubText: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.payment_method?.code ?? "";
+                    },
+                    getImgContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.payment_method?.name ?? "-";
+                    },
+                    getImgSrc: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.payment_method?.icon_url || DEFUALT_PAYMENT_METHOD_ICON_URL;
+                    }
                 }
             },
             // Direction Column
@@ -348,12 +387,15 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.direction_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.provider_method?.direction?.toUpperCase?.() ?? "-"
+                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.provider_method?.direction?.toUpperCase?.() ?? "-";
+                    }
                 }
             },
             // Limits Column
@@ -365,11 +407,15 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.limits_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) => this.formatLimits(record)
+                    getTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return this.formatLimits(record);
+                    }
                 }
             },
             // Is Active Column
@@ -381,32 +427,40 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                     label_key: "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
-                    render: () => DataTableToggleCellUI
+                    render: () => {
+                        return DataTableToggleCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    input_model_value: (record: CurrencyPaymentProviderMethodRecordInterface): InputValue =>
-                        InputTransformerUtil.resolveTypedValue(record.is_active),
-                    input_content_props: (): InputUIContentOptionsInterface => ({
-                        loader_html_content: RenderHtmlUtil.renderLoaderHtml()
-                    }),
+                    input_model_value: (record: CurrencyPaymentProviderMethodRecordInterface): InputValue => {
+                        return InputTransformerUtil.resolveTypedValue(record.is_active);
+                    },
+                    input_content_props: (): InputUIContentOptionsInterface => {
+                        return {
+                            loader_html_content: RenderHtmlUtil.renderLoaderHtml()
+                        };
+                    },
                     input_ui_boolean_props: (
                         record: CurrencyPaymentProviderMethodRecordInterface
-                    ): InputUIBooleanPropsInterface => ({
-                        is_checked: record.is_active,
-                        required: true,
-                        disabled: false
-                    }),
-                    input_action_props: (
-                        record: CurrencyPaymentProviderMethodRecordInterface
-                    ): InputUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: Event,
-                            input_value?: InputValue,
-                            input_config?: { props: InputUIPropsInterface }
-                        ): Promise<ActionMethodRetrunInterface> =>
-                            this.action_handler.handleStatusToggleChange(record, input_value)
-                    })
+                    ): InputUIBooleanPropsInterface => {
+                        return {
+                            is_checked: record.is_active,
+                            required: true,
+                            disabled: false
+                        };
+                    },
+                    input_action_props: (record: CurrencyPaymentProviderMethodRecordInterface): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                return this.action_handler.handleStatusToggleChange(record, input_value);
+                            }
+                        };
+                    }
                 }
             },
             // Linked By Column
@@ -419,7 +473,9 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.linked_by_text"
                 },
                 cell: {
-                    render: () => DataTableLinkCellUI
+                    render: () => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -445,12 +501,15 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getDateTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) =>
-                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
+                    getDateTextContent: (record: CurrencyPaymentProviderMethodRecordInterface) => {
+                        return record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-";
+                    }
                 }
             },
             // Actions Column
@@ -463,39 +522,47 @@ class CurrencyPaymentProviderMethodListViewController extends BaseListViewContro
                         "content_resource.currency_payment_provider_method_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
-                    render: () => DataTableActionIconCellUI
+                    render: () => {
+                        return DataTableActionIconCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    button_content_props: (): ButtonUIContentOptionsInterface => ({
-                        button_html_content: RenderHtmlUtil.renderHtml({
-                            icon: "vertical_elipsis_svg_icon",
-                            class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.content_class_style,
-                            icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.icon_class_style
-                        }),
-                        loading_html_content: RenderHtmlUtil.renderLoaderHtml({
-                            class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.icon_class_style
-                        })
-                    }),
+                    button_content_props: (): ButtonUIContentOptionsInterface => {
+                        return {
+                            button_html_content: RenderHtmlUtil.renderHtml({
+                                icon: "vertical_elipsis_svg_icon",
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
+                                icon_class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
+                            }),
+                            loading_html_content: RenderHtmlUtil.renderLoaderHtml({
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
+                            })
+                        };
+                    },
                     button_action_props: (
                         record: CurrencyPaymentProviderMethodRecordInterface,
                         record_index?: number
-                    ): ButtonUIActionPropsInterface => ({
-                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
-                            this.action_handler.toggleActionMenu(record, record_index);
-                        }
-                    })
+                    ): ButtonUIActionPropsInterface => {
+                        return {
+                            on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
+                                this.action_handler.toggleActionMenu(record, record_index);
+                            }
+                        };
+                    }
                 }
             }
         ];
 
-        return columns.filter((column) => can_change_status || column.key !== "is_active");
+        return columns.filter((column) => {
+            return can_change_status || column.key !== "is_active";
+        });
     }
 }
 

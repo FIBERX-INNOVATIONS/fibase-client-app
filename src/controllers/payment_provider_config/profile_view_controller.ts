@@ -1,3 +1,5 @@
+import { PAYMENT_PROVIDER_CONFIG_PERMISSIONS } from "@/configs/permissions_config";
+
 import {
     PaymentProviderConfigProfileViewContentKeysInterface,
     PaymentProviderConfigProfileViewContentTextInterface,
@@ -369,9 +371,7 @@ class PaymentProviderConfigProfileViewController extends BaseProfileViewControll
             },
 
             has_credentials_permission: () => {
-                return MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "payment_provider_config_module.get_payment_provider_config_credentials"
-                );
+                return MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_CONFIG_PERMISSIONS.VIEW_CREDENTIALS);
             },
 
             settings_entries: () => {

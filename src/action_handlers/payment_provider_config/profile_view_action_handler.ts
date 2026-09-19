@@ -1,3 +1,5 @@
+import { PAYMENT_PROVIDER_CONFIG_PERMISSIONS } from "@/configs/permissions_config";
+
 import { PaymentProviderConfigCredentialsInterface, PaymentProviderConfigRecordInterface } from "@/types/api_service_type";
 
 import {
@@ -56,7 +58,7 @@ class PaymentProviderConfigProfileViewActionHandler extends BaseProfileViewActio
         }
 
         const has_permission = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "payment_provider_config_module.get_payment_provider_config_credentials"
+            PAYMENT_PROVIDER_CONFIG_PERMISSIONS.VIEW_CREDENTIALS
         );
 
         if (!has_permission) {

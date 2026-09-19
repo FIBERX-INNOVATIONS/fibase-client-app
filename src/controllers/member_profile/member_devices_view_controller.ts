@@ -1,3 +1,5 @@
+import { MEMBER_DEVICE_PERMISSIONS } from "@/configs/permissions_config";
+
 import { markRaw } from "vue";
 
 import { ComputedDefinitionType, WatchersType } from "@ui/version_3/types/base_type";
@@ -151,22 +153,27 @@ class MemberDevicesViewController
         };
     }
 
+    // Method to derive device controls from the central permission configuration.
     protected getUIComputedData(): ComputedDefinitionType<MemberDevicesViewComputedDataInterface> {
         return {
-            is_action_processing: () =>
-                !!this.state_refs.processing_session_id.value || this.state_refs.is_logging_all_out.value,
+            is_action_processing: () => {
+                return !!this.state_refs.processing_session_id.value || this.state_refs.is_logging_all_out.value;
+            },
 
-            can_logout_device: () =>
-                MemberAuthenticatorUtil.memberHasPermissionTo("member_device_module.logout_member_device_login_session"),
+            can_logout_device: () => {
+                return MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_DEVICE_PERMISSIONS.LOGOUT_SESSION);
+            },
 
-            can_logout_all_devices: () =>
-                MemberAuthenticatorUtil.memberHasPermissionTo("member_device_module.logout_all_member_device_login_sessions"),
+            can_logout_all_devices: () => {
+                return MemberAuthenticatorUtil.memberHasPermissionTo(MEMBER_DEVICE_PERMISSIONS.LOGOUT_ALL_SESSIONS);
+            },
 
-            pagination_result_text: () =>
-                this.state_refs.content_obj.value.pagination_result_text
+            pagination_result_text: () => {
+                return this.state_refs.content_obj.value.pagination_result_text
                     .replace("{{current_page}}", this.state_refs.current_page.value.toString())
                     .replace("{{total_pages}}", this.state_refs.total_pages.value.toString())
-                    .replace("{{total_items}}", this.state_refs.total_items.value.toString())
+                    .replace("{{total_items}}", this.state_refs.total_items.value.toString());
+            }
         };
     }
 

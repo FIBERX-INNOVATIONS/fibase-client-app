@@ -451,3 +451,16 @@ export interface ActorRoleAssignmentFormDataInterface extends BaseFormData {
     actor_id: string | number;
     role_ids: Array<number | string>;
 }
+
+export interface TestAppWebhookDeliveryPayloadInterface {
+    app_id: string | number;
+    csrf_token: string;
+}
+
+export interface ReplayAppWebhookDeliveryPayloadInterface {
+    csrf_token: string;
+}
+
+export interface AppWebhookDeliveryTestFormDataInterface extends BaseFormData {
+    app_id: string;
+}

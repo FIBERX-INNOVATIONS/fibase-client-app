@@ -1,3 +1,5 @@
+import { ACCESS_CONTROL_PERMISSIONS, REGISTERED_APP_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { RegisteredAppRecordInterface } from "@/types/api_service_type";
@@ -8,6 +10,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import RegisteredAppListViewActionHandler from "@/action_handlers/registered_app/list_view_action_handler";
 
 class RegisteredAppActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: RegisteredAppRecordInterface,
         action_handler?: RegisteredAppListViewActionHandler
@@ -53,7 +56,7 @@ class RegisteredAppActionMenu {
 
                 class_styles,
 
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.get_registered_app")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(REGISTERED_APP_PERMISSIONS.VIEW)
             },
             // Select Menu
             {
@@ -94,8 +97,7 @@ class RegisteredAppActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.update_registered_app") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(REGISTERED_APP_PERMISSIONS.UPDATE) && !record?.is_active
             },
             // Manage Roles Menu
             {
@@ -116,8 +118,8 @@ class RegisteredAppActionMenu {
                 class_styles,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.assign_actor_roles") ||
-                    MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.unassign_actor_roles")
+                    MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.ASSIGN_ACTOR_ROLES) ||
+                    MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.UNASSIGN_ACTOR_ROLES)
             },
             // Delete Menu
             {
@@ -138,8 +140,7 @@ class RegisteredAppActionMenu {
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
 
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("registered_app_module.delete_registered_app") &&
-                    !record.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(REGISTERED_APP_PERMISSIONS.DELETE) && !record.is_active
             }
         ];
 

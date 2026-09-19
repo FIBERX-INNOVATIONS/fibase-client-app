@@ -1,3 +1,5 @@
+import { PAYMENT_PROVIDER_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -143,9 +145,7 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
 
     // Method to get table render config.
     protected getTableRenderConfig(): DataTableColumnRenderType<PaymentProviderRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "payment_provider_module.update_payment_provider_status"
-        );
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_PERMISSIONS.UPDATE_STATUS);
 
         const columns: DataTableColumnRenderType<PaymentProviderRecordInterface>[] = [
             // S_n and Selection Column
@@ -157,7 +157,9 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.sn_text"
                 },
                 cell: {
-                    render: () => DataTableSerialCellUI
+                    render: () => {
+                        return DataTableSerialCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -167,9 +169,16 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
 
                         if (!record?.id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const provider_ids = records.map((row) => row.id);
+                            const provider_ids = records.map((row) => {
+                                return row.id;
+                            });
 
-                            return provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
+                            return (
+                                provider_ids.length > 0 &&
+                                provider_ids.every((id) => {
+                                    return selected_records.includes(id);
+                                })
+                            );
                         }
 
                         return selected_records.includes(record.id);
@@ -177,10 +186,15 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     input_ui_boolean_props: (record?: PaymentProviderRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const provider_ids = records.map((row) => row.id);
+                        const provider_ids = records.map((row) => {
+                            return row.id;
+                        });
                         const is_checked = record?.id
                             ? selected_records.includes(record.id)
-                            : provider_ids.length > 0 && provider_ids.every((id) => selected_records.includes(id));
+                            : provider_ids.length > 0 &&
+                              provider_ids.every((id) => {
+                                  return selected_records.includes(id);
+                              });
 
                         return {
                             is_checked,
@@ -188,19 +202,21 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                             disabled: !record?.id && provider_ids.length === 0
                         };
                     },
-                    input_action_props: (record?: PaymentProviderRecordInterface): InputUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: Event,
-                            input_value?: InputValue,
-                            input_config?: { props: InputUIPropsInterface }
-                        ): Promise<ActionMethodRetrunInterface> => {
-                            if (record !== undefined) {
-                                return this.action_handler.handleOnRecordRowSelected(record, input_value);
-                            }
+                    input_action_props: (record?: PaymentProviderRecordInterface): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                if (record !== undefined) {
+                                    return this.action_handler.handleOnRecordRowSelected(record, input_value);
+                                }
 
-                            return this.action_handler.handleOnSelectAllRows();
-                        }
-                    })
+                                return this.action_handler.handleOnSelectAllRows();
+                            }
+                        };
+                    }
                 }
             },
             // Provider Name Column
@@ -212,14 +228,24 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.provider_text"
                 },
                 cell: {
-                    render: () => DataTableAvatarInfoCellUI
+                    render: () => {
+                        return DataTableAvatarInfoCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: PaymentProviderRecordInterface) => record.name,
-                    getImgSubText: (record: PaymentProviderRecordInterface) => record.code,
-                    getImgContent: (record: PaymentProviderRecordInterface) => record.name,
-                    getImgSrc: (record: PaymentProviderRecordInterface) => record.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL
+                    getImgAltText: (record: PaymentProviderRecordInterface) => {
+                        return record.name;
+                    },
+                    getImgSubText: (record: PaymentProviderRecordInterface) => {
+                        return record.code;
+                    },
+                    getImgContent: (record: PaymentProviderRecordInterface) => {
+                        return record.name;
+                    },
+                    getImgSrc: (record: PaymentProviderRecordInterface) => {
+                        return record.logo_url || DEFUALT_PAYMENT_PROVIDER_LOGO_URL;
+                    }
                 }
             },
             // Provider Type Column
@@ -231,7 +257,9 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.provider_type_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
@@ -249,13 +277,19 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.website_text"
                 },
                 cell: {
-                    render: () => DataTableLinkCellUI
+                    render: () => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     link_target: "_blank",
-                    getLinkURL: (record: PaymentProviderRecordInterface) => record.website_url ?? "",
-                    getLinkText: (record: PaymentProviderRecordInterface) => record.website_url || "-"
+                    getLinkURL: (record: PaymentProviderRecordInterface) => {
+                        return record.website_url ?? "";
+                    },
+                    getLinkText: (record: PaymentProviderRecordInterface) => {
+                        return record.website_url || "-";
+                    }
                 }
             },
             // Is Active Column
@@ -267,28 +301,38 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.status_text"
                 },
                 cell: {
-                    render: () => DataTableToggleCellUI
+                    render: () => {
+                        return DataTableToggleCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    input_model_value: (record: PaymentProviderRecordInterface): InputValue =>
-                        InputTransformerUtil.resolveTypedValue(record.is_active),
-                    input_content_props: (): InputUIContentOptionsInterface => ({
-                        loader_html_content: RenderHtmlUtil.renderLoaderHtml()
-                    }),
-                    input_ui_boolean_props: (record: PaymentProviderRecordInterface): InputUIBooleanPropsInterface => ({
-                        is_checked: record.is_active,
-                        required: true,
-                        disabled: false
-                    }),
-                    input_action_props: (record: PaymentProviderRecordInterface): InputUIActionPropsInterface => ({
-                        on_click: async (
-                            event?: Event,
-                            input_value?: InputValue,
-                            input_config?: { props: InputUIPropsInterface }
-                        ): Promise<ActionMethodRetrunInterface> =>
-                            this.action_handler.handleStatusToggleChange(record, input_value)
-                    })
+                    input_model_value: (record: PaymentProviderRecordInterface): InputValue => {
+                        return InputTransformerUtil.resolveTypedValue(record.is_active);
+                    },
+                    input_content_props: (): InputUIContentOptionsInterface => {
+                        return {
+                            loader_html_content: RenderHtmlUtil.renderLoaderHtml()
+                        };
+                    },
+                    input_ui_boolean_props: (record: PaymentProviderRecordInterface): InputUIBooleanPropsInterface => {
+                        return {
+                            is_checked: record.is_active,
+                            required: true,
+                            disabled: false
+                        };
+                    },
+                    input_action_props: (record: PaymentProviderRecordInterface): InputUIActionPropsInterface => {
+                        return {
+                            on_click: async (
+                                event?: Event,
+                                input_value?: InputValue,
+                                input_config?: { props: InputUIPropsInterface }
+                            ): Promise<ActionMethodRetrunInterface> => {
+                                return this.action_handler.handleStatusToggleChange(record, input_value);
+                            }
+                        };
+                    }
                 }
             },
             // Created By Column
@@ -300,16 +344,23 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.creator_text"
                 },
                 cell: {
-                    render: () => DataTableLinkCellUI
+                    render: () => {
+                        return DataTableLinkCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
                     icon_key: "member_icon",
                     // link_target: "_blank",
-                    getImgAltText: (record: PaymentProviderRecordInterface) => getMemberFullName(record.creator) ?? "",
-                    getLinkURL: (record: PaymentProviderRecordInterface) =>
-                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
-                    getLinkText: (record: PaymentProviderRecordInterface) => getMemberFullName(record.creator) || "-"
+                    getImgAltText: (record: PaymentProviderRecordInterface) => {
+                        return getMemberFullName(record.creator) ?? "";
+                    },
+                    getLinkURL: (record: PaymentProviderRecordInterface) => {
+                        return this.getRouteQueryLink("member_profile", record?.creator?.public_id);
+                    },
+                    getLinkText: (record: PaymentProviderRecordInterface) => {
+                        return getMemberFullName(record.creator) || "-";
+                    }
                 }
             },
             // Created At Column
@@ -321,12 +372,15 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.created_at_text"
                 },
                 cell: {
-                    render: () => DataTableTextContentCellUI
+                    render: () => {
+                        return DataTableTextContentCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getDateTextContent: (record: PaymentProviderRecordInterface) =>
-                        record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-"
+                    getDateTextContent: (record: PaymentProviderRecordInterface) => {
+                        return record.created_at ? InputTransformerUtil.formatReadableDateTime(record.created_at) : "-";
+                    }
                 }
             },
             // Actions Column
@@ -338,39 +392,47 @@ class PaymentProviderListViewController extends BaseListViewController<PaymentPr
                     label_key: "content_resource.payment_provider_view_ui.list_view_ui.table.header.actions_text"
                 },
                 cell: {
-                    render: () => DataTableActionIconCellUI
+                    render: () => {
+                        return DataTableActionIconCellUI;
+                    }
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    button_content_props: (): ButtonUIContentOptionsInterface => ({
-                        button_html_content: RenderHtmlUtil.renderHtml({
-                            icon: "vertical_elipsis_svg_icon",
-                            class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.content_class_style,
-                            icon_class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.icon_class_style
-                        }),
-                        loading_html_content: RenderHtmlUtil.renderLoaderHtml({
-                            class_style:
-                                this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
-                                    ?.icon_class_style
-                        })
-                    }),
+                    button_content_props: (): ButtonUIContentOptionsInterface => {
+                        return {
+                            button_html_content: RenderHtmlUtil.renderHtml({
+                                icon: "vertical_elipsis_svg_icon",
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.content_class_style,
+                                icon_class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
+                            }),
+                            loading_html_content: RenderHtmlUtil.renderLoaderHtml({
+                                class_style:
+                                    this.list_view_class_styles.table_cell_components_class_styles.button_ui_class_style
+                                        ?.icon_class_style
+                            })
+                        };
+                    },
                     button_action_props: (
                         record: PaymentProviderRecordInterface,
                         record_index?: number
-                    ): ButtonUIActionPropsInterface => ({
-                        on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
-                            this.action_handler.toggleActionMenu(record, record_index);
-                        }
-                    })
+                    ): ButtonUIActionPropsInterface => {
+                        return {
+                            on_click: async (event?: MouseEvent, config?: { props: ButtonUIPropsInterface }): Promise<void> => {
+                                this.action_handler.toggleActionMenu(record, record_index);
+                            }
+                        };
+                    }
                 }
             }
         ];
 
-        return columns.filter((column) => can_change_status || column.key !== "is_active");
+        return columns.filter((column) => {
+            return can_change_status || column.key !== "is_active";
+        });
     }
 }
 

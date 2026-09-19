@@ -1,6 +1,29 @@
+import {
+    ACCESS_CONTROL_PERMISSIONS,
+    ACTIVITY_PERMISSIONS,
+    APP_WEBHOOK_DELIVERY_PERMISSIONS,
+    CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS,
+    CURRENCY_PERMISSIONS,
+    IDENTITY_PERMISSIONS,
+    MEMBER_PROFILE_PERMISSIONS,
+    PAYMENT_METHOD_PERMISSIONS,
+    PAYMENT_PROVIDER_CONFIG_PERMISSIONS,
+    PAYMENT_PROVIDER_METHOD_PERMISSIONS,
+    PAYMENT_PROVIDER_PERMISSIONS,
+    REGISTERED_APP_PERMISSIONS,
+    SERVICE_FEE_CONFIGURATION_PERMISSIONS,
+    TRANSACTION_PERMISSIONS,
+    WALLET_PERMISSIONS
+} from "@/configs/permissions_config";
+
 import { createRouter, createWebHistory, Router, RouteRecordRaw, RouteMeta } from "vue-router";
 
 import MemberAuthenticatorUtil from "./utils/member_authenticator_util";
+
+// Method to load the webhook delivery list when its route is opened.
+const AppWebhookDeliveryListView = () => {
+    return import("@/views/app_webhook_delivery/ListView.vue");
+};
 
 const LoginView = () => import("@/views/auth/LoginView.vue");
 
@@ -178,6 +201,18 @@ class RouterManager {
                     is_auth_page: false
                 }
             },
+            // App webhook delivery history.
+            {
+                path: "/app-webhook-deliveries",
+                name: "AppWebhookDeliveryList",
+                component: AppWebhookDeliveryListView,
+                meta: {
+                    page_meta_key: "app_webhook_delivery_page",
+                    title_key: "app_webhook_delivery_page",
+                    permission_name: APP_WEBHOOK_DELIVERY_PERMISSIONS.LIST,
+                    is_auth_page: false
+                }
+            },
             // Registered App Page
             {
                 path: "/registered-apps",
@@ -186,7 +221,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "registered_app_page",
                     title_key: "registered_app_page",
-                    permission_name: "registered_app_module.get_registered_app_list",
+                    permission_name: REGISTERED_APP_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -198,7 +233,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "member_profile_page",
                     title_key: "member_profile_page",
-                    permission_name: "member_profile_module.get_member_list",
+                    permission_name: MEMBER_PROFILE_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -210,7 +245,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "identity_page",
                     title_key: "identity_page",
-                    permission_name: "identity_module.get_identity_list",
+                    permission_name: IDENTITY_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -223,7 +258,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "identity_wallet_page",
                     title_key: "identity_wallet_page",
-                    permission_name: "identity_module.get_identity_wallet_list",
+                    permission_name: IDENTITY_PERMISSIONS.WALLET_LIST,
                     is_auth_page: false
                 }
             },
@@ -232,14 +267,16 @@ class RouterManager {
                 path: "/identities/:identity_public_id/wallets/:wallet_id/ledger",
                 name: "IdentityWalletLedgerList",
                 component: IdentityWalletLedgerListView,
-                props: (route) => ({
-                    wallet_public_id: route.params.wallet_id,
-                    identity_public_id: route?.params?.identity_public_id ?? route?.query?.identity_public_id
-                }),
+                props: (route) => {
+                    return {
+                        wallet_public_id: route.params.wallet_id,
+                        identity_public_id: route?.params?.identity_public_id ?? route?.query?.identity_public_id
+                    };
+                },
                 meta: {
                     page_meta_key: "identity_wallet_ledger_page",
                     title_key: "identity_wallet_ledger_page",
-                    permission_name: "wallet_module.get_wallet_ledger_list",
+                    permission_name: WALLET_PERMISSIONS.LEDGER_LIST,
                     is_auth_page: false
                 }
             },
@@ -251,7 +288,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "transaction_page",
                     title_key: "transaction_page",
-                    permission_name: "transaction_module.get_transaction_list",
+                    permission_name: TRANSACTION_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -268,7 +305,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "transaction_ledger_page",
                     title_key: "transaction_ledger_page",
-                    permission_name: "transaction_module.get_transaction_ledger_list",
+                    permission_name: TRANSACTION_PERMISSIONS.LEDGER_LIST,
                     is_auth_page: false
                 }
             },
@@ -280,7 +317,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "currency_page",
                     title_key: "currency_page",
-                    permission_name: "currency_module.get_currency_list",
+                    permission_name: CURRENCY_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -292,7 +329,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "payment_method_page",
                     title_key: "payment_method_page",
-                    permission_name: "payment_method_module.get_payment_method_list",
+                    permission_name: PAYMENT_METHOD_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -304,7 +341,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "payment_provider_page",
                     title_key: "payment_provider_page",
-                    permission_name: "payment_provider_module.get_payment_provider_list",
+                    permission_name: PAYMENT_PROVIDER_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -316,7 +353,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "payment_provider_config_page",
                     title_key: "payment_provider_config_page",
-                    permission_name: "payment_provider_config_module.get_payment_provider_config_list",
+                    permission_name: PAYMENT_PROVIDER_CONFIG_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -328,7 +365,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "payment_provider_method_page",
                     title_key: "payment_provider_method_page",
-                    permission_name: "payment_provider_method_module.get_payment_provider_method_list",
+                    permission_name: PAYMENT_PROVIDER_METHOD_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -340,7 +377,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "currency_payment_provider_method_page",
                     title_key: "currency_payment_provider_method_page",
-                    permission_name: "currency_payment_provider_method_module.get_currency_payment_provider_method_list",
+                    permission_name: CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -352,7 +389,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "service_fee_configuration_page",
                     title_key: "service_fee_configuration_page",
-                    permission_name: "service_fee_configuration_module.get_service_fee_configuration_list",
+                    permission_name: SERVICE_FEE_CONFIGURATION_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -364,7 +401,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "activity_page",
                     title_key: "activity_page",
-                    permission_name: "activity_module.get_activity_list",
+                    permission_name: ACTIVITY_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },
@@ -376,7 +413,7 @@ class RouterManager {
                 meta: {
                     page_meta_key: "access_control_page",
                     title_key: "access_control_page",
-                    permission_name: "access_control_module.get_role_list",
+                    permission_name: ACCESS_CONTROL_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },

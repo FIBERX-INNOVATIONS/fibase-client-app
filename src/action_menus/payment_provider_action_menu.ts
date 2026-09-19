@@ -1,3 +1,5 @@
+import { PAYMENT_PROVIDER_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { PaymentProviderRecordInterface } from "@/types/api_service_type";
@@ -11,6 +13,7 @@ import DashboardLayoutClassStyles from "@/class_styles/dashboard_layout_class_st
 import PaymentProviderListViewActionHandler from "@/action_handlers/payment_provider/list_view_action_handler";
 
 class PaymentProviderActionMenu {
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: PaymentProviderRecordInterface,
         action_handler?: PaymentProviderListViewActionHandler
@@ -45,7 +48,7 @@ class PaymentProviderActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.get_payment_provider")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_PERMISSIONS.VIEW)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "select"}ActionMenu${record_id.toUpperCase()}`,
@@ -72,8 +75,7 @@ class PaymentProviderActionMenu {
                 },
                 class_styles,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.update_payment_provider") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_PERMISSIONS.UPDATE) && !record?.is_active
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id.toUpperCase()}`,
@@ -87,12 +89,13 @@ class PaymentProviderActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo("payment_provider_module.delete_payment_provider") &&
-                    !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(PAYMENT_PROVIDER_PERMISSIONS.DELETE) && !record?.is_active
             }
         ];
 
-        return menus.filter((nav_obj: NavLinkUIPropsInterface) => nav_obj?.has_permission);
+        return menus.filter((nav_obj: NavLinkUIPropsInterface) => {
+            return nav_obj?.has_permission;
+        });
     }
 }
 

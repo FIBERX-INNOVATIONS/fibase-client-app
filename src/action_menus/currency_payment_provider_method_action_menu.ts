@@ -1,3 +1,5 @@
+import { CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { CurrencyPaymentProviderMethodRecordInterface } from "@/types/api_service_type";
@@ -47,9 +49,7 @@ class CurrencyPaymentProviderMethodActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(
-                    "currency_payment_provider_method_module.get_currency_payment_provider_method"
-                )
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS.VIEW)
             },
             {
                 id: `${select_menu_content?.menu_text ?? "select"}ActionMenu${record_id}`,
@@ -76,9 +76,8 @@ class CurrencyPaymentProviderMethodActionMenu {
                 },
                 class_styles,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_payment_provider_method_module.update_currency_payment_provider_method"
-                    ) && !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS.UPDATE) &&
+                    !record?.is_active
             },
             {
                 id: `${delete_menu_content?.menu_text ?? "delete"}ActionMenu${record_id}`,
@@ -92,13 +91,14 @@ class CurrencyPaymentProviderMethodActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
-                    MemberAuthenticatorUtil.memberHasPermissionTo(
-                        "currency_payment_provider_method_module.delete_currency_payment_provider_method"
-                    ) && !record?.is_active
+                    MemberAuthenticatorUtil.memberHasPermissionTo(CURRENCY_PAYMENT_PROVIDER_METHOD_PERMISSIONS.DELETE) &&
+                    !record?.is_active
             }
         ];
 
-        return menus.filter((nav_obj: NavLinkUIPropsInterface) => nav_obj?.has_permission);
+        return menus.filter((nav_obj: NavLinkUIPropsInterface) => {
+            return nav_obj?.has_permission;
+        });
     }
 }
 

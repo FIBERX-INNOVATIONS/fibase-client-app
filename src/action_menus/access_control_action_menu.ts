@@ -1,3 +1,5 @@
+import { ACCESS_CONTROL_PERMISSIONS } from "@/configs/permissions_config";
+
 import MemberAuthenticatorUtil from "@/utils/member_authenticator_util";
 
 import { RoleRecordInterface } from "@/types/api_service_type";
@@ -18,6 +20,7 @@ class AccessControlActionMenu {
         );
     }
 
+    // Method to build permission-aware record action menus.
     public static getMenus(
         record: RoleRecordInterface,
         action_handler?: AccessControlListViewActionHandler
@@ -59,7 +62,7 @@ class AccessControlActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.get_role_list")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.LIST)
             },
             // Select Role Action Menu
             {
@@ -87,7 +90,7 @@ class AccessControlActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: this.memberCanPerformSuperAdminAction("access_control_module.update_role")
+                has_permission: this.memberCanPerformSuperAdminAction(ACCESS_CONTROL_PERMISSIONS.UPDATE)
             },
             // View Role Permisisons Action Menu
             {
@@ -101,7 +104,7 @@ class AccessControlActionMenu {
                     }
                 },
                 class_styles,
-                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo("access_control_module.get_role_permission_list")
+                has_permission: MemberAuthenticatorUtil.memberHasPermissionTo(ACCESS_CONTROL_PERMISSIONS.ROLE_PERMISSION_LIST)
             },
             // Add New Role Permissions Action Menu
             {
@@ -116,7 +119,7 @@ class AccessControlActionMenu {
                 },
                 class_styles,
                 has_permission: this.memberCanPerformSuperAdminAction(
-                    "access_control_module.assign_or_unassign_role_permissions"
+                    ACCESS_CONTROL_PERMISSIONS.ASSIGN_OR_UNASSIGN_ROLE_PERMISSIONS
                 )
             },
             // Delete Role Action Menu
@@ -132,11 +135,13 @@ class AccessControlActionMenu {
                 },
                 class_styles: DashboardLayoutClassStyles.delete_dropdown_menu_list_class_style,
                 has_permission:
-                    record.is_member_group && this.memberCanPerformSuperAdminAction("access_control_module.delete_role")
+                    record.is_member_group && this.memberCanPerformSuperAdminAction(ACCESS_CONTROL_PERMISSIONS.DELETE)
             }
         ];
 
-        return menus.filter((nav_obj: NavLinkUIPropsInterface) => nav_obj?.has_permission);
+        return menus.filter((nav_obj: NavLinkUIPropsInterface) => {
+            return nav_obj?.has_permission;
+        });
     }
 }
 

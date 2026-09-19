@@ -1,3 +1,5 @@
+import { TRANSACTION_PERMISSIONS } from "@/configs/permissions_config";
+
 import { markRaw } from "vue";
 
 import { ComputedDefinitionType, WatchersType } from "@ui/version_3/types/base_type";
@@ -140,13 +142,15 @@ class TransactionReceiptViewController extends BaseController<
     // Method to format the receipt pagination result copy.
     protected getUIComputedData(): ComputedDefinitionType<TransactionReceiptViewComputedDataInterface> {
         return {
-            can_view_receipts: () =>
-                MemberAuthenticatorUtil.memberHasPermissionTo("transaction_module.get_transaction_receipt_list"),
-            pagination_result_text: () =>
-                this.state_refs.content_obj.value.pagination_result_text
+            can_view_receipts: () => {
+                return MemberAuthenticatorUtil.memberHasPermissionTo(TRANSACTION_PERMISSIONS.RECEIPT_LIST);
+            },
+            pagination_result_text: () => {
+                return this.state_refs.content_obj.value.pagination_result_text
                     .replace("{{current_page}}", this.state_refs.current_page.value.toString())
                     .replace("{{total_pages}}", this.state_refs.total_pages.value.toString())
-                    .replace("{{total_items}}", this.state_refs.total_items.value.toString())
+                    .replace("{{total_items}}", this.state_refs.total_items.value.toString());
+            }
         };
     }
 

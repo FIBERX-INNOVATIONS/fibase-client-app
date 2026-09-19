@@ -1,6 +1,7 @@
 export const CSRF_TOKEN_FOR = {
     LOGIN: "login",
     TWO_FACTOR: "two_factor_login",
+    APP_WEBHOOK_DELIVERY: "app_webhook_delivery",
     REGISTER_APP: "register_app",
     CURRENCY: "currency",
     PAYMENT_PROVIDER: "payment_provider",

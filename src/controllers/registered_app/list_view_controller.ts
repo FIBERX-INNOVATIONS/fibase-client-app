@@ -1,3 +1,5 @@
+import { REGISTERED_APP_PERMISSIONS } from "@/configs/permissions_config";
+
 import { SVGIcons } from "@ui/version_3/resources/svg_icon_resource";
 
 import { ListFilterConfig } from "@ui/version_3/types/filter_config_type";
@@ -139,9 +141,7 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
     // Method to get table render config
     protected getTableRenderConfig(): DataTableColumnRenderType<RegisteredAppRecordInterface>[] {
-        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(
-            "registered_app_module.update_registered_app_status"
-        );
+        const can_change_status = MemberAuthenticatorUtil.memberHasPermissionTo(REGISTERED_APP_PERMISSIONS.UPDATE_STATUS);
 
         const columns: DataTableColumnRenderType<RegisteredAppRecordInterface>[] = [
             // s_n column with select chnage
@@ -167,11 +167,15 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                         if (!record?.public_id) {
                             const records = this.state_refs.list_state.value.records ?? [];
-                            const method_public_ids = records.map((row) => row.public_id);
+                            const method_public_ids = records.map((row) => {
+                                return row.public_id;
+                            });
 
                             return (
                                 method_public_ids.length > 0 &&
-                                method_public_ids.every((public_id) => selected_records.includes(public_id))
+                                method_public_ids.every((public_id) => {
+                                    return selected_records.includes(public_id);
+                                })
                             );
                         }
 
@@ -181,11 +185,15 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                     input_ui_boolean_props: (record: RegisteredAppRecordInterface): InputUIBooleanPropsInterface => {
                         const selected_records = this.state_refs.selected_records.value;
                         const records = this.state_refs.list_state.value.records ?? [];
-                        const method_public_ids = records.map((row) => row.public_id);
+                        const method_public_ids = records.map((row) => {
+                            return row.public_id;
+                        });
                         const is_checked = record?.public_id
                             ? selected_records.includes(record.public_id)
                             : method_public_ids.length > 0 &&
-                              method_public_ids.every((public_id) => selected_records.includes(public_id));
+                              method_public_ids.every((public_id) => {
+                                  return selected_records.includes(public_id);
+                              });
 
                         return {
                             is_checked,
@@ -226,11 +234,17 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
                 },
                 props: {
                     class_styles: this.list_view_class_styles.table_cell_components_class_styles,
-                    getImgAltText: (record: RegisteredAppRecordInterface) => record.name,
+                    getImgAltText: (record: RegisteredAppRecordInterface) => {
+                        return record.name;
+                    },
 
-                    getImgSubText: (record: RegisteredAppRecordInterface) => record.public_id ?? "-",
+                    getImgSubText: (record: RegisteredAppRecordInterface) => {
+                        return record.public_id ?? "-";
+                    },
 
-                    getImgContent: (record: RegisteredAppRecordInterface) => record.name,
+                    getImgContent: (record: RegisteredAppRecordInterface) => {
+                        return record.name;
+                    },
 
                     getImgSrc: (record: RegisteredAppRecordInterface) => {
                         if (record?.logo_url && !record?.logo_url?.includes("test.com")) {
@@ -278,12 +292,17 @@ class RegisteredAppListViewController extends BaseListViewController<RegisteredA
 
                     // getImgSrc: (record: RegisteredAppRecordInterface) => record?.creator?.profile_photo_link ?? "",
 
-                    getImgAltText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? "",
+                    getImgAltText: (record: RegisteredAppRecordInterface) => {
+                        return getMemberFullName(record?.creator) ?? "";
+                    },
 
-                    getLinkURL: (record: RegisteredAppRecordInterface) =>
-                        this.getRouteQueryLink("member_profile", record?.creator?.public_id),
+                    getLinkURL: (record: RegisteredAppRecordInterface) => {
+                        return this.getRouteQueryLink("member_profile", record?.creator?.public_id);
+                    },
 
-                    getLinkText: (record: RegisteredAppRecordInterface) => getMemberFullName(record?.creator) ?? ""
+                    getLinkText: (record: RegisteredAppRecordInterface) => {
+                        return getMemberFullName(record?.creator) ?? "";
+                    }
                 }
             },
             // Status toggle column
