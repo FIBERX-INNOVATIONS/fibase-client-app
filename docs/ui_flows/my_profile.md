@@ -16,6 +16,9 @@ Allows the current fully authenticated member to update their own profile detail
 
 ## Flow
 
+The shared module breadcrumb bar appears above the profile hero: Home (linked to
+`/dashboard`) followed by My Profile, with the standard home and chevron icons.
+
 1. View hydrates from the authenticated current member stored by auth utilities.
 2. The form shows identity summary, roles, account state, profile fields, photo upload, and optional password fields.
 3. Profile image changes upload through file storage and use the returned file URL.

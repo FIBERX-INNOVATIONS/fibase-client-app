@@ -36,3 +36,5 @@
 ## Notes
 
 Sidebar menu items are permission-gated by `menu_permission_text`. Payment configuration routes may be grouped under a `Payment Config` parent menu, while Members, Activities, and Access Control are separate top-level items.
+
+The top-bar `member_menu_list` includes My Wallets (`/my-wallets`, `wallet_svg_icon`). The controller checks `MY_WALLET_PERMISSIONS.LIST` before displaying it. See [My Wallets content](my_wallet.md).

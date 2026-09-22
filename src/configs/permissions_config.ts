@@ -141,3 +141,17 @@ export const LIST_VIEW_CREATE_PERMISSIONS: Readonly<Record<string, string>> = {
     registered_app: REGISTERED_APP_PERMISSIONS.CREATE,
     service_fee_configuration: SERVICE_FEE_CONFIGURATION_PERMISSIONS.CREATE
 };
+
+export const MY_WALLET_PERMISSIONS = {
+    CURRENCY_LIST: "my_wallet_management_module.get_my_wallet_currency_list",
+    PAYMENT_OPTIONS: "my_wallet_management_module.get_my_wallet_currency_payment_options",
+    LIST: "my_wallet_management_module.get_my_wallet_list",
+    RESOLVE: "my_wallet_management_module.resolve_my_wallet_currency",
+    VIEW: "my_wallet_management_module.get_my_wallet_currency",
+    TRANSACTION_LIST: "my_wallet_management_module.get_my_wallet_transaction_list",
+    CREATE_INTENT: "my_wallet_management_module.create_my_wallet_transaction_intent",
+    INITIATE: "my_wallet_management_module.initiate_my_wallet_transaction",
+    WITHDRAWAL_APPROVAL: "my_wallet_management_module.decide_my_wallet_withdrawal_approval",
+    VERIFY: "my_wallet_management_module.verify_my_wallet_transaction",
+    TRANSACTION_VIEW: "my_wallet_management_module.get_my_wallet_transaction"
+} as const;

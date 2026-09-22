@@ -1,0 +1,96 @@
+{
+    "my_wallet_view_ui": {
+        "home_text": "Home",
+        "title_text": "My Wallets",
+        "eyebrow_text": "YOUR MONEY, AT A GLANCE",
+        "subtitle_text": "A home for every currency. Your balances and latest activity, together.",
+        "brand_text": "FIBASE",
+        "currency_text": "Wallet currency",
+        "available_text": "Available balance",
+        "holder_text": "Wallet holder",
+        "card_note_text": "Your personal wallet",
+        "overview_text": "Wallet overview",
+        "locked_text": "Locked balance",
+        "pending_text": "Pending balance",
+        "wallet_id_text": "Wallet reference",
+        "deposit_text": "Deposit",
+        "withdrawal_text": "Withdrawal",
+        "coming_soon_text": "Withdrawals are coming soon.",
+        "transactions_text": "Recent transactions",
+        "all_wallets_text": "All wallets",
+        "transactions_description_text": "Your latest activity across every currency.",
+        "loading_text": "Loading your wallets\u2026",
+        "loading_transactions_text": "Loading transactions\u2026",
+        "empty_text": "No currencies are available yet.",
+        "no_wallet_text": "No wallet is available for this currency yet.",
+        "no_transactions_text": "No transactions yet. Your wallet activity will appear here.",
+        "wallet_error_text": "We could not load your wallets. Please try again.",
+        "transaction_error_text": "We could not load your transactions. Please try again.",
+        "permission_text": "You do not have permission to view this section.",
+        "retry_text": "Try again",
+        "pagination_text": "Page {page} of {pages} \u00b7 {total} transactions",
+        "transaction_text": "Transaction",
+        "type_text": "Type",
+        "amount_text": "Amount",
+        "status_text": "Status",
+        "date_text": "Date",
+        "pagination_buttons": {
+            "prev_btn_text": "Previous",
+            "next_btn_text": "Next"
+        },
+        "api_responses": {
+            "my_wallet_load_failed_text": "We could not load your wallets. Please try again.",
+            "my_wallet_transactions_load_failed_text": "We could not load your transactions. Please try again."
+        },
+        "breadcrumb_list": [
+            {
+                "menu_text": "Home",
+                "menu_icon": "home_svg_icon",
+                "menu_link": "/dashboard"
+            },
+            {
+                "menu_text": "My Wallets",
+                "menu_icon": "greater_than_caret_svg_icon"
+            }
+        ],
+        "deposit_flow": {
+            "title_text": "Deposit",
+            "subtitle_text": "Choose how you would like to fund your wallet.",
+            "currency_label_text": "Currency",
+            "amount_label_text": "Amount",
+            "description_label_text": "Description (required)",
+            "next_btn_text": "Continue",
+            "back_btn_text": "Back",
+            "empty_text": "No payment options are available for this currency and amount.",
+            "invalid_text": "Choose a currency, enter a positive amount within its decimal precision, and add a description.",
+            "fee_label_text": "Total fees",
+            "net_label_text": "Net amount",
+            "reference_label_text": "Transaction reference",
+            "review_note_text": "No payment has been taken. You can go back to edit your deposit details.",
+            "search_text": "Search currencies",
+            "details_title_text": "Deposit details",
+            "provider_title_text": "Choose a payment provider",
+            "method_title_text": "Choose a payment method",
+            "review_title_text": "Review your deposit",
+            "loading_text": "Preparing your deposit\u2026",
+            "retry_text": "Try again",
+            "request_error_text": "We could not prepare this deposit. Please try again.",
+            "storage_error_text": "Your draft could not be saved. Allow browser storage and try again.",
+            "update_unavailable_text": "This draft could not be changed safely. Restore its submitted details or reopen the deposit to reload it.",
+            "provisioning_unavailable_text": "This provider needs an account setup service that is not available yet.",
+            "selection_required_text": "Select a payment option to continue.",
+            "details_subtitle_text": "Choose a currency and enter the amount you want to add.",
+            "provider_subtitle_text": "Select a provider for your deposit.",
+            "method_subtitle_text": "Choose how you would like to pay.",
+            "review_subtitle_text": "Check your deposit details and fees.",
+            "invalid_amount_input_text": "Enter a positive {{currency_code}} amount with no more than {{precision}} decimal places."
+        },
+        "modals_ui": {
+            "deposit_modal_ui": {
+                "title_text": "Wallet deposit",
+                "title_icon": "wallet_svg_icon"
+            }
+        },
+        "provider_fee_label_text": "Provider fee"
+    }
+}

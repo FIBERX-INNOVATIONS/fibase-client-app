@@ -10,6 +10,7 @@
 {
   my_profile_view_ui: {
     form_view_ui: {
+      breadcrumb_list: Array<{ menu_text: string; menu_icon: string; menu_link?: string }>,
       header_text: string,
       content: {
         eyebrow_text: string,
@@ -44,3 +45,6 @@
 ## Sample
 
 See [my_profile_view_content_sample.json](./samples/my_profile_view_content_sample.json).
+
+`form_view_ui.breadcrumb_list` contains Home (`home_svg_icon`, `/dashboard`) and
+My Profile (`greater_than_caret_svg_icon`, no link), matching other module breadcrumbs.

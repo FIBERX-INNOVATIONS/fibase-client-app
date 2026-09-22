@@ -4,6 +4,7 @@ interface CurrencyAmountFormatOptions {
     precision?: number | null;
     symbol?: string | null;
     empty_value?: string;
+    use_grouping?: boolean;
 }
 
 // Centralizes application display formatting while delegating primitive transforms to the UI toolkit.
@@ -71,8 +72,9 @@ class DisplayFormatterUtil {
         return InputTransformerUtil.nFormatter(InputTransformerUtil.roundToTwoDecimalPlaces(amount), 2);
     }
 
+    // Method to format currency amounts with optional exact decimal grouping.
     public static formatCurrencyAmount(value?: number | string | null, options: CurrencyAmountFormatOptions = {}): string {
-        const { precision = 2, symbol, empty_value = "-" } = options;
+        const { precision = 2, symbol, empty_value = "-", use_grouping = false } = options;
 
         if (value === null || value === undefined || value === "") {
             return empty_value;
@@ -85,7 +87,13 @@ class DisplayFormatterUtil {
         }
 
         const normalized_precision = Math.max(0, precision ?? 2);
-        const formatted_amount = amount.toFixed(normalized_precision);
+        const formatted_amount = use_grouping
+            ? new Intl.NumberFormat("en-GB", {
+                  useGrouping: true,
+                  minimumFractionDigits: normalized_precision,
+                  maximumFractionDigits: normalized_precision
+              }).format(typeof value === "string" ? (value.trim() as Intl.StringNumericLiteral) : value)
+            : amount.toFixed(normalized_precision);
 
         return symbol ? `${symbol}${formatted_amount}` : formatted_amount;
     }

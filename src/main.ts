@@ -1,3 +1,5 @@
+import "../public/assets/css/input.css";
+
 import { Component, createApp, App as VueApp } from "vue";
 import { Router } from "vue-router";
 
@@ -12,13 +14,7 @@ import AuthAPIService from "@/api_services/auth_api_service";
 import EncryptorDecryptorUtil from "@ui/version_3/utils/encryptor_decryptor_util";
 import LocalStorageManagerUtil from "@ui/version_3/utils/local_storage_manager_util";
 
-import {
-    API_CLIENT_CONFIG,
-    APP_CONTENT_DATA_URL,
-    CHAR_CORPUS,
-    DATA_SHIFT_KEY,
-    STORAGE_SCHEMA
-} from "@/configs";
+import { API_CLIENT_CONFIG, APP_CONTENT_DATA_URL, CHAR_CORPUS, DATA_SHIFT_KEY, STORAGE_SCHEMA } from "@/configs";
 
 class FibaseClientApp {
     public readonly name = "fibase_client_app";
@@ -75,8 +71,7 @@ class FibaseClientApp {
         PageMetaUtil.install(this.router, {
             app_name: "Fibase Admin",
             default_title: "Fibase Admin",
-            default_description:
-                "Fibase is a powerful admin platform for managing applications, users, roles, and permissions.",
+            default_description: "Fibase is a powerful admin platform for managing applications, users, roles, and permissions.",
             title_template: "%title% | %app%"
         });
     }

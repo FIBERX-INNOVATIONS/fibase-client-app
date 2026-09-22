@@ -1,7 +1,15 @@
 import { MemberRecordInterface } from "@/types/api_service_type";
+
 import { StorageFieldType } from "@ui/version_3/types/util_type";
 
+import type { DepositCacheInterface } from "@ui/version_3/types/deposit_flow_type";
+
 export const STORAGE_SCHEMA = {
+    wallet_deposit_drafts: {
+        encrypted_key: "wdDft91",
+        default_value: {}
+    } as StorageFieldType<Record<string, DepositCacheInterface>>,
+
     current_member: {
         encrypted_key: "x9a2P0",
         default_value: null

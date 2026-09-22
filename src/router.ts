@@ -1,3 +1,4 @@
+import { MY_WALLET_CONFIG } from "@/configs/my_wallet_config";
 import {
     ACCESS_CONTROL_PERMISSIONS,
     ACTIVITY_PERMISSIONS,
@@ -13,7 +14,8 @@ import {
     REGISTERED_APP_PERMISSIONS,
     SERVICE_FEE_CONFIGURATION_PERMISSIONS,
     TRANSACTION_PERMISSIONS,
-    WALLET_PERMISSIONS
+    WALLET_PERMISSIONS,
+    MY_WALLET_PERMISSIONS
 } from "@/configs/permissions_config";
 
 import { createRouter, createWebHistory, Router, RouteRecordRaw, RouteMeta } from "vue-router";
@@ -69,6 +71,8 @@ const AccessControlListView = () => import("@/views/access_control/ListView.vue"
 
 const MyProfileView = () => import("@/views/MyProfileView.vue");
 
+const MyWalletsView = () => import("@/views/my_wallet/MyWalletView.vue");
+
 class RouterManager {
     public readonly name = "router_manager";
     private routes: RouteRecordRaw[];
@@ -100,9 +104,7 @@ class RouterManager {
 
             const is_logged_in = MemberAuthenticatorUtil.isLoggedIn();
             const is_fully_authenticated = MemberAuthenticatorUtil.isFullyLoggedIn();
-            const has_permission = permission_name
-                ? MemberAuthenticatorUtil.memberHasPermissionTo(permission_name as string)
-                : true;
+            const has_permission = permission_name ? MemberAuthenticatorUtil.memberHasPermissionTo(permission_name as string) : true;
 
             if (route.name === "ActivateAccount") {
                 if (is_fully_authenticated) {
@@ -414,6 +416,18 @@ class RouterManager {
                     page_meta_key: "access_control_page",
                     title_key: "access_control_page",
                     permission_name: ACCESS_CONTROL_PERMISSIONS.LIST,
+                    is_auth_page: false
+                }
+            },
+            // Personal wallets page
+            {
+                path: "/my-wallets",
+                name: "MyWallets",
+                component: MyWalletsView,
+                meta: {
+                    page_meta_key: "my_wallet_page",
+                    title_key: "my_wallet_page",
+                    permission_name: MY_WALLET_PERMISSIONS.LIST,
                     is_auth_page: false
                 }
             },

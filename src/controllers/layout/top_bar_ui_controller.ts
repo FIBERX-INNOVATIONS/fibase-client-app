@@ -1,3 +1,7 @@
+import { MY_WALLET_PERMISSIONS } from "@/configs/permissions_config";
+import { MY_WALLET_CONFIG } from "@/configs/my_wallet_config";
+import NavLinkUIPropsBuilder from "@ui/version_3/props_builder/nav_link_ui_props_builder";
+import ContentManagerUtil from "@ui/version_3/utils/content_manager_util";
 import { EventBus } from "@/utils/global_event_bus_util";
 
 import { GlobalEventTypes } from "@/types/global_events_type";
@@ -65,19 +69,30 @@ class TopBarUIController extends BaseController<
     // Method to get the state data for the UI
     protected getUIStateData(): TopBarUIStateDataInterface {
         const member = MemberAuthenticatorUtil.getLoggedInMember();
+        const menu_items = DropdownMenuUIPropsBuilder.buildMenuList(
+            "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
+            DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
+        ).filter((item) => {
+            return item.link !== MY_WALLET_CONFIG.route;
+        });
+        if (MemberAuthenticatorUtil.memberHasPermissionTo(MY_WALLET_PERMISSIONS.LIST)) {
+            const wallet_menu = NavLinkUIPropsBuilder.getReactivePropsObject("MyWalletsMenu", MY_WALLET_CONFIG.route, {
+                icon: "wallet_svg_icon",
+                content: ContentManagerUtil.getInstance().get<string>("content_resource.my_wallet_view_ui.title_text", "My Wallets") ?? "My Wallets",
+                class_styles: DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
+            });
+            const logout_index = menu_items.findIndex((item) => {
+                return item.link === "/logout";
+            });
+            menu_items.splice(logout_index < 0 ? menu_items.length : logout_index, 0, wallet_menu);
+        }
 
         return {
-            hamburger_btn_props: ButtonUIPropsBuilder.getReactivePropsObject(
-                "TopBarHamburgerBtn",
-                "",
-                "hamburger_svg_icon",
-                "button",
-                {
-                    class_styles: DashboardLayoutClassStyles.hamburger_btn_class_style,
-                    action_props: { on_click: this.action_handler.toggleSideBar },
-                    boolean_props: { disabled: false }
-                }
-            ),
+            hamburger_btn_props: ButtonUIPropsBuilder.getReactivePropsObject("TopBarHamburgerBtn", "", "hamburger_svg_icon", "button", {
+                class_styles: DashboardLayoutClassStyles.hamburger_btn_class_style,
+                action_props: { on_click: this.action_handler.toggleSideBar },
+                boolean_props: { disabled: false }
+            }),
 
             nav_logo_props: ImageRenderUIPropsBuilder.getReactivePropsObjectFromContent(
                 "TopBarLogo",
@@ -88,28 +103,18 @@ class TopBarUIController extends BaseController<
                 }
             ),
 
-            member_avatar_props: ImageRenderUIPropsBuilder.getReactivePropsObject(
-                "MemberAvatar",
-                member?.profile_photo_link ?? "",
-                {
-                    class_styles: DashboardLayoutClassStyles.member_avatar_class_style,
-                    action_props: {
-                        on_click: this.action_handler.toggleMemberAvatarDropdown
-                    }
+            member_avatar_props: ImageRenderUIPropsBuilder.getReactivePropsObject("MemberAvatar", member?.profile_photo_link ?? "", {
+                class_styles: DashboardLayoutClassStyles.member_avatar_class_style,
+                action_props: {
+                    on_click: this.action_handler.toggleMemberAvatarDropdown
                 }
-            ),
+            }),
 
-            member_avatar_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject(
-                "MemberAvatarDropdown",
-                {
-                    class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
+            member_avatar_dropdown_props: DropdownMenuUIPropsBuilder.getReactivePropsObject("MemberAvatarDropdown", {
+                class_styles: DashboardLayoutClassStyles.member_avatar_drodpwn_class_style,
 
-                    menu_items: DropdownMenuUIPropsBuilder.buildMenuList(
-                        "content_resource.dashboard_layout_ui.top_bar_ui.member_menu_list",
-                        DashboardLayoutClassStyles.member_avatar_dropdown_menu_list_class_style
-                    )
-                }
-            )
+                menu_items
+            })
         };
     }
 }

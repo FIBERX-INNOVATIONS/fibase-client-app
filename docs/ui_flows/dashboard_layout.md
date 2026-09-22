@@ -29,3 +29,5 @@ Frontend permission names are defined once in `src/configs/permissions_config.ts
 `LIST_VIEW_CREATE_PERMISSIONS` maps content/module keys to the existing create permissions used by the shared list header. A module without a configured create permission receives no default create button. Existing super-admin, ownership, system-role, deletion-state, and record-status checks remain in place alongside permission checks.
 
 Sidebar permission values arrive from the backend content resource and remain serialized backend strings. `MemberAuthenticatorUtil` continues to evaluate those runtime values, as well as the central constants, against the authenticated member's permission list. Adding a frontend permission constant does not grant permission or replace backend enforcement.
+
+The profile-avatar dropdown includes the permission-gated [My Wallets](my_wallet.md) page at `/my-wallets`, before Logout.

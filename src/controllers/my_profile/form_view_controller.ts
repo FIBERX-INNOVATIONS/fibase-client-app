@@ -1,3 +1,9 @@
+import { markRaw } from "vue";
+import BreadcrumbUI from "@ui/version_3/components/BreadcrumbUI.vue";
+import type { BreadcrumbUIPropsInterface } from "@ui/version_3/ui_types/breadcrumb_ui_type";
+import type { NavLinkContentPayloadResultInterface } from "@ui/version_3/ui_types/nav_link_ui_type";
+import ListViewClassStyles from "@/class_styles/list_view_class_styles";
+
 import InputTransformerUtil from "@ui/version_3/utils/input_transformer_util";
 
 import { ComputedDefinitionType } from "@ui/version_3/types/base_type";
@@ -51,6 +57,22 @@ class MyProfileFormViewController extends BaseFormViewController<
     public readonly class_styles: MyProfileViewClassStylesInterface;
 
     private readonly local_content_manager = ContentManagerUtil.getInstance();
+
+    public readonly breadcrumb_props: BreadcrumbUIPropsInterface = {
+        id: "MyProfileBreadcrumb",
+        breadcrumb_items:
+            this.local_content_manager.get<NavLinkContentPayloadResultInterface[]>(`${this.base_content_key}.breadcrumb_list`, [
+                { menu_text: "Home", menu_icon: "home_svg_icon", menu_link: "/dashboard" },
+                { menu_text: "My Profile", menu_icon: "greater_than_caret_svg_icon" }
+            ]) ?? [],
+        separator: "",
+        class_styles: ListViewClassStyles.list_view_breadcrumb_class_styles
+    };
+
+    // Method to include the shared breadcrumb alongside the profile form components.
+    protected override getUIComponents(): MyProfileViewComponentsInterface {
+        return { ...super.getUIComponents(), BreadcrumbUI: markRaw(BreadcrumbUI) };
+    }
 
     constructor(props: MyProfileViewPropsInterface) {
         super("my_profile_form_view", props, MyProfileViewClassStyles);
@@ -169,55 +191,37 @@ class MyProfileFormViewController extends BaseFormViewController<
                 model_value: form_data.gender ?? ""
             }),
 
-            profile_photo_link_input_group_props: this.buildInputGroupProps(
-                "profile_photo_link",
-                "file",
-                field_content_key("profile_photo_link"),
-                {
-                    model_value: form_data.profile_photo_link ?? "",
-                    input_props: {
-                        action_props: {
-                            on_change: this.action_handler.handleOnFileSelected
-                        },
-                        file_props: {
-                            accept: "image/*",
-                            multiple: false,
-                            enable_preview: true
-                        }
+            profile_photo_link_input_group_props: this.buildInputGroupProps("profile_photo_link", "file", field_content_key("profile_photo_link"), {
+                model_value: form_data.profile_photo_link ?? "",
+                input_props: {
+                    action_props: {
+                        on_change: this.action_handler.handleOnFileSelected
+                    },
+                    file_props: {
+                        accept: "image/*",
+                        multiple: false,
+                        enable_preview: true
                     }
                 }
-            ),
+            }),
 
-            new_password_input_group_props: this.buildInputGroupProps(
-                "new_password",
-                "password",
-                field_content_key("new_password"),
-                { model_value: form_data.new_password ?? "" }
-            ),
+            new_password_input_group_props: this.buildInputGroupProps("new_password", "password", field_content_key("new_password"), {
+                model_value: form_data.new_password ?? ""
+            }),
 
-            password_confirm_input_group_props: this.buildInputGroupProps(
-                "password_confirm",
-                "password",
-                field_content_key("password_confirm"),
-                { model_value: form_data.password_confirm ?? "" }
-            ),
+            password_confirm_input_group_props: this.buildInputGroupProps("password_confirm", "password", field_content_key("password_confirm"), {
+                model_value: form_data.password_confirm ?? ""
+            }),
 
-            confirm_password_input_group_props: this.buildInputGroupProps(
-                "confirm_password",
-                "password",
-                field_content_key("confirm_password"),
-                { model_value: form_data.confirm_password ?? "" }
-            )
+            confirm_password_input_group_props: this.buildInputGroupProps("confirm_password", "password", field_content_key("confirm_password"), {
+                model_value: form_data.confirm_password ?? ""
+            })
         };
     }
 
     // Method to build form btn ui
     protected buildFormBtnUI(): ButtonUIPropsInterface {
-        return this.buildSubmitButtonProps(
-            "my_profile_submit",
-            `${this.base_content_key}.fieldset.btn_text`,
-            "paper_airplane_send_svg_icon"
-        );
+        return this.buildSubmitButtonProps("my_profile_submit", `${this.base_content_key}.fieldset.btn_text`, "paper_airplane_send_svg_icon");
     }
 
     // Method to build ui state data
@@ -251,8 +255,7 @@ class MyProfileFormViewController extends BaseFormViewController<
 
             save_hint: () => {
                 const form_data = this.action_handler.form_data;
-                const has_password_values =
-                    !!form_data.new_password || !!form_data.password_confirm || !!form_data.confirm_password;
+                const has_password_values = !!form_data.new_password || !!form_data.password_confirm || !!form_data.confirm_password;
                 const content_text = this.state_refs.content_text.value;
 
                 return has_password_values ? content_text.save_password_hint_text : content_text.save_profile_hint_text;

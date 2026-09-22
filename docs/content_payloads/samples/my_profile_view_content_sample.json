@@ -86,7 +86,18 @@
                     "placeholder_text": "Confirm new password again"
                 },
                 "btn_text": "Update Profile"
-            }
+            },
+            "breadcrumb_list": [
+                {
+                    "menu_text": "Home",
+                    "menu_icon": "home_svg_icon",
+                    "menu_link": "/dashboard"
+                },
+                {
+                    "menu_text": "My Profile",
+                    "menu_icon": "greater_than_caret_svg_icon"
+                }
+            ]
         }
     },
     "api_responses": {

@@ -64,6 +64,7 @@ interface MyProfileViewComputedDataInterface extends FormViewComputedDataInterfa
 }
 
 interface MyProfileViewComponentsInterface {
+    BreadcrumbUI: Component;
     HeaderTextUI: Component;
     InputGroupUI: Component;
     ToasterUI: Component;

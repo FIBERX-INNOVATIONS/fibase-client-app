@@ -1,6 +1,7 @@
 <template>
     <section id="MyProfileView" :class="class_styles.page_wrapper_class_style">
         <div :class="class_styles.content_wrapper_class_style">
+            <BreadcrumbUI v-bind="controller.breadcrumb_props" />
             <div :class="class_styles.shell_class_style">
                 <div :class="class_styles.hero_class_style">
                     <div :class="class_styles.hero_content_class_style">
@@ -25,20 +26,13 @@
                                 </p>
 
                                 <p :class="class_styles.member_id_value_class_style">
-                                    {{
-                                        state_refs.member.value?.public_id?.toUpperCase() ||
-                                        state_refs.content_text.value.unavailable_text
-                                    }}
+                                    {{ state_refs.member.value?.public_id?.toUpperCase() || state_refs.content_text.value.unavailable_text }}
                                 </p>
                             </div>
                         </div>
 
                         <div :class="class_styles.badge_list_class_style">
-                            <span
-                                v-for="badge in state_refs.status_badges.value"
-                                :key="badge.label"
-                                :class="class_styles.badge_class_style"
-                            >
+                            <span v-for="badge in state_refs.status_badges.value" :key="badge.label" :class="class_styles.badge_class_style">
                                 {{ badge.label }}
                             </span>
                         </div>
@@ -171,7 +165,7 @@ const component_definition = controller.getComponentDefinition();
 
 const { state_refs, computed_refs, components } = component_definition;
 
-const { HeaderTextUI, InputGroupUI, ToasterUI, ButtonUI } = components;
+const { BreadcrumbUI, HeaderTextUI, InputGroupUI, ToasterUI, ButtonUI } = components;
 
 const action_handler = controller.action_handler;
 const class_styles = controller.class_styles;
